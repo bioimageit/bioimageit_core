@@ -1,0 +1,17 @@
+{
+    "common": {
+        "author": "Sylvain Prigent",
+        "createddate": "2019-02-12",
+        "datatype": "image",
+        "name": "celegans1",
+        "url": "celegans1.tif"
+    },
+    "origin": {
+        "type": "raw"
+    },
+    "tags": {
+        "staining": "blue",
+        "test": "c2",
+        "wildtype/mutant": "m"
+    }
+}
