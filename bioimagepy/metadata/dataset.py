@@ -9,13 +9,22 @@ class BiDataSet(BiMetaData):
         self._objectname = "BiDataSet"
 
     def name(self) -> str:
-        return self.metadata["name"]
+        if 'name' in self.metadata:
+            return self.metadata["name"]
+        else:
+            return ''
 
     def size(self) -> int:
-        return len(self.metadata["urls"]) 
+        if 'urls' in self.metadata:
+            return len(self.metadata["urls"]) 
+        else:
+            return 0
 
     def urls(self) -> list:
-        return self.metadata["urls"] 
+        if 'urls' in self.metadata:
+            return self.metadata["urls"]
+        else:
+            return []    
 
     def url(self, i: int) -> str:
         return self.metadata["urls"][i]
@@ -28,10 +37,16 @@ class BiRawDataSet(BiDataSet):
     """Class that store a dataset metadata for RawData"""
     def __init__(self, md_file_url : str):
         BiDataSet.__init__(self, md_file_url)
-        self._objectname = "BiRawDataSet"
+        self._objectname = 'BiRawDataSet'
 
     def raw_data(self, i: int) -> BiRawData:
         return BiRawData(os.path.join(self.md_file_path(), self.url(i)))
+ 
+    def add_data(self, md_file_url: str):
+        if 'urls' in self.metadata:
+            self.metadata['urls'].append(md_file_url)
+        else:
+            self.metadata['urls'] = [md_file_url]              
          
 
 class BiProcessedDataSet(BiDataSet):

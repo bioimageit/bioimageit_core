@@ -19,12 +19,13 @@ class BiMetaData(core.BiObject):
         return os.path.dirname(abspath)
 
     def read(self):
-        with open(self._md_file_url) as json_file:  
-            self.metadata = json.load(json_file)
+        if os.path.getsize(self._md_file_url) > 0:
+            with open(self._md_file_url) as json_file:  
+                self.metadata = json.load(json_file)
 
     def write(self):
         with open(self._md_file_url, 'w') as outfile:
-            json.dump(self.metadata, outfile)    
+            json.dump(self.metadata, outfile, indent=4)    
 
     def display(self):
         super(BiMetaData, self).display()  

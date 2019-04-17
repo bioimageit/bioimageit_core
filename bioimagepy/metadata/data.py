@@ -1,4 +1,5 @@
 from .metadata import BiMetaData
+import os
 
 class BiData(BiMetaData): 
     """Abstract class that store a data metadata"""
@@ -7,7 +8,23 @@ class BiData(BiMetaData):
         self._objectname = "BiData"  
 
     def url(self) -> str:
-        return self.metadata["common"]['url']             
+        file = self.metadata["common"]['url']
+        if os.path.isfile(file):
+            return file
+        else:    
+            return os.path.join(self.md_file_path(), file)
+
+    def url_as_stored(self) -> str:
+        return self.metadata["common"]['url']   
+
+    def name(self) -> str:
+        return self.metadata["common"]['name']  
+
+    def author(self) -> str:
+        return self.metadata["common"]['author']   
+
+    def createddate(self) -> str:
+        return self.metadata["common"]['createddate']          
 
     def display(self):
         super(BiData, self).display()  
@@ -26,6 +43,17 @@ class BiRawData(BiData):
     def __init__(self, md_file_url : str):
         self._objectname = "BiRawData"
         BiData.__init__(self, md_file_url)
+
+    def tag(self, key: str):
+        if 'tags' in self.metadata:
+            if key in self.metadata['tags']:
+                return self.metadata['tags'][key]
+        return ''  
+
+    def set_tag(self, key: str, value: str):
+        if 'tags' not in self.metadata:
+            self.metadata['tags'] = dict()
+        self.metadata['tags'][key] = value
 
     def display(self): 
         super(BiRawData, self).display()
