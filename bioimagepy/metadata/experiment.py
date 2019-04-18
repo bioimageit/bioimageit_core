@@ -92,7 +92,10 @@ class BiExperiment(BiMetaData):
         return len(self.metadata['tags'])
 
     def tags(self) -> list:
-        return self.metadata['tags']
+        if 'tags' in self.metadata: 
+            return self.metadata['tags']
+        else:
+            return []    
 
     def tag(self, i: int) -> str:
         return self.metadata['tags'][i]   
@@ -120,14 +123,17 @@ class BiExperiment(BiMetaData):
         print("\tName: " + self.name())
         print("\tAuthor: " + self.author())
         print("\tCreated: " + self.createddate()) 
-        print("\tRawDataSet: ")    
-        t = PrettyTable(['Name'] + self.metadata['tags'] + ['Author', 'Created date'])
+        print("\tRawDataSet: ")   
+        tags = list()    
+        if 'tags' in self.metadata:  
+            tags = self.metadata['tags']   
+        t = PrettyTable(['Name'] + tags + ['Author', 'Created date'])
         bi_rawdataset = self.rawsatadet()
         for i in range(bi_rawdataset.size()):
 
             bi_rawdata = bi_rawdataset.raw_data(i)
             tags_values = []
-            for key in self.metadata['tags']:
+            for key in tags:
                 tags_values.append(bi_rawdata.tag(key))
             t.add_row( [ bi_rawdata.name() ] + tags_values + [ bi_rawdata.author(), bi_rawdata.createddate() ] )
         print(t)                             
