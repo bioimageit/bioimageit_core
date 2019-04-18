@@ -46,8 +46,14 @@ class BiRawDataSet(BiDataSet):
         if 'urls' in self.metadata:
             self.metadata['urls'].append(md_file_url)
         else:
-            self.metadata['urls'] = [md_file_url]              
-         
+            self.metadata['urls'] = [md_file_url]    
+
+    def to_list(self) -> list:
+        data_list = []
+        for i in range(self.size()):
+            data_list.append(BiRawData(os.path.join(self.md_file_path(), self.url(i))))   
+        return data_list
+
 
 class BiProcessedDataSet(BiDataSet):
     """Class that store a dataset metadata for ProcessedData"""

@@ -260,4 +260,88 @@ def tag_rawdata_from_name(experiment: BiExperiment, tag: str, values: list):
             if value in bi_rawdata.name():      
                 bi_rawdata.set_tag(tag, value)
                 break
-        bi_rawdata.write()       
+        bi_rawdata.write()      
+
+def tag_rawdata_using_seperator(experiment: BiExperiment, tag: str, separator: str, value_position: int):
+    experiment.set_tag(tag) 
+    experiment.write()   
+    bi_rawdataset = experiment.rawsatadet()
+    for i in range(bi_rawdataset.size()):
+        bi_rawdata = bi_rawdataset.raw_data(i)
+        basename = os.path.splitext(os.path.basename(bi_rawdata.url()))[0]
+        splited_name = basename.split(separator)
+        value = ''
+        if len(splited_name) > value_position:
+            value = splited_name[value_position]  
+        bi_rawdata.set_tag(tag, value) 
+        bi_rawdata.write()   
+
+def query(experiment: BiExperiment, query: str) -> list:
+    """query on tags
+    
+    In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
+    and performed on the RawData set
+     """
+    
+    queries = re.split(' AND ',query)
+
+    # initially all the rawdata are selected
+    selected_list = experiment.rawsatadet().to_list()
+
+    # run all the AND queries on the preselected dataset
+    for q in queries:
+        selected_list = query_single(selected_list, q) 
+    return selected_list    
+
+def query_single(search_list: list, query: str) -> list:
+    selected_list = list()  
+    # get the query (tag=value)
+    
+    if "<=" in query:
+        splitted_query = query.split('<=')
+        if len(splitted_query) != 2:
+            print('Error: the query ' + query + ' is not correct. Must be (key<=value)' )
+        key = splitted_query[0]
+        value = float(splitted_query[1])   
+        for i in range(len(search_list)):
+            if float(search_list[i].tag(key)) <= float(value):
+                selected_list.append(search_list[i]) 
+
+    elif ">=" in query:
+        splitted_query = query.split('>=')
+        if len(splitted_query) != 2:
+            print('Error: the query ' + query + ' is not correct. Must be (key>=value)' )
+        key = splitted_query[0]
+        value = splitted_query[1]   
+        for i in range(len(search_list)):
+            if float(search_list[i].tag(key)) >= float(value):
+                selected_list.append(search_list[i])
+    elif "=" in query:
+        splitted_query = query.split('=')
+        if len(splitted_query) != 2:
+            print('Error: the query ' + query + ' is not correct. Must be (key=value)' )
+        key = splitted_query[0]
+        value = splitted_query[1]  
+        for i in range(len(search_list)):
+            if search_list[i].tag(key) == value:
+                selected_list.append(search_list[i])
+    elif "<" in query:
+        splitted_query = query.split('<')
+        if len(splitted_query) != 2:
+            print('Error: the query ' + query + ' is not correct. Must be (key<value)' )
+        key = splitted_query[0]
+        value = splitted_query[1]   
+        for i in range(len(search_list)):
+            if float(search_list[i].tag(key)) < float(value):
+                selected_list.append(search_list[i])
+    elif ">" in query:            
+        splitted_query = query.split('>')
+        if len(splitted_query) != 2:
+            print('Error: the query ' + query + ' is not correct. Must be (key>value)' )
+        key = splitted_query[0]
+        value = splitted_query[1]   
+        for i in range(len(search_list)):
+            if float(search_list[i].tag(key)) > float(value):
+                selected_list.append(search_list[i])
+
+    return selected_list        
