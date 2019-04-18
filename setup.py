@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='bioimagepy',
       version='0.1',
@@ -7,5 +7,5 @@ setup(name='bioimagepy',
       author='Sylvain Prigent',
       author_email='sylvain.prigent@inria.fr',
       license='None',
-      packages=['bioimagepy'],
+      packages=find_packages(),
       zip_safe=False)
