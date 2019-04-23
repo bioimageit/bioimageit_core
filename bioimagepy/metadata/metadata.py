@@ -18,6 +18,10 @@ class BiMetaData(core.BiObject):
         abspath = os.path.abspath(self._md_file_url)
         return os.path.dirname(abspath)
 
+    def dir(self) -> str:
+        abspath = os.path.abspath(self._md_file_url)
+        return os.path.dirname(abspath)    
+
     def read(self):
         if os.path.getsize(self._md_file_url) > 0:
             with open(self._md_file_url) as json_file:  

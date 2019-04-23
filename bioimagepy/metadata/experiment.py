@@ -344,4 +344,8 @@ def query_single(search_list: list, query: str) -> list:
             if float(search_list[i].tag(key)) > float(value):
                 selected_list.append(search_list[i])
 
-    return selected_list        
+    return selected_list   
+
+def query(experiment: BiExperiment, dataset_name: str,  query: str) -> list:
+    # TODO: Implement this query
+    return []
