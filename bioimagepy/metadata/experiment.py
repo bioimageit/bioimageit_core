@@ -1,27 +1,42 @@
 # -*- coding: utf-8 -*-
-'''experiment module.
+"""experiment module.
 
 This module contains the BiExperiment class that allows to read/write and query
 an experiment metadata, and a set of function to manipulate experiment metadata
 
-Example:
+Example
+-------
     Here is an example of how to create an experiment and add data to it:
 
-        >> import bioimagepy.metadata.experiment as experiment
-        >>
-        >> myexperiment = experiment.create('myexperiment', 'Sylvain Prigent', './' )
-        >> experiment.import_data(experiment_path: str, data_url: str, name: str, author: str, datatype: str, createddate: str = 'now', copy_data: bool = True)
-        >> experiment.import_dir(experiment_path: str, dir_path: str, author: str, datatype: str, createddate: str = 'now', copy_data: bool = True)
-        >> myexperiment.addTag('condition1')
-        >> myexperiment.addTags(['condition1, condition2'])
-        >> myexperiment.display()
+        >>> import bioimagepy.metadata.experiment as experiment
+        >>> myexperiment = experiment.create('myexperiment', 'Sylvain Prigent', './' )
+        >>> experiment.import_data(experiment_path: str, data_url: str, name: str, author: str, datatype: str, createddate: str = 'now', copy_data: bool = True)
+        >>> experiment.import_dir(experiment_path: str, dir_path: str, author: str, datatype: str, createddate: str = 'now', copy_data: bool = True)
+        >>> myexperiment.addTag('condition1')
+        >>> myexperiment.addTags(['condition1, condition2'])
+        >>> myexperiment.display()
 
-Todo:
+Classes
+-------
+BiExperiment
+
+Methodes
+--------
+create
+import_data
+import_dir
+tag_rawdata_from_name
+tag_rawdata_using_seperator
+query
+query_single
+
+Todo
+----
     * Write a full example (cf tutorial) in this documentation
     * Write manipulation functions: import, tag...
     * add a recursive option for import_dir
 
-'''
+"""
 
 from .metadata import BiMetaData
 from .data import BiRawData
@@ -34,79 +49,218 @@ import re
 from prettytable import PrettyTable
  
 class BiExperiment(BiMetaData):
-    '''Class that allows to manipulate experiment metadata.
+    """Class that allows to manipulate experiment metadata.
 
     A BiExperiment object behave as a container for an experiment 
     metadata. It read only the basic information stored in the 
     experiment.md.json metadata files and methods allows to 
     read/write and manipulate datasets and data information
 
-    Args:
+    Parameters
+    ----------
         md_file_url (str): Path of the experiment.md.json file.
 
-    Attributes:
+    Attributes
+    ----------
         metadata (tuple): json metadata description.
 
-    ''' 
+    """ 
+
     def __init__(self, md_file_url: str):
-        '''BiExperiment __init__ method.
-
-        The __init__ method load the experiment metadata if the specified 
-        input metadata file exists.
-
-        Args:
-            md_file_url (str): The url or path of the experiment metadata file.
-
-        '''
+  
         BiMetaData.__init__(self, md_file_url)
         self._objectname = 'BiExperiment'
 
     def name(self) -> str:
+        """get the experiment name
+
+        Returns
+        ----------
+        str
+            The experiment name
+
+        """
+
         return self.metadata['information']['name']
   
     def author(self) -> str:
+        """get the experiment author
+
+        Returns
+        ----------
+        str
+            The experiment author
+
+        """
+
         return self.metadata['information']['author']
 
     def createddate(self) -> str:
+        """get the experiment created date
+
+        Returns
+        ----------
+        str
+            The experiment created date
+
+        """
+
         return self.metadata['information']['createddate']
 
     def rawsatadet_url(self) -> str:
+        """get the experiment raw dataset url
+
+        Returns
+        ----------
+        str
+            The experiment raw dataset url
+
+        """
+
         return self.metadata['information']['rawdataset']  
 
     def rawsatadet(self) -> BiRawDataSet:
+        """get the experiment raw dataset
+
+        Returns
+        ----------
+        BiRawDataSet
+            The experiment raw dataset
+
+        """
+
         return BiRawDataSet( os.path.join(self.md_file_path(), self.metadata['rawdataset']) )
 
     def processeddatasets_size(self) -> int:
+        """Get the number of processed dataset in the experiment
+
+        Returns
+        -------
+        int
+            The number of processed dataset in the experiment
+
+        """
+
         return len(self.metadata['processeddatasets']) 
 
     def processeddataset_url(self, i: int) -> str:
+        """Get the url of a processed dataset
+
+        Parameters
+        ----------
+        i
+            Index of the processed dataset
+
+        Returns
+        -------
+        str
+            URL of the processed dataset
+
+        """
+
         return self.metadata['processeddatasets'][i]  
 
     def processeddataset_urls(self) -> list:
+        """Get the urls of all the processed datasets
+
+        Returns
+        -------
+        list
+            URLs of the processed datasets
+
+        """
+
         return self.metadata['processeddatasets']   
 
     def processeddataset(self, i: int) -> BiProcessedDataSet:
-        return BiRawDataSet( os.path.join(self.md_file_path(), self.metadata['processeddatasets'][i]) )
+        """Get a processed dataset
+
+        Parameters
+        ----------
+        i
+            Index of the processed dataset
+
+        Returns
+        -------
+        BiProcessedDataSet
+            Processed dataset in a BiProcessedDataSet object
+
+        """
+
+        return BiProcessedDataSet( os.path.join(self.md_file_path(), self.metadata['processeddatasets'][i]) )
 
     def tags_size(self) -> int:
+        """Get the number of tags
+
+        Returns
+        -------
+        int
+            Number of tags
+
+        """
+
         return len(self.metadata['tags'])
 
     def tags(self) -> list:
+        """Get the tags
+
+        Returns
+        -------
+        list
+            The list of tags
+
+        """
+
         if 'tags' in self.metadata: 
             return self.metadata['tags']
         else:
             return []    
 
     def tag(self, i: int) -> str:
+        """Get a tag
+
+        Parameters
+        ----------
+        i
+            Index of the tag
+
+        Returns
+        -------
+        str
+            The tag name
+
+        """
+        
         return self.metadata['tags'][i]   
 
     def add_tag(self, tag: str):
+        """Add a tag
+
+        Parameters
+        ----------
+        tag
+            The tag name
+
+        """
+
         if 'tags' in self.metadata:
             self.metadata['tags'].append(tag) 
         else:
             self.metadata['tags'] = [tag]  
 
     def set_tag(self, tag: str):
+        """Set a tag 
+
+        Same as tags exept that it doen's add the tag if it
+        already exists
+
+        Parameters
+        ----------
+        tag
+            The tag name
+
+        """
+
         if 'tags' in self.metadata:
             if tag not in self.metadata['tags']:
                 self.metadata['tags'].append(tag) 
@@ -114,10 +268,21 @@ class BiExperiment(BiMetaData):
             self.metadata['tags'] = [tag]          
 
     def add_tags(self, tags: list):
+        """Add a list of tags
+
+        Parameters
+        ----------
+        tags
+            The tags names list
+
+        """
+
         for tag in tags:
             self.metadata['tags'].append(tag) 
 
     def display(self):
+        """Display inherited from BiObject"""
+
         print("--------------------")
         print("Experiment: ")
         print("\tName: " + self.name())
@@ -140,23 +305,31 @@ class BiExperiment(BiMetaData):
            
 
 def create(name: str, author: str, path: str) -> BiExperiment:
-    '''Create an experiment
+    """Create an experiment
 
     Create an empty experiment in the directory specified in the args
     with the informations given in the args
 
-    Args:
-        name (str): The name of the experiment.
-        author (str): The name of the person who created the experiment.
-        path (str): The directory where the experiment files will be stored.
+    Parameters
+    ----------
+    name
+        The name of the experiment.
+    author
+        The name of the person who created the experiment.
+    path
+        The directory where the experiment files will be stored.
 
-    Returns:
-        BiExperiment: The object containing the experiment.
+    Returns
+    -------
+    BiExperiment
+        The object containing the experiment.
 
-    Raises:
-        FileNotFoundError: if the experiment path does not exists.
+    Raises
+    ------
+    FileNotFoundError
+        If the experiment path does not exists.
 
-    '''
+    """
     #create the experiment directory
     filtered_name = name.replace(' ', '')
     experiment_path = os.path.join(path, filtered_name)
@@ -198,7 +371,35 @@ def create(name: str, author: str, path: str) -> BiExperiment:
     return experiment
 
 def import_data(experiment: BiExperiment, data_url: str, name: str, author: str, datatype: str, createddate: str = 'now', copy_data: bool = True):
-    
+    """Import data to an experiment
+
+    This import a single data to the experiment and tag it with the specified metadata
+
+    Parameters
+    ----------
+    experiment
+        The experiment where the data has to be added.
+    data_url
+        The URL of the data to import
+    name
+        Name of the data
+    author
+        Author of the data
+    datatype
+        The datatype (image, txt...)  
+    createddate
+        The data creation date  
+    copy_data                
+        If True, the data is copied into the Experiment folder. Otherwise, only the 
+        metadata will be created in the Experiment folder. The second case is 'dangerous'
+        if the data URL is not a permanent URL
+
+    Raises
+    ------
+        FileNotFoundError: if the experiment path does not exists.
+
+    """
+
     experiment_path = experiment.md_file_path() 
 
     filtered_name = name.replace(' ', '')
@@ -242,7 +443,35 @@ def import_data(experiment: BiExperiment, data_url: str, name: str, author: str,
          
 def import_dir(experiment: BiExperiment, dir_path: str, filter: str, author: str, 
                datatype: str, createddate: str = 'now', copy_data: bool = True):
-           
+    """Import data from a directory to an experiment
+
+    This import a set of data to the experiment and tag it with the specified metadata
+
+    Parameters
+    ----------
+    experiment
+        The experiment where the data has to be added.
+    dir_path
+        The URL of the directory to import
+    filter
+        Regular expression to filter the files to import from the directory    
+    author
+        Author of the data
+    datatype
+        The datatype (image, txt...)  
+    createddate
+        The data creation date  
+    copy_data                
+        If True, the data is copied into the Experiment folder. Otherwise, only the 
+        metadata will be created in the Experiment folder. The second case is 'dangerous'
+        if the data URL is not a permanent URL
+
+    Raises
+    ------
+        FileNotFoundError: if the experiment path does not exists.
+
+    """
+       
     files = os.listdir(dir_path)
     for file in files:
         r1 = re.compile(filter) # re.compile(r'\.tif$')
@@ -251,6 +480,19 @@ def import_dir(experiment: BiExperiment, dir_path: str, filter: str, author: str
             import_data(experiment, data_url, file, author, datatype, createddate, copy_data)
 
 def tag_rawdata_from_name(experiment: BiExperiment, tag: str, values: list):
+    """Tag an experiment raw data using file name
+
+    Parameters
+    ----------
+    experiment
+        The experiment containing the rawdata.
+    tag
+        The name (or key) of the tag to add to the data
+    values
+        List of possible values for the tag to find in the filename    
+
+    """
+
     experiment.set_tag(tag) 
     experiment.write()   
     bi_rawdataset = experiment.rawsatadet()
@@ -263,6 +505,21 @@ def tag_rawdata_from_name(experiment: BiExperiment, tag: str, values: list):
         bi_rawdata.write()      
 
 def tag_rawdata_using_seperator(experiment: BiExperiment, tag: str, separator: str, value_position: int):
+    """Tag an experiment raw data using file name and separator
+
+    Parameters
+    ----------
+    experiment
+        The experiment containing the rawdata.
+    tag
+        The name (or key) of the tag to add to the data
+    separator
+        The character used as a separator in the filename (ex: _)    
+    value_position
+        Position of the value to extract with respect to the separators    
+
+    """
+    
     experiment.set_tag(tag) 
     experiment.write()   
     bi_rawdataset = experiment.rawsatadet()
@@ -281,7 +538,15 @@ def query(experiment: BiExperiment, query: str) -> list:
     
     In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
     and performed on the RawData set
-     """
+
+    Parameters
+    ----------
+    experiment
+        The experiment containing the data.
+    query
+        String query with the key=value format.    
+    
+    """
     
     queries = re.split(' AND ',query)
 
@@ -294,6 +559,19 @@ def query(experiment: BiExperiment, query: str) -> list:
     return selected_list    
 
 def query_single(search_list: list, query: str) -> list:
+    """query internal function
+    
+    Search if the query is on the search_list
+
+    Parameters
+    ----------
+    search_list
+        data search list
+    query
+        String query with the key=value format. No 'AND', 'OR'...    
+    
+    """
+    
     selected_list = list()  
     # get the query (tag=value)
     

@@ -150,6 +150,7 @@ class BiProcess(BiObject):
     """
 
     def __init__(self, xml_file_url : str):
+        
         self._objectname = "BiProcess"
         self._xml_file_url = xml_file_url
         parser = BiProcessParser(xml_file_url)
