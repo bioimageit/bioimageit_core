@@ -8,7 +8,4 @@ setup(name='bioimagepy',
       author_email='sylvain.prigent@inria.fr',
       license='None',
       packages=find_packages(),
-      install_requires=[
-          'libtiff',
-      ],
       zip_safe=False)
