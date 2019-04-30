@@ -139,7 +139,7 @@ class BiRawData(BiData):
         dictionnary containing all the meatadata
 
     """
-    
+
     def __init__(self, md_file_url : str):
 
         self._objectname = "BiRawData"
@@ -187,7 +187,7 @@ class BiRawData(BiData):
         super(BiRawData, self).display()
         print("tag:")
         if 'tags' in self.metadata:
-            for key, values in in self.metadata["tags"]:
+            for key, values in self.metadata["tags"]:
                 print(key, ":", value)
         print('')
 
