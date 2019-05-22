@@ -61,11 +61,12 @@ BiProcessExecException
 
 import os
 import xml.etree.ElementTree as ET
-from ..core.core import BiObject
+from .core import BiObject
 import subprocess
-import tempfile
+import tempfile 
 from libtiff import TIFF
-import imageio
+import imageio 
+import shlex
 
 def DATA_IMAGE():
     """Type for data image""" 
@@ -215,12 +216,12 @@ class BiProcess(BiObject):
                 if output_arg.name == arg:    
                      output_arg.value = args[i+1] 
 
-        # 2.2- build the command line    
-        cmd = self.info.program + ' '
+        # 2.2- build the command line 
+        cmd = self.info.command   
         for input_arg in self.info.inputs:
-            cmd += input_arg.name + ' ' + str(input_arg.value) + ' '
+            cmd = cmd.replace("${"+input_arg.name+"}", str(input_arg.value))
         for output_arg in self.info.outputs:
-            cmd += output_arg.name + ' ' + str(output_arg.value) + ' '    
+            cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))    
 
         cmd = " ".join(cmd.split())
         print('cmd: ', cmd)
@@ -238,11 +239,16 @@ class BiProcess(BiObject):
            found_program = True
 
         # run the program
-        print('run process: ', os.path.join(cmd_path, cmd))
-        if found_program:
-            subprocess.run(os.path.join(cmd_path, cmd).split())
-        else:
-            raise BiProcessExecException('Cannot find the program: ' + self.info.program)
+        if not found_program:
+            print("Warning: Cannot find a file corresponding to the program", self.info.program)   
+
+        args = shlex.split(os.path.join(cmd_path, cmd))
+        subprocess.run(args)
+
+        #if found_program:
+        #    subprocess.run(os.path.join(cmd_path, cmd).split())
+        #else:
+        #    raise BiProcessExecException('Cannot find the program: ' + self.info.program)
 
     def run(self, *args):
         """Execute the process on puthon data with the given arguments

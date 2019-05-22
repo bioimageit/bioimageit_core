@@ -1,13 +1,12 @@
-from ..metadata import experiment
-from ..metadata import metadata
-from ..metadata.dataset import BiDataSet, BiProcessedData, BiRawDataSet
+from metadata import BiDataSet, BiProcessedData, BiRawDataSet
+import experiment
 import os
 
 class BiRunnerException(Exception):
    """Raised when an error occure in the run of a process"""
    pass
 
-class BiProcessRunner(): 
+class BiRunner(): 
     """Abstract class that store a data metadata"""
     def __init__(self, experiment : experiment.BiExperiment):
         self._objectname = "BiData"  

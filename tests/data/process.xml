@@ -1,0 +1,16 @@
+<tool id="testprocess" name="TestProcess" version="1.0.0" >
+	<description>
+		Create a file containg the text given in parameter -text
+	</description>
+	<command>
+		python3 tests/data/process.py -t ${-t} -o ${-o}
+	</command>
+	<inputs>
+		<param name="-t" type="string" default="Hello" label="Text to print in file"/>
+	</inputs>
+	<outputs>
+		<data format="txt" name="-o" label="Output file"/>
+	</outputs>
+	<help url="index.html"/>
+</tool>
+

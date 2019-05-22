@@ -1,14 +1,13 @@
 import unittest
-from ..metadata.data import BiRawData
-from ..metadata.dataset import BiDataSet
-
+from bioimagepy.metadata import BiDataSet, BiRawData
+ 
 class TestBiRawData(unittest.TestCase):
 
     def setUp(self):
-        self.mydata = BiRawData('bioimagepy/tests/data/file1.md.json')
+        self.mydata = BiRawData('tests/data/file1.md.json')
 
     def test_read_rawdata_url(self):
-        self.assertEqual(self.mydata.url(), 'celegans1.tif')
+        self.assertEqual(self.mydata.url_as_stored(), 'celegans1.tif')
 
     def test_read_rawdata_name(self):
         self.assertEqual(self.mydata.metadata["common"]["name"], 'celegans1')
@@ -28,7 +27,7 @@ class TestBiRawData(unittest.TestCase):
 
 class TestBiDataSet(unittest.TestCase):
     def setUp(self):
-        self.mydataset = BiDataSet('bioimagepy/tests/data/rawdataset.md.json')
+        self.mydataset = BiDataSet('tests/data/rawdataset.md.json')
 
     def test_read_name(self):
         self.assertEqual(self.mydataset.name(), 'mydataset')  

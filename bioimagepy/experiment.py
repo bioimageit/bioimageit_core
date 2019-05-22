@@ -38,9 +38,7 @@ Todo
 
 """
 
-from .metadata import BiMetaData
-from .data import BiRawData
-from .dataset import BiRawDataSet, BiProcessedDataSet
+from metadata import BiMetaData, BiRawData, BiRawDataSet, BiProcessedDataSet
 import os
 import errno
 import datetime
