@@ -38,14 +38,14 @@ Todo
 
 """
 
-from metadata import BiMetaData, BiRawData, BiRawDataSet, BiProcessedDataSet
+from .metadata import BiMetaData, BiRawData, BiRawDataSet, BiProcessedDataSet
 import os
 import errno
 import datetime
 from shutil import copyfile
 import re
 from prettytable import PrettyTable
- 
+  
 class BiExperiment(BiMetaData):
     """Class that allows to manipulate experiment metadata.
 
@@ -622,6 +622,6 @@ def query_single(search_list: list, query: str) -> list:
 
     return selected_list   
 
-def query(experiment: BiExperiment, dataset_name: str,  query: str) -> list:
-    # TODO: Implement this query
-    return []
+#def query(experiment: BiExperiment, dataset_name: str,  query: str) -> list:
+#    # TODO: Implement this query
+#    return []
