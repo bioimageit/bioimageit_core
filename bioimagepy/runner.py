@@ -6,8 +6,8 @@ class BiRunnerException(Exception):
    """Raised when an error occure in the run of a process"""
    pass
 
-class BiRunner(): 
-    """Abstract class that store a data metadata"""
+class BiRunnerExperiment(): 
+    """Class to run a process on en Experiment"""
     def __init__(self, experiment : experiment.BiExperiment):
         self._objectname = "BiData"  
         self._experiment = experiment

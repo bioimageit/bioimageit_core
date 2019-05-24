@@ -74,7 +74,7 @@ class BiMetaData(BiObject):
         return os.path.dirname(abspath)    
 
     def read(self):
-        """Write the metadata from the a json file at md_file_url"""
+        """Read the metadata from the a json file at md_file_url"""
         if os.path.getsize(self._md_file_url) > 0:
             with open(self._md_file_url) as json_file:  
                 self.metadata = json.load(json_file)
@@ -184,6 +184,18 @@ class BiData(BiMetaData):
         """
 
         return self.metadata["common"]['createddate']          
+
+    def origin_type(self):
+        """get the origin type
+
+        Returns
+        ----------
+        str
+            The origin type
+
+        """
+
+        return self.metadata["origin"]['origin'] 
 
     def display(self):
         """Display inherited from BiObject"""
@@ -495,3 +507,44 @@ class BiProcessedDataSet(BiDataSet):
 
         return BiProcessedData(os.path.join(self.md_file_path(), self.url(i)))        
         
+
+class BiRun(BiMetaData):
+    def __init__(self, md_file_url : str):
+        BiRun.__init__(self, md_file_url)
+        self._objectname = "BiDataSet"
+
+    def process_name(self) -> str:
+        return self.metadata["process"]['name']
+
+    def set_process_name(self, name: str)
+        self.metadata["process"]['name'] = name
+
+    def process_url(self) -> str:
+        return self.metadata["process"]['url']
+
+    def set_process_url(url : str)
+        self.metadata["process"]['url'] = url
+
+    def processeddataset(self) -> str:
+        return self.metadata["processeddataset"]
+
+    def set_processeddataset(self, processeddataset: str)
+        self.metadata["processeddataset"] = processeddataset
+
+    def parameters_count(self) -> int:
+        return len(self.metadata["parameters"])
+
+    def clear_parameters(self):
+        self.metadata["parameters"] = []
+
+    def add_arameter(parameter: BiRunParameter):
+        self.metadata["parameters"].append(parameter)
+
+    def parameter(self, i: int) -> BiRunParameter:
+        return self.metadata["parameters"][i]
+
+
+class BiRunParameter():
+    def __init__(self, name : str = '', value: str = ''  ):
+        self.name = name 
+        self.value = value

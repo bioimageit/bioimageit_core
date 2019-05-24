@@ -250,8 +250,36 @@ class BiProcess(BiObject):
         #else:
         #    raise BiProcessExecException('Cannot find the program: ' + self.info.program)
 
+    def exec_dir(self, *args):
+        """Execute the process where inputs and outputs are directories
+                
+        The inputs and outputs arguments have to be the path list of the I/O data.
+        args have to be pairs 'arg name, arg value' where arg name is the name
+        of the parameter as given in the XML process file.
+
+        Parameters
+        ----------
+        *args
+            List of the parameters and I/O data given as pair 'arg name, arg value' 
+
+        """    
+        for input_arg in self.info.inputs:
+            if input_arg.name not in args and input_arg.type is not PARAM_HIDDEN():
+                print('Warning (BiProcess): cannot find the input ' + input_arg.name + ' will use the default value: ' + input_arg.default_value)
+                input_arg.value = input_arg.default_value
+
+        for output_arg in self.info.outputs:
+            if output_arg.name not in args:
+                print('Warning (BiProcess): cannot find the input ' + output_arg.name + ' will use the default value: ' + output_arg.default_value)
+                output_arg.value = output_arg.default_value
+
+                
+
+    def exec_list(self, *args):
+        """Execute the process where inputs and outputs are list of files"""    
+
     def run(self, *args):
-        """Execute the process on puthon data with the given arguments
+        """Execute the process on python data with the given arguments
         
         The inputs and outputs data have to be stored in python data structures
         Depending on the I/O data type, the data will be stored in temporary data
