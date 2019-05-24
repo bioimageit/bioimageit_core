@@ -516,7 +516,7 @@ class BiRun(BiMetaData):
     def process_name(self) -> str:
         return self.metadata["process"]['name']
 
-    def set_process_name(self, name: str)
+    def set_process_name(self, name: str):
         self.metadata["process"]['name'] = name
 
     def process_url(self) -> str:
