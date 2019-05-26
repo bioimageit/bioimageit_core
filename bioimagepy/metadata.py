@@ -507,6 +507,10 @@ class BiProcessedDataSet(BiDataSet):
 
         return BiProcessedData(os.path.join(self.md_file_path(), self.url(i)))        
         
+class BiRunParameter():
+    def __init__(self, name : str = '', value: str = ''  ):
+        self.name = name 
+        self.value = value
 
 class BiRun(BiMetaData):
     def __init__(self, md_file_url : str):
@@ -542,9 +546,4 @@ class BiRun(BiMetaData):
 
     def parameter(self, i: int) -> BiRunParameter:
         return self.metadata["parameters"][i]
-
-
-class BiRunParameter():
-    def __init__(self, name : str = '', value: str = ''  ):
-        self.name = name 
-        self.value = value
+        
