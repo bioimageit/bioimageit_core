@@ -522,7 +522,7 @@ class BiRun(BiMetaData):
     def process_url(self) -> str:
         return self.metadata["process"]['url']
 
-    def set_process_url(url : str)
+    def set_process_url(url : str):
         self.metadata["process"]['url'] = url
 
     def processeddataset(self) -> str:
