@@ -528,7 +528,7 @@ class BiRun(BiMetaData):
     def processeddataset(self) -> str:
         return self.metadata["processeddataset"]
 
-    def set_processeddataset(self, processeddataset: str)
+    def set_processeddataset(self, processeddataset: str):
         self.metadata["processeddataset"] = processeddataset
 
     def parameters_count(self) -> int:
