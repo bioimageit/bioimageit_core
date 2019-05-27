@@ -195,7 +195,7 @@ class BiData(BiMetaData):
 
         """
 
-        return self.metadata["origin"]['origin'] 
+        return self.metadata["origin"]['type'] 
 
     def display(self):
         """Display inherited from BiObject"""
