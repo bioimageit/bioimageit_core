@@ -68,6 +68,7 @@ class BiExperiment(BiMetaData):
   
         BiMetaData.__init__(self, md_file_url)
         self._objectname = 'BiExperiment'
+        self._rawdataset = None
 
     def set_name(self, name: str):
         """set the experiment name
@@ -163,7 +164,11 @@ class BiExperiment(BiMetaData):
 
         """
 
-        return BiRawDataSet( os.path.join(self.md_file_path(), self.metadata['rawdataset']) )
+        if self._rawdataset:
+            return self._rawdataset
+        else:
+            self._rawdataset = BiRawDataSet( os.path.join(self.md_file_path(), self.metadata['rawdataset']) )    
+            return self._rawdataset 
 
     def processeddatasets_size(self) -> int:
         """Get the number of processed dataset in the experiment
