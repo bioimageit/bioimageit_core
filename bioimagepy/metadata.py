@@ -492,7 +492,7 @@ class BiDataSet(BiMetaData):
 
         """
 
-        if self.data_list[i]:
+        if i in self.data_list:
             return self.data_list[i]
         else:   
             self.data_list[i] = BiData(os.path.join(self.md_file_path(), self.url(i)))
@@ -580,7 +580,7 @@ class BiRawDataSet(BiDataSet):
 
         """
 
-        if self.data_list[i]:
+        if i in self.data_list:
             return self.data_list[i]
         else:   
             self.data_list[i] = BiRawData(os.path.join(self.md_file_path(), self.url(i)))
