@@ -206,7 +206,7 @@ class BiData(BiMetaData):
             The thumbnail url
 
         """
-        if self.metadata["common"]['thumbnail']:
+        if 'thumbnail' in self.metadata["common"]:
             return self.metadata["common"]['thumbnail'] 
         else:
             return ''
