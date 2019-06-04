@@ -105,7 +105,7 @@ class BiExperiment(BiMetaData):
 
         return self.metadata['information']['createddate']
 
-    def rawsataset_url(self) -> str:
+    def rawdataset_url(self) -> str:
         """get the experiment raw dataset url
 
         Returns
@@ -117,7 +117,7 @@ class BiExperiment(BiMetaData):
 
         return self.metadata['information']['rawdataset']  
 
-    def rawsataset(self) -> BiRawDataSet:
+    def rawdataset(self) -> BiRawDataSet:
         """get the experiment raw dataset
 
         Returns
