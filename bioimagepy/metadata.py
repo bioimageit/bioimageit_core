@@ -413,6 +413,7 @@ class BiDataSet(BiMetaData):
 
         BiMetaData.__init__(self, md_file_url)
         self._objectname = "BiDataSet"
+        self.data_list = dict()
 
     def name(self) -> str:
         """get the name of the dataset
@@ -491,7 +492,11 @@ class BiDataSet(BiMetaData):
 
         """
 
-        return BiData(os.path.join(self.md_file_path(), self.url(i)))  
+        if self.data_list[i]:
+            return self.data_list[i]
+        else:   
+            self.data_list[i] = BiData(os.path.join(self.md_file_path(), self.url(i)))
+            return self.data_list[i]  
 
 
 class BiRawDataSet(BiDataSet):
@@ -575,7 +580,11 @@ class BiRawDataSet(BiDataSet):
 
         """
 
-        return BiRawData(os.path.join(self.md_file_path(), self.url(i))) 
+        if self.data_list[i]:
+            return self.data_list[i]
+        else:   
+            self.data_list[i] = BiRawData(os.path.join(self.md_file_path(), self.url(i)))
+            return self.data_list[i]
 
 class BiProcessedDataSet(BiDataSet):
     """Class that store a dataset metadata for ProcessedData
