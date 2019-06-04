@@ -488,6 +488,22 @@ class BiRawDataSet(BiDataSet):
             data_list.append(BiRawData(os.path.join(self.md_file_path(), self.url(i))))   
         return data_list
 
+    def data(self, i: int) -> BiRawData:
+        """get one data information
+        
+        Parameters
+        ----------
+        i
+            Index of the data in the dataset
+
+        Returns
+        ----------
+        BiRawData
+            The data common information 
+
+        """
+
+        return BiRawData(os.path.join(self.md_file_path(), self.url(i))) 
 
 class BiProcessedDataSet(BiDataSet):
     """Class that store a dataset metadata for ProcessedData
