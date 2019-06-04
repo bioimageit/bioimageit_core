@@ -581,10 +581,8 @@ class BiRawDataSet(BiDataSet):
         """
 
         if i in self.data_list:
-            print('rawdataset send data from list')
             return self.data_list[i]
         else:   
-            print('rawdataset send data from load')
             self.data_list[i] = BiRawData(os.path.join(self.md_file_path(), self.url(i)))
             return self.data_list[i]
 
