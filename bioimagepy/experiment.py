@@ -69,6 +69,18 @@ class BiExperiment(BiMetaData):
         BiMetaData.__init__(self, md_file_url)
         self._objectname = 'BiExperiment'
 
+    def set_name(self, name: str):
+        """set the experiment name
+
+        Parameters
+        ----------
+        name
+            The experiment name
+
+        """
+
+        self.metadata['information']['name'] = name
+
     def name(self) -> str:
         """get the experiment name
 
@@ -81,6 +93,18 @@ class BiExperiment(BiMetaData):
 
         return self.metadata['information']['name']
   
+    def set_author(self, author: str):
+        """set the experiment author
+
+        Returns
+        ----------
+        author
+            The experiment author
+
+        """
+
+        self.metadata['information']['author'] = author    
+
     def author(self) -> str:
         """get the experiment author
 
@@ -104,6 +128,18 @@ class BiExperiment(BiMetaData):
         """
 
         return self.metadata['information']['createddate']
+
+    def set_createddate(self, date: str):
+        """set the experiment created date
+
+        Parameters
+        ----------
+        date
+            The experiment created date
+
+        """
+
+        self.metadata['information']['createddate'] = date
 
     def rawdataset_url(self) -> str:
         """get the experiment raw dataset url
@@ -291,7 +327,7 @@ class BiExperiment(BiMetaData):
         if 'tags' in self.metadata:  
             tags = self.metadata['tags']   
         t = PrettyTable(['Name'] + tags + ['Author', 'Created date'])
-        bi_rawdataset = self.rawsatadet()
+        bi_rawdataset = self.rawdataset()
         for i in range(bi_rawdataset.size()):
 
             bi_rawdata = bi_rawdataset.raw_data(i)
