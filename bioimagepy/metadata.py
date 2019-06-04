@@ -197,6 +197,20 @@ class BiData(BiMetaData):
 
         return self.metadata["origin"]['type'] 
 
+    def thumbnail(self):
+        """get the data thumbnail
+
+        Returns
+        ----------
+        str
+            The thumbnail url
+
+        """
+        if self.metadata["common"]['thumbnail']:
+            return self.metadata["common"]['thumbnail'] 
+        else:
+            return ''
+
     def display(self):
         """Display inherited from BiObject"""
 
