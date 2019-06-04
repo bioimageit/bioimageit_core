@@ -223,6 +223,13 @@ class BiExperiment(BiMetaData):
 
         return BiProcessedDataSet( os.path.join(self.md_file_path(), self.metadata['processeddatasets'][i]) )
 
+    def clear_tags(self):
+        """Remove all the tags
+
+        """
+
+        self.metadata['tags'] = []
+
     def tags_size(self) -> int:
         """Get the number of tags
 

@@ -282,13 +282,85 @@ class BiRawData(BiData):
             self.metadata['tags'] = dict()
         self.metadata['tags'][key] = value
 
+    def set_url(self, url: str):
+        """Set the data URL
+
+        Parameters
+        ----------
+        url
+            The data URL
+
+        """
+
+        self.metadata['common']['url'] = url
+
+    def set_name(self, name: str):
+        """Set the data name
+
+        Parameters
+        ----------
+        name
+            The data name
+
+        """
+
+        self.metadata['common']['name'] = name
+
+    def set_author(self, author: str):
+        """Set the data author
+
+        Parameters
+        ----------
+        author
+            The data author
+
+        """
+
+        self.metadata['common']['author'] = author
+
+    def set_createddate(self, date: str):
+        """Set the data created date
+
+        Parameters
+        ----------
+        date
+            The data created date
+
+        """
+
+        self.metadata['common']['createddate'] = date
+
+    def set_datatype(self, datatype: str):
+        """Set the data datatype
+
+        Parameters
+        ----------
+        datatype
+            The data datatype
+
+        """
+
+        self.metadata['common']['datatype'] = datatype
+        
+    def set_thumbnail(self, thumbnail: str):
+        """Set the data thumbnail url
+
+        Parameters
+        ----------
+        thumbnail
+            The data thumbnail url
+
+        """
+
+        self.metadata['common']['thumbnail'] = thumbnail
+
     def display(self): 
         """Display inherited from BiObject"""
 
         super(BiRawData, self).display()
         print("tag:")
         if 'tags' in self.metadata:
-            for key, values in self.metadata["tags"]:
+            for key, value in self.metadata["tags"]:
                 print(key, ":", value)
         print('')
 
