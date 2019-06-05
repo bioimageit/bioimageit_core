@@ -19,6 +19,7 @@ from .core import BiObject
 import json
 import errno
 import os
+import ntpath
  
 class BiMetaData(BiObject):
     """Abstract class that store a data metadata
@@ -47,6 +48,18 @@ class BiMetaData(BiObject):
             self.read()
         else:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), md_file_url) 
+
+    def md_file_name(self) -> str:
+        """get metadata file name (ie without the path)
+
+        Returns
+        ----------
+        str
+            The name of the metadata file
+
+        """
+
+        ntpath.basename(self._md_file_url)
 
     def md_file_path(self) -> str:
         """get metadata file directory name
@@ -371,6 +384,7 @@ class BiRawData(BiData):
                 print(key, ":", value)
         print('')
 
+
 def create_rawdata(file: str) -> BiRawData:
     f= open(file,"w+")
     f.close()
@@ -501,6 +515,18 @@ class BiDataSet(BiMetaData):
 
         return self.metadata["urls"][i]
 
+    def add_data_md_file(self, md_file_url: str):
+        """add a md file to the data list
+
+        Parameters
+        ----------
+        md_file_url
+            the url (absolute path or relative path to the dataset) metadata file path
+
+        """
+
+        self.metadata["urls"].append(md_file_url)        
+
     def data(self, i: int) -> BiData:
         """get one data information
         
@@ -559,7 +585,7 @@ class BiRawDataSet(BiDataSet):
 
         return BiRawData(os.path.join(self.md_file_path(), self.url(i)))
  
-    def add_data(self, md_file_url: str):
+    def add_data(self, data: BiRawData):
         """Add one data to the dataset
         
         Parameters
@@ -568,6 +594,7 @@ class BiRawDataSet(BiDataSet):
             Path of the metadata file
 
         """
+        md_file_url = data.md_file_name()
 
         if 'urls' in self.metadata:
             self.metadata['urls'].append(md_file_url)
