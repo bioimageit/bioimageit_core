@@ -397,7 +397,7 @@ def create_rawdata(file: str) -> BiRawData:
     data.metadata['common']['thumbnail'] = ''
     data.metadata['common']['url'] = ''
     data.metadata['origin'] = dict()
-    data.metadata['type'] = "raw"
+    data.metadata['origin']['type'] = "raw"
     return data
 
 class BiProcessedData(BiData):
