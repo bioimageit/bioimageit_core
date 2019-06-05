@@ -59,7 +59,7 @@ class BiMetaData(BiObject):
 
         """
 
-        ntpath.basename(self._md_file_url)
+        return ntpath.basename(self._md_file_url)
 
     def md_file_path(self) -> str:
         """get metadata file directory name
