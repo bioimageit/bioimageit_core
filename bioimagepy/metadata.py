@@ -594,7 +594,7 @@ class BiRawDataSet(BiDataSet):
             Path of the metadata file
 
         """
-        
+
         self.data_list[self.size()] = data
         md_file_url = data.md_file_name()
 
@@ -638,6 +638,13 @@ class BiRawDataSet(BiDataSet):
         else:   
             self.data_list[i] = BiRawData(os.path.join(self.md_file_path(), self.url(i)))
             return self.data_list[i]
+
+    def last_data(self):
+        idx = self.size()-1
+        if idx in self.data_list:
+            return self.data_list[idx]
+        else:
+            return None         
 
 class BiProcessedDataSet(BiDataSet):
     """Class that store a dataset metadata for ProcessedData
