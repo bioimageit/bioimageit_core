@@ -594,7 +594,8 @@ class BiRawDataSet(BiDataSet):
             Path of the metadata file
 
         """
-        data_list.append(data)
+        
+        self.data_list[self.size()] = data
         md_file_url = data.md_file_name()
 
         if 'urls' in self.metadata:
