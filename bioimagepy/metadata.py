@@ -213,7 +213,7 @@ class BiData(BiMetaData):
 
     def thumbnail(self):
         file = self.thumbnail_as_stored()  
-        if os.path.isfile(file):
+        if file == '' or os.path.isfile(file):
             return file
         else:    
             return os.path.join(self.md_file_path(), file)      
