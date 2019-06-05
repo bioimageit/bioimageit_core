@@ -197,7 +197,7 @@ class BiData(BiMetaData):
 
         return self.metadata["origin"]['type'] 
 
-    def thumbnail(self):
+    def thumbnail_as_stored(self):
         """get the data thumbnail
 
         Returns
@@ -210,6 +210,13 @@ class BiData(BiMetaData):
             return self.metadata["common"]['thumbnail'] 
         else:
             return ''
+
+    def thumbnail(self):
+        file = self.thumbnail_as_stored()  
+        if os.path.isfile(file):
+            return file
+        else:    
+            return os.path.join(self.md_file_path(), file)      
 
     def display(self):
         """Display inherited from BiObject"""
