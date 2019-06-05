@@ -597,6 +597,8 @@ class BiRawDataSet(BiDataSet):
 
         self.data_list[self.size()] = data
         md_file_url = data.md_file_name()
+        print('rawdataset add data', data.md_file_path())
+        print('rawdataset add url to dataset', data.md_file_name())
 
         if 'urls' in self.metadata:
             self.metadata['urls'].append(md_file_url)
