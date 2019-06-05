@@ -371,6 +371,21 @@ class BiRawData(BiData):
                 print(key, ":", value)
         print('')
 
+def create_rawdata(file: str) -> BiRawData:
+    f= open(file,"w+")
+    f.close()
+    data = BiRawData(file)
+    data.metadata['common'] = dict()
+    data.metadata['common']['author'] = ''
+    data.metadata['common']['createddate'] = ''
+    data.metadata['common']['datatype'] = ''
+    data.metadata['common']['name'] = ''
+    data.metadata['common']['thumbnail'] = ''
+    data.metadata['common']['url'] = ''
+    data.metadata['origin'] = dict()
+    data.metadata['type'] = "raw"
+    return data
+
 class BiProcessedData(BiData):
     """Class to store and manipulate RawData metadata
   
@@ -396,7 +411,9 @@ class BiProcessedData(BiData):
         super(BiProcessedData, self).display()  
         print('Runurl: ' + self.metadata["origin"]['runurl'])
         print('')
- 
+
+
+
 class BiDataSet(BiMetaData):
     """Abstract class that store a dataset metadata
     
@@ -644,7 +661,7 @@ class BiRun(BiMetaData):
     def process_url(self) -> str:
         return self.metadata["process"]['url']
 
-    def set_process_url(url : str):
+    def set_process_url(self, url : str):
         self.metadata["process"]['url'] = url
 
     def processeddataset(self) -> str:
@@ -659,9 +676,10 @@ class BiRun(BiMetaData):
     def clear_parameters(self):
         self.metadata["parameters"] = []
 
-    def add_arameter(parameter: BiRunParameter):
+    def add_arameter(self, parameter: BiRunParameter):
         self.metadata["parameters"].append(parameter)
 
     def parameter(self, i: int) -> BiRunParameter:
         return self.metadata["parameters"][i]
+    
         
