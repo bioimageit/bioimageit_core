@@ -244,8 +244,10 @@ class BiExperiment(BiMetaData):
             Number of tags
 
         """
-
-        return len(self.metadata['tags'])
+        if 'tags' in self.metadata:
+            return len(self.metadata['tags'])
+        else:
+            return 0    
 
     def tags(self) -> list:
         """Get the tags
