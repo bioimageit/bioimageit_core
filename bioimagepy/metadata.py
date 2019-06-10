@@ -585,6 +585,20 @@ class BiRawDataSet(BiDataSet):
 
         return BiRawData(os.path.join(self.md_file_path(), self.url(i)))
  
+    def add_data_url(self, url: str):
+        """Add one data url to the dataset
+        
+        Parameters
+        ----------
+        url
+            url of the data
+
+        """
+        if 'urls' in self.metadata:
+            self.metadata['urls'].append(url)
+        else:
+            self.metadata['urls'] = [url] 
+
     def add_data(self, data: BiRawData):
         """Add one data to the dataset
         

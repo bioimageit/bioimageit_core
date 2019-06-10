@@ -486,7 +486,7 @@ def import_data(experiment: BiExperiment, data_url: str, name: str, author: str,
 
     # add data to experiment RawDataSet
     bi_rawdataset = experiment.rawdataset()  
-    bi_rawdataset.add_data(md_file_url_relative)
+    bi_rawdataset.add_data_url(md_file_url_relative)
     bi_rawdataset.write()
          
 def import_dir(experiment: BiExperiment, dir_path: str, filter: str, author: str, 
