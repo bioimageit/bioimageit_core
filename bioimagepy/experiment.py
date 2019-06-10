@@ -485,7 +485,7 @@ def import_data(experiment: BiExperiment, data_url: str, name: str, author: str,
     bi_data.write()
 
     # add data to experiment RawDataSet
-    bi_rawdataset = experiment.rawsatadet()  
+    bi_rawdataset = experiment.rawdataset()  
     bi_rawdataset.add_data(md_file_url_relative)
     bi_rawdataset.write()
          
@@ -543,7 +543,7 @@ def tag_rawdata_from_name(experiment: BiExperiment, tag: str, values: list):
 
     experiment.set_tag(tag) 
     experiment.write()   
-    bi_rawdataset = experiment.rawsatadet()
+    bi_rawdataset = experiment.rawdataset()
     for i in range(bi_rawdataset.size()):
         bi_rawdata = bi_rawdataset.raw_data(i)
         for value in values:
@@ -570,7 +570,7 @@ def tag_rawdata_using_seperator(experiment: BiExperiment, tag: str, separator: s
     
     experiment.set_tag(tag) 
     experiment.write()   
-    bi_rawdataset = experiment.rawsatadet()
+    bi_rawdataset = experiment.rawdataset()
     for i in range(bi_rawdataset.size()):
         bi_rawdata = bi_rawdataset.raw_data(i)
         basename = os.path.splitext(os.path.basename(bi_rawdata.url()))[0]
@@ -599,7 +599,7 @@ def query(experiment: BiExperiment, query: str) -> list:
     queries = re.split(' AND ',query)
 
     # initially all the rawdata are selected
-    selected_list = experiment.rawsatadet().to_list()
+    selected_list = experiment.rawdataset().to_list()
 
     # run all the AND queries on the preselected dataset
     for q in queries:
