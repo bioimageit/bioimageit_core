@@ -590,20 +590,19 @@ class BiRawDataSet(BiDataSet):
         
         Parameters
         ----------
-        md_file_url
-            Path of the metadata file
+        data
+            data to add
 
         """
 
         self.data_list[self.size()] = data
-        md_file_url = data.md_file_name()
         print('rawdataset add data', data.md_file_path())
         print('rawdataset add url to dataset', data.md_file_name())
 
         if 'urls' in self.metadata:
-            self.metadata['urls'].append(md_file_url)
+            self.metadata['urls'].append(data.md_file_name())
         else:
-            self.metadata['urls'] = [md_file_url]    
+            self.metadata['urls'] = [data.md_file_name()]    
 
     def to_list(self) -> list:
         """Get the metadata information as a list
