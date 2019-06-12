@@ -39,6 +39,7 @@ Todo
 """
 
 from .metadata import BiMetaData, BiRawData, BiRawDataSet, BiProcessedDataSet
+from .core import BiObject, BiProgressObserver
 import os
 import errno
 import datetime
@@ -489,6 +490,31 @@ def import_data(experiment: BiExperiment, data_url: str, name: str, author: str,
     bi_rawdataset.add_data_url(md_file_url_relative)
     bi_rawdataset.write()
          
+class BiExperimentImport(BiObject):
+    def __init__(self):
+        super().__init__()
+        self._observers = []
+
+    def addObserver(self, observer: BiProgressObserver):
+        self._observers.append(observer)
+
+    def import_dir(self, experiment: BiExperiment, dir_path: str, filter: str, author: str, 
+                   datatype: str, createddate: str = 'now', copy_data: bool = True):
+        files = os.listdir(dir_path)
+        for file in files:
+            r1 = re.compile(filter) # re.compile(r'\.tif$')
+            if r1.search(file):
+                self.notify_observers(len(files), file)
+                data_url = os.path.join(dir_path, file) 
+                import_data(experiment, data_url, file, author, datatype, createddate, copy_data)       
+
+    def notify_observers(self, count, file):
+        progress = dict()
+        progress['purcentage'] = count
+        progress['message'] = file
+        for observer in self._observers:
+            observer.notify(progress)
+
 def import_dir(experiment: BiExperiment, dir_path: str, filter: str, author: str, 
                datatype: str, createddate: str = 'now', copy_data: bool = True):
     """Import data from a directory to an experiment
@@ -545,7 +571,7 @@ def tag_rawdata_from_name(experiment: BiExperiment, tag: str, values: list):
     experiment.write()   
     bi_rawdataset = experiment.rawdataset()
     for i in range(bi_rawdataset.size()):
-        bi_rawdata = bi_rawdataset.raw_data(i)
+        bi_rawdata = bi_rawdataset.data(i)
         for value in values:
             if value in bi_rawdata.name():      
                 bi_rawdata.set_tag(tag, value)
@@ -572,7 +598,7 @@ def tag_rawdata_using_seperator(experiment: BiExperiment, tag: str, separator: s
     experiment.write()   
     bi_rawdataset = experiment.rawdataset()
     for i in range(bi_rawdataset.size()):
-        bi_rawdata = bi_rawdataset.raw_data(i)
+        bi_rawdata = bi_rawdataset.data(i)
         basename = os.path.splitext(os.path.basename(bi_rawdata.url()))[0]
         splited_name = basename.split(separator)
         value = ''

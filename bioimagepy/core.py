@@ -36,3 +36,19 @@ class BiObject:
         print('BiObjectName: ' + self._objectname)
         print('----------------------')
         
+
+class BiProgressObserver(BiObject):
+    def __init__(self):
+        super().__init__()
+        self._objectname = "BiObserver"  
+
+    def notify(self, data: dict):
+        if 'progress' in data:
+            print('progress:', data['progress'])
+        if 'message' in data:
+            print('message:', data['message'])   
+        if 'warning' in data:
+            print('warning:', data['warning']) 
+        if 'error' in data:
+            print('error:', data['error'])         
+                      
