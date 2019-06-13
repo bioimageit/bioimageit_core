@@ -430,6 +430,8 @@ class BiProcessParser(BiObject):
                 self._parse_outputs(child)
             elif child.tag == 'help':
                 self._parse_help(child)
+            elif child.tag == 'categories':
+                self._parse_categories(child)    
 
         self._parse_hidden_params()
         return self.info
@@ -458,6 +460,13 @@ class BiProcessParser(BiObject):
 
         if 'url' in node.attrib:
             self.info.help = node.attrib['url']
+
+    def _parse_categories(self, node):
+        """Parse categories"""
+
+        for child in node: 
+            if child.tag == 'category':
+                self.info.categories.append(child.text)
 
     def _parse_inputs(self, node):
         """Parse the inputs"""
@@ -741,6 +750,7 @@ class BiProcessInfo(BiObject):
         self.inputs = []
         self.outputs = []
         self.help = ''
+        self.categories = []
 
     def is_param(self, name: str) -> bool:
         """Check if a parameter exists
