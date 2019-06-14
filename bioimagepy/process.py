@@ -48,6 +48,7 @@ PARAM_STRING
 PARAM_SELECT
 PARAM_BOOLEAN
 PARAM_HIDDEN
+PARAM_FILE
 IO_PARAM
 IO_INPUT
 IO_OUTPUT
@@ -101,7 +102,12 @@ def PARAM_BOOLEAN():
 def PARAM_HIDDEN():
     """Type for parameter hidden""" 
 
-    return "hidden"    
+    return "hidden"  
+
+def PARAM_FILE():
+    """Type for parameter hidden""" 
+
+    return "file"  
 
 def IO_PARAM():
     """I/O for parameter""" 
@@ -493,9 +499,12 @@ class BiProcessParser(BiObject):
                     else:
                         raise BiProcessParseException("The format of the input param " + input_parameter.name + " is not supported")
 
+                if 'value' in child.attrib:
+                    input_parameter.value = child.attrib['value'] 
+
                 if 'advanced' in child.attrib:
                     if child.attrib['advanced'] == "True" or child.attrib['advanced'] == "true":
-                        input_parameter.advanced = True
+                        input_parameter.is_advanced = True
    
                 if child.attrib['type'] == PARAM_SELECT():
                     # TODO: implement select case
@@ -505,7 +514,7 @@ class BiProcessParser(BiObject):
                     input_parameter.default_value = child.attrib['default']  
                     input_parameter.value = child.attrib['default'] 
                 input_parameter.value_suffix = '' 
-                input_parameter.is_advanced = False 
+
                 self.info.inputs.append(input_parameter)
 
             elif child.tag == 'data':   
@@ -681,7 +690,7 @@ class BiProcessParameter(BiObject):
         self.type = '' # str: parameter type (in PARAM_XXX names)
         self.is_data = False # bool: False if parameter is param and True if parameter is data
         self.io = '' # str: IO type if parameter is IO (in IO_XXX names)
-        self.default_value= '' # str: Parameter default value
+        self.default_value = '' # str: Parameter default value
         self.selectInfo = BiCmdSelect() # BiCmdSelect: Choices for a select parameter
         self.value_suffix = '' # str: Parameter suffix (needed if programm add suffix to IO)
         self.is_advanced = False # bool: True if parameter is advanced
@@ -774,6 +783,22 @@ class BiProcessInfo(BiObject):
             if param.name == name:
                 return True
         return False                
+
+    def param_size(self):
+        """Calculate the number of parameters
+        
+        Returns
+        -------
+        int
+            Number of inputs
+        
+        """
+
+        count = 0
+        for param in self.inputs:
+            if param.io == IO_PARAM():
+                count += 1
+        return count        
 
     def inputs_size(self):
         """Calculate the number of inputs
