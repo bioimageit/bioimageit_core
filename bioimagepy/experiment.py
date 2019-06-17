@@ -38,7 +38,7 @@ Todo
 
 """
 
-from .metadata import BiMetaData, BiRawData, BiRawDataSet, BiProcessedDataSet
+from .metadata import BiMetaData, BiData, BiRawData, BiProcessedData, BiRawDataSet, BiProcessedDataSet
 from .core import BiObject, BiProgressObserver
 import os
 import errno
@@ -607,7 +607,45 @@ def tag_rawdata_using_seperator(experiment: BiExperiment, tag: str, separator: s
         bi_rawdata.set_tag(tag, value) 
         bi_rawdata.write()   
 
-def query(experiment: BiExperiment, query: str) -> list:
+def query(experiment: BiExperiment, dataset: str, query: str) -> list:
+    """query a specific dataset of an experiment
+    
+    In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
+    and performed on the data set named dataset
+    
+    Parameters
+    ----------
+    experiment
+        The experiment containing the data.
+    dataset
+        Name of the dataset to query    
+    query
+        String query with the key=value format.    
+
+    Returns
+    -------
+    list
+        List of selected data (md.json files urls are returned) 
+    """
+
+    # search the dataset
+    if experiment.rawdataset().name() == dataset:
+        return searchListToUrl(query_rawdataset(experiment.rawdataset(), query))
+    else:
+        for i in range(experiment.processeddatasets_size):
+            processeddataset = experiment.processeddataset(i)
+            if processeddataset.name() == dataset:
+                return searchListToUrl(query_processeddataset(processeddataset,  query))
+
+    print('Query dataset ', dataset, ' not found')
+
+def searchListToUrl(data: list) -> list:
+    out = []
+    for d in data:
+        out.append(d.url())
+    return out    
+
+def query_rawdataset(rawdataset: BiRawDataSet, query: str) -> list:
     """query on tags
     
     In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
@@ -615,24 +653,88 @@ def query(experiment: BiExperiment, query: str) -> list:
 
     Parameters
     ----------
-    experiment
-        The experiment containing the data.
+    rawdataset
+        The BiRawDataSet to query.
     query
-        String query with the key=value format.    
+        String query with the key=value format. 
+
+    Returns
+    -------
+    list
+        List of selected data (md.json files urls are returned)       
     
     """
     
     queries = re.split(' AND ',query)
 
     # initially all the rawdata are selected
-    selected_list = experiment.rawdataset().to_list()
+    selected_list = rawDataSetToSearchList(rawdataset)
 
     # run all the AND queries on the preselected dataset
     for q in queries:
-        selected_list = query_single(selected_list, q) 
+        selected_list = query_list_single(selected_list, q) 
     return selected_list    
 
-def query_single(search_list: list, query: str) -> list:
+
+def rawDataSetToSearchList(rawDataSet: BiRawDataSet) -> list:
+
+    search_list = []
+    for i in range(rawDataSet.size()):
+        data = rawDataSet.data(i)
+        searchInfo = BiExperimentSearchContainer()
+        searchInfo.set_url( os.path.join(data.md_file_dir(), data.md_file_name()))
+        if 'tags' in data.metadata:
+            searchInfo.data['tags'] = data.metadata['tags']
+        search_list.append(searchInfo)    
+    return search_list    
+
+
+def query_processeddataset(dataset: BiProcessedDataSet,  query: str) -> list:
+    data_info = []
+
+    # get all the tags per data
+    for i in range(dataset.size()):
+        data = dataset.data(i)
+        data_info.append(extract_tags(data.md_file_name()))
+
+    # query on tags
+    selected_list =  query_list(data_info, query)
+    return_list = []
+    for selected in selected_list:
+        return_list.append(selected.url())
+    return return_list
+
+
+def query_list(search_list: list, query: str):
+    """query on tags
+    
+    In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
+    and performed on the RawData set
+
+    Parameters
+    ----------
+    search_list
+        data search list (list of BiExperimentSearchContainer)
+    query
+        String query with the key=value format.    
+    
+    Returns
+    -------
+    list
+        list of selected BiExperimentSearchContainer
+
+    """
+    
+    queries = re.split(' AND ',query)
+
+    selected_list = search_list
+
+    for q in queries:
+        selected_list = query_list_single(selected_list, q) 
+    return selected_list
+
+
+def query_list_single(search_list: list, query: str) -> list:
     """query internal function
     
     Search if the query is on the search_list
@@ -640,14 +742,18 @@ def query_single(search_list: list, query: str) -> list:
     Parameters
     ----------
     search_list
-        data search list
+        data search list (list of BiExperimentSearchContainer)
     query
         String query with the key=value format. No 'AND', 'OR'...    
     
+    Returns
+    -------
+    list
+        list of selected BiExperimentSearchContainer
+
     """
-    
+
     selected_list = list()  
-    # get the query (tag=value)
     
     if "<=" in query:
         splitted_query = query.split('<=')
@@ -698,6 +804,36 @@ def query_single(search_list: list, query: str) -> list:
 
     return selected_list   
 
-#def query(experiment: BiExperiment, dataset_name: str,  query: str) -> list:
-#    # TODO: Implement this query
-#    return []
+
+class BiExperimentSearchContainer():
+    def __init__(self):
+        self.data = dict()
+
+    def url(self):
+        if 'url' in self.data:
+            return self.data['url']
+
+    def set_url(self, url: str):
+        self.data['url'] = url            
+
+    def tag(self, key: str):
+        if key in self.data['tags']:
+            return self.data['tags'][key]
+        return ''    
+
+def extract_tags(metadata_file: str) -> BiExperimentSearchContainer:
+
+    origin_data = BiData(metadata_file)
+    if origin_data.origin_type() == 'raw':
+        origin_rawdata = BiRawData(metadata_file)
+        info = dict()
+        if 'tags' in origin_rawdata.metadata['tags']:
+            info = BiExperimentSearchContainer()
+            info.data["url"] = metadata_file
+            info.data['tags'] = origin_rawdata.metadata['tags']
+            return info
+    else:
+        origin_processeddata = BiProcessedData(metadata_file) 
+        origin_url = origin_processeddata.metadata["origin"]['inputs']['url'] 
+        origin_file = os.path.join(origin_processeddata.md_file_dir(), origin_url)
+        return extract_tags(origin_file)

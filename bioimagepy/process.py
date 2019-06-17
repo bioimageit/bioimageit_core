@@ -405,6 +405,7 @@ class BiProcessParser(BiObject):
         self._objectname = "BiProcessParser"
         self.info = BiProcessInfo()
         self.xml_file_url = xml_file_url
+        self.info.xml_file_url = xml_file_url
 
     def parse(self):    
         """Parse the XML file
@@ -749,6 +750,7 @@ class BiProcessInfo(BiObject):
 
     def __init__(self):
 
+        self.xml_file_url = ''
         self.id = ''
         self.name = ''
         self.version = ''

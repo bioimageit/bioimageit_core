@@ -73,6 +73,18 @@ class BiMetaData(BiObject):
         abspath = os.path.abspath(self._md_file_url)
         return os.path.dirname(abspath)
 
+    def md_file_dir(self) -> str:
+        """get metadata file directory name
+
+        Returns
+        ----------
+        str
+            The name of the metadata file directory
+
+        """
+        abspath = os.path.abspath(self._md_file_url)
+        return os.path.dirname(abspath)
+
     def dir(self) -> str:
         """get metadata file directory name
 
@@ -452,6 +464,10 @@ class BiDataSet(BiMetaData):
         BiMetaData.__init__(self, md_file_url)
         self._objectname = "BiDataSet"
         self.data_list = dict()
+        if 'name' not in self.metadata:
+            self.metadata['name'] = ''
+        if 'urls' not in self.metadata:
+            self.metadata['urls'] = []    
 
     def name(self) -> str:
         """get the name of the dataset
@@ -679,7 +695,8 @@ class BiProcessedDataSet(BiDataSet):
     def __init__(self, md_file_url : str):
 
         BiDataSet.__init__(self, md_file_url)
-        self._objectname = "BiProcessedDataSet"    
+        self._objectname = "BiProcessedDataSet"  
+        print('inside metadata', self.metadata)  
 
     def processed_data(self, i: int) -> BiProcessedData:
         """Get the metadata information as a list
@@ -700,9 +717,15 @@ class BiRunParameter():
 
 class BiRun(BiMetaData):
     def __init__(self, md_file_url : str):
-        BiRun.__init__(self, md_file_url)
-        self._objectname = "BiDataSet"
-
+        super().__init__(md_file_url)
+        self._objectname = "BiRun"
+        if 'process' not in self.metadata:
+            self.metadata["process"] = dict()
+        if 'processeddataset' not in self.metadata:
+            self.metadata["processeddataset"] = '' 
+        if 'parameters' not in self.metadata:
+            self.metadata["parameters"] = [] 
+              
     def process_name(self) -> str:
         return self.metadata["process"]['name']
 
@@ -727,10 +750,13 @@ class BiRun(BiMetaData):
     def clear_parameters(self):
         self.metadata["parameters"] = []
 
-    def add_arameter(self, parameter: BiRunParameter):
+    def add_arameter(self, name: str, value: str):
+        parameter = dict()
+        parameter['name'] = name
+        parameter['value'] = value
         self.metadata["parameters"].append(parameter)
 
-    def parameter(self, i: int) -> BiRunParameter:
+    def parameter(self, i: int) -> dict():
         return self.metadata["parameters"][i]
     
         
