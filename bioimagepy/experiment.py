@@ -491,24 +491,86 @@ def import_data(experiment: BiExperiment, data_url: str, name: str, author: str,
     bi_rawdataset.write()
          
 class BiExperimentImport(BiObject):
+    """Import data to an experiment
+
+    This import multiple data from a directory to a experiment. This class
+    implement the observer/observable design pattern to allow observing the
+    import progress
+
+    Raises
+    ------
+        FileNotFoundError: if the experiment path does not exists.
+
+    """
+
     def __init__(self):
         super().__init__()
         self._observers = []
 
     def addObserver(self, observer: BiProgressObserver):
+        """Add an observer
+
+        Parameters
+        ----------
+        observer
+            BiProgressObserver to add 
+
+        """
+
         self._observers.append(observer)
 
     def import_dir(self, experiment: BiExperiment, dir_path: str, filter: str, author: str, 
                    datatype: str, createddate: str = 'now', copy_data: bool = True):
+        """Import the data to the experiment
+
+        Parameters
+        ----------
+        experiment
+            BiExperiment where the data are imported
+
+        dir_path
+            Path of the directory containing the data to import
+
+        filter
+            Regular expression to filter the images to import
+
+        author
+            Name of the data author for the metadata   
+
+        datatype
+            Type of the data for the metadata (ex: image)
+
+        createddate
+            Date when the data where created for the metadata
+
+        copy_data
+            True to copy the data to the Experiment directory, False otherwise                     
+
+        """
+
         files = os.listdir(dir_path)
+        count = 0
         for file in files:
+            count += 1
             r1 = re.compile(filter) # re.compile(r'\.tif$')
             if r1.search(file):
-                self.notify_observers(len(files), file)
+                self.notify_observers(int(100*count/len(files)), file)
                 data_url = os.path.join(dir_path, file) 
                 import_data(experiment, data_url, file, author, datatype, createddate, copy_data)       
 
     def notify_observers(self, count, file):
+        """Notify observer the progress of the import
+
+        Parameters
+        ----------
+        count
+            Purcentage of file processed
+
+        file
+            Name of the current processed file as a progress message    
+
+        """
+
         progress = dict()
         progress['purcentage'] = count
         progress['message'] = file
@@ -640,6 +702,20 @@ def query(experiment: BiExperiment, dataset: str, query: str) -> list:
     print('Query dataset ', dataset, ' not found')
 
 def searchListToUrl(data: list) -> list:
+    """Convert a list of BiExperimentSearchContainer to a list of str (URLs)
+
+    Parameters
+    ----------
+    data
+        List of BiExperimentSearchContainer to convert
+
+    Returns
+    -------
+    list 
+        list of str containing URLs   
+
+    """
+
     out = []
     for d in data:
         out.append(d.url())
@@ -677,6 +753,19 @@ def query_rawdataset(rawdataset: BiRawDataSet, query: str) -> list:
 
 
 def rawDataSetToSearchList(rawDataSet: BiRawDataSet) -> list:
+    """Convert BiRawDataSet into a list of BiExperimentSearchContainer
+
+    Parameters
+    ----------
+    rawDataSet
+        BiRawDataSet to convert
+
+    Returns
+    -------
+    list
+        List of data as list of BiExperimentSearchContainer    
+
+    """
 
     search_list = []
     for i in range(rawDataSet.size()):
@@ -690,6 +779,23 @@ def rawDataSetToSearchList(rawDataSet: BiRawDataSet) -> list:
 
 
 def query_processeddataset(dataset: BiProcessedDataSet,  query: str) -> list:
+    """Run a query on a BiProcessedDataSet
+
+    Parameters
+    ----------
+    dataset
+        BiProcessedDataSet to query
+
+    query
+        Query on tags (ex: 'Population'='population1')
+
+    Returns
+    -------
+    list
+        List of the data (md.json) files urls        
+
+    """
+
     data_info = []
 
     # get all the tags per data
@@ -806,22 +912,64 @@ def query_list_single(search_list: list, query: str) -> list:
 
 
 class BiExperimentSearchContainer():
+    """Container for data queries on tag
+
+    Parameters
+    ----------
+    data 
+        Data are stored in dict as
+            data['url] = '/url/of/the/metadata/file.md.json'
+            data['tags] = {'tag1'='value1', 'tag2'='value2'}
+
+    """
+
     def __init__(self):
         self.data = dict()
 
     def url(self):
+        """Returns the data metadata file url"""
         if 'url' in self.data:
             return self.data['url']
 
     def set_url(self, url: str):
+        """Set the data metadata file url"""
         self.data['url'] = url            
 
     def tag(self, key: str):
+        """Get a tag value
+        
+        Parameters
+        ----------
+        key
+            Tag key
+
+        Returns
+        -------
+        value
+            Value of the tag    
+        """
         if key in self.data['tags']:
             return self.data['tags'][key]
         return ''    
 
 def extract_tags(metadata_file: str) -> BiExperimentSearchContainer:
+    """Get the tags associated to a data file
+    
+    For any file, this function get the origin files to reach
+    a rawdata file and get it associated tags
+
+    Parameters
+    ----------
+    metadata_file
+        md.json file of the data to get the tags
+
+    Returns
+    -------
+        a BiExperimentSearchContainer with the md.json file url and
+        the extracted tags       
+
+    
+    """
 
     origin_data = BiData(metadata_file)
     if origin_data.origin_type() == 'raw':

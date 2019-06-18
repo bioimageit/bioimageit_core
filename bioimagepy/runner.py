@@ -1,3 +1,32 @@
+# -*- coding: utf-8 -*-
+"""runner module.
+
+This module contains the BiRunnerExperiment class that allows to run processes
+on an BiExperiment data (raw data and processed data). Results are automatically
+stored and indexed in a new BiProcessedDataSet in the BiExperiment
+
+Example
+-------
+    Here is an example of how to run a process on all the data of the RawDataSet called 'data'
+    and where the tag 'Population'='population1':
+
+        >>> from bioimagepy.runner import BiRunnerExperiment
+        >>> runner = BiRunnerExperiment(myexperiment)   
+        >>> runner.set_process('/path/to/process/svdeconv2d.xml',
+        >>>                '-sigma', '3', '-weighting', '0.1', '-regularization', '2') 
+        >>> runner.add_input('-i', 'data', 'Population=population1 AND ID=002')
+        >>> runner.run()
+
+Classes
+-------
+BiRunnerExperiment
+
+Raises
+------
+BiRunnerException
+
+"""
+
 from .metadata import BiData, BiDataSet, BiProcessedData, BiRawDataSet, BiProcessedDataSet, BiRun
 from .process import BiProcess, DATA_IMAGE, DATA_TXT
 import bioimagepy.experiment as experiment
@@ -10,7 +39,22 @@ class BiRunnerException(Exception):
    pass
 
 class BiRunnerExperiment(): 
-    """Class to run a process on en Experiment"""
+    """Class to run a process on a BiExperiment data
+
+    The process runner needs an experiment, a process XML description file, 
+    a query on the experiment data to select the process inputs and the process
+    parameters. The experiment is given in the constructor whereas the other
+    arguments are given using setters (see example in the module doc)
+
+    Parameters
+    ----------
+        md_file_url (str): Path of the experiment.md.json file.
+
+    Attributes
+    ----------
+        metadata (tuple): json metadata description.
+
+    """ 
     def __init__(self, experiment : experiment.BiExperiment):
         self._objectname = "BiData"  
         self._experiment = experiment
@@ -22,18 +66,61 @@ class BiRunnerExperiment():
         self._process_params = [] 
 
     def set_process(self, process_xml_file :str, *params):
+        """set the runner process
+
+        Parameters
+        ----------
+        process_xml_file
+            URL of the XML file describing the process
+
+        *params
+            List of the parameters (ex: "-sigma, 2, -weighting, 7")    
+
+        """
+
         self._process = BiProcess(process_xml_file)
         self._process_params = params 
 
     def add_input(self, name: str, dataset: str, query: str):
+        """Add an input (ie data) to the process
+
+        Parameters
+        ----------
+        name
+            Name of the input in the process XML file (ex: -i)
+
+        dataset
+            Name of the dataset where the data come from (ex: data)
+
+        query
+            Query to filter the data (ex: "Population=population1") leave blank for no filtering        
+
+        """
+
         self._inputs_names.append(name)  
         self._inputs_datasets.append(dataset)  
         self._inputs_query.append(query)       
 
     def exec(self):
+        """Run the process
+
+        This is a convenient function for API
+
+        """
+
         self.run()
 
     def run(self):
+        """Run the process
+
+        This is the main function that run the process on the experiment data
+
+        Raises
+        ------
+        BiRunnerException
+        
+        """
+
         # 1- Query all the input data and verify that the size 
         # are equal, if not raise an exception
         if len(self._inputs_names) == 0:
