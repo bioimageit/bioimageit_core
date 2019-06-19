@@ -696,7 +696,7 @@ class BiProcessedDataSet(BiDataSet):
 
         BiDataSet.__init__(self, md_file_url)
         self._objectname = "BiProcessedDataSet"  
-        print('inside metadata', self.metadata)  
+        #print('inside metadata', self.metadata)  
 
     def processed_data(self, i: int) -> BiProcessedData:
         """Get the metadata information as a list

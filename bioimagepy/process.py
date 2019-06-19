@@ -43,6 +43,10 @@ Methods
 -------
 DATA_IMAGE
 DATA_TXT
+DATA_NUMBER
+DATA_ARRAY
+DATA_MATRIX
+DATA_TABLE
 PARAM_NUMBER
 PARAM_STRING
 PARAM_SELECT
@@ -77,7 +81,27 @@ def DATA_IMAGE():
 def DATA_TXT():
     """Type for data text""" 
 
-    return "txt"    
+    return "txt"   
+
+def DATA_NUMBER():
+    """Type for data number"""
+
+    return "number"
+
+def DATA_ARRAY(): 
+    """Type for data array"""
+
+    return "array"   
+
+def DATA_MATRIX(): 
+    """Type for data matrix"""
+
+    return "matrix"     
+
+def DATA_TABLE(): 
+    """Type for data table"""
+
+    return "table"
 
 def PARAM_NUMBER():
     """Type for parameter number""" 
@@ -578,7 +602,15 @@ class BiProcessParser(BiObject):
                     if child.attrib['format'] == 'image':
                         output_parameter.type = DATA_IMAGE()
                     elif child.attrib['format'] == 'txt':  
-                        output_parameter.type = DATA_TXT()   
+                        output_parameter.type = DATA_TXT()  
+                    elif child.attrib['format'] == 'number': 
+                        output_parameter.type = DATA_NUMBER()      
+                    elif child.attrib['format'] == 'array': 
+                        output_parameter.type = DATA_ARRAY()   
+                    elif child.attrib['format'] == 'matrix': 
+                        output_parameter.type = DATA_MATRIX()  
+                    elif child.attrib['format'] == 'table': 
+                        output_parameter.type = DATA_TABLE()           
                     else:
                         raise BiProcessParseException("The format of the output data " + output_parameter.name + " is not supported")
                 

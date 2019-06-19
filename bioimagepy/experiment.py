@@ -694,7 +694,7 @@ def query(experiment: BiExperiment, dataset: str, query: str) -> list:
     if experiment.rawdataset().name() == dataset:
         return searchListToUrl(query_rawdataset(experiment.rawdataset(), query))
     else:
-        for i in range(experiment.processeddatasets_size):
+        for i in range(experiment.processeddatasets_size()):
             processeddataset = experiment.processeddataset(i)
             if processeddataset.name() == dataset:
                 return searchListToUrl(query_processeddataset(processeddataset,  query))
@@ -796,19 +796,20 @@ def query_processeddataset(dataset: BiProcessedDataSet,  query: str) -> list:
 
     """
 
-    data_info = []
+    selected_list = []
 
     # get all the tags per data
     for i in range(dataset.size()):
         data = dataset.data(i)
-        data_info.append(extract_tags(data.md_file_name()))
+        selected_list.append(extract_tags(os.path.join(data.md_file_dir(),data.md_file_name())))
 
     # query on tags
-    selected_list =  query_list(data_info, query)
-    return_list = []
-    for selected in selected_list:
-        return_list.append(selected.url())
-    return return_list
+    queries = re.split(' AND ',query)
+
+    # run all the AND queries on the preselected dataset
+    for q in queries:
+        selected_list = query_list_single(selected_list, q) 
+    return selected_list 
 
 
 def query_list(search_list: list, query: str):
@@ -952,7 +953,7 @@ class BiExperimentSearchContainer():
             return self.data['tags'][key]
         return ''    
 
-def extract_tags(metadata_file: str) -> BiExperimentSearchContainer:
+def extract_tags(metadata_file: str, current_file: str = '') -> BiExperimentSearchContainer:
     """Get the tags associated to a data file
     
     For any file, this function get the origin files to reach
@@ -971,17 +972,20 @@ def extract_tags(metadata_file: str) -> BiExperimentSearchContainer:
     
     """
 
+    if current_file == '':
+        current_file = metadata_file  
+
     origin_data = BiData(metadata_file)
     if origin_data.origin_type() == 'raw':
         origin_rawdata = BiRawData(metadata_file)
         info = dict()
-        if 'tags' in origin_rawdata.metadata['tags']:
+        if 'tags' in origin_rawdata.metadata:
             info = BiExperimentSearchContainer()
-            info.data["url"] = metadata_file
+            info.data["url"] = current_file
             info.data['tags'] = origin_rawdata.metadata['tags']
             return info
     else:
         origin_processeddata = BiProcessedData(metadata_file) 
-        origin_url = origin_processeddata.metadata["origin"]['inputs']['url'] 
+        origin_url = origin_processeddata.metadata['origin']['inputs'][0]['url'] 
         origin_file = os.path.join(origin_processeddata.md_file_dir(), origin_url)
-        return extract_tags(origin_file)
+        return extract_tags(origin_file, current_file)

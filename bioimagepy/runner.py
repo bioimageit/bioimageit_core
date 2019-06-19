@@ -28,7 +28,7 @@ BiRunnerException
 """
 
 from .metadata import BiData, BiDataSet, BiProcessedData, BiRawDataSet, BiProcessedDataSet, BiRun
-from .process import BiProcess, DATA_IMAGE, DATA_TXT
+from .process import BiProcess, DATA_IMAGE, DATA_TXT, DATA_NUMBER, DATA_ARRAY, DATA_MATRIX, DATA_TABLE
 import bioimagepy.experiment as experiment
 import os
 import datetime
@@ -110,7 +110,7 @@ class BiRunnerExperiment():
 
         self.run()
 
-    def run(self):
+    def run(self, author: str = 'Unknown'):
         """Run the process
 
         This is the main function that run the process on the experiment data
@@ -177,7 +177,7 @@ class BiRunnerExperiment():
 
         # 4- loop over the input data
         for i in range(data_count):
-            print('Process data: ', i, '/', len(input_data))
+            #print('Process data: ', i, '/', len(input_data))
             # 4.1- Parse IO
             args = []
             # get the input arguments
@@ -205,6 +205,8 @@ class BiRunnerExperiment():
                     extension = '.tif'
                 elif output.type == DATA_TXT(): 
                     extension = '.txt' 
+                elif output.type == DATA_NUMBER() or output.type == DATA_ARRAY() or output.type == DATA_MATRIX() or output.type == DATA_TABLE(): 
+                    extension = '.csv'     
                 
                 input_basename = ntpath.basename(input_data[0][i])
                 output_file_name = input_basename.replace('.md.json', '') + "_" + output.name
@@ -229,18 +231,17 @@ class BiRunnerExperiment():
                     dayStr = '0' + dayStr 
 
                 output_data.metadata["common"]['createddate'] = str(now.year) + '-' + monthStr + '-' + dayStr
-                output_data.metadata["common"]['author'] = 'Unknown' # TODO git this value on the app settings
+                output_data.metadata["common"]['author'] = author
                 output_data.metadata["common"]['datatype'] = output.type
                 output_data.metadata["origin"] = dict()
                 output_data.metadata["origin"]['type'] = 'processed'
                 output_data.metadata["origin"]['runurl'] = 'run.md.json'
                 output_data.metadata["origin"]['inputs'] = inputs_metadata
                 output_data.write()
-                print('processeddataset metadata: ', processed_dataset.metadata)
-                print('processed_dataset file', processed_dataset._md_file_url)
+                #print('processeddataset metadata: ', processed_dataset.metadata)
+                #print('processed_dataset file', processed_dataset._md_file_url)
                 processed_dataset.metadata['urls'].append(output_file_name + ".md.json")
                 processed_dataset.write()
-
 
             # 4.2- exec    
             print("args:", args)
