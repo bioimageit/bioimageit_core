@@ -746,6 +746,9 @@ def query_rawdataset(rawdataset: BiRawDataSet, query: str) -> list:
     # initially all the rawdata are selected
     selected_list = rawDataSetToSearchList(rawdataset)
 
+    if query == '':
+        return selected_list
+
     # run all the AND queries on the preselected dataset
     for q in queries:
         selected_list = query_list_single(selected_list, q) 
@@ -802,6 +805,9 @@ def query_processeddataset(dataset: BiProcessedDataSet,  query: str) -> list:
     for i in range(dataset.size()):
         data = dataset.data(i)
         selected_list.append(extract_tags(os.path.join(data.md_file_dir(),data.md_file_name())))
+
+    if query == '':
+        return selected_list
 
     # query on tags
     queries = re.split(' AND ',query)
