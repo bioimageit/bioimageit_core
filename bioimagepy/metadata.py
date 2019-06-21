@@ -186,6 +186,18 @@ class BiData(BiMetaData):
 
         return self.metadata["common"]['name']  
 
+    def datatype(self) -> str:
+        """get the data datatype
+
+        Returns
+        ----------
+        str
+            The data datatype
+
+        """
+
+        return self.metadata["common"]['datatype']     
+
     def author(self) -> str:
         """get the author name
 
@@ -237,6 +249,14 @@ class BiData(BiMetaData):
             return ''
 
     def thumbnail(self):
+        """get the data thumbnail full path
+
+        Returns
+        ----------
+        str
+            The thumbnail url
+
+        """
         file = self.thumbnail_as_stored()  
         if file == '' or os.path.isfile(file):
             return file
@@ -398,6 +418,13 @@ class BiRawData(BiData):
 
 
 def create_rawdata(file: str) -> BiRawData:
+    """Create and initialize a new BiRawData
+
+    Returns
+    -------
+        The created BiRawData
+    """
+
     f= open(file,"w+")
     f.close()
     data = BiRawData(file)
@@ -438,6 +465,40 @@ class BiProcessedData(BiData):
         print('Runurl: ' + self.metadata["origin"]['runurl'])
         print('')
 
+    def origin_data(self) -> str:
+        """Get the first origin metadata file url
+
+        Returns
+        -------
+            Url of the first origin metadata file
+
+        """
+
+        origin_url = self.metadata['origin']['inputs'][0]['url'] 
+        origin_file = os.path.join(self.md_file_dir(), origin_url) 
+        return origin_file    
+
+    def origin_output_name(self):
+        """Get the origin output name
+
+        Returns
+        -------
+            Name of the origin output name
+
+        """
+
+        return self.metadata["origin"]["output"]["name"] 
+
+    def origin_output_label(self):
+        """Get the origin output label
+
+        Returns
+        -------
+            Label of the origin output label
+
+        """
+
+        return self.metadata["origin"]["output"]["label"]   
 
 
 class BiDataSet(BiMetaData):
@@ -670,7 +731,15 @@ class BiRawDataSet(BiDataSet):
             self.data_list[i] = BiRawData(os.path.join(self.md_file_path(), self.url(i)))
             return self.data_list[i]
 
-    def last_data(self):
+    def last_data(self) -> BiRawData:
+        """Get the last raw data of the dataset
+
+        Returns
+        -------
+            Last raw data of the dataset
+
+        """
+
         idx = self.size()-1
         if idx in self.data_list:
             return self.data_list[idx]
@@ -698,6 +767,20 @@ class BiProcessedDataSet(BiDataSet):
         self._objectname = "BiProcessedDataSet"  
         #print('inside metadata', self.metadata)  
 
+    def processed_data_by_name(self, name: str) -> BiProcessedData:
+        """Get the metadata information as a list
+        
+        Returns
+        -------
+        list
+            List of the data metadata stored in BiProcessedData objects
+
+        """
+        for i in range(self.size()):
+            if name in self.url(i):
+                return BiProcessedData(os.path.join(self.md_file_path(), self.url(i))) 
+        return None        
+
     def processed_data(self, i: int) -> BiProcessedData:
         """Get the metadata information as a list
         
@@ -711,11 +794,31 @@ class BiProcessedDataSet(BiDataSet):
         return BiProcessedData(os.path.join(self.md_file_path(), self.url(i)))        
         
 class BiRunParameter():
+    """Class that store a parameter used for a process run
+
+    Parameters
+    ----------
+    name    
+        Name of the parameter
+    value
+        Value of the parameter    
+
+    """
+
     def __init__(self, name : str = '', value: str = ''  ):
         self.name = name 
         self.value = value
 
 class BiRun(BiMetaData):
+    """Class to manage the metadata of a process run
+
+    Parameters
+    ----------
+    md_file_url
+        Metadata (.md.json) file
+
+    """
+
     def __init__(self, md_file_url : str):
         super().__init__(md_file_url)
         self._objectname = "BiRun"
@@ -727,36 +830,112 @@ class BiRun(BiMetaData):
             self.metadata["parameters"] = [] 
               
     def process_name(self) -> str:
+        """Get the process name
+
+        Returns
+        -------
+            The process name
+        """
+
         return self.metadata["process"]['name']
 
     def set_process_name(self, name: str):
+        """Set the process name
+
+        Parameters
+        ----------
+        name
+            Name of the process
+        """
+
         self.metadata["process"]['name'] = name
 
     def process_url(self) -> str:
+        """Get the process url
+
+        Returns
+        -------
+            The process XML file URL
+
+        """
+
         return self.metadata["process"]['url']
 
     def set_process_url(self, url : str):
+        """Set the process URL
+
+        Parameters
+        ----------
+        url
+            URL of the process XML file
+        """
+
         self.metadata["process"]['url'] = url
 
     def processeddataset(self) -> str:
+        """Get the processed dataset url
+
+        Returns
+        -------
+            The URL of the processed dataset
+
+        """
+
         return self.metadata["processeddataset"]
 
-    def set_processeddataset(self, processeddataset: str):
-        self.metadata["processeddataset"] = processeddataset
+    def set_processeddataset(self, url: str):
+        """Set the processed dataset URL
+
+        Parameters
+        ----------
+        url
+            URL of the processed dataset
+
+        """
+
+        self.metadata["processeddataset"] = url
 
     def parameters_count(self) -> int:
+        """Get the number of parameters
+
+        Returns
+        -------
+            The number of parameters
+
+        """
+
         return len(self.metadata["parameters"])
 
     def clear_parameters(self):
+        """Clear the parameters"""
+
         self.metadata["parameters"] = []
 
     def add_arameter(self, name: str, value: str):
+        """Add a parameter
+
+        Parameters
+        ----------
+        name
+            Name of the parameter to add
+        value
+            Value of the parameter to add
+
+        """
+
         parameter = dict()
         parameter['name'] = name
         parameter['value'] = value
         self.metadata["parameters"].append(parameter)
 
     def parameter(self, i: int) -> dict():
+        """Get a parameter
+
+        Parameters
+        ----------
+        i
+            Index of the parameter in the metadata list
+        """
+
         return self.metadata["parameters"][i]
-    
         

@@ -38,11 +38,26 @@ class BiObject:
         
 
 class BiProgressObserver(BiObject):
+    """Observer to display or log a process progress
+    
+    The basic implementation just display the progress in the 
+    console with 'print'. Please subclass this class to write
+    progress in log files or notify a GUI for example
+    
+    """
     def __init__(self):
         super().__init__()
         self._objectname = "BiObserver"  
 
     def notify(self, data: dict):
+        """Function called by the observable to notify progress
+
+        Parameters
+        ----------
+        data
+            Data descibing the progress
+        """
+
         if 'progress' in data:
             print('progress:', data['progress'])
         if 'message' in data:

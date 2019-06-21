@@ -212,6 +212,27 @@ class BiExperiment(BiMetaData):
 
         return self.metadata['processeddatasets']   
 
+    def processeddataset_by_name(self, name: str) -> BiProcessedData:
+        """Get a processed dataset
+
+        Parameters
+        ----------
+        name
+            Name of the processed dataset
+
+        Returns
+        -------
+        BiProcessedDataSet
+            Processed dataset in a BiProcessedDataSet object
+
+        """
+        i = -1
+        for dataset_url in self.metadata['processeddatasets']:
+            i += 1
+            if name in dataset_url:
+                return self.processeddataset(i)
+        return None        
+
     def processeddataset(self, i: int) -> BiProcessedDataSet:
         """Get a processed dataset
 
@@ -669,7 +690,7 @@ def tag_rawdata_using_seperator(experiment: BiExperiment, tag: str, separator: s
         bi_rawdata.set_tag(tag, value) 
         bi_rawdata.write()   
 
-def query(experiment: BiExperiment, dataset: str, query: str) -> list:
+def query(experiment: BiExperiment, dataset: str, query: str, origin_output_name: str = '') -> list:
     """query a specific dataset of an experiment
     
     In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
@@ -697,7 +718,7 @@ def query(experiment: BiExperiment, dataset: str, query: str) -> list:
         for i in range(experiment.processeddatasets_size()):
             processeddataset = experiment.processeddataset(i)
             if processeddataset.name() == dataset:
-                return searchListToUrl(query_processeddataset(processeddataset,  query))
+                return searchListToUrl(query_processeddataset(processeddataset,  query, origin_output_name))
 
     print('Query dataset ', dataset, ' not found')
 
@@ -781,7 +802,7 @@ def rawDataSetToSearchList(rawDataSet: BiRawDataSet) -> list:
     return search_list    
 
 
-def query_processeddataset(dataset: BiProcessedDataSet,  query: str) -> list:
+def query_processeddataset(dataset: BiProcessedDataSet,  query: str, origin_output_name: str = '') -> list:
     """Run a query on a BiProcessedDataSet
 
     Parameters
@@ -799,12 +820,21 @@ def query_processeddataset(dataset: BiProcessedDataSet,  query: str) -> list:
 
     """
 
-    selected_list = []
-
     # get all the tags per data
+    pre_list = []
     for i in range(dataset.size()):
         data = dataset.data(i)
-        selected_list.append(extract_tags(os.path.join(data.md_file_dir(),data.md_file_name())))
+        pre_list.append(extract_tags(os.path.join(data.md_file_dir(),data.md_file_name())))
+
+    # remove the data where output origin is not the asked one
+    selected_list = []
+    if origin_output_name != '':
+        for pdata in pre_list:
+            data = BiProcessedData(pdata.url())
+            if data.origin_output_name() == origin_output_name:
+               selected_list.append(pdata) 
+    else:
+        selected_list = pre_list
 
     if query == '':
         return selected_list
@@ -818,7 +848,8 @@ def query_processeddataset(dataset: BiProcessedDataSet,  query: str) -> list:
     return selected_list 
 
 
-def query_list(search_list: list, query: str):
+
+def query_list(search_list: list, query: str) -> list:
     """query on tags
     
     In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)

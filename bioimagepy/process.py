@@ -274,11 +274,7 @@ class BiProcess(BiObject):
 
         args = shlex.split(os.path.join(cmd_path, cmd))
         subprocess.run(args)
-
-        #if found_program:
-        #    subprocess.run(os.path.join(cmd_path, cmd).split())
-        #else:
-        #    raise BiProcessExecException('Cannot find the program: ' + self.info.program)
+        
 
     def exec_dir(self, *args):
         """Execute the process where inputs and outputs are directories
@@ -476,6 +472,8 @@ class BiProcessParser(BiObject):
             self.info.name = self._root.attrib['name']
         if 'version' in self._root.attrib:
             self.info.version = self._root.attrib['version']  
+        if 'type' in self._root.attrib:
+            self.info.type = self._root.attrib['type']    
 
     def _parse_command(self, node):
         """Parse the tool command"""
@@ -561,7 +559,11 @@ class BiProcessParser(BiObject):
                     if child.attrib['format'] == 'image':
                         input_parameter.type = DATA_IMAGE()
                     elif child.attrib['format'] == 'txt':
-                        input_parameter.type = DATA_TXT()    
+                        input_parameter.type = DATA_TXT()  
+                    elif child.attrib['format'] == 'array':
+                        input_parameter.type = DATA_ARRAY()
+                    elif child.attrib['format'] == 'matrix':
+                        input_parameter.type = DATA_MATRIX()    
                     else:
                         raise BiProcessParseException("The format of the input data " + input_parameter.name + " is not supported")
 
@@ -794,6 +796,7 @@ class BiProcessInfo(BiObject):
         self.outputs = []
         self.help = ''
         self.categories = []
+        self.type = 'sequential'
 
     def is_param(self, name: str) -> bool:
         """Check if a parameter exists
