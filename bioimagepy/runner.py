@@ -29,6 +29,7 @@ BiRunnerException
 
 from .metadata import BiData, BiDataSet, BiProcessedData, BiRawDataSet, BiProcessedDataSet, BiRun
 from .process import BiProcess, DATA_IMAGE, DATA_TXT, DATA_NUMBER, DATA_ARRAY, DATA_MATRIX, DATA_TABLE
+from .core import BiProgressObserver
 import bioimagepy.experiment as experiment
 import os
 import datetime
@@ -57,6 +58,7 @@ class BiRunnerExperiment():
     """ 
     def __init__(self, experiment : experiment.BiExperiment):
         self._objectname = "BiData"  
+        self._observers = []
         self._experiment = experiment
         self._inputs_names = []
         self._inputs_datasets = []
@@ -66,6 +68,9 @@ class BiRunnerExperiment():
         self._process_params = [] 
         self.author = 'unknown'
         self._inputs_origin_output_name = []
+
+    def add_observer(self, observer: BiProgressObserver):
+        self._observers.append(observer)    
 
     def set_author(self, author: str):
         self.author = author
@@ -244,7 +249,14 @@ class BiRunnerExperiment():
 
         # 4- loop over the input data
         for i in range(data_count):
-            #print('Process data: ', i, '/', len(input_data))
+
+            # 4.0- notify observers
+            for observer in self._observers:
+                notification = dict()
+                notification['progress'] = int(100*i/data_count)
+                notification['message'] = "Process " + ntpath.basename(input_data[0][i])
+                observer.notify(notification)
+
             # 4.1- Parse IO
             args = []
             # get the input arguments
@@ -256,7 +268,6 @@ class BiRunnerExperiment():
 
                 inp_metadata = dict()
                 inp_metadata["name"] = self._inputs_names[n]
-
 
                 inp_metadata["url"] = '..' + input_data[n][i].replace(self._experiment.md_file_dir(), '') 
                 inputs_metadata.append(inp_metadata)

@@ -465,6 +465,18 @@ class BiProcessedData(BiData):
         print('Runurl: ' + self.metadata["origin"]['runurl'])
         print('')
 
+    def set_thumbnail(self, thumbnail: str):
+        """Set the data thumbnail url
+
+        Parameters
+        ----------
+        thumbnail
+            The data thumbnail url
+
+        """
+
+        self.metadata['common']['thumbnail'] = thumbnail
+
     def origin_data(self) -> str:
         """Get the first origin metadata file url
 
@@ -498,7 +510,36 @@ class BiProcessedData(BiData):
 
         """
 
-        return self.metadata["origin"]["output"]["label"]   
+        return self.metadata["origin"]["output"]["label"]  
+
+    def origin_raw_data(self, current_file: str = '') -> BiRawData:
+        """Get the raw data that allows to create this data
+        
+        This is a recursive function that browse the file origin tree
+
+        current_file
+        ----------
+        current_file
+            md.json file of the data currently processed in the tree
+
+        Returns
+        -------
+            a BiRawData object containing the rawdata metadata       
+        
+        """
+
+        if current_file == '':
+            current_file = self._md_file_url  
+
+        origin_data = BiData(current_file)
+        if origin_data.origin_type() == 'raw':
+            origin_rawdata = BiRawData(current_file)
+            return origin_rawdata
+        else:
+            origin_processeddata = BiProcessedData(current_file) 
+            origin_url = origin_processeddata.metadata['origin']['inputs'][0]['url'] 
+            origin_file = os.path.join(origin_processeddata.md_file_dir(), origin_url)
+            return self.origin_raw_data(origin_file) 
 
 
 class BiDataSet(BiMetaData):
@@ -791,7 +832,13 @@ class BiProcessedDataSet(BiDataSet):
 
         """
 
-        return BiProcessedData(os.path.join(self.md_file_path(), self.url(i)))        
+        return BiProcessedData(os.path.join(self.md_file_path(), self.url(i)))  
+
+    def process_url(self):
+        run_file = os.path.join(self.md_file_dir(), 'run.md.json')
+        run = BiRun(run_file)
+        return run.process_url()
+              
         
 class BiRunParameter():
     """Class that store a parameter used for a process run
