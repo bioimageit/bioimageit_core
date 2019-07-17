@@ -327,7 +327,7 @@ class BiProcess(BiObject):
 
         # 1. check inputs
         for input_arg in self.info.inputs:
-            if input_arg.name not in args and input_arg.type is not PARAM_HIDDEN():
+            if input_arg.name not in args and input_arg.type != PARAM_HIDDEN():
                 print('Warning (BiProcess): cannot find the input ' + input_arg.name + ' will use the default value: ' + input_arg.default_value)
                 input_arg.value = input_arg.default_value
 
@@ -336,14 +336,14 @@ class BiProcess(BiObject):
         for i in range(len(args)):
             arg = args[i]
             for input_arg in self.info.inputs:
-                if input_arg.name == arg and input_arg.type is not PARAM_HIDDEN() and not input_arg.is_data:
+                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and not input_arg.is_data:
                     input_arg.value = args[i+1]
 
         # 2.2. save the inputs into tmp files
         for i in range(len(args)):
             arg = args[i]
             for input_arg in self.info.inputs:
-                if input_arg.name == arg and input_arg.type is not PARAM_HIDDEN() and input_arg.is_data:
+                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and input_arg.is_data:
                     if input_arg.type == DATA_IMAGE():
                         image_tmp_path = os.path.join(self.tmp_dir, input_arg.name + ".tif")
                         tiff = TIFF.open(image_tmp_path, mode='w')
@@ -866,6 +866,7 @@ class BiProcessInfo(BiObject):
 
         print('BiProcessInfo')
         print('-------------')
+        print('xml file:', self.xml_file_url)  
         print('id:', self.id)  
         print('name:', self.name) 
         print('version:', self.version) 
