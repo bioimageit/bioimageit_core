@@ -224,8 +224,6 @@ class BiProcess(BiObject):
 
         """
 
-        print("BiProcess exec")
-
         # 1. check inputs
         for input_arg in self.info.inputs:
             if input_arg.name not in args and input_arg.type is not PARAM_HIDDEN():
