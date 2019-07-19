@@ -29,7 +29,7 @@ BiRunnerException
 
 from .metadata import BiData, BiDataSet, BiProcessedData, BiRawDataSet, BiProcessedDataSet, BiRun
 from .process import BiProcess, DATA_IMAGE, DATA_TXT, DATA_NUMBER, DATA_ARRAY, DATA_MATRIX, DATA_TABLE
-from .core import BiProgressObserver
+from .core import BiProgressObserver, BiConfig
 import bioimagepy.experiment as experiment
 import os
 import datetime
@@ -68,6 +68,10 @@ class BiRunnerExperiment():
         self._process_params = [] 
         self.author = 'unknown'
         self._inputs_origin_output_name = []
+        self.config = None
+
+    def set_config(self, config: BiConfig):
+        self.config = config    
 
     def add_observer(self, observer: BiProgressObserver):
         self._observers.append(observer)    
@@ -89,6 +93,8 @@ class BiRunnerExperiment():
         """
 
         self._process = BiProcess(process_xml_file)
+        if self.config:
+            self._process.setConfig(self.config)
         self._process_params = params 
 
     def add_input(self, name: str, dataset: str, query: str, origin_output_name: str = ''):

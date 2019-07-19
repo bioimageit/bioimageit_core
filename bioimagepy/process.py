@@ -66,7 +66,7 @@ BiProcessExecException
 
 import os
 import xml.etree.ElementTree as ET
-from .core import BiObject
+from .core import BiObject, BiConfig
 import subprocess
 import tempfile 
 from libtiff import TIFF
@@ -187,6 +187,10 @@ class BiProcess(BiObject):
         parser = BiProcessParser(xml_file_url)
         self.info = parser.parse()
         self.tmp_dir = tempfile.gettempdir()
+        self.config = None
+
+    def setConfig(self, config: BiConfig):
+        self.config = config
 
     def display(self):
         """Display the process information in console"""
@@ -246,12 +250,15 @@ class BiProcess(BiObject):
                 if output_arg.name == arg:    
                      output_arg.value = args[i+1] 
 
-        # 2.2- build the command line 
+        # 2.2.1- build the command line 
         cmd = self.info.command   
         for input_arg in self.info.inputs:
             cmd = cmd.replace("${"+input_arg.name+"}", str(input_arg.value))
         for output_arg in self.info.outputs:
             cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))    
+
+        # 2.2.2. replace the command variables
+        cmd = self.replace_env_variables(cmd)
 
         cmd = " ".join(cmd.split())
 
@@ -302,7 +309,8 @@ class BiProcess(BiObject):
                 
 
     def exec_list(self, *args):
-        """Execute the process where inputs and outputs are list of files"""    
+        """Execute the process where inputs and outputs are list of files"""  
+        pass  
 
     def run(self, *args):
         """Execute the process on python data with the given arguments
@@ -336,14 +344,14 @@ class BiProcess(BiObject):
         for i in range(len(args)):
             arg = args[i]
             for input_arg in self.info.inputs:
-                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and not input_arg.is_data:
+                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and input_arg.is_data == False:
                     input_arg.value = args[i+1]
 
         # 2.2. save the inputs into tmp files
         for i in range(len(args)):
             arg = args[i]
             for input_arg in self.info.inputs:
-                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and input_arg.is_data:
+                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and input_arg.is_data == True:
                     if input_arg.type == DATA_IMAGE():
                         image_tmp_path = os.path.join(self.tmp_dir, input_arg.name + ".tif")
                         tiff = TIFF.open(image_tmp_path, mode='w')
@@ -371,8 +379,7 @@ class BiProcess(BiObject):
         cmd = " ".join(cmd.split())
 
         # 2.4.2. replace the command variables
-        xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
-        cmd = cmd.replace("${pwd}", xml_root_path) 
+        cmd = self.replace_env_variables(cmd)
         print('cmd: ', cmd)
 
         # 2.5. exec
@@ -381,7 +388,7 @@ class BiProcess(BiObject):
         if os.path.isfile(self.info.program):
             found_program = True
 
-        
+        xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
         if os.path.isfile( os.path.join(xml_root_path, self.info.program)):
            cmd_path = xml_root_path 
            found_program = True
@@ -401,6 +408,15 @@ class BiProcess(BiObject):
             for output_arg in self.info.outputs: 
                 return_data[output_arg.name] = output_arg.value
             return return_data    
+
+    def replace_env_variables(self, cmd) -> str:
+        xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
+        cmd_out = cmd.replace("${pwd}", xml_root_path) 
+        if self.config:
+            for element in self.config.get_env():
+                cmd_out = cmd_out.replace("${"+element["name"]+"}", element["value"])
+        return cmd_out        
+
 
 class BiProcessParser(BiObject):
     """Class that parse a process XML file and 
