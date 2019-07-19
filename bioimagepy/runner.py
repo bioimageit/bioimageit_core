@@ -323,7 +323,7 @@ class BiRunnerExperiment():
                 processed_dataset.write()
 
             # 4.2- exec    
-            print("args:", args)
+            #print("args:", args)
             self._process.exec(*args)
 
     def _now_date(self) -> str:
