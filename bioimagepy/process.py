@@ -224,6 +224,8 @@ class BiProcess(BiObject):
 
         """
 
+        print("BiProcess exec")
+
         # 1. check inputs
         for input_arg in self.info.inputs:
             if input_arg.name not in args and input_arg.type is not PARAM_HIDDEN():
@@ -254,7 +256,6 @@ class BiProcess(BiObject):
             cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))    
 
         cmd = " ".join(cmd.split())
-        print('cmd: ', cmd)
 
         # 2.3. exec
         # try to find the program
@@ -262,16 +263,17 @@ class BiProcess(BiObject):
         found_program = False
         if os.path.isfile(self.info.program):
             found_program = True
-
-        xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
-        if os.path.isfile( os.path.join(xml_root_path, self.info.program)):
-           cmd_path = xml_root_path 
-           found_program = True
+        else:
+            xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
+            if os.path.isfile( os.path.join(xml_root_path, self.info.program)):
+                cmd_path = xml_root_path 
+                found_program = True
 
         # run the program
         if not found_program:
             print("Warning: Cannot find a file corresponding to the program", self.info.program)   
 
+        print("cmd:", os.path.join(cmd_path, cmd))
         args = shlex.split(os.path.join(cmd_path, cmd))
         subprocess.run(args)
         
