@@ -875,6 +875,8 @@ class BiRun(BiMetaData):
             self.metadata["processeddataset"] = '' 
         if 'parameters' not in self.metadata:
             self.metadata["parameters"] = [] 
+        if 'inputs' not in self.metadata:
+            self.metadata["inputs"] = []     
               
     def process_name(self) -> str:
         """Get the process name
@@ -985,4 +987,7 @@ class BiRun(BiMetaData):
         """
 
         return self.metadata["parameters"][i]
+
+    def add_input(self, name: str, dataset: str, query: str, origin_output_name: str = ''):
+        self.metadata["inputs"].append({"name": name, "dataset": dataset, "query": query, "origin_output_name": origin_output_name})        
         

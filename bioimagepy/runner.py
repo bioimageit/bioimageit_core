@@ -224,12 +224,20 @@ class BiRunnerExperiment():
 
         run_md_file = os.path.join(processed_data_dir, "run.md.json")
         open(run_md_file, 'a').close()
-        run_metadata = BiRun(run_md_file)
+        run_metadata = BiRun(run_md_file) 
         run_metadata.set_process_name(self._process.info.name)
         run_metadata.set_process_url(self._process.info.xml_file_url)
         for i in range(0, len(self._process_params), 2):
             run_metadata.add_arameter(self._process_params[i], self._process_params[i+1])
         run_metadata.set_processeddataset("processeddataset.md.json")
+
+        for t in range(len(self._inputs_names)):
+            run_metadata.add_input(        
+                            self._inputs_names[t],  
+                            self._inputs_datasets[t],  
+                            self._inputs_query[t], 
+                            self._inputs_origin_output_name[t]
+            ) 
         run_metadata.write()
 
     def run_sequence(self):
