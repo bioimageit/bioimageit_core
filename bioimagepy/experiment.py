@@ -210,7 +210,25 @@ class BiExperiment(BiMetaData):
 
         """
 
-        return self.metadata['processeddatasets']   
+        return self.metadata['processeddatasets']  
+
+    def processeddataset_names(self) -> list:
+        """Get the urls of all the processed datasets
+
+        Returns
+        -------
+        list
+            URLs of the processed datasets
+
+        """
+
+        urls = self.metadata['processeddatasets'] 
+        names = []
+        for url in urls:
+            names.append( url.replace("/processeddataset.md.json", "") )
+
+        return names   
+
 
     def processeddataset_by_name(self, name: str) -> BiProcessedData:
         """Get a processed dataset
@@ -232,7 +250,7 @@ class BiExperiment(BiMetaData):
             if name in dataset_url:
                 return self.processeddataset(i)
         return None     
-                  
+
 
     def processeddataset(self, i: int) -> BiProcessedDataSet:
         """Get a processed dataset
