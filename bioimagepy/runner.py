@@ -63,11 +63,13 @@ class BiRunnerExperiment():
         self._inputs_names = []
         self._inputs_datasets = []
         self._inputs_query = []
+        self._inputs_urls = []
         self._output_names = []
         self._process = None
         self._process_params = [] 
         self.author = 'unknown'
         self._inputs_origin_output_name = []
+        self._output_dataset = ""
         self.config = None
 
     def set_config(self, config: BiConfig):
@@ -97,6 +99,7 @@ class BiRunnerExperiment():
             self._process.setConfig(self.config)
         self._process_params = params 
 
+
     def add_input(self, name: str, dataset: str, query: str, origin_output_name: str = ''):
         """Add an input (ie data) to the process
 
@@ -116,7 +119,27 @@ class BiRunnerExperiment():
         self._inputs_names.append(name)  
         self._inputs_datasets.append(dataset)  
         self._inputs_query.append(query) 
-        self._inputs_origin_output_name.append(origin_output_name)       
+        self._inputs_origin_output_name.append(origin_output_name)   
+
+
+    def add_input_by_urls(self, name: str, urls: list):
+        """Add an input (ie data) to the process
+
+        Parameters
+        ----------
+        name
+            Name of the input in the process XML file (ex: -i)
+
+        urls
+            Urls of the data to process (urls are the urls of the .md.json file)
+       
+        """
+        self._inputs_names.append(name)
+        self._inputs_urls.append(urls)
+    
+
+    def setOutputDataSet(self, name :str):
+        self._output_dataset = name
 
     def exec(self):
         """Run the process
@@ -140,7 +163,14 @@ class BiRunnerExperiment():
         """
 
         if self._process.info.type == "sequential":
-            self.run_sequence()
+            if len(self._inputs_urls) > 0 and len(self._inputs_datasets) > 0:
+                raise BiRunnerException("uncompatible inputs. You cannot use both add_input_by_urls and add_input")
+            elif len(self._inputs_urls) > 0 and len(self._inputs_datasets) == 0:
+                self.run_sequence_by_urls()
+            elif len(self._inputs_urls) == 0 and len(self._inputs_datasets) > 0:
+                self.run_sequence()
+            else:
+                raise BiRunnerException("No input. Please use add_input or add_input_by_urls")
         else:
             self.run_merged()    
 
@@ -212,7 +242,7 @@ class BiRunnerExperiment():
 
         return [processed_dataset, processed_data_dir]
 
-    def _create_runfile(self, processed_data_dir: str):
+    def _create_runfile(self, processed_data_dir: str) -> str:
         """Run internal method to write the run metadata file
 
         Parameters
@@ -222,7 +252,16 @@ class BiRunnerExperiment():
 
         """
 
-        run_md_file = os.path.join(processed_data_dir, "run.md.json")
+        run_md_file_name = "run.md.json"
+        runid_count = 0
+        while ( os.path.isfile(os.path.join(processed_data_dir, run_md_file_name)) ):
+            existingRun = BiRun(os.path.join(processed_data_dir, run_md_file_name))
+            if existingRun.process_name() != self._process.info.name:
+                raise BiRunnerException("You can only run " + self._process.info.name + " in the dataset " + self._output_dataset)
+            runid_count += 1
+            run_md_file_name = "run_"+str(runid_count)+".md.json"
+
+        run_md_file = os.path.join(processed_data_dir, run_md_file_name)
         open(run_md_file, 'a').close()
         run_metadata = BiRun(run_md_file) 
         run_metadata.set_process_name(self._process.info.name)
@@ -231,14 +270,29 @@ class BiRunnerExperiment():
             run_metadata.add_arameter(self._process_params[i], self._process_params[i+1])
         run_metadata.set_processeddataset("processeddataset.md.json")
 
-        for t in range(len(self._inputs_names)):
-            run_metadata.add_input(        
-                            self._inputs_names[t],  
-                            self._inputs_datasets[t],  
-                            self._inputs_query[t], 
-                            self._inputs_origin_output_name[t]
-            ) 
+        
+        if len(self._inputs_urls) > 0:
+            for t in range(len(self._inputs_names)):
+                urls = []
+                for url in self._inputs_urls[t]:
+                    urll = url.replace(self._experiment.md_file_dir() , "..")
+                    urls.append(urll)
+
+                run_metadata.add_input_list(        
+                                    self._inputs_names[t],  
+                                    urls
+                )  
+        else:
+            for t in range(len(self._inputs_names)):
+                run_metadata.add_input(
+                    self._inputs_names[t],
+                    self._inputs_datasets[t],
+                    self._inputs_query[t],
+                    self._inputs_origin_output_name[t]
+                )
+
         run_metadata.write()
+        return run_md_file_name
 
     def run_sequence(self):
         """Run the process in a sequence
@@ -333,6 +387,112 @@ class BiRunnerExperiment():
             # 4.2- exec    
             #print("args:", args)
             self._process.exec(*args)
+
+
+    def run_sequence_by_urls(self):
+        """Run the process in a sequence where inputs are data url list
+
+        This is the main function that run the process on the experiment data list
+
+        Raises
+        ------
+        BiRunnerException
+            
+        """
+ 
+        # 1- Query all the input data and verify that the size 
+        # are equal, if not raise an exception
+        input_data = self._inputs_urls
+        data_count = len(self._inputs_urls[0])          
+
+        # 2- Create the ProcessedDataSet and register it to the Experiment
+        if not self._output_dataset:
+            processed_dataset, processed_data_dir = self._create_processeddataset()
+        else:
+            processed_dataset = self._experiment.processeddataset_by_name(self._output_dataset)
+            processed_data_dir = processed_dataset.md_file_dir()
+
+        # 3- create the run.md.json file
+        run_md_file_name = self._create_runfile(processed_data_dir)
+
+        # 4- loop over the input data
+        for i in range(data_count):
+
+            # 4.0- notify observers
+            for observer in self._observers:
+                notification = dict()
+                notification['progress'] = int(100*i/data_count)
+                notification['message'] = "Process " + ntpath.basename(input_data[0][i])
+                observer.notify(notification)
+
+            # 4.1- Parse IO
+            args = []
+            # get the input arguments
+            inputs_metadata = []
+            for n in range(len(self._inputs_names)):
+                args.append(self._inputs_names[n])
+                data_info = BiData(input_data[n][i])
+                args.append(data_info.url())
+
+                inp_metadata = dict()
+                inp_metadata["name"] = self._inputs_names[n]
+
+                inp_metadata["url"] = '..' + input_data[n][i].replace(self._experiment.md_file_dir(), '') 
+                inputs_metadata.append(inp_metadata)
+
+            # get the params arguments
+            for param in self._process_params:
+                args.append(param)
+
+            # setup outputs
+            for output in self._process.info.outputs:
+                extension = '.dat'
+                if output.type == DATA_IMAGE():
+                    extension = '.tif'
+                elif output.type == DATA_TXT(): 
+                    extension = '.txt' 
+                elif output.type == DATA_NUMBER() or output.type == DATA_ARRAY() or output.type == DATA_MATRIX() or output.type == DATA_TABLE(): 
+                    extension = '.csv'     
+                    
+                input_basename = ntpath.basename(input_data[0][i])
+                output_file_name = input_basename.replace('.md.json', '') + "_" + output.name
+
+                idx = 0
+                while os.path.exists( os.path.join(processed_data_dir, output_file_name + ".md.json") ):
+                    idx += 1
+                    output_file_name = input_basename.replace('.md.json', '') + "_" + output.name + "_" + str(idx)
+
+                # args
+                args.append(output.name)
+                args.append(os.path.join(processed_data_dir, output_file_name + extension))
+
+                # md.json file
+                output_data_md_file = os.path.join(processed_data_dir, output_file_name + ".md.json")
+                open(output_data_md_file, 'a').close()
+                output_data = BiProcessedData(output_data_md_file)
+                output_data.metadata["common"] = dict()
+                output_data.metadata["common"]['name'] = output_file_name
+                output_data.metadata["common"]['url'] = output_file_name + extension
+
+
+                output_data.metadata["common"]['createddate'] = self._now_date()
+                output_data.metadata["common"]['author'] = self.author
+                output_data.metadata["common"]['datatype'] = output.type
+                output_data.metadata["origin"] = dict()
+                output_data.metadata["origin"]['type'] = 'processed'
+                output_data.metadata["origin"]['runurl'] = run_md_file_name
+                output_data.metadata["origin"]['inputs'] = inputs_metadata
+                output_data.metadata["origin"]["output"] = dict()
+                output_data.metadata["origin"]["output"]["name"] = output.name
+                output_data.metadata["origin"]["output"]["label"] = output.description
+                output_data.write()
+                processed_dataset.metadata['urls'].append(output_file_name + ".md.json")
+                processed_dataset.write()
+
+            # 4.2- exec    
+            #print("args:", args)
+            self._process.exec(*args)
+
 
     def _now_date(self) -> str:
         """Get the date

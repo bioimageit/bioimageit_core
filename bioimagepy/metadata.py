@@ -991,3 +991,5 @@ class BiRun(BiMetaData):
     def add_input(self, name: str, dataset: str, query: str, origin_output_name: str = ''):
         self.metadata["inputs"].append({"name": name, "dataset": dataset, "query": query, "origin_output_name": origin_output_name})        
         
+    def add_input_list(self, name: str, datalist: list):   
+        self.metadata["inputs"].append({"name": name, "data": datalist})  
