@@ -149,6 +149,13 @@ def IO_OUTPUT():
     return "output"     
 
 
+def bi_io_print(file: str, dataType = DATA_TXT()):
+    f = open(file, 'r')
+    file_contents = f.read()
+    print (file_contents)
+    f.close()
+
+
 class BiProcessParseException(Exception):
    """Raised when an error occure during a process parsing"""
 
@@ -367,37 +374,49 @@ class BiProcess(BiObject):
             if output_arg.type == DATA_IMAGE():
                 output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".tif") 
             elif output_arg.type == DATA_TXT():
-                output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt")       
+                output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt") 
+            elif output_arg.type == DATA_NUMBER():
+                output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt") 
+            elif output_arg.type == DATA_ARRAY():      
+                output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt")  
+            elif output_arg.type == DATA_MATRIX():
+                output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt")
+            elif output_arg.type == DATA_TABLE():    
+                output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt")    
+            else:
+                output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt")                   
 
         # 2.4. build the command line   
-        cmd = self.info.program + ' '
+        cmd = self.info.command   
         for input_arg in self.info.inputs:
-            cmd += input_arg.name + ' ' + str(input_arg.value) + ' '
+            cmd = cmd.replace("${"+input_arg.name+"}", str(input_arg.value))
         for output_arg in self.info.outputs:
-            cmd += output_arg.name + ' ' + str(output_arg.value) + ' '    
+            cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))    
+
+        # 2.2.2. replace the command variables
+        cmd = self.replace_env_variables(cmd)
 
         cmd = " ".join(cmd.split())
 
-        # 2.4.2. replace the command variables
-        cmd = self.replace_env_variables(cmd)
-        print('cmd: ', cmd)
-
         # 2.5. exec
+        # try to find the program
         cmd_path = ''
         found_program = False
         if os.path.isfile(self.info.program):
             found_program = True
-
-        xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
-        if os.path.isfile( os.path.join(xml_root_path, self.info.program)):
-           cmd_path = xml_root_path 
-           found_program = True
-
-        #print('run process: ', os.path.join(cmd_path, cmd))
-        if found_program:
-            subprocess.run(os.path.join(cmd_path, cmd).split())
         else:
-            raise BiProcessExecException('Cannot find the program: ' + self.info.program)
+            xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
+            if os.path.isfile( os.path.join(xml_root_path, self.info.program)):
+                cmd_path = xml_root_path 
+                found_program = True
+
+        # run the program
+        #if not found_program:
+        #    print("Warning: Cannot find a file corresponding to the program", self.info.program)   
+
+        print("cmd:", os.path.join(cmd_path, cmd))
+        args = shlex.split(os.path.join(cmd_path, cmd))
+        subprocess.run(args)
 
         # 2.6. load and return the outputs
         if self.info.outputs_size() == 1:
@@ -411,8 +430,8 @@ class BiProcess(BiObject):
 
     def replace_env_variables(self, cmd) -> str:
         xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
-        cmd_out = cmd.replace('${pwd}', xml_root_path) 
-        cmd_out = cmd_out.replace('$exeDir', xml_root_path)
+        cmd_out = cmd.replace("${pwd}", xml_root_path) 
+        cmd_out = cmd_out.replace("${xmlDir}", xml_root_path) 
         if self.config:
             for element in self.config.get_env():
                 cmd_out = cmd_out.replace("${"+element["name"]+"}", element["value"])
