@@ -411,7 +411,8 @@ class BiProcess(BiObject):
 
     def replace_env_variables(self, cmd) -> str:
         xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
-        cmd_out = cmd.replace("${pwd}", xml_root_path) 
+        cmd_out = cmd.replace('${pwd}', xml_root_path) 
+        cmd_out = cmd_out.replace('$exeDir', xml_root_path)
         if self.config:
             for element in self.config.get_env():
                 cmd_out = cmd_out.replace("${"+element["name"]+"}", element["value"])

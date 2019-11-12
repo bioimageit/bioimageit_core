@@ -114,6 +114,18 @@ class BiMetaData(BiObject):
 
         super(BiMetaData, self).display()  
 
+    def merge(self, data: dict):
+        z = self.metadata.copy() 
+        z.update(data)
+        if "name" not in z["common"]:
+            z["common"]["name"] = self.metadata["common"]["name"]     
+        if "createddate" not in z["common"]:
+            z["common"]["createddate"] = self.metadata["common"]["createddate"]      
+        if "url" not in z["common"]:
+            z["common"]["url"] = self.metadata["common"]["url"]     
+            
+        self.metadata = z       
+
 
 class BiData(BiMetaData): 
     """Abstract class that store a data metadata
@@ -501,6 +513,17 @@ class BiProcessedData(BiData):
 
         return self.metadata["origin"]["output"]["name"] 
 
+    def run_url(self):
+        """Get the run file url
+
+        Returns
+        -------
+            The url of the run file
+
+        """
+
+        return self.metadata["origin"]["runurl"]    
+
     def origin_output_label(self):
         """Get the origin output label
 
@@ -751,6 +774,21 @@ class BiRawDataSet(BiDataSet):
             data_list.append(BiRawData(os.path.join(self.md_file_path(), self.url(i))))   
         return data_list
 
+    def files_list(self) -> list:
+        """Get the file list
+        
+        Returns
+        -------
+        list
+            List of the data file stored in str
+
+        """
+
+        data_list = []
+        for i in range(self.size()):
+            data_list.append(self.url(i))  
+        return data_list
+
     def data(self, i: int) -> BiRawData:
         """get one data information
         
@@ -839,7 +877,19 @@ class BiProcessedDataSet(BiDataSet):
         run = BiRun(run_file)
         return run.process_url()
               
-        
+    def files_list(self, output_name: str):
+
+        files = []
+        for j in range(self.size()):
+            processed_data = self.processed_data(j)
+            if "origin" in processed_data.metadata:
+                if "output" in processed_data.metadata["origin"]:
+                    if "label" in processed_data.metadata["origin"]["output"]:
+                        if processed_data.metadata["origin"]["output"]["label"] == output_name:
+                            files.append(processed_data.md_file_name())
+
+        return files 
+
 class BiRunParameter():
     """Class that store a parameter used for a process run
 

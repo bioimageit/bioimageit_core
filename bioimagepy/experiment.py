@@ -30,12 +30,6 @@ tag_rawdata_using_seperator
 query
 query_single
 
-Todo
-----
-    * Write a full example (cf tutorial) in this documentation
-    * Write manipulation functions: import, tag...
-    * add a recursive option for import_dir
-
 """
 
 from .metadata import BiMetaData, BiData, BiRawData, BiProcessedData, BiRawDataSet, BiProcessedDataSet
@@ -529,6 +523,8 @@ def import_data(experiment: BiExperiment, data_url: str, name: str, author: str,
     bi_rawdataset = experiment.rawdataset()  
     bi_rawdataset.add_data_url(md_file_url_relative)
     bi_rawdataset.write()
+
+    return md_file_url
          
 class BiExperimentImport(BiObject):
     """Import data to an experiment
