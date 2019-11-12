@@ -155,6 +155,20 @@ def bi_io_print(file: str, dataType = DATA_TXT()):
     print (file_contents)
     f.close()
 
+def bi_io_write(data, filePath: str, dataType = DATA_TXT()):
+
+    if (dataType == DATA_ARRAY()):
+
+        length = data.shape[0]
+        file = open(filePath,'w') 
+        for i in range(length-1):
+            file.write(str(data[i])+',')
+        file.write(str(data[length-1]))
+        file.close() 
+
+    else:
+        raise BiProcessExecException('Cannot save the data type ' + dataType)
+
 
 class BiProcessParseException(Exception):
    """Raised when an error occure during a process parsing"""
@@ -365,6 +379,10 @@ class BiProcess(BiObject):
                         tiff.write_image(args[i+1])
                         tiff.close()
                         input_arg.value = image_tmp_path 
+                    if input_arg.type == DATA_ARRAY():
+                        data_tmp_path = os.path.join(self.tmp_dir, input_arg.name + ".txt")
+                        bi_io_write(args[i+1], data_tmp_path, DATA_ARRAY()) 
+                        input_arg.value = data_tmp_path  
                     if input_arg.type == DATA_TXT():
                         # TODO save the data to file     
                         input_arg.value = os.path.join(self.tmp_dir, input_arg.name + ".txt") 
