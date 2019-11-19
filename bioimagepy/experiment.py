@@ -34,6 +34,7 @@ query_single
 
 from .metadata import BiMetaData, BiData, BiRawData, BiProcessedData, BiRawDataSet, BiProcessedDataSet
 from .core import BiObject, BiProgressObserver
+from .process import BiProcessParser, BiProcessInfo
 import os
 import errno
 import datetime
@@ -384,8 +385,148 @@ class BiExperiment(BiMetaData):
             for key in tags:
                 tags_values.append(bi_rawdata.tag(key))
             t.add_row( [ bi_rawdata.name() ] + tags_values + [ bi_rawdata.author(), bi_rawdata.createddate() ] )
-        print(t)                             
-           
+        print(t)   
+
+    def to_table(self, dataset: str):
+        if dataset == "data":
+            return self._to_table_data()
+        else:
+            processeddataset = self.processeddataset_by_name(dataset)
+            process_url = processeddataset.process_url()
+            process_info = BiProcessParser(process_url).parse()
+
+            if process_info.type == 'sequential':
+                return self._to_table_sequential(processeddataset, process_info)
+            else:
+                return self._to_table_merge(processeddataset, process_info)          
+
+    def _to_table_data(self):
+        table = []
+        tags = list()   
+        header = list()
+        header.append("Name") 
+        if 'tags' in self.metadata:  
+            tags = self.metadata['tags'] 
+        for tag in tags:
+            header.append(tag)
+        header.append('Author')   
+        header.append('Created date')  
+        table.append( header ) 
+        bi_rawdataset = self.rawdataset()
+        for i in range(bi_rawdataset.size()):
+            bi_rawdata = bi_rawdataset.raw_data(i)
+            tags_values = []
+            for key in tags:
+                tags_values.append(bi_rawdata.tag(key))
+            table.append( [ bi_rawdata.name() ] + tags_values + [ bi_rawdata.author(), bi_rawdata.createddate() ] )   
+        return table    
+
+    def _to_table_sequential(self, processeddataset: BiProcessedDataSet, process_info: BiProcessInfo):
+        table = []
+        for i in range(self.rawdataset().size()+1):
+            array = ['', '']
+            for o in range(len(process_info.outputs)):
+                array.append('')   
+            for o in range(len(self.tags())):
+                array.append('')       
+            table.append(array)
+
+        # headers
+        table[0][0] = ''
+        table[0][1] = 'Name'
+        count = 1
+        for tag in self.tags():
+            count += 1
+            table[0][count] = tag
+        for output in process_info.outputs:
+            count += 1
+            table[0][count] = output.description 
+
+        # data
+        for i in range(self.rawdataset().size()):
+
+            raw_info = self.rawdataset().raw_data(i)
+
+            # thumbnail
+            table[i+1][0] = raw_info.thumbnail()
+            
+            # name
+            table[i+1][1] = raw_info.name()
+            
+            # tags
+            for t in range(self.tags_size()):
+                table[i+1][t+2] = raw_info.tag(self.tag(t))
+
+            offset = 2 + self.tags_size()   
+
+            # search results
+            for j in range(processeddataset.size()):
+                processed_info = processeddataset.processed_data(j)
+                raw_info_p = processed_info.origin_raw_data()  
+
+                #print('test output', processed_info.name(), raw_info_p.name())
+
+                if ( raw_info_p.name() == raw_info.name() ):
+                    outIdx = offset-1
+                    for output in process_info.outputs:
+                        #print('output name', output.name)
+                        outIdx +=1
+                        #print('test output', output.name, processed_info.metadata['origin']['output']['name'])
+                        if processed_info.metadata['origin']['output']['name'] == output.name:
+                            #print('match output', output.name, processed_info.metadata['origin']['output']['name'])
+                            if processed_info.datatype() == 'image':
+                                table[i+1][outIdx] = processed_info.url_as_stored()
+                            elif processed_info.datatype() == 'number':
+                                table[i+1][outIdx] = processed_info.url_as_stored()
+                            elif processed_info.datatype() == 'array':
+                                table[i+1][outIdx] = processed_info.url_as_stored()
+                            elif processed_info.datatype() == 'table':
+                                table[i+1][outIdx] = processed_info.url_as_stored()
+                            break
+
+        return table                    
+                         
+    def _to_table_merge(self, processeddataset: BiProcessedDataSet, process_info: BiProcessInfo):
+        table = []
+
+        # header
+        labels = ["Name"]
+        for output in process_info.outputs:
+            labels.append(output.description)
+        table.append(labels)
+            
+        # data
+        line_data = []
+        for j in range(processeddataset.size()):
+            processed_data = processeddataset.processed_data(j)        
+            oID = 0
+            for output in process_info.outputs:
+                oID += 1
+                if processed_data.metadata['origin']['output']['label'] == output.description:
+                    if processed_data.metadata['origin']['output']['label'] == output.description:
+                        if processed_data.datatype() == 'image': 
+                            thumbInfo = dict()
+                            thumbInfo['row'] = 0
+                            thumbInfo['column'] = oID
+                            thumbInfo['processeddata'] = processed_data
+                            #self.thumbnailList.append(thumbInfo)
+                            #self.set_thumbnail(0, oID, processed_data, processed_data.thumbnail())
+                            line_data.append(processed_data.url())     
+                        elif processed_data.datatype() == 'number':
+                            with open(processed_data.url(), 'r') as content_file:
+                                p = content_file.read() 
+                                line_data.append(p)
+                        elif processed_data.datatype() == 'array':
+                            with open(processed_data.url(), 'r') as content_file:
+                                p = content_file.read() 
+                                line_data.append(p)
+                        elif processed_data.datatype() == 'table':
+                            line_data.append(processed_data.url())
+                        else:
+                            line_data.append('')       
+            table.append(line_data)
+        return table    
+
 
 def create(name: str, author: str, path: str) -> BiExperiment:
     """Create an experiment
