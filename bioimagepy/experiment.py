@@ -448,7 +448,7 @@ class BiExperiment(BiMetaData):
             raw_info = self.rawdataset().raw_data(i)
 
             # thumbnail
-            table[i+1][0] = raw_info.thumbnail()
+            table[i+1][0] = raw_info.url_as_stored()
             
             # name
             table[i+1][1] = raw_info.name()

@@ -16,11 +16,13 @@ BiTileWidget
 
 import os
 import json
-from ipywidgets import Button, Layout, Label, VBox, HBox, Accordion, Text, Box, DatePicker, Tab, Checkbox, Dropdown, HTML, IntText
+from ipywidgets import Button, Layout, Label, VBox, HBox, Accordion, Text, Box, DatePicker, Tab, Checkbox, Dropdown, HTML, IntText, ToggleButton
 from IPython.display import display, Javascript
 import IPython
+from pathlib import Path
 
 from .experiment import *
+from .process import *
 
 class BiButtonInfo:
     def __init__(self, title: str, info: str):
@@ -317,11 +319,134 @@ class BiViewDataExperimentWidget:
         options = self.experiment.processeddataset_names()
         options.insert(0, 'data')
         self.datasetSelect.options = options 
-        data = self.experiment.to_table(self.datasetSelect.value)
-        self.htmlArea.value = self.to_html(data)
+        self.htmlArea.value = self._dataset_to_table(self.datasetSelect.value)
 
-    def to_html(self, table):
-        html = '<style>'
+    def _dataset_to_table(self, dataset_name: str):
+        if (dataset_name == 'data'):
+            return self._dataset_data_to_table()
+        else:
+            processeddataset = self.experiment.processeddataset_by_name(dataset_name)
+            process_url = processeddataset.process_url()
+            process_info = BiProcessParser(process_url).parse()
+
+            if process_info.type == 'sequential':
+                return self._dataset_to_table_sequential(processeddataset, process_info)
+            else:
+                return self._dataset_to_table_merge(processeddataset, process_info)     
+
+    def _dataset_data_to_table(self):
+        html = self._html_header()
+        html+= '<th></th>'
+        html+= '<th>Name</th>'
+        if 'tags' in self.experiment.metadata:  
+            for tag in self.experiment.metadata['tags']:
+                html += '<th>'+tag+'</th>'
+
+        html += '<th>Author</th>' 
+        html += '<th>Created date</th>' 
+        html += '</thead>'
+        html += '<tbody>'
+
+        bi_rawdataset = self.experiment.rawdataset()
+        for i in range(bi_rawdataset.size()):
+            html += '<tr>'
+            bi_rawdata = bi_rawdataset.raw_data(i)
+            html+= '<td><img src='+bi_rawdata.thumbnail_relative_experiment()+'></td>'
+            html+= '<td>'+bi_rawdata.name()+'</td>'
+            if 'tags' in self.experiment.metadata: 
+                for key in self.experiment.metadata['tags']:
+                    html += '<td>'+bi_rawdata.tag(key)+'</td>'
+
+            html += '<td>'+bi_rawdata.author()+'</td>'
+            html += '<td>'+bi_rawdata.createddate()+'</td>'
+            html += '</tr>' 
+        return html 
+
+    def _dataset_to_table_sequential(self, processeddataset: BiProcessedDataSet, process_info: BiProcessInfo): 
+
+        # extract the processed middle name filenames
+        process_data = processeddataset.processed_data(0)
+        origin_raw_data = process_data.origin_raw_data() 
+        filename = str(Path(origin_raw_data.name()).with_suffix(''))
+        middle_name = process_data.name()
+        middle_name = middle_name.replace(process_data.metadata['origin']['output']['name'], '')
+        middle_name = middle_name.replace(filename, '')
+        middle_name = middle_name.replace('.md.json', '')    
+
+        html = self._html_header()
+        html+= '<th></th>'
+        html+= '<th>Name</th>'
+        if 'tags' in self.experiment.metadata:  
+            for tag in self.experiment.metadata['tags']:
+                html += '<th>'+tag+'</th>'
+
+        for output in process_info.outputs:
+            html += '<th>'+output.description+'</th>' 
+        html += '</thead>'
+        html += '<tbody>'
+
+        bi_rawdataset = self.experiment.rawdataset()
+        for i in range(bi_rawdataset.size()):
+            html += '<tr>'
+            # remind raw data
+            bi_rawdata = bi_rawdataset.raw_data(i)
+            html+= '<td><img src='+bi_rawdata.thumbnail_relative_experiment()+'></td>'
+            html+= '<td>'+bi_rawdata.name()+'</td>'
+            if 'tags' in self.experiment.metadata: 
+                for key in self.experiment.metadata['tags']:
+                    html += '<td>'+bi_rawdata.tag(key)+'</td>'
+
+            # processed data    
+            for output in process_info.outputs:
+                processed_filename = str(Path(bi_rawdata.name()).with_suffix('')) + middle_name + output.name + '.md.json'
+                processed_info = BiProcessedData( os.path.join(processeddataset.md_file_dir(), processed_filename ))
+                if processed_info.datatype() == 'image':
+                    html+= '<td><img src='+processed_info.thumbnail_relative_experiment()+'></td>'
+                    #html+= '<td>'+processed_info.thumbnail_relative_experiment()+'</td>'
+                elif processed_info.datatype() == 'number':
+                    with open(processed_info.url_relative_experiment(), 'r') as content_file:
+                        p = content_file.read() 
+                        html += '<td>'+p+'</td>'
+                elif processed_info.datatype() == 'array':
+                    html += '<td>'+processed_info.url_relative_experiment()+'</td>'
+                elif processed_info.datatype() == 'table':
+                    html += '<td><span style="float:right;"><i class="fa fa-table" style="font-size:60px;color:#999999;"></i></span></td>'
+            html += '</tr>' 
+        return html 
+
+    def _dataset_to_table_merge(self, processeddataset: BiProcessedDataSet, process_info: BiProcessInfo):
+        html = self._html_header()
+        # header
+        for output in process_info.outputs:
+            html+= '<th>'+output.description+'</th>'
+        html += '</thead>'
+        html += '<tbody>'    
+        # data
+        for j in range(processeddataset.size()):
+            processed_data = processeddataset.processed_data(j)        
+            oID = 0
+            for output in process_info.outputs:
+                oID += 1
+                if processed_data.metadata['origin']['output']['label'] == output.description:
+                    if processed_data.metadata['origin']['output']['label'] == output.description:
+                        if processed_data.datatype() == 'image': 
+                            html += '<td>'+processed_data.url_relative_experiment()+'</td>'   
+                        elif processed_data.datatype() == 'number':
+                            with open(processed_data.url(), 'r') as content_file:
+                                p = content_file.read() 
+                                html += '<td>'+p+'</td>'
+                        elif processed_data.datatype() == 'array':
+                            with open(processed_data.url(), 'r') as content_file:
+                                p = content_file.read() 
+                                html += '<td>'+p+'</td>'
+                        elif processed_data.datatype() == 'table':
+                            html += '<td><span style="float:right;"><i class="fa fa-table" style="font-size:60px;color:#999999;"></i></span></td>'
+                            #html += '<td>'+processed_data.url_relative_experiment()+'</td>'      
+        return html     
+
+    def _html_header(self):
+        html = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">'
+        html += '<style>'
         html += '#customers {'
         html += 'font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;'
         html += 'border-collapse: collapse;'
@@ -348,6 +473,10 @@ class BiViewDataExperimentWidget:
 
         html += '<table id="customers">'
         html += '<thead>'
+        return html
+
+    def to_html(self, table):
+        html = self._html_header()
         for item in table[0]:
             html+= '<th>'+item+'</th>'
         html += '</thead>'
@@ -390,3 +519,212 @@ class BiViewExperimentWidget:
         
     def getWidget(self):
         return self.tab
+
+
+class BiRunInputsExperimentWidget:
+    def __init__(self, experiment: BiExperiment, process_info: BiProcessInfo):
+        self.experiment = experiment
+        self.info = process_info
+
+        inputBoxes = []
+        for inp in self.info.inputs:
+            if inp.io == IO_INPUT():
+                nameLabel = Label(value=inp.description)
+                dataComboBox = Dropdown(options=self.get_experiment_data_list())
+                inputBoxes.append(HBox([nameLabel, dataComboBox]))
+
+        self.widget = Box(inputBoxes)
+
+    def getWidget(self):
+        return self.widget
+
+    def get_experiment_data_list(self):
+
+        data_list = [] 
+        data_list.append('data:data') 
+        experiment = self.experiment
+        for i in range(experiment.processeddatasets_size()):
+            processeddataset = experiment.processeddataset(i)
+            parser = BiProcessParser(processeddataset.process_url())
+            process_info = parser.parse()
+            for output in process_info.outputs:
+                data_list.append(processeddataset.name() + ':' + output.description)
+
+        return data_list    
+
+class BiProcessInputWidget:
+    def __init__(self):
+        super().__init__()
+        self._dataType = ''
+        self._key = ''
+        self._advanced = False
+
+    def datatype(self) -> str:
+        return self._dataType
+
+    def key(self) -> str:
+        return self._key
+
+    def isAdvanced(self) -> bool:
+        return self._advanced
+
+    def setAdvanced(self, adv: bool):
+        self._advanced = adv
+
+    def setKey(self, key: str):
+        self._key = key
+
+    def setValue(self, value: str):
+        self._value = value
+
+    def setDatatype(self, datatype: str):
+        self._dataType = datatype
+
+
+# ///////////////////////////////////////////////// //
+#                BiProcessInputValue                //
+# ///////////////////////////////////////////////// //
+class BiProcessInputValue(BiProcessInputWidget):
+    def __init__(self):
+        super().__init__()
+        self.widget = Text()
+
+    def getWidget(self):
+        return self.widget
+
+    def getValue(self):
+        return self.widget.value    
+
+    def setValue(self, value: str):
+        self.widget.value = value
+    
+
+# ///////////////////////////////////////////////// //
+#                BiProcessInputSelect
+# ///////////////////////////////////////////////// //
+class BiProcessInputSelect(BiProcessInputWidget):
+
+    def __init__(self):
+        super().__init__()
+
+        self.widget = Dropdown()
+
+    def getWidget(self):
+        return self.widget
+
+    def setContentStr(self, content: str):
+        contentList = content.split(";")
+        self.widget.options = contentList
+
+    def setContentList(self, content: list):
+        self.widget.options = content
+
+    def setValue(self, value: str):
+        self.widget.value = value
+
+# ///////////////////////////////////////////////// //
+#                BiProcessInputBrowser
+# ///////////////////////////////////////////////// //
+class BiProcessInputBrowser(BiProcessInputWidget):
+    def __init__(self, isDir: bool):
+        super().__init__()
+        self.isDir = isDir
+        self.widget = Text()
+
+    def getWidget(self):
+        return self.widget
+
+    def setValue(self, value: str):
+        self.widget = value  
+
+    def getValue(self):
+        return self.widget.value    
+
+class BiRunParameterExperimentWidget:
+    def __init__(self, experiment: BiExperiment, process_info: BiProcessInfo):
+        self.experiment = experiment
+        self.process_info = process_info
+        self.labels = dict() # <str, QLabel>
+        self.widgets = dict() # <str, BiProcessInputWidget>
+
+
+        advancedToggleButton = ToggleButton(description='Advanced')
+        advancedToggleButton.observe(self.showHideAdvanced)
+
+        self.advancedMode = True
+
+        row = 0
+        parametersWidgetsList = []
+        for parameter in self.process_info.inputs:
+            if parameter.io == IO_PARAM():
+                row += 1
+                titleLabel = Label(value=parameter.description)
+                lineWidgets = []
+                self.labels[parameter.name] = titleLabel
+                lineWidgets.append(titleLabel)
+
+                if parameter.type == "integer" or parameter.type == PARAM_NUMBER() or parameter.type == PARAM_STRING():
+                    valueEdit = BiProcessInputValue() 
+                    valueEdit.setKey(parameter.name)
+                    valueEdit.setValue(parameter.value)
+                    valueEdit.setAdvanced(parameter.is_advanced)
+                    self.widgets[parameter.name] = valueEdit
+                    lineWidgets.append(valueEdit.getWidget())
+                
+                elif parameter.type == PARAM_SELECT():
+                    w = BiProcessInputSelect()
+                    w.setKey(parameter.name)
+                    # TODO add contentstr
+                    w.setValue(parameter.value)
+                    w.setAdvanced(parameter.is_advanced)
+                    self.widgets[parameter.name] = w
+                    lineWidgets.append(w.getWidget())
+        
+                elif parameter.type == PARAM_FILE():
+                    w = BiProcessInputBrowser(False)
+                    w.setKey(parameter.name)
+                    w.setAdvanced(parameter.is_advanced)
+                    self.widgets[parameter.name] = w
+                    lineWidgets.append(w.getWidget())
+
+                parametersWidgetsList.append(HBox(lineWidgets))
+
+        self.widget = VBox(parametersWidgetsList)   
+        self.showHideAdvanced()              
+
+    def showHideAdvanced(self):
+        if self.advancedMode == True:
+            self.advancedMode = False
+        else:
+            self.advancedMode = True
+
+        for key in self.labels:
+            label = self.labels[key]
+            widget = self.widgets[key]
+
+            if widget.isAdvanced() and self.advancedMode:
+                label.layout.visibility = 'visible'
+                widget.getWidget().layout.visibility = 'visible'
+            elif widget.isAdvanced() and not self.advancedMode:
+                label.layout.visibility = 'hidden'
+                widget.getWidget().layout.visibility = 'hidden' 
+
+    def getWidget(self):
+        return self.widget    
+
+class BiRunExperimentWidget:
+    def __init__(self, experiment_dir: str, process_xml: str):
+
+        self.experiment = BiExperiment(os.path.join(experiment_dir,'experiment.md.json'))
+        self.process_info = BiProcessParser(process_xml).parse()
+        
+        inputsWidget = BiRunInputsExperimentWidget(self.experiment, self.process_info)
+        parametersWidget = BiRunParameterExperimentWidget(self.experiment, self.process_info)
+        box1 = VBox([Label("Inputs"), inputsWidget.getWidget()])
+        box2 = VBox([Label("Parameters"), parametersWidget.getWidget()])
+
+        self.widget = VBox([box1, box2])
+
+    def getWidget(self):
+        return self.widget    
+        

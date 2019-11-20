@@ -20,6 +20,7 @@ import json
 import errno
 import os
 import ntpath
+from pathlib import Path
  
 class BiMetaData(BiObject):
     """Abstract class that store a data metadata
@@ -186,6 +187,24 @@ class BiData(BiMetaData):
 
         return self.metadata["common"]['url']   
 
+    def url_relative_experiment(self) -> str:
+        """get the data file path relative to the experiment folder included
+
+        example: myexperiment/data/filename.tif
+        
+        Returns
+        ----------
+        str
+            The path (or url) of the metadata file 
+
+        """
+
+        filename = self.metadata["common"]['url']
+        dataset_dir_name = os.path.basename(self.md_file_path()) 
+        experiment_dir_name = os.path.basename(Path(self.md_file_path()).parent)
+          
+        return os.path.join(experiment_dir_name, dataset_dir_name, filename)  
+
     def name(self) -> str:
         """get the data name
 
@@ -273,7 +292,22 @@ class BiData(BiMetaData):
         if file == '' or os.path.isfile(file):
             return file
         else:    
-            return os.path.join(self.md_file_path(), file)      
+            return os.path.join(self.md_file_path(), file)  
+
+    def thumbnail_relative_experiment(self):
+        """get the data thumbnail path relative to the experiment folder (ex: ./exp_folder/data/data1_thumb.jpeg)
+
+        Returns
+        ----------
+        str
+            The thumbnail url
+
+        """
+        filename = self.thumbnail_as_stored() 
+        dataset_dir_name = os.path.basename(self.md_file_path()) 
+        experiment_dir_name = os.path.basename(Path(self.md_file_path()).parent)
+          
+        return os.path.join(experiment_dir_name, dataset_dir_name, filename)              
 
     def display(self):
         """Display inherited from BiObject"""
