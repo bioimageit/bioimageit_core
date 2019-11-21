@@ -23,6 +23,7 @@ from pathlib import Path
 
 from .experiment import *
 from .process import *
+from .runner import BiRunnerExperiment
 
 class BiButtonInfo:
     def __init__(self, title: str, info: str):
@@ -526,14 +527,26 @@ class BiRunInputsExperimentWidget:
         self.experiment = experiment
         self.info = process_info
 
+        form_item_layout = Layout(
+            display='flex',
+            flex_flow='row',
+            justify_content='space-between'
+        )
+
         inputBoxes = []
         for inp in self.info.inputs:
             if inp.io == IO_INPUT():
                 nameLabel = Label(value=inp.description)
                 dataComboBox = Dropdown(options=self.get_experiment_data_list())
-                inputBoxes.append(HBox([nameLabel, dataComboBox]))
+                inputBoxes.append(Box([nameLabel, dataComboBox], layout=form_item_layout))
 
-        self.widget = Box(inputBoxes)
+        self.widget = Box(inputBoxes, layout=Layout(
+            display='flex',
+            flex_flow='column',
+            border='solid 1px gray',
+            align_items='stretch',
+            width='80%'
+        ))  
 
     def getWidget(self):
         return self.widget
@@ -648,13 +661,21 @@ class BiRunParameterExperimentWidget:
         self.widgets = dict() # <str, BiProcessInputWidget>
 
 
-        advancedToggleButton = ToggleButton(description='Advanced')
-        advancedToggleButton.observe(self.showHideAdvanced)
+        self.advancedToggleButton = ToggleButton(description='Advanced')
+        self.advancedToggleButton.observe(self.showHideAdvanced)
 
         self.advancedMode = True
+        self.advancedToggleButton.value = False
+
+        form_item_layout = Layout(
+            display='flex',
+            flex_flow='row',
+            justify_content='space-between'
+        )
+
+        form_items = [Box([Label(''), self.advancedToggleButton], layout=form_item_layout)]
 
         row = 0
-        parametersWidgetsList = []
         for parameter in self.process_info.inputs:
             if parameter.io == IO_PARAM():
                 row += 1
@@ -687,12 +708,18 @@ class BiRunParameterExperimentWidget:
                     self.widgets[parameter.name] = w
                     lineWidgets.append(w.getWidget())
 
-                parametersWidgetsList.append(HBox(lineWidgets))
+                form_items.append(Box(lineWidgets, layout=form_item_layout))  
 
-        self.widget = VBox(parametersWidgetsList)   
-        self.showHideAdvanced()              
+        self.widget = Box(form_items, layout=Layout(
+            display='flex',
+            flex_flow='column',
+            border='solid 1px gray',
+            align_items='stretch',
+            width='80%'
+        ))  
+        self.showHideAdvanced('')              
 
-    def showHideAdvanced(self):
+    def showHideAdvanced(self, v):
         if self.advancedMode == True:
             self.advancedMode = False
         else:
@@ -711,6 +738,7 @@ class BiRunParameterExperimentWidget:
 
     def getWidget(self):
         return self.widget    
+        
 
 class BiRunExperimentWidget:
     def __init__(self, experiment_dir: str, process_xml: str):
@@ -720,11 +748,145 @@ class BiRunExperimentWidget:
         
         inputsWidget = BiRunInputsExperimentWidget(self.experiment, self.process_info)
         parametersWidget = BiRunParameterExperimentWidget(self.experiment, self.process_info)
-        box1 = VBox([Label("Inputs"), inputsWidget.getWidget()])
-        box2 = VBox([Label("Parameters"), parametersWidget.getWidget()])
+        
+        previewButton = Button(description='Preview')
+        previewButton.on_click(self.preview)
+        execButton = Button(description='Execute')
 
-        self.widget = VBox([box1, box2])
+        previewButton.on_click(self.preview)
+        execButton.on_click(self.execute)
+
+        form_item_layout = Layout(
+            display='flex',
+            flex_flow='row',
+            justify_content='space-between'
+        )
+
+        form_items = [
+            Box([Label("Inputs"), inputsWidget.getWidget()], layout=form_item_layout),
+            Box([Label("Parameters"), parametersWidget.getWidget()], layout=form_item_layout),
+            HBox([previewButton, execButton], layout=form_item_layout)
+        ]
+
+        #self.widget = VBox([box1, box2, box3])
+        self.widget = Box(form_items, layout=Layout(
+            display='flex',
+            flex_flow='column',
+            border='solid 0px',
+            align_items='stretch',
+            width='100%'
+        ))  
+
+    def preview(self):
+        pass
+
+    def execute(self):
+        pass
 
     def getWidget(self):
         return self.widget    
         
+
+class BiProcessRunThread:
+
+    def __init__(self):
+        super().__init__()
+        self.experiment = None
+        self.processInfo = None
+        self.parametersList = []
+        self.selectedDataList = []
+        self.outputDataSet = ''
+ 
+    def run(self):
+        if len(self.selectedDataList) > 0 and "url" in self.selectedDataList[0]["filters"][0]:
+            self.run_list()
+        else:
+            self.run_filter()    
+
+    def run_list(self):
+        # instanciate runner
+        runner = BiRunnerExperiment(self.experiment) 
+        #configFile = os.path.join(BiSettingsAccess.instance.value("Processes", "Processes directory"), "config.json")
+        #runner.set_config(BiConfig(configFile))
+        
+        # set process and parameters
+        params = []
+        for p in self.parametersList:
+            params.append(p["name"])
+            params.append(p["value"])
+        runner.set_process(self.processInfo.xml_file_url, *params) 
+
+        # set inputs
+        for data in self.selectedDataList:
+            _id = data['id']
+
+            _dataset_name = ''
+
+            _names = data['name'].split(':')
+            if len(_names) == 2:
+                _dataset_name = _names[0]  
+            else:
+                _dataset_name = data['name']
+
+            _urls = []
+            for _filter in data['filters']:
+                _urls.append(os.path.join(self.experiment.md_file_dir(), _dataset_name, _filter['url']))
+            runner.add_input_by_urls(_id, _urls)
+
+        # output dataset
+        if self.outputDataSet != "":
+            runner.setOutputDataSet(self.outputDataSet)
+
+        #run
+        runner.run()  
+
+        # final progress
+        progress = dict()
+        progress["progress"] = 100
+        progress["message"] = 'done'
+        self.progressSignal.emit(progress)  
+
+
+    def run_filter(self): 
+        # instanciate runner
+        runner = runnerpy.BiRunnerExperiment(self.experiment) 
+        configFile = os.path.join(BiSettingsAccess.instance.value("Processes", "Processes directory"), "config.json")
+        runner.set_config(BiConfig(configFile))
+        runner.add_observer(self.runObserver)
+
+        # set process and parameters
+        params = []
+        for p in self.parametersList:
+            params.append(p["name"])
+            params.append(p["value"])
+        runner.set_process(self.processInfo.xml_file_url, *params) 
+
+        # set inputs
+        for data in self.selectedDataList:
+            _id = data['id']
+            
+            _dataset_name = ''
+            _data_name = ''
+
+            _names = data['name'].split(':')
+            if len(_names) == 2:
+                _dataset_name = _names[0]  
+            else:
+                _dataset_name = data['name']   
+
+            _data_name = data["originname"]    
+
+            _query = ''
+            for _filter in data['filters']:
+                _query += _filter['name'] + _filter['operator'] + _filter['value']
+            
+            runner.add_input(_id, _dataset_name, _query, _data_name)
+
+        #run
+        runner.run()  
+
+        # final progress
+        progress = dict()
+        progress["progress"] = 100
+        progress["message"] = 'done'
+        self.progressSignal.emit(progress)         
