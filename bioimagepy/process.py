@@ -72,6 +72,7 @@ import tempfile
 from libtiff import TIFF
 import imageio 
 import shlex
+from spython.main import Client
 
 def DATA_IMAGE():
     """Type for data image""" 
@@ -284,24 +285,16 @@ class BiProcess(BiObject):
         cmd = " ".join(cmd.split())
 
         # 2.3. exec
-        # try to find the program
-        cmd_path = ''
-        found_program = False
-        if os.path.isfile(self.info.program):
-            found_program = True
-        else:
-            xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
-            if os.path.isfile( os.path.join(xml_root_path, self.info.program)):
-                cmd_path = xml_root_path 
-                found_program = True
-
-        # run the program
-        if not found_program:
-            print("Warning: Cannot find a file corresponding to the program", self.info.program)   
-
         print("cmd:", os.path.join(cmd_path, cmd))
         args = shlex.split(os.path.join(cmd_path, cmd))
-        subprocess.run(args)
+
+        container = info.container()
+        if container and container['type'] == 'singularity':
+            puller = Client.execute(container['uri'], args)
+            for line in puller:
+                print(line)
+        else:
+            subprocess.run(args)
         
 
     def exec_dir(self, *args):
@@ -373,7 +366,7 @@ class BiProcess(BiObject):
             arg = args[i]
             for input_arg in self.info.inputs:
                 if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and input_arg.is_data == True:
-                    if input_arg.type == DATA_IMAGE():
+                    if input_arg.type == DATA_IMAGE() or input_arg.type == "tif" or input_arg.type == "tiff":
                         image_tmp_path = os.path.join(self.tmp_dir, input_arg.name + ".tif")
                         tiff = TIFF.open(image_tmp_path, mode='w')
                         tiff.write_image(args[i+1])
@@ -389,7 +382,7 @@ class BiProcess(BiObject):
 
         # 2.3. create names for outputs files in tmp 
         for output_arg in self.info.outputs:     
-            if output_arg.type == DATA_IMAGE():
+            if output_arg.type == DATA_IMAGE() or output_arg.type == "tif" or output_arg.type == "tiff":
                 output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".tif") 
             elif output_arg.type == DATA_TXT():
                 output_arg.value = os.path.join(self.tmp_dir, output_arg.name + ".txt") 
@@ -408,6 +401,8 @@ class BiProcess(BiObject):
         cmd = self.info.command   
         for input_arg in self.info.inputs:
             cmd = cmd.replace("${"+input_arg.name+"}", str(input_arg.value))
+            input_arg_name_simple = input_arg.name.replace("-", "")
+            cmd = cmd.replace("${"+input_arg_name_simple+"}", str(input_arg.value))
         for output_arg in self.info.outputs:
             cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))    
 
@@ -429,12 +424,18 @@ class BiProcess(BiObject):
                 found_program = True
 
         # run the program
-        #if not found_program:
-        #    print("Warning: Cannot find a file corresponding to the program", self.info.program)   
-
         print("cmd:", os.path.join(cmd_path, cmd))
         args = shlex.split(os.path.join(cmd_path, cmd))
-        subprocess.run(args)
+
+        container = self.info.container()
+        if container and container['type'] == 'singularity':
+            print("run singularity container:", container['uri'])
+            puller = Client.execute(container['uri'], args)
+            # TODO add puuler to log
+            #for line in puller:
+            #    print(line)
+        else:
+            subprocess.run(args)
 
         # 2.6. load and return the outputs
         if self.info.outputs_size() == 1:
@@ -507,6 +508,8 @@ class BiProcessParser(BiObject):
                 desc = child.text
                 desc = desc.replace('\t', '')
                 self.info.description = desc
+            elif child.tag == 'requirements':
+                self._parse_requirements(child)    
             elif child.tag == 'command':
                 self._parse_command(child)
             elif child.tag == 'inputs':
@@ -520,6 +523,19 @@ class BiProcessParser(BiObject):
 
         self._parse_hidden_params()
         return self.info
+
+    def _parse_requirements(self, node):
+        """Parse the requirements"""
+
+        for child in node: 
+            requirement = dict()
+            if child.tag == 'container':
+                requirement['origin'] = 'container'
+                if 'type' in child.attrib:
+                    requirement['type'] = child.attrib['type'] 
+                requirement['uri'] = child.text
+
+            self.info.requirements.append(requirement)
 
     def _parseTool(self):
         """Parse the tool information"""
@@ -545,8 +561,7 @@ class BiProcessParser(BiObject):
     def _parse_help(self, node):
         """Parse the help information"""
 
-        if 'url' in node.attrib:
-            self.info.help = node.attrib['url']
+        self.info.help = node.text
 
     def _parse_categories(self, node):
         """Parse categories"""
@@ -567,66 +582,63 @@ class BiProcessParser(BiObject):
                 if 'name' in child.attrib:
                     input_parameter.name = child.attrib['name'] 
 
+                if 'argument' in child.attrib:
+                    input_parameter.name = child.attrib['argument']     
+
                 if 'label' in child.attrib:
                     input_parameter.description = child.attrib['label'] 
 
                 if 'type' in child.attrib:
-                    if child.attrib['type'] == 'number':
-                        input_parameter.type = PARAM_NUMBER()
-                    elif child.attrib['type'] == 'string':
-                        input_parameter.type = PARAM_STRING()
-                    elif child.attrib['type'] == 'bool' or format == 'boolean':
-                        input_parameter.type = PARAM_BOOLEAN()
-                    else:
-                        raise BiProcessParseException("The format of the input param " + input_parameter.name + " is not supported")
-
-                if 'value' in child.attrib:
-                    input_parameter.value = child.attrib['value'] 
-
-                if 'advanced' in child.attrib:
-                    if child.attrib['advanced'] == "True" or child.attrib['advanced'] == "true":
-                        input_parameter.is_advanced = True
-   
-                if child.attrib['type'] == PARAM_SELECT():
-                    # TODO: implement select case
-                    input_parameter.selectInfo = BiCmdSelect()
-
-                if 'default' in child.attrib:
-                    input_parameter.default_value = child.attrib['default']  
-                    input_parameter.value = child.attrib['default'] 
-                input_parameter.value_suffix = '' 
-
-                self.info.inputs.append(input_parameter)
-
-            elif child.tag == 'data':   
-                input_parameter = BiProcessParameter()
-                input_parameter.io = IO_INPUT() 
-                input_parameter.is_data = True
-
-                if 'name' in child.attrib:
-                    input_parameter.name = child.attrib['name'] 
-
-                if 'label' in child.attrib:
-                    input_parameter.description = child.attrib['label'] 
+                    if child.attrib['type'] == 'data':
+                        input_parameter.io = IO_INPUT() 
+                        input_parameter.is_data = True
     
-                if 'default' in child.attrib:
-                    input_parameter.default_value = child.attrib['default'] 
-                    input_parameter.value = child.attrib['default'] 
+                        if 'value' in child.attrib:
+                            input_parameter.default_value = child.attrib['value'] 
+                            input_parameter.value = child.attrib['value'] 
 
-                if 'format' in child.attrib:
-                    if child.attrib['format'] == 'image':
-                        input_parameter.type = DATA_IMAGE()
-                    elif child.attrib['format'] == 'txt':
-                        input_parameter.type = DATA_TXT()  
-                    elif child.attrib['format'] == 'array':
-                        input_parameter.type = DATA_ARRAY()
-                    elif child.attrib['format'] == 'matrix':
-                        input_parameter.type = DATA_MATRIX()    
+                        if 'format' in child.attrib:
+                            if child.attrib['format'] == 'image' or child.attrib['format'] == 'tif' or child.attrib['format'] == 'tiff':
+                                input_parameter.type = DATA_IMAGE()
+                            elif child.attrib['format'] == 'txt':
+                                input_parameter.type = DATA_TXT()  
+                            elif child.attrib['format'] == 'array':
+                                input_parameter.type = DATA_ARRAY()
+                            elif child.attrib['format'] == 'matrix':
+                                input_parameter.type = DATA_MATRIX()    
+                            else:
+                                raise BiProcessParseException("The format of the input data " + input_parameter.name + " is not supported")
+
+                        input_parameter.value_suffix = self._parse_parametervalue_suffix(input_parameter.name)
+
                     else:
-                        raise BiProcessParseException("The format of the input data " + input_parameter.name + " is not supported")
+                        if child.attrib['type'] == 'number' or child.attrib['type'] == 'float':
+                            input_parameter.type = PARAM_NUMBER()
+                        elif child.attrib['type'] == 'string':
+                            input_parameter.type = PARAM_STRING()
+                        elif child.attrib['type'] == 'bool' or child.attrib['type'] == 'boolean':
+                            input_parameter.type = PARAM_BOOLEAN()
+                        else:
+                            raise BiProcessParseException("The format of the input param " + input_parameter.name + " is not supported")
 
-                input_parameter.value_suffix = self._parse_parametervalue_suffix(input_parameter.name)
-                self.info.inputs.append(input_parameter)   
+                        if 'value' in child.attrib:
+                            input_parameter.value = child.attrib['value'] 
+
+                        if 'advanced' in child.attrib:
+                            if child.attrib['advanced'] == "True" or child.attrib['advanced'] == "true":
+                                input_parameter.is_advanced = True
+        
+                        if child.attrib['type'] == PARAM_SELECT():
+                            # TODO: implement select case
+                            input_parameter.selectInfo = BiCmdSelect()
+
+                        if 'value' in child.attrib:
+                            input_parameter.default_value = child.attrib['value']  
+                            input_parameter.value = child.attrib['value'] 
+                        input_parameter.value_suffix = '' 
+
+                    self.info.inputs.append(input_parameter)
+
 
     def _parse_parametervalue_suffix(self,parameter_name: str) -> str:
         """Parse the command line to search if a input data have a suffix (ex: $(data)_suffix)"""
@@ -659,7 +671,7 @@ class BiProcessParser(BiObject):
                     output_parameter.value = child.attrib['default'] 
 
                 if 'format' in child.attrib:
-                    if child.attrib['format'] == 'image':
+                    if child.attrib['format'] == 'image' or child.attrib['format'] == 'tif' or child.attrib['format'] == 'tiff':
                         output_parameter.type = DATA_IMAGE()
                     elif child.attrib['format'] == 'txt':  
                         output_parameter.type = DATA_TXT()  
@@ -847,6 +859,7 @@ class BiProcessInfo(BiObject):
         self.name = ''
         self.version = ''
         self.description = ''
+        self.requirements = list()
         self.command = ''
         self.command_args = []
         self.program = ''
@@ -878,6 +891,22 @@ class BiProcessInfo(BiObject):
             if param.name == name:
                 return True
         return False                
+
+    def container(self):
+        """Get the first container in the requirements
+        
+        Returns
+        -------
+        dict
+            Desctiption of the container requirement (origin, type, uri)
+        
+        """
+
+        container = None
+        for req in self.requirements:
+            if req['origin'] == 'container':
+                return req
+
 
     def param_size(self):
         """Calculate the number of parameters
@@ -937,4 +966,7 @@ class BiProcessInfo(BiObject):
         for param in self.inputs:
             param.display()
         for param in self.outputs:
-            param.display()    
+            param.display()  
+        print('requirements:')
+        for req in self.requirements:
+            print("origin:",req['origin'], "type", req['type'], "uri:",req['uri'])
