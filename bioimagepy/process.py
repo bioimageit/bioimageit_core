@@ -405,8 +405,6 @@ class BiProcess(BiObject):
         cmd = self.info.command   
         for input_arg in self.info.inputs:
             cmd = cmd.replace("${"+input_arg.name+"}", str(input_arg.value))
-            input_arg_name_simple = input_arg.name.replace("-", "")
-            cmd = cmd.replace("${"+input_arg_name_simple+"}", str(input_arg.value))
         for output_arg in self.info.outputs:
             cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))    
 
@@ -416,20 +414,9 @@ class BiProcess(BiObject):
         cmd = " ".join(cmd.split())
 
         # 2.5. exec
-        # try to find the program
-        cmd_path = ''
-        found_program = False
-        if os.path.isfile(self.info.program):
-            found_program = True
-        else:
-            xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
-            if os.path.isfile( os.path.join(xml_root_path, self.info.program)):
-                cmd_path = xml_root_path 
-                found_program = True
-
         # run the program
-        print("cmd:", os.path.join(cmd_path, cmd))
-        args = shlex.split(os.path.join(cmd_path, cmd))
+        print("cmd:",cmd)
+        args = shlex.split(cmd)
 
         container = self.info.container()
         if container and container['type'] == 'singularity':
@@ -525,7 +512,6 @@ class BiProcessParser(BiObject):
             elif child.tag == 'categories':
                 self._parse_categories(child)    
 
-        self._parse_hidden_params()
         return self.info
 
     def _parse_requirements(self, node):
@@ -560,19 +546,11 @@ class BiProcessParser(BiObject):
         command = command.replace('\t', '')
         command = command.replace('\n', '')
         self.info.command = command    
-        self.info.command_args = command.split(' ')
 
     def _parse_help(self, node):
         """Parse the help information"""
 
         self.info.help = node.text
-
-    def _parse_categories(self, node):
-        """Parse categories"""
-
-        for child in node: 
-            if child.tag == 'category':
-                self.info.categories.append(child.text)
 
     def _parse_inputs(self, node):
         """Parse the inputs"""
@@ -580,17 +558,18 @@ class BiProcessParser(BiObject):
         for child in node:  
             if child.tag == 'param':
                 input_parameter = BiProcessParameter()
-                input_parameter.io = IO_PARAM()
-                input_parameter.is_data = False
 
                 if 'name' in child.attrib:
                     input_parameter.name = child.attrib['name'] 
 
                 if 'argument' in child.attrib:
-                    input_parameter.name = child.attrib['argument']     
+                    input_parameter.name = child.attrib['argument'].replace("-", "")  
 
                 if 'label' in child.attrib:
                     input_parameter.description = child.attrib['label'] 
+
+                if 'help' in child.attrib:
+                    input_parameter.help = child.attrib['help']     
 
                 if 'type' in child.attrib:
                     if child.attrib['type'] == 'data':
@@ -613,10 +592,11 @@ class BiProcessParser(BiObject):
                             else:
                                 raise BiProcessParseException("The format of the input data " + input_parameter.name + " is not supported")
 
-                        input_parameter.value_suffix = self._parse_parametervalue_suffix(input_parameter.name)
-
                     else:
-                        if child.attrib['type'] == 'number' or child.attrib['type'] == 'float':
+                        input_parameter.io = IO_PARAM()
+                        input_parameter.is_data = False
+
+                        if child.attrib['type'] == 'number' or child.attrib['type'] == 'float' or child.attrib['type'] == 'integer':
                             input_parameter.type = PARAM_NUMBER()
                         elif child.attrib['type'] == 'string':
                             input_parameter.type = PARAM_STRING()
@@ -639,21 +619,9 @@ class BiProcessParser(BiObject):
                         if 'value' in child.attrib:
                             input_parameter.default_value = child.attrib['value']  
                             input_parameter.value = child.attrib['value'] 
-                        input_parameter.value_suffix = '' 
 
-                    self.info.inputs.append(input_parameter)
+                self.info.inputs.append(input_parameter)
 
-
-    def _parse_parametervalue_suffix(self,parameter_name: str) -> str:
-        """Parse the command line to search if a input data have a suffix (ex: $(data)_suffix)"""
-
-        suffix = ''
-        search = '${'+parameter_name+'}'
-        for arg in self.info.command_args:
-            if arg.startswith(search):
-                suffix = arg.replace(search, '')
-                return suffix
-        return suffix
 
     def _parse_outputs(self, node):   
         """Parse the outputs."""
@@ -669,10 +637,6 @@ class BiProcessParser(BiObject):
 
                 if 'label' in child.attrib:
                     output_parameter.description = child.attrib['label'] 
-    
-                if 'default' in child.attrib:
-                    output_parameter.default_value = child.attrib['default'] 
-                    output_parameter.value = child.attrib['default'] 
 
                 if 'format' in child.attrib:
                     if child.attrib['format'] == 'image' or child.attrib['format'] == 'tif' or child.attrib['format'] == 'tiff':
@@ -690,30 +654,8 @@ class BiProcessParser(BiObject):
                     else:
                         raise BiProcessParseException("The format of the output data " + output_parameter.name + " is not supported")
                 
-                output_parameter.value_suffix = self._parse_parametervalue_suffix(output_parameter.name)
                 self.info.outputs.append(output_parameter) 
 
-    def _parse_hidden_params(self):
-        """Parse the hidden parameters.
-        
-        Hidden parameters state for the parameters in the command line that are 
-        not accessible by the user
-        
-        """
-
-        # Parse the program name
-        if len(self.info.command_args) > 0:
-            self.info.program = self.info.command_args[0]
-        else:
-            raise BiProcessParseException("Cannot parse the command line")  
-
-        # Parse hidden parameters
-        for arg in self.info.command_args:
-            if not arg.startswith('${') and not self.info.is_param(arg) and arg != self.info.program:
-                param = BiProcessParameter()
-                param.name = arg
-                param.type = PARAM_HIDDEN()
-                self.info.inputs.append(param)
 
 class BiCmdSelect(BiObject):
     """Container for a select parameter options
@@ -801,8 +743,8 @@ class BiProcessParameter(BiObject):
         self.io = '' # str: IO type if parameter is IO (in IO_XXX names)
         self.default_value = '' # str: Parameter default value
         self.selectInfo = BiCmdSelect() # BiCmdSelect: Choices for a select parameter
-        self.value_suffix = '' # str: Parameter suffix (needed if programm add suffix to IO)
         self.is_advanced = False # bool: True if parameter is advanced
+        self.help = '' # str: help text
 
     def display(self):
         """Display the process parameter informations to console"""
@@ -813,7 +755,6 @@ class BiProcessParameter(BiObject):
         print("\ttype:", self.type)
         print("\tio:", self.io) 
         print("\tdefault_value:", self.default_value) 
-        print("\tvalue_suffix:", self.value_suffix)
         print("\tis_advanced:", self.is_advanced)
         print("\t------------")
 
@@ -865,8 +806,6 @@ class BiProcessInfo(BiObject):
         self.description = ''
         self.requirements = list()
         self.command = ''
-        self.command_args = []
-        self.program = ''
         self.inputs = []
         self.outputs = []
         self.help = ''
@@ -963,12 +902,11 @@ class BiProcessInfo(BiObject):
         print('version:', self.version) 
         print('description:', self.description) 
         print('help:', self.help) 
-        print('program:', self.program) 
         print('command:', self.command) 
-        print('args:', self.command) 
         print('inputs:')
         for param in self.inputs:
             param.display()
+        print('outputs:')    
         for param in self.outputs:
             param.display()  
         print('requirements:')
