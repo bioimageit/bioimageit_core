@@ -272,12 +272,14 @@ class BiProcess(BiObject):
                 if output_arg.name == arg:    
                      output_arg.value = args[i+1] 
 
-        # 2.2.1- build the command line 
+        # 2.2.1. build the command line   
         cmd = self.info.command   
         for input_arg in self.info.inputs:
             cmd = cmd.replace("${"+input_arg.name+"}", str(input_arg.value))
+            input_arg_name_simple = input_arg.name.replace("-", "")
+            cmd = cmd.replace("${"+input_arg_name_simple+"}", str(input_arg.value))
         for output_arg in self.info.outputs:
-            cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))    
+            cmd = cmd.replace("${"+output_arg.name+"}", str(output_arg.value))  
 
         # 2.2.2. replace the command variables
         cmd = self.replace_env_variables(cmd)
@@ -285,14 +287,16 @@ class BiProcess(BiObject):
         cmd = " ".join(cmd.split())
 
         # 2.3. exec
-        print("cmd:", os.path.join(cmd_path, cmd))
-        args = shlex.split(os.path.join(cmd_path, cmd))
+        print("cmd:", cmd)
+        args = shlex.split(cmd)
 
-        container = info.container()
+        container = self.info.container()
         if container and container['type'] == 'singularity':
+            print("run singularity container:", container['uri'])
             puller = Client.execute(container['uri'], args)
-            for line in puller:
-                print(line)
+            # TODO add puller to log
+            #for line in puller:
+            #    print(line)
         else:
             subprocess.run(args)
         
@@ -431,7 +435,7 @@ class BiProcess(BiObject):
         if container and container['type'] == 'singularity':
             print("run singularity container:", container['uri'])
             puller = Client.execute(container['uri'], args)
-            # TODO add puuler to log
+            # TODO add puller to log
             #for line in puller:
             #    print(line)
         else:
