@@ -167,6 +167,15 @@ def bi_io_write(data, filePath: str, dataType = DATA_TXT()):
         file.write(str(data[length-1]))
         file.close() 
 
+    if (dataType == DATA_TXT or dataType == 'txt'):
+
+        length = data.shape[0]
+        file = open(filePath,'w') 
+        for i in range(length-1):
+            file.write(str(data[i])+',')
+        file.write(str(data[length-1]))
+        file.close()    
+
     else:
         raise BiProcessExecException('Cannot save the data type ' + dataType)
 
@@ -209,6 +218,7 @@ class BiProcess(BiObject):
         parser = BiProcessParser(xml_file_url)
         self.info = parser.parse()
         self.tmp_dir = tempfile.gettempdir()
+        self.use_singularity = True
         self.config = None
 
     def setConfig(self, config: BiConfig):
@@ -258,7 +268,7 @@ class BiProcess(BiObject):
 
         for output_arg in self.info.outputs:
             if output_arg.name not in args:
-                print('Warning (BiProcess): cannot find the input ' + output_arg.name + ' will use the default value: ' + output_arg.default_value)
+                print('Warning (BiProcess): cannot find the output ' + output_arg.name + ' will use the default value: ' + output_arg.default_value)
                 output_arg.value = output_arg.default_value
         
         # 2. exec    
@@ -291,7 +301,7 @@ class BiProcess(BiObject):
         args = shlex.split(cmd)
 
         container = self.info.container()
-        if container and container['type'] == 'singularity':
+        if self.use_singularity and container and container['type'] == 'singularity':
             print("run singularity container:", container['uri'])
             puller = Client.execute(container['uri'], args)
             # TODO add puller to log
@@ -330,6 +340,12 @@ class BiProcess(BiObject):
         """Execute the process where inputs and outputs are list of files"""  
         pass  
 
+    def contains(self, name, arr):
+        for i in range(len(arr)):
+            if str(name) == str(arr[i]):
+                return True
+        return False            
+
     def run(self, *args):
         """Execute the process on python data with the given arguments
         
@@ -353,7 +369,7 @@ class BiProcess(BiObject):
 
         # 1. check inputs
         for input_arg in self.info.inputs:
-            if input_arg.name not in args and input_arg.type != PARAM_HIDDEN():
+            if not self.contains(input_arg.name,args):
                 print('Warning (BiProcess): cannot find the input ' + input_arg.name + ' will use the default value: ' + input_arg.default_value)
                 input_arg.value = input_arg.default_value
 
@@ -362,27 +378,30 @@ class BiProcess(BiObject):
         for i in range(len(args)):
             arg = args[i]
             for input_arg in self.info.inputs:
-                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and input_arg.is_data == False:
+                if str(input_arg.name) == str(arg) and input_arg.is_data == False:
                     input_arg.value = args[i+1]
 
         # 2.2. save the inputs into tmp files
         for i in range(len(args)):
             arg = args[i]
             for input_arg in self.info.inputs:
-                if input_arg.name == arg and input_arg.type != PARAM_HIDDEN() and input_arg.is_data == True:
+                if str(input_arg.name) == str(arg) and input_arg.is_data == True:
+                    #print("try to save input:", input_arg.name, " as ", arg)
+                    #print("type:", input_arg.type)
                     if input_arg.type == DATA_IMAGE() or input_arg.type == "tif" or input_arg.type == "tiff":
                         image_tmp_path = os.path.join(self.tmp_dir, input_arg.name + ".tif")
                         tiff = TIFF.open(image_tmp_path, mode='w')
                         tiff.write_image(args[i+1])
                         tiff.close()
                         input_arg.value = image_tmp_path 
-                    if input_arg.type == DATA_ARRAY():
+                    if input_arg.type == DATA_ARRAY() or input_arg.type == "csv":
                         data_tmp_path = os.path.join(self.tmp_dir, input_arg.name + ".txt")
                         bi_io_write(args[i+1], data_tmp_path, DATA_ARRAY()) 
                         input_arg.value = data_tmp_path  
-                    if input_arg.type == DATA_TXT():
-                        # TODO save the data to file     
-                        input_arg.value = os.path.join(self.tmp_dir, input_arg.name + ".txt") 
+                    if input_arg.type == DATA_TXT(): 
+                        data_tmp_path = os.path.join(self.tmp_dir, input_arg.name + ".txt")
+                        bi_io_write(args[i+1], data_tmp_path, DATA_TXT()) 
+                        input_arg.value = data_tmp_path 
 
         # 2.3. create names for outputs files in tmp 
         for output_arg in self.info.outputs:     
@@ -419,7 +438,7 @@ class BiProcess(BiObject):
         args = shlex.split(cmd)
 
         container = self.info.container()
-        if container and container['type'] == 'singularity':
+        if self.use_singularity and container and container['type'] == 'singularity':
             print("run singularity container:", container['uri'])
             puller = Client.execute(container['uri'], args)
             # TODO add puller to log
@@ -441,7 +460,7 @@ class BiProcess(BiObject):
     def replace_env_variables(self, cmd) -> str:
         xml_root_path = os.path.dirname(os.path.abspath(self._xml_file_url))
         cmd_out = cmd.replace("${pwd}", xml_root_path) 
-        cmd_out = cmd_out.replace("${xmlDir}", xml_root_path) 
+        cmd_out = cmd_out.replace("$__tool_directory__", xml_root_path) 
         if self.config:
             for element in self.config.get_env():
                 cmd_out = cmd_out.replace("${"+element["name"]+"}", element["value"])
@@ -583,7 +602,7 @@ class BiProcessParser(BiObject):
                         if 'format' in child.attrib:
                             if child.attrib['format'] == 'image' or child.attrib['format'] == 'tif' or child.attrib['format'] == 'tiff':
                                 input_parameter.type = DATA_IMAGE()
-                            elif child.attrib['format'] == 'txt':
+                            elif child.attrib['format'] == 'txt' or child.attrib['format'] == 'json' or child.attrib['format'] == 'csv':
                                 input_parameter.type = DATA_TXT()  
                             elif child.attrib['format'] == 'array':
                                 input_parameter.type = DATA_ARRAY()
@@ -598,10 +617,17 @@ class BiProcessParser(BiObject):
 
                         if child.attrib['type'] == 'number' or child.attrib['type'] == 'float' or child.attrib['type'] == 'integer':
                             input_parameter.type = PARAM_NUMBER()
-                        elif child.attrib['type'] == 'string':
+                        elif child.attrib['type'] == 'string' or child.attrib['type'] == 'text':
                             input_parameter.type = PARAM_STRING()
                         elif child.attrib['type'] == 'bool' or child.attrib['type'] == 'boolean':
                             input_parameter.type = PARAM_BOOLEAN()
+                        elif child.attrib['type'] == PARAM_SELECT():
+                            input_parameter.type = PARAM_SELECT()
+                            input_parameter.selectInfo = BiCmdSelect()
+                            for optionnode in child:  
+                                if child.tag == 'option':
+                                    input_parameter.selectInfo.add(optionnode.text, optionnode.attrib['value'])
+                            input_parameter.selectInfo = BiCmdSelect()
                         else:
                             raise BiProcessParseException("The format of the input param " + input_parameter.name + " is not supported")
 
@@ -610,11 +636,7 @@ class BiProcessParser(BiObject):
 
                         if 'advanced' in child.attrib:
                             if child.attrib['advanced'] == "True" or child.attrib['advanced'] == "true":
-                                input_parameter.is_advanced = True
-        
-                        if child.attrib['type'] == PARAM_SELECT():
-                            # TODO: implement select case
-                            input_parameter.selectInfo = BiCmdSelect()
+                                input_parameter.is_advanced = True 
 
                         if 'value' in child.attrib:
                             input_parameter.default_value = child.attrib['value']  
@@ -641,7 +663,7 @@ class BiProcessParser(BiObject):
                 if 'format' in child.attrib:
                     if child.attrib['format'] == 'image' or child.attrib['format'] == 'tif' or child.attrib['format'] == 'tiff':
                         output_parameter.type = DATA_IMAGE()
-                    elif child.attrib['format'] == 'txt':  
+                    elif child.attrib['format'] == 'txt' or child.attrib['format'] == 'csv':  
                         output_parameter.type = DATA_TXT()  
                     elif child.attrib['format'] == 'number': 
                         output_parameter.type = DATA_NUMBER()      
