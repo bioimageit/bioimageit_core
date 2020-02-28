@@ -223,6 +223,11 @@ class BiProcess(BiObject):
 
     def setConfig(self, config: BiConfig):
         self.config = config
+        if 'use_singularity' in config.config:
+            if self.config.config['use_singularity'] == "true" or self.config.config['use_singularity'] == "True":
+                self.use_singularity = True
+        if 'tmp_dir' in config.config:
+            self.tmp_dir = config.config['tmp_dir']
 
     def display(self):
         """Display the process information in console"""
@@ -302,8 +307,9 @@ class BiProcess(BiObject):
 
         container = self.info.container()
         if self.use_singularity and container and container['type'] == 'singularity':
-            print("run singularity container:", container['uri'])
-            puller = Client.execute(container['uri'], args)
+            image_uri = self.replace_env_variables(container['uri'])
+            print("run singularity container:", image_uri)
+            Client.execute(image_uri, args)
             # TODO add puller to log
             #for line in puller:
             #    print(line)
@@ -439,11 +445,12 @@ class BiProcess(BiObject):
 
         container = self.info.container()
         if self.use_singularity and container and container['type'] == 'singularity':
-            print("run singularity container:", container['uri'])
-            puller = Client.execute(container['uri'], args)
+            image_uri = self.replace_env_variables(container['uri'])
+            print("run singularity container:", image_uri)
+            puller = Client.execute(image_uri, args)    
             # TODO add puller to log
-            #for line in puller:
-            #    print(line)
+            for line in puller:
+                print(line)
         else:
             subprocess.run(args)
 
@@ -462,8 +469,9 @@ class BiProcess(BiObject):
         cmd_out = cmd.replace("${pwd}", xml_root_path) 
         cmd_out = cmd_out.replace("$__tool_directory__", xml_root_path) 
         if self.config:
-            for element in self.config.get_env():
-                cmd_out = cmd_out.replace("${"+element["name"]+"}", element["value"])
+            if self.config.is_env():    
+                for element in self.config.get_env():
+                    cmd_out = cmd_out.replace("${"+element["name"]+"}", element["value"])
         return cmd_out        
 
 

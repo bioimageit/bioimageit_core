@@ -96,6 +96,12 @@ class BiConfig(BiObject):
         with open(self.config_file, 'w') as outfile:
             json.dump(self.config, outfile, indent=4) 
 
+    def is_env(self) -> bool:
+        if "env" in self.config:
+            return True
+        else:
+            return False    
+
     def get_env(self) -> dict:
         if "env" in self.config:
             return self.config['env']

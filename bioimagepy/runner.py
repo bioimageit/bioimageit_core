@@ -347,11 +347,11 @@ class BiRunnerExperiment():
             # setup outputs
             for output in self._process.info.outputs:
                 extension = '.dat'
-                if output.type == DATA_IMAGE():
+                if output.type == DATA_IMAGE() or output.type == "tiff" or output.type == "tif":
                     extension = '.tif'
                 elif output.type == DATA_TXT(): 
                     extension = '.txt' 
-                elif output.type == DATA_NUMBER() or output.type == DATA_ARRAY() or output.type == DATA_MATRIX() or output.type == DATA_TABLE(): 
+                elif output.type == DATA_NUMBER() or output.type == DATA_ARRAY() or output.type == DATA_MATRIX() or output.type == DATA_TABLE() or output.type == "csv": 
                     extension = '.csv'     
                 
                 input_basename = ntpath.basename(input_data[0][i])
@@ -563,7 +563,7 @@ class BiRunnerExperiment():
             inputs_values[n] = list()
             for i in range(data_count):
                 data_info = BiData(input_data[n][i])
-                if data_info.datatype() == DATA_NUMBER():
+                if data_info.datatype() == DATA_NUMBER() or data_info.datatype() == "csv" or data_info.datatype() == "txt":
                     with open(data_info.url(), 'r') as file:
                         value = file.read().replace('\n', '').replace(' ', '')
                         inputs_values[n].append(value)            
