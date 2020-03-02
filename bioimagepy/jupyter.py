@@ -521,6 +521,12 @@ class BiViewExperimentWidget:
     def getWidget(self):
         return self.tab
 
+class BiInputDesc:
+    def __init__(self, name: str, dataset: str, filter: str):
+        super().__init__()
+        self.name = name
+        self.dataset = dataset
+        self.filter = filter 
 
 class BiRunInputsExperimentWidget:
     def __init__(self, experiment: BiExperiment, process_info: BiProcessInfo):
@@ -534,10 +540,12 @@ class BiRunInputsExperimentWidget:
         )
 
         inputBoxes = []
+        self.selectDataSetWidgets = []
         for inp in self.info.inputs:
             if inp.io == IO_INPUT():
                 nameLabel = Label(value=inp.description)
                 dataComboBox = Dropdown(options=self.get_experiment_data_list())
+                self.selectDataSetWidgets.append(dataComboBox)
                 inputBoxes.append(Box([nameLabel, dataComboBox], layout=form_item_layout))
 
         self.widget = Box(inputBoxes, layout=Layout(
@@ -547,6 +555,18 @@ class BiRunInputsExperimentWidget:
             align_items='stretch',
             width='80%'
         ))  
+
+    def get_inputs(self):
+        inputs = []
+        i = -1
+        for inp in self.info.inputs:
+            if inp.io == IO_INPUT():
+                i = i+1
+                value = self.selectDataSetWidgets[i].value
+                if value == "data:data":
+                    value = "data"
+                inputs.append(BiInputDesc(inp.name, value, ''))
+        return inputs
 
     def getWidget(self):
         return self.widget
@@ -564,6 +584,7 @@ class BiRunInputsExperimentWidget:
                 data_list.append(processeddataset.name() + ':' + output.description)
 
         return data_list    
+
 
 class BiProcessInputWidget:
     def __init__(self):
@@ -632,6 +653,9 @@ class BiProcessInputSelect(BiProcessInputWidget):
     def setContentList(self, content: list):
         self.widget.options = content
 
+    def getValue(self):
+        return self.widget.value
+
     def setValue(self, value: str):
         self.widget.value = value
 
@@ -695,8 +719,10 @@ class BiRunParameterExperimentWidget:
                 elif parameter.type == PARAM_SELECT():
                     w = BiProcessInputSelect()
                     w.setKey(parameter.name)
-                    # TODO add contentstr
-                    w.setValue(parameter.value)
+
+                    w.setContentStr(parameter.selectInfo.contentStr())      
+                    
+                    #w.setValue(parameter.value)
                     w.setAdvanced(parameter.is_advanced)
                     self.widgets[parameter.name] = w
                     lineWidgets.append(w.getWidget())
@@ -736,6 +762,14 @@ class BiRunParameterExperimentWidget:
                 label.layout.visibility = 'hidden'
                 widget.getWidget().layout.visibility = 'hidden' 
 
+    def get_parameters(self):
+        args = []
+        for parameter in self.process_info.inputs:
+            if parameter.name in self.widgets:
+                args.append(parameter.name)
+                args.append(self.widgets[parameter.name].getValue())
+        return args        
+                
     def getWidget(self):
         return self.widget    
         
@@ -743,14 +777,14 @@ class BiRunParameterExperimentWidget:
 class BiRunExperimentWidget:
     def __init__(self, experiment_dir: str, process_xml: str):
 
+        self.process_xml = process_xml
         self.experiment = BiExperiment(os.path.join(experiment_dir,'experiment.md.json'))
         self.process_info = BiProcessParser(process_xml).parse()
         
-        inputsWidget = BiRunInputsExperimentWidget(self.experiment, self.process_info)
-        parametersWidget = BiRunParameterExperimentWidget(self.experiment, self.process_info)
+        self.inputsWidget = BiRunInputsExperimentWidget(self.experiment, self.process_info)
+        self.parametersWidget = BiRunParameterExperimentWidget(self.experiment, self.process_info)
         
         previewButton = Button(description='Preview')
-        previewButton.on_click(self.preview)
         execButton = Button(description='Execute')
 
         previewButton.on_click(self.preview)
@@ -763,8 +797,8 @@ class BiRunExperimentWidget:
         )
 
         form_items = [
-            Box([Label("Inputs"), inputsWidget.getWidget()], layout=form_item_layout),
-            Box([Label("Parameters"), parametersWidget.getWidget()], layout=form_item_layout),
+            Box([Label("Inputs"), self.inputsWidget.getWidget()], layout=form_item_layout),
+            Box([Label("Parameters"), self.parametersWidget.getWidget()], layout=form_item_layout),
             HBox([previewButton, execButton], layout=form_item_layout)
         ]
 
@@ -777,11 +811,25 @@ class BiRunExperimentWidget:
             width='100%'
         ))  
 
-    def preview(self):
-        pass
+    def preview(self, b):
+        print("Preview not yet implemented")
 
-    def execute(self):
-        pass
+    def execute(self, b):
+        runner = BiRunnerExperiment(self.experiment) 
+        #runner.set_config(BiConfig("../config.json"))
+        args = self.parametersWidget.get_parameters()
+        inputs = self.inputsWidget.get_inputs()
+
+        print("args=")
+        for t in range(len(args)):
+            print(args[t])
+        
+
+        runner.set_process(self.process_xml, args) 
+        for input in inputs:
+            print("add input:", input.name, ", ", input.dataset)
+            runner.add_input(input.name, input.dataset, input.filter)
+        #runner.run()
 
     def getWidget(self):
         return self.widget    

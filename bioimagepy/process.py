@@ -596,17 +596,23 @@ class BiProcessParser(BiObject):
                     input_parameter.description = child.attrib['label'] 
 
                 if 'help' in child.attrib:
-                    input_parameter.help = child.attrib['help']     
+                    input_parameter.help = child.attrib['help']   
+
+                if 'optional' in child.attrib:
+                    if child.attrib['optional'] == "true" or child.attrib['optional'] == "True":
+                        input_parameter.is_advanced = True
+                    else:
+                        input_parameter.is_advanced = False 
+
+                if 'value' in child.attrib:
+                    input_parameter.default_value = child.attrib['value'] 
+                    input_parameter.value = child.attrib['value']                  
 
                 if 'type' in child.attrib:
                     if child.attrib['type'] == 'data':
                         input_parameter.io = IO_INPUT() 
                         input_parameter.is_data = True
     
-                        if 'value' in child.attrib:
-                            input_parameter.default_value = child.attrib['value'] 
-                            input_parameter.value = child.attrib['value'] 
-
                         if 'format' in child.attrib:
                             if child.attrib['format'] == 'image' or child.attrib['format'] == 'tif' or child.attrib['format'] == 'tiff':
                                 input_parameter.type = DATA_IMAGE()
@@ -632,23 +638,12 @@ class BiProcessParser(BiObject):
                         elif child.attrib['type'] == PARAM_SELECT():
                             input_parameter.type = PARAM_SELECT()
                             input_parameter.selectInfo = BiCmdSelect()
+                            print("select parse option:")
                             for optionnode in child:  
-                                if child.tag == 'option':
+                                if optionnode.tag == 'option':
                                     input_parameter.selectInfo.add(optionnode.text, optionnode.attrib['value'])
-                            input_parameter.selectInfo = BiCmdSelect()
                         else:
                             raise BiProcessParseException("The format of the input param " + input_parameter.name + " is not supported")
-
-                        if 'value' in child.attrib:
-                            input_parameter.value = child.attrib['value'] 
-
-                        if 'advanced' in child.attrib:
-                            if child.attrib['advanced'] == "True" or child.attrib['advanced'] == "true":
-                                input_parameter.is_advanced = True 
-
-                        if 'value' in child.attrib:
-                            input_parameter.default_value = child.attrib['value']  
-                            input_parameter.value = child.attrib['value'] 
 
                 self.info.inputs.append(input_parameter)
 
@@ -710,6 +705,13 @@ class BiCmdSelect(BiObject):
 
         self.names = []
         self.values = []
+
+    def contentStr(self):
+        content = ""
+        for i in range(len(self.values)):
+            content += self.values[i] + ";"
+        print("contentstr", content)    
+        return content[:-1]    
 
     def size(self):
         """Calculate the number of options
