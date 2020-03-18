@@ -13,59 +13,9 @@ ProcessedData
 """
 
 import os
-
-def METADATA_TYPE_NONE():
-    """Type for matadata for unisignalized data""" 
-    return "none"
-
-def METADATA_TYPE_RAW():
-    """Type for matadata for raw data""" 
-    return "raw"
-
-def METADATA_TYPE_PROCESSED():
-    """Type for matadata for processed data""" 
-    return "processed"    
-
-class Data():
-    """Abstract class that store a data metadata
-    
-    Data allows to manipulate the common metadata. This class
-    should not be used directly. RawData and ProcessedData
-    should be used as specific metadata containers
-
-    Parameters
-    ----------
-    md_uri
-        URI of the metadata in the database or file system
-        depending on backend
-
-    Attributes
-    ----------
-    name 
-        Name of the data
-    author
-        Author of the data 
-    date
-        Date when the data is created
-    format
-        Data format (txt, csv, tif, ...)
-    uri
-        URI of the data as stored in the database        
-
-    """
-
-    def __init__(self, md_uri: str):
-        # info
-        self.md_uri = md_uri
-        self.type = METADATA_TYPE_NONE()
-        # config
-        self._config = '' # TODO Read from singleton
-        # common metadata
-        self.name = ''
-        self.author = ''
-        self.date = ''
-        self.format = ''
-        self.uri = ''
+ 
+from bioimagepy.metadata.containers import RawDataContainer, ProcessedDataContainer
+from bioimagepy.metadata.factory import metadataServices
 
 class RawData():
     """Class that store a raw data metadata
@@ -81,23 +31,15 @@ class RawData():
 
     Attributes
     ----------
-    name 
-        Name of the data
-    author
-        Author of the data 
-    date
-        Date when the data is created
-    format
-        Data format (txt, csv, tif, ...)
-    uri
-        URI of the data as stored in the database 
-    absolute_uri
-        URI of the data        
+    metadata 
+        Container of the metadata       
 
     """
     def __init__(self, md_uri: str):
-        Data.__init__(self, md_uri)   
-        self.type = METADATA_TYPE_RAW()
+        self.md_uri = md_uri   
+        self.metadata = None # RawDataContainer()
+        self.service = metadataServices.get('LOCAL')
+        self.read()
 
     def read(self):
         """Read the metadata from database
@@ -106,8 +48,7 @@ class RawData():
         object
         
         """
-        # TODO read from read services
-        pass
+        self.metadata = self.service.read_rawdata(self.md_uri)
 
     def write(self):
         """Write the metadata to database
@@ -116,8 +57,7 @@ class RawData():
         object
         
         """
-        # TODO write from write services  
-        pass  
+        self.service.write_rawdata(self.metadata, self.md_uri)  
 
     def tag(self, tag_key:str, tag_value:str):
         """Set a tag to the data
@@ -133,8 +73,25 @@ class RawData():
             Value of the tag    
         
         """
-        # TODO write from write services  
-        pass 
+        self.metadata.tags[tag_key] = tag_value
+        self.service.write(self.metadata, self.md_uri)  
+
+    def display(self):
+        """Display metadata in console"""
+ 
+        print('Data: ' + self.md_uri)
+        print('Origin ---------------')    
+        print('Type: ' + self.metadata.type) 
+        print('Common ---------------')
+        print('Name: ' + self.metadata.name)
+        print('Url: ' + self.metadata.uri)
+        print('Author: ' + self.metadata.author)
+        print('Format: ' + self.metadata.format)
+        print('Created Date: ' + self.metadata.date)
+        print('Tags ---------------')
+        for key in self.metadata.tags:
+            print(key + ': ' + self.metadata.tags[key])
+    
 
 class ProcessedData():
     """Class that store a raw data metadata
@@ -150,36 +107,15 @@ class ProcessedData():
 
     Attributes
     ----------
-    name 
-        Name of the data
-    author
-        Author of the data 
-    date
-        Date when the data is created
-    format
-        Data format (txt, csv, tif, ...)
-    uri
-        URI of the data as stored in the database 
-    absolute_uri
-        URI of the data  
-    run_uri
-        URI of the Run metadata file
-    inputs
-        Informations about the inputs that gererated 
-        this processed data    
-    outputs
-        Informations about how the output is references 
-        in the process that generates this processed data
+    metadata 
+        Container of the metadata  
 
     """
 
     def __init__(self, md_uri: str): 
-        Data.__init__(self, md_uri)
-        self.type = METADATA_TYPE_PROCESSED()
-        # processed metadata
-        self.run_uri = ''
-        self.inputs = dict()
-        self.outputs = dict()
+        self.md_uri = md_uri   
+        self.metadata = None #ProcessedDataContainer()
+        self.read()
 
     def read(self):
         """Read the metadata from database
