@@ -1,0 +1,8 @@
+{
+    "name": "mydataset",
+    "urls": [
+        "file1.tif",
+        "file2.tif",
+        "file3.tif"
+    ]
+}

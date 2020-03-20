@@ -6,7 +6,7 @@ from bioimagepy.metadata.containers import METADATA_TYPE_RAW, METADATA_TYPE_PROC
 from bioimagepy.metadata.local import LocalMetadataService, relative_path, absolute_path
 
 from bioimagepy.data import RawData, ProcessedData
-from tests.metadata import create_raw_data, create_processed_data
+from tests.metadata import create_raw_data, create_processed_data, create_dataset
 
 
 class TestMetadataLocalFunctions(unittest.TestCase):
@@ -38,12 +38,16 @@ class TestLocalMetadataService(unittest.TestCase):
         self.tst_rawdata_file = 'tests/test_metadata_local/rawdata_tst.md.json'
         self.ref_processeddata_file = 'tests/test_metadata_local/processeddata.md.json'
         self.tst_processeddata_file = 'tests/test_metadata_local/processeddata_tst.md.json'
+        self.ref_dataset_file = 'tests/test_metadata_local/dataset.md.json'
+        self.tst_dataset_file = 'tests/test_metadata_local/dataset_tst.md.json'
 
     def tearDown(self):
         if os.path.isfile(self.tst_rawdata_file): 
             os.remove(self.tst_rawdata_file)
         if os.path.isfile(self.tst_processeddata_file): 
-            os.remove(self.tst_processeddata_file)    
+            os.remove(self.tst_processeddata_file)   
+        if os.path.isfile(self.tst_dataset_file):
+            os.remove(self.tst_dataset_file)     
 
     def test_read_rawdata(self):
         rawDataContainer1 = self.service.read_rawdata(self.ref_rawdata_file)
@@ -64,6 +68,27 @@ class TestLocalMetadataService(unittest.TestCase):
         processedDataContainer2 = create_processed_data()
         self.service.write_processeddata(processedDataContainer2, self.tst_processeddata_file)
         self.assertTrue(filecmp.cmp(self.tst_processeddata_file, self.ref_processeddata_file, shallow=False))
+
+    def test_read_rawdataset(self):
+        reff_dataset = create_dataset()
+        read_dataset = self.service.read_rawdataset(self.ref_dataset_file)
+        self.assertEqual(reff_dataset.serialize(), read_dataset.serialize())
+        return True 
+
+    def test_write_rawdataset(self):
+        container = create_dataset()
+        self.service.write_rawdataset(container, self.tst_dataset_file) 
+        self.assertTrue(filecmp.cmp(self.tst_dataset_file, self.ref_dataset_file, shallow=False))   
+
+    def test_read_processeddataset(self):
+        reff_dataset = create_dataset()
+        read_dataset = self.service.read_processeddataset(self.ref_dataset_file)
+        self.assertEqual(reff_dataset.serialize(), read_dataset.serialize())
+
+    def test_write_processeddataset(self):
+        container = create_dataset()
+        self.service.write_processeddataset(container, self.tst_dataset_file) 
+        self.assertTrue(filecmp.cmp(self.tst_dataset_file, self.ref_dataset_file, shallow=False))      
 
 if __name__ == '__main__':
     unittest.main()    

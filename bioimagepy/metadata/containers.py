@@ -139,8 +139,9 @@ class DataSetContainer:
         content += 'name = ' + self.name   
         content += 'uris = \n'
         for uri in self.uris: 
-            contnet += '\t' + uri
-        content += '\n'            
+            content += '\t' + uri
+        content += '\n'     
+        return content       
 
 
 class ExperimentContainer:

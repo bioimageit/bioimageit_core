@@ -1,5 +1,7 @@
 
-from bioimagepy.metadata.containers import METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, RawDataContainer, ProcessedDataContainer
+from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, 
+                                            RawDataContainer, ProcessedDataContainer,
+                                            DataSetContainer) 
 
 def create_raw_data() -> RawDataContainer:
     rawDataContainer2 = RawDataContainer()
@@ -26,3 +28,11 @@ def create_processed_data() -> ProcessedDataContainer:
     processedDataContainer2.add_input('i', 'tests/test_metadata_local/rawdata.md.json', METADATA_TYPE_RAW())
     processedDataContainer2.set_output('o', 'Denoised image')
     return processedDataContainer2
+
+def create_dataset() -> DataSetContainer:   
+    container = DataSetContainer()
+    container.name = 'mydataset'
+    container.uris.append('tests/test_metadata_local/file1.tif')
+    container.uris.append('tests/test_metadata_local/file2.tif')
+    container.uris.append('tests/test_metadata_local/file3.tif')
+    return container

@@ -225,7 +225,7 @@ class LocalMetadataService:
             metadata = self._read_json(md_uri)
             container = DataSetContainer()
             container.name = metadata['name']
-            for uri in metadata['uris']:
+            for uri in metadata['urls']:
                 container.uris.append(absolute_path(uri, md_uri))
 
             return container
