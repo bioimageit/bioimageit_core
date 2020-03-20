@@ -14,7 +14,7 @@ ProcessedData
 
 import os
  
-from bioimagepy.metadata.containers import RawDataContainer, ProcessedDataContainer
+from bioimagepy.metadata.containers import METADATA_TYPE_RAW, RawDataContainer, ProcessedDataContainer, ProcessedDataInputContainer
 from bioimagepy.metadata.factory import metadataServices
 
 class RawData():
@@ -78,20 +78,8 @@ class RawData():
 
     def display(self):
         """Display metadata in console"""
- 
-        print('Data: ' + self.md_uri)
-        print('Origin ---------------')    
-        print('Type: ' + self.metadata.type) 
-        print('Common ---------------')
-        print('Name: ' + self.metadata.name)
-        print('Url: ' + self.metadata.uri)
-        print('Author: ' + self.metadata.author)
-        print('Format: ' + self.metadata.format)
-        print('Created Date: ' + self.metadata.date)
-        print('Tags ---------------')
-        for key in self.metadata.tags:
-            print(key + ': ' + self.metadata.tags[key])
-    
+        print(self.metadata.serialize())
+        
 
 class ProcessedData():
     """Class that store a raw data metadata
@@ -115,6 +103,7 @@ class ProcessedData():
     def __init__(self, md_uri: str): 
         self.md_uri = md_uri   
         self.metadata = None #ProcessedDataContainer()
+        self.service = metadataServices.get('LOCAL')
         self.read()
 
     def read(self):
@@ -124,7 +113,7 @@ class ProcessedData():
         object
         
         """
-        # TODO read from read services
+        self.metadata = self.service.read_processeddata(self.md_uri)
         pass
 
     def write(self):
@@ -134,20 +123,42 @@ class ProcessedData():
         object
         
         """
-        # TODO write from write services  
-        pass     
+        self.service.write_processeddata(self.metadata, self.md_uri)
+        pass   
+
+    def display(self):
+        """Display metadata in console"""
+        print(self.metadata.serialize())  
+
+    def add_input(self, name:str, uri:str, type:str):
+        self.metadata.inputs.append(ProcessedDataInputContainer(name, uri, type))    
+
+    def set_output(self, name:str, label:str):
+        self.metadata.output['name'] = name
+        self.metadata.output['label'] = label
 
     def get_parent(self):
         """Get the metadata of the parent data.
         
         The parent data can be a RawData or a ProcessedData 
         depending on the process chain
+
+        Returns
+        -------
+        parent
+            Parent data (RawData or ProcessedData)
         
         """
-        # TODO
-        pass    
+        
+        if len(self.metadata.inputs) > 0:
+            
+            if self.metadata.inputs[0].type == METADATA_TYPE_RAW():
+                return RawData(self.metadata.inputs[0].uri)
+            else:
+                return ProcessedData(self.metadata.inputs[0].uri)  
+        return None        
 
-    def get_origin(self):
+    def get_origin(self) -> RawData:
         """Get the first metadata of the parent data.
 
         The origin data is a RawData. It is the first data that have 
@@ -158,5 +169,12 @@ class ProcessedData():
         the origin data in a RawData object
 
         """
-        # TODO
-        pass
+        return processed_data_origin(self)
+
+# queries
+def processed_data_origin(processed_data:ProcessedData):
+    if len(processed_data.metadata.inputs) > 0:
+        if processed_data.metadata.inputs[0].type == METADATA_TYPE_RAW():
+            return RawData(processed_data.metadata.inputs[0].uri)
+        else:
+            return processed_data_origin(ProcessedData(processed_data.metadata.inputs[0].uri))

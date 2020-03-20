@@ -9,9 +9,7 @@ Classes
 DataContainer
 RawDataContainer
 ProcessedDataContainer
-DatasetContainer
-RawDataSetContainer
-ProcessedDataSetContainer
+DataSetContainer
 ExperimentContainer
 
 """
@@ -48,6 +46,14 @@ class DataContainer:
         self.format = ''
         self.uri = ''
 
+    def serialize(self):
+        content = 'name = ' + self.name + '\n' 
+        content += 'author = ' + self.author + '\n'
+        content += 'date = ' + self.date + '\n'
+        content += 'format = ' + self.format + '\n'
+        content += 'uri = ' + self.uri + '\n'
+        return content     
+
 class RawDataContainer(DataContainer):
     """Metadata container for raw data
     
@@ -61,6 +67,30 @@ class RawDataContainer(DataContainer):
         DataContainer.__init__(self)
         self.tags = dict()
 
+    def serialize(self):
+        content = 'RawData:\n'
+        content += DataContainer.serialize(self)
+        content += 'tags = {'
+        for tag in self.tags:
+            content += self.tags[tag] + ':' + self.tags[tag] + ','
+        content = content[:-1] + '}'
+        return content       
+
+class ProcessedDataInputContainer:
+    """Container for processed data origin input
+    
+    Attributes
+    ----------
+    name
+        Name of the input (the unique name in the process)
+    uri
+        The uri of the input metadata    
+    """
+    def __init__(self, name:str='', uri:str='', type:str=METADATA_TYPE_RAW()):
+        self.name = name
+        self.uri = uri
+        self.type = type
+
 class ProcessedDataContainer(DataContainer):
     """Metadata container for processed data
 
@@ -70,7 +100,7 @@ class ProcessedDataContainer(DataContainer):
         URI of the Run metadata file
     inputs
         Informations about the inputs that gererated 
-        this processed data    
+        this processed data. It is a list of ProcessedDataInputContainer    
     outputs
         Informations about how the output is references 
         in the process that generates this processed data
@@ -79,20 +109,39 @@ class ProcessedDataContainer(DataContainer):
     def __init__(self):
         DataContainer.__init__(self)
         self.run_uri = ''
-        self.inputs = dict()
-        self.outputs = dict()
+        self.inputs = list()
+        self.output = dict()
 
-class DatasetContainer:
-    def __init__(self):
-        pass
+    def add_input(self, name:str, uri:str, type:str):
+        self.inputs.append(ProcessedDataInputContainer(name, uri, type))  
 
-class RawDataSetContainer:
-    def __init__(self):
-        pass
+    def set_output(self, name:str, label:str):
+        self.output = {'name':name, 'label':label} 
 
-class ProcessedDataSetContainer:
+    def serialize(self):
+        content = 'ProcessedData:\n'
+        content += DataContainer.serialize(self)
+        content += 'run_uri = ' + self.run_uri + '\n'
+        content += 'inputs = [ \n'
+        for input in self.inputs:
+            content += 'name:'+input.name+', uri:'+input.uri+'\n'   
+        content += 'output={name:'+self.output['name']+', label:'+self.output['label']+'}'     
+        return content     
+
+
+class DataSetContainer:
     def __init__(self):
-        pass
+        self.name = ''
+        self.uris = list()
+
+    def serialize(self):
+        content = 'Dataset:\n'
+        content += 'name = ' + self.name   
+        content += 'uris = \n'
+        for uri in self.uris: 
+            contnet += '\t' + uri
+        content += '\n'            
+
 
 class ExperimentContainer:
     def __init__(self):

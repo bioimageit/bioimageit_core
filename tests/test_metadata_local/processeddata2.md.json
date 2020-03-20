@@ -1,0 +1,24 @@
+{
+    "common": {
+        "name": "celegans1_o_o",
+        "author": "Sylvain Prigent",
+        "date": "2020-03-04",
+        "format": "tif",
+        "url": "celegans1_o_o.tif"
+    },
+    "origin": {
+        "type": "processed",
+        "runurl": "run2.md.json",
+        "inputs": [
+            {
+                "name": "i",
+                "url": "processeddata.md.json",
+                "type": "processed"
+            }
+        ],
+        "output": {
+            "name": "o",
+            "label": "Deconvoluted image"
+        }
+    }
+}

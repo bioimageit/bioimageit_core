@@ -13,49 +13,10 @@ ProcessedDataSet
 """
 
 import os
-from bioimagepy.data import Data, RawData, ProcessedData
+from bioimagepy.data import RawData, ProcessedData
+from bioimagepy.metadata.factory import metadataServices
 
-class DataSet():
-    """Abstract class that store a dataset metadata
-    
-    DataSet allows to manipulate the common metadata. This class
-    should not be used directly. RawDataSet and ProcessedDataSet
-    should be used as specific metadata containers
-
-    Parameters
-    ----------
-    md_uri
-        Uri of the metadata in the database or file system
-        depending on backend
-
-    Attributes
-    ----------
-    name 
-        Name of the dataset
-    uris
-        List of the URIs of the data metadata
-
-    """
-
-    def __init__(self, md_uri : str):
-
-        self.md_uri = md_uri    
-        self.name = ''
-        self.uris = list() 
-
-    def size(self) -> int:
-        """Get the size of the dataset
-        
-        Returns
-        -------
-        int
-            The size of the dataset 
-
-        """
-        return len(self.uris) 
- 
-
-class RawDataSet(DataSet):
+class RawDataSet():
     """Class that store a dataset metadata for RawDataSet
   
     Parameters
@@ -74,7 +35,38 @@ class RawDataSet(DataSet):
     """
     
     def __init__(self, md_uri : str):
-        DataSet.__init__(self, md_uri)
+        self.md_uri = md_uri   
+        self.metadata = None # DataSetContainer()
+        self.service = metadataServices.get('LOCAL')
+        self.read()
+
+    def read(self):
+        """Read the metadata from database
+        
+        The data base connection is managed by the configuration 
+        object
+        
+        """
+        self.metadata = self.service.read_rawdataset(self.md_uri)
+
+    def write(self):
+        """Write the metadata to database
+                
+        The data base connection is managed by the configuration 
+        object
+        
+        """
+        self.service.write_rawdataset(self.metadata, self.md_uri)     
+
+    def size(self):
+        """get the size of the dataser
+
+        Returns
+        -------
+        The number of data in the dataset
+
+        """
+        return len(self.metadata.uris)
 
     def get(self, i: int) -> RawData:
         """get one data information
@@ -90,9 +82,7 @@ class RawDataSet(DataSet):
             The data common information 
 
         """
-        # TODO load from services
-        # matadataservice.load_raw_data_from_dataset(md_file, uris[i])
-        return RawData('')
+        return RawData(self.metadata.uris[i])
 
     def get_data(self, filter:str):
         """get one data information
@@ -124,11 +114,9 @@ class RawDataSet(DataSet):
             data to add
 
         """
-        # TODO: save data with services and add path to this dataset and save dataset
-        # matadataservice.save_data(data)
-        # self.uris.append(data.md_file)
-        # matadataservice.save_rawdataset(??)   
-        pass
+        data.write()
+        self.metadata.uris.append(data.md_uri)
+        self.service.write_rawdataset(self.metadata, self.md_uri)
 
     def get_data_list(self) -> list:
         """Get the metadata information as a list
@@ -141,13 +129,11 @@ class RawDataSet(DataSet):
         """
         data_list = []
         for i in range(self.size()):
-            # TODO
-            # metadataDict = matadataservice.load_raw_data_from_dataset(md_file, uris[i])
-            data_list.append(RawData(''))   
+            data_list.append(RawData(self.metadata.uris[i]))   
         return data_list
       
 
-class ProcessedDataSet(DataSet):
+class ProcessedDataSet():
     """Class that store a dataset metadata for ProcessedDataSet
   
     Parameters
@@ -166,7 +152,38 @@ class ProcessedDataSet(DataSet):
     """
     
     def __init__(self, md_uri : str):
-        DataSet.__init__(self, md_uri)
+        self.md_uri = md_uri   
+        self.metadata = None # DataSetContainer()
+        self.service = metadataServices.get('LOCAL')
+        self.read()
+
+    def read(self):
+        """Read the metadata from database
+        
+        The data base connection is managed by the configuration 
+        object
+        
+        """
+        self.metadata = self.service.read_processeddataset(self.md_uri)
+
+    def write(self):
+        """Write the metadata to database
+                
+        The data base connection is managed by the configuration 
+        object
+        
+        """
+        self.service.write_processeddataset(self.metadata, self.md_uri)  
+
+    def size(self):
+        """get the size of the dataser
+
+        Returns
+        -------
+        The number of data in the dataset
+
+        """
+        return len(self.metadata.uris)
 
     def get(self, i: int) -> ProcessedData:
         """get one data information
@@ -182,9 +199,7 @@ class ProcessedDataSet(DataSet):
             The data common information 
 
         """
-        # TODO load from services
-        # matadataservice.load_processed_data_from_dataset(md_file, uris[i])
-        return ProcessedData('')
+        return ProcessedData(self.metadata.uris[i])
 
     def get_data(self, filter:str):
         """get one data information
@@ -217,11 +232,9 @@ class ProcessedDataSet(DataSet):
             data to add
 
         """
-        # TODO: save data with services and add path to this dataset and save dataset
-        # matadataservice.save_data(data)
-        # self.uris.append(data.md_file)
-        # matadataservice.save_rawdataset(??)   
-        pass
+        data.write()
+        self.metadata.uris.append(data.md_uri)
+        self.service.write_processeddataset(self.metadata, self.md_uri)
 
     def get_data_list(self) -> list:
         """Get the metadata information as a list
@@ -234,7 +247,5 @@ class ProcessedDataSet(DataSet):
         """
         data_list = []
         for i in range(self.size()):
-            # TODO
-            # metadataDict = matadataservice.load_raw_data_from_dataset(md_file, uris[i])
-            data_list.append(ProcessedData(''))   
+            data_list.append(ProcessedData(self.metadata.uris[i]))   
         return data_list
