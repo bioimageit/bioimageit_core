@@ -3,7 +3,7 @@ import filecmp
 import os.path
 
 from bioimagepy.metadata.containers import METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, RawDataContainer, ProcessedDataContainer
-from bioimagepy.metadata.local import LocalMetadataService, relative_path, absolute_path
+from bioimagepy.metadata.local import LocalMetadataService, relative_path, absolute_path, simplify_path
 
 from bioimagepy.data import RawData, ProcessedData
 from tests.metadata import create_raw_data, create_processed_data, create_dataset
@@ -11,6 +11,16 @@ from tests.metadata import create_raw_data, create_processed_data, create_datase
 
 class TestMetadataLocalFunctions(unittest.TestCase):
 
+    def test_simplify_path1(self):
+        file = '/my/computer/experiment/svdeconv/../data/raw.md.json'
+        simplified_file = simplify_path(file)    
+        self.assertEqual(simplified_file, '/my/computer/experiment/data/raw.md.json') 
+
+    def test_simplify_path2(self):
+        file = '/my/computer/experiment/svdeconv/denoise/../../data/raw.md.json'
+        simplified_file = simplify_path(file)    
+        self.assertEqual(simplified_file, '/my/computer/experiment/data/raw.md.json') 
+        
     def test_relative_path1(self):
         reference_file = 'my/computer/experiment/data/rawdata.md.json'
         file = 'my/computer/experiment/data/rawdata.tif'
@@ -27,27 +37,29 @@ class TestMetadataLocalFunctions(unittest.TestCase):
         reference_file = 'my/computer/experiment/data/rawdata.md.json'
         file = 'rawdata.tif'
         abs_file = absolute_path(file, reference_file)  
-        self.assertEqual(abs_file, 'my/computer/experiment/data/rawdata.tif')  
+        self.assertEqual(abs_file, 'my/computer/experiment/data/rawdata.tif')      
 
 
 class TestLocalMetadataService(unittest.TestCase):
 
     def setUp(self):
         self.service = LocalMetadataService()
-        self.ref_rawdata_file = 'tests/test_metadata_local/rawdata.md.json'
-        self.tst_rawdata_file = 'tests/test_metadata_local/rawdata_tst.md.json'
-        self.ref_processeddata_file = 'tests/test_metadata_local/processeddata.md.json'
-        self.tst_processeddata_file = 'tests/test_metadata_local/processeddata_tst.md.json'
-        self.ref_dataset_file = 'tests/test_metadata_local/dataset.md.json'
-        self.tst_dataset_file = 'tests/test_metadata_local/dataset_tst.md.json'
+        self.ref_rawdata_file = 'tests/test_metadata_local/data/population1_001.md.json'
+        self.tst_rawdata_file = 'tests/test_metadata_local/data/population1_001_tst.md.json'
+        self.ref_processeddata_file = 'tests/test_metadata_local/process1/population1_001_o.md.json'
+        self.tst_processeddata_file = 'tests/test_metadata_local/process1/population1_001_o_tst.md.json'
+        self.ref_processeddata2_file = 'tests/test_metadata_local/process1/population1_002_o.md.json'
+        self.ref_dataset_file = 'tests/test_metadata_local/data/rawdataset.md.json'
+        self.tst_dataset_file = 'tests/test_metadata_local/data/rawdataset_tst.md.json'
 
     def tearDown(self):
-        if os.path.isfile(self.tst_rawdata_file): 
-            os.remove(self.tst_rawdata_file)
-        if os.path.isfile(self.tst_processeddata_file): 
-            os.remove(self.tst_processeddata_file)   
-        if os.path.isfile(self.tst_dataset_file):
-            os.remove(self.tst_dataset_file)     
+        #if os.path.isfile(self.tst_rawdata_file): 
+        #    os.remove(self.tst_rawdata_file)
+        #if os.path.isfile(self.tst_processeddata_file): 
+        #    os.remove(self.tst_processeddata_file)   
+        #if os.path.isfile(self.tst_dataset_file):
+        #    os.remove(self.tst_dataset_file)  
+        pass   
 
     def test_read_rawdata(self):
         rawDataContainer1 = self.service.read_rawdata(self.ref_rawdata_file)

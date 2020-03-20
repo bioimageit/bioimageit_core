@@ -1,0 +1,8 @@
+{
+    "name": "data",
+    "urls": [
+        "population1_001.md.json",
+        "population1_002.md.json",
+        "population1_003.md.json"
+    ]
+}

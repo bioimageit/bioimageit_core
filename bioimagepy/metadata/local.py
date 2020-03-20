@@ -89,7 +89,40 @@ def absolute_path(file:str, reference_file:str):
     separator = os.sep
     last_separator = reference_file.rfind(separator)    
     canonical_path = reference_file[0:last_separator+1]
-    return canonical_path + file
+    return simplify_path(canonical_path + file)
+
+def simplify_path(path:str) -> str:
+    """Simplify a path by removing ../"""
+
+    if path.find('..') < 0:
+        return path
+
+    separator = os.sep
+    keep_folders = path.split(separator)
+
+    found = True
+    while found:
+        pos = -1
+        folders = keep_folders
+        for i in range(len(folders)):
+            if folders[i] == '..':
+                pos = i
+                break    
+        if pos > -1:  
+            keep_folders = []  
+            for i in range(0,pos-1):  
+                keep_folders.append(folders[i])
+            for i in range(pos+1,len(folders)):
+                keep_folders.append(folders[i])
+        else:
+            found = False        
+
+    clean_path = ''
+    for i in range(len(keep_folders)):
+        clean_path += keep_folders[i] 
+        if i < len(keep_folders)-1:
+            clean_path += separator     
+    return clean_path
 
 
 class LocalMetadataServiceBuilder:

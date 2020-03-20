@@ -9,11 +9,11 @@ from bioimagepy.metadata.local import relative_path
 
 class TestLocalData(unittest.TestCase):
     def setUp(self):
-        self.ref_rawdata_file = 'tests/test_metadata_local/rawdata.md.json'
-        self.tst_rawdata_file = 'tests/test_metadata_local/rawdata_tst.md.json'
-        self.ref_processeddata_file = 'tests/test_metadata_local/processeddata.md.json'
-        self.tst_processeddata_file = 'tests/test_metadata_local/processeddata_tst.md.json'
-        self.ref_processeddata2_file = 'tests/test_metadata_local/processeddata2.md.json'
+        self.ref_rawdata_file = 'tests/test_metadata_local/data/population1_001.md.json'
+        self.tst_rawdata_file = 'tests/test_metadata_local/data/population1_001_tst.md.json'
+        self.ref_processeddata_file = 'tests/test_metadata_local/process1/population1_001_o.md.json'
+        self.tst_processeddata_file = 'tests/test_metadata_local/process1/population1_001_o_tst.md.json'
+        self.ref_processeddata2_file = 'tests/test_metadata_local/process2/population1_001_o_o.md.json'
 
     def tearDown(self):
         if os.path.isfile(self.tst_rawdata_file): 
@@ -46,9 +46,9 @@ class TestLocalData(unittest.TestCase):
     def test_processeddata_parent(self):
         processed_data = ProcessedData(self.ref_processeddata2_file)
         parent_data = processed_data.get_parent()
-        self.assertEqual(parent_data.metadata.name, 'celegans1_o')
+        self.assertEqual(parent_data.metadata.name, 'population1_001_o')
 
     def test_processeddata_origin(self):
         processed_data = ProcessedData(self.ref_processeddata2_file)
         parent_data = processed_data.get_origin()
-        self.assertEqual(parent_data.metadata.name, 'celegans1')
+        self.assertEqual(parent_data.metadata.name, 'population1_001.tif')

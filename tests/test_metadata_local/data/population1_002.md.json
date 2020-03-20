@@ -1,0 +1,16 @@
+{
+    "common": {
+        "name": "population1_002.tif",
+        "author": "Sylvain Prigent",
+        "format": "tif",
+        "date": "2019-03-17",
+        "url": "population1_002.tif"
+    },
+    "origin": {
+        "type": "raw"
+    },
+    "tags": {
+        "Population": "population1",
+        "number": "002"
+    }
+}

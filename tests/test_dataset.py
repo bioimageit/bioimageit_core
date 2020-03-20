@@ -9,8 +9,8 @@ from bioimagepy.metadata.local import relative_path
 
 class TestLocalDataSet(unittest.TestCase):
     def setUp(self):
-        self.ref_dataset_file = 'tests/test_metadata_local/dataset.md.json'
-        self.tst_dataset_file = 'tests/test_metadata_local/dataset_tst.md.json'
+        self.ref_dataset_file = 'tests/test_metadata_local/data/rawdataset.md.json'
+        self.tst_dataset_file = 'tests/test_metadata_local/data/rawdataset_tst.md.json'
 
     def tearDown(self):
         if os.path.isfile(self.tst_dataset_file):

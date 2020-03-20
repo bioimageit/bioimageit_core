@@ -1,10 +1,10 @@
 {
     "common": {
-        "name": "celegans1_o",
-        "author": "Sylvain Prigent",
+        "name": "population1_002_o_o",
+        "url": "population1_002_o_o.tif",
         "date": "2020-03-04",
-        "format": "tif",
-        "url": "celegans1_o.tif"
+        "author": "Sylvain Prigent",
+        "format": "tif"
     },
     "origin": {
         "type": "processed",
@@ -12,8 +12,8 @@
         "inputs": [
             {
                 "name": "i",
-                "url": "rawdata.md.json",
-                "type": "raw"
+                "url": "../process1/population1_002_o.md.json",
+                "type": "processed"
             }
         ],
         "output": {
