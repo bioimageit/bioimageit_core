@@ -28,8 +28,12 @@ TODO:
         
 """
 
+import datetime
+
 from bioimagepy.data import RawData, ProcessedData
 from bioimagepy.dataset import RawDataSet, ProcessedDataSet
+from bioimagepy.metadata.factory import metadataServices 
+from bioimagepy.metadata.containers import ExperimentContainer
 
 class Experiment():
     def __init__(self, md_uri=''):
@@ -45,7 +49,7 @@ class Experiment():
         object
         
         """
-        self.service.read_experiment(self.md_uri)
+        self.metadata = self.service.read_experiment(self.md_uri)
 
     def write(self):
         """Write the metadata to database
@@ -54,7 +58,7 @@ class Experiment():
         object
         
         """  
-        self.service.write_experiment(self.md_uri)  
+        self.service.write_experiment(self.metadata, self.md_uri)  
 
     def create(self, name: str, author: str, date: str = 'now', uri:str = ''):
         """Create a new experiment
@@ -74,6 +78,7 @@ class Experiment():
             user workspace        
 
         """
+        self.metadata = ExperimentContainer()
         self.metadata.name = name
         self.metadata.author = author
         if date == 'now':
@@ -124,7 +129,7 @@ class Experiment():
         # ExperimentFactory.display(dataset)
         pass
 
-    def tag_from_name(self, tag: str, values: list)
+    def tag_from_name(self, tag: str, values: list):
         """Tag an experiment raw data using file name
 
         Parameters
@@ -138,8 +143,7 @@ class Experiment():
         # ExperimentFactory.tag_from_name(tag, value)
         pass
 
-
-    def tag_using_seperator(tag: str, separator: str, value_position: int):
+    def tag_using_seperator(self, tag: str, separator: str, value_position: int):
         """Tag an experiment raw data using file name and separator
 
         Parameters
