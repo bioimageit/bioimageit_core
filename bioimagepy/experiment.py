@@ -50,6 +50,7 @@ class Experiment(Observable):
 
     """
     def __init__(self, md_uri=''):
+        Observable.__init__(self)
         self.md_uri = md_uri
         self.metadata = None
         self.service = metadataServices.get('LOCAL')
@@ -187,6 +188,9 @@ class Experiment(Observable):
         print("\tName: ", self.metadata.name)
         print("\tAuthor: ", self.metadata.author)
         print("\tCreated: ", self.metadata.date) 
+        print("\tTags: ")
+        for tag in self.metadata.tags:
+            print('\t\t-', tag)  
         print("\tDataSet: ", dataset)   
         tags = self.metadata.tags 
         t = PrettyTable(['Name'] + tags + ['Author', 'Created date'])
