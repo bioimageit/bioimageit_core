@@ -1,7 +1,7 @@
 
 from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, 
                                             RawDataContainer, ProcessedDataContainer,
-                                            DataSetContainer) 
+                                            DataSetContainer, ExperimentContainer) 
 
 def create_raw_data() -> RawDataContainer:
     rawDataContainer2 = RawDataContainer()
@@ -34,4 +34,16 @@ def create_dataset() -> DataSetContainer:
     container.uris.append('tests/test_metadata_local/data/population1_001.md.json')
     container.uris.append('tests/test_metadata_local/data/population1_002.md.json')
     container.uris.append('tests/test_metadata_local/data/population1_003.md.json')
+    return container
+
+def create_experiment() -> ExperimentContainer:
+    container = ExperimentContainer()
+    container.name = 'myexperiment'
+    container.author = 'Sylvain Prigent'
+    container.date = '2020-03-04'
+    container.rawdataset = 'tests/test_metadata_local/data/rawdataset.md.json' 
+    container.processeddatasets.append('tests/test_metadata_local/process1/processeddataset.md.json') 
+    container.processeddatasets.append('tests/test_metadata_local/process2/processeddataset.md.json')   
+    container.tags.append('Population')
+    container.tags.append('number')
     return container

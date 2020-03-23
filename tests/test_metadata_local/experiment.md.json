@@ -6,7 +6,8 @@
     },
     "rawdataset": "data/rawdataset.md.json",
     "processeddatasets": [
-        "process1/processeddataset.md.json"
+        "process1/processeddataset.md.json",
+        "process2/processeddataset.md.json"
     ],
     "tags": [
         "Population",

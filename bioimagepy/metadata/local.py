@@ -278,9 +278,9 @@ class LocalMetadataService:
         if os.path.isfile(md_uri):
             metadata = self._read_json(md_uri)
             container = ExperimentContainer()
-            container.name = metadata['name']
-            container.author = metadata['author']
-            container.date = metadata['date']    
+            container.name = metadata['information']['name']
+            container.author = metadata['information']['author']
+            container.date = metadata['information']['date']    
             container.rawdataset = absolute_path( metadata['rawdataset'], md_uri )
             for dataset in metadata['processeddatasets']:
                 container.processeddatasets.append( absolute_path(dataset, md_uri))
@@ -289,11 +289,12 @@ class LocalMetadataService:
             return container  
         return ExperimentContainer
 
-    def write_experiement(self, container:ExperimentContainer, md_uri:str):
-        metadata = dict()
-        metadata['name'] = container.name
-        metadata['author'] = container.author
-        metadata['date'] = container.date
+    def write_experiment(self, container:ExperimentContainer, md_uri:str):
+        metadata = {}
+        metadata['information'] = {}
+        metadata['information']['name'] = container.name
+        metadata['information']['author'] = container.author
+        metadata['information']['date'] = container.date
         metadata['rawdataset'] = relative_path(container.rawdataset, md_uri)
         metadata['processeddatasets'] = []
         for dataset in container.processeddatasets:
@@ -331,6 +332,6 @@ class LocalMetadataService:
         self.write_rawdataset(rawdataset, rawdataset_md_url)        
 
         # save the experiment.md.json metadata file
-        md_uri = os.path.join(uri, 'experiment.md.json')
-        self.write_experiement(container, md_uri)
+        md_uri = os.path.join(experiment_path, 'experiment.md.json')
+        self.write_experiment(container, md_uri)
         return md_uri

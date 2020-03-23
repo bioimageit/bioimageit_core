@@ -153,6 +153,22 @@ class ExperimentContainer:
         self.processeddatasets = []
         self.tags = []
 
+    def serialize(self):
+        content = 'Experiment:\n'
+        content += 'name = ' + self.name
+        content += 'author = ' + self.author
+        content += 'date = ' + self.date
+        content += 'rawdataset = ' + self.rawdataset
+        content += 'processeddatasets = [ \n'
+        for dataset in self.processeddatasets:
+            content += '\t' + dataset + '\n'
+        content += '] \n'
+        content += 'tags = [ \n'
+        for tag in self.tags:
+            content += '\t' + tag + '\n'
+        content += ']'               
+        return content  
+
     def count_processed_dataset(self):
         return len(self.processeddatasets)
 
