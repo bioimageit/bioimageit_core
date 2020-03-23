@@ -16,9 +16,11 @@ import os
 import os.path
 import json
 
+from bioimagepy.metadata.exceptions import MetadataServiceError
 from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, 
                                             RawDataContainer, ProcessedDataContainer,
-                                            ProcessedDataInputContainer, DataSetContainer)
+                                            ProcessedDataInputContainer, DataSetContainer,
+                                            ExperimentContainer)
 
 
 def md_file_path(md_uri:str) -> str:
@@ -271,3 +273,64 @@ class LocalMetadataService:
         for uri in container.uris:
             metadata['urls'].append( relative_path(uri, md_uri ) )
         self._write_json(metadata, md_uri)     
+
+    def read_experiment(self, md_uri: str) -> ExperimentContainer:
+        if os.path.isfile(md_uri):
+            metadata = self._read_json(md_uri)
+            container = ExperimentContainer()
+            container.name = metadata['name']
+            container.author = metadata['author']
+            container.date = metadata['date']    
+            container.rawdataset = absolute_path( metadata['rawdataset'], md_uri )
+            for dataset in metadata['processeddatasets']:
+                container.processeddatasets.append( absolute_path(dataset, md_uri))
+            for tag in metadata['tags']:
+                container.tags.append(tag)  
+            return container  
+        return ExperimentContainer
+
+    def write_experiement(self, container:ExperimentContainer, md_uri:str):
+        metadata = dict()
+        metadata['name'] = container.name
+        metadata['author'] = container.author
+        metadata['date'] = container.date
+        metadata['rawdataset'] = relative_path(container.rawdataset, md_uri)
+        metadata['processeddatasets'] = []
+        for dataset in container.processeddatasets:
+            metadata['processeddatasets'].append( relative_path(dataset, md_uri) )
+        metadata['tags'] = []    
+        for tag in container.tags:
+            metadata['tags'].append(tag)
+        self._write_json(metadata, md_uri)     
+
+    def create_experiment(self, container:ExperimentContainer, uri:str):
+
+        # check the destination dir
+        if not os.path.exists(uri):    
+            raise MetadataServiceError('Cannot create Experiment: the destination directory does not exists')
+
+        #create the experiment directory
+        filtered_name = container.name.replace(' ', '')
+        experiment_path = os.path.join(uri, filtered_name)
+        if not os.path.exists(experiment_path):
+            os.mkdir( experiment_path )    
+        else:
+            raise MetadataServiceError('Cannot create Experiment: the experiment directory already exists')
+
+        # create an empty raw dataset
+        rawdata_path = os.path.join(experiment_path, 'data')
+        rawdataset_md_url = os.path.join(rawdata_path, 'rawdataset.md.json')
+        container.rawdataset = rawdataset_md_url
+        if os.path.exists(experiment_path):
+            os.mkdir( rawdata_path )
+        else:
+            raise MetadataServiceError('Cannot create Experiment raw dataset: the experiment directory does not exists')
+
+        rawdataset = DataSetContainer()
+        rawdataset.name = 'data'    
+        self.write_rawdataset(rawdataset, rawdataset_md_url)        
+
+        # save the experiment.md.json metadata file
+        md_uri = os.path.join(uri, 'experiment.md.json')
+        self.write_experiement(container, md_uri)
+        return md_uri

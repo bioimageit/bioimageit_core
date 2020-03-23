@@ -146,4 +146,15 @@ class DataSetContainer:
 
 class ExperimentContainer:
     def __init__(self):
-        pass
+        self.name = ''
+        self.author = ''
+        self.date = ''
+        self.rawdataset = ''
+        self.processeddatasets = []
+        self.tags = []
+
+    def count_processed_dataset(self):
+        return len(self.processeddatasets)
+
+    def count_tags(self):
+        return len(self.rawdataset)        

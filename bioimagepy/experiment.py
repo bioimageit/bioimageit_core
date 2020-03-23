@@ -34,8 +34,29 @@ from bioimagepy.dataset import RawDataSet, ProcessedDataSet
 class Experiment():
     def __init__(self, md_uri=''):
         self.md_uri = md_uri
+        self.metadata = None
+        self.service = metadataServices.get('LOCAL')
+        self.read()
 
-    def create(self, name: str, author: str, uri: str):
+    def read(self):
+        """Read the metadata from database
+        
+        The data base connection is managed by the configuration 
+        object
+        
+        """
+        self.service.read_experiment(self.md_uri)
+
+    def write(self):
+        """Write the metadata to database
+                
+        The data base connection is managed by the configuration 
+        object
+        
+        """  
+        self.service.write_experiment(self.md_uri)  
+
+    def create(self, name: str, author: str, date: str = 'now', uri:str = ''):
         """Create a new experiment
         
         The create method initialize a new experiment with
@@ -53,9 +74,15 @@ class Experiment():
             user workspace        
 
         """
-        # TODO call the factory/services to create 
-        #experimentfactory.create(name, author, uri)        
-        pass
+        self.metadata.name = name
+        self.metadata.author = author
+        if date == 'now':
+            now = datetime.datetime.now()
+            self.metadata.date = now.strftime('%Y-%m-%d')
+        else:
+            self.metadata.date = date  
+        self.md_uri = self.service.create_experiment(self.metadata, uri)      
+        
 
     def import_dir(self, dir_uri:str, filter:str, author:str, dataformat:str, createddate:str, copy_data:bool):
         """Import data from a directory to the experiment
