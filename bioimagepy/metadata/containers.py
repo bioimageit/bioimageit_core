@@ -155,10 +155,10 @@ class ExperimentContainer:
 
     def serialize(self):
         content = 'Experiment:\n'
-        content += 'name = ' + self.name
-        content += 'author = ' + self.author
-        content += 'date = ' + self.date
-        content += 'rawdataset = ' + self.rawdataset
+        content += 'name = ' + self.name + '\n'
+        content += 'author = ' + self.author + '\n'
+        content += 'date = ' + self.date + '\n'
+        content += 'rawdataset = ' + self.rawdataset + '\n'
         content += 'processeddatasets = [ \n'
         for dataset in self.processeddatasets:
             content += '\t' + dataset + '\n'

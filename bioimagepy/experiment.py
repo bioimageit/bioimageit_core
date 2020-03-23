@@ -28,14 +28,27 @@ TODO:
         
 """
 
+import os
+import re
 import datetime
 
+from prettytable import PrettyTable
+
+from bioimagepy.core.utils import Observable, format_date
 from bioimagepy.data import RawData, ProcessedData
 from bioimagepy.dataset import RawDataSet, ProcessedDataSet
 from bioimagepy.metadata.factory import metadataServices 
-from bioimagepy.metadata.containers import ExperimentContainer
+from bioimagepy.metadata.containers import RawDataContainer, ExperimentContainer
 
-class Experiment():
+class Experiment(Observable):
+    """Allows to interact with the matedata of an experiment
+
+    Parameters
+    ----------
+    md_uri
+        URI of the experiment in the database
+
+    """
     def __init__(self, md_uri=''):
         self.md_uri = md_uri
         self.metadata = None
@@ -81,15 +94,46 @@ class Experiment():
         self.metadata = ExperimentContainer()
         self.metadata.name = name
         self.metadata.author = author
-        if date == 'now':
-            now = datetime.datetime.now()
-            self.metadata.date = now.strftime('%Y-%m-%d')
-        else:
-            self.metadata.date = date  
+        self.metadata.date = format_date(date)
         self.md_uri = self.service.create_experiment(self.metadata, uri)      
         
+    def import_data(self, data_path:str, name:str, author:str, format:str, date:str = 'now', tags:dict = {}, copy:bool = True):
+        """import one data to the experiment 
 
-    def import_dir(self, dir_uri:str, filter:str, author:str, dataformat:str, createddate:str, copy_data:bool):
+        The data is imported to the rawdataset
+
+        Parameters
+        ----------
+        data_path
+            Path of the accessible data on your local computer
+        name
+            Name of the data
+        author
+            Person who created the data 
+        format:
+            Format of the data (ex: tif)     
+        date
+            Date when the data where created
+        tags
+            Dictonnary {key:value, key:value} of tags
+        copy
+            True to copy the data to the Experiment database
+            False otherwhise  
+
+        Returns
+        -------
+        class RawData containing the metadata                
+
+        """    
+        metadata = RawDataContainer()
+        metadata.name = name
+        metadata.author = author
+        metadata.date = format_date(date)  
+        metadata.tags = tags
+        data_uri = self.service.import_data(data_path, self.metadata.rawdataset, metadata, copy)
+        return RawData(data_uri)
+
+    def import_dir(self, dir_uri:str, filter:str, author:str, format:str, date:str, copy_data:bool):
         """Import data from a directory to the experiment
         
         This method import with or whitout copy data contained 
@@ -105,7 +149,9 @@ class Experiment():
             to import    
         author
             Name of the person who created the data
-        createddate
+        format
+            Format of the image (ex: tif)    
+        date
             Date when the data where created
         copy_data
             True to copy the data to the experiment, false otherwise. If the
@@ -114,8 +160,16 @@ class Experiment():
             changed for the experiment to find the data.        
 
         """
-        # ExperimentFactory.import_dir(dir_uri, filter, author, dataformat, createddate, copy_data)
-        pass
+        files = os.listdir(dir_uri)
+        count = 0
+        for file in files:
+            count += 1
+            r1 = re.compile(filter) # re.compile(r'\.tif$')
+            if r1.search(file):
+                self.notify_observers(int(100*count/len(files)), file)
+                data_url = os.path.join(dir_uri, file) 
+                self.import_data(data_url, file, author, format, date, {}, copy_data )     
+
 
     def display(self, dataset:str='data'):
         """Display a dataset content as a table in the console
@@ -126,8 +180,56 @@ class Experiment():
             Name of the dataset to display
         
         """
-        # ExperimentFactory.display(dataset)
-        pass
+        """Display inherited from BiObject"""
+
+        print("--------------------")
+        print("Experiment: ")
+        print("\tName: ", self.metadata.name)
+        print("\tAuthor: ", self.metadata.author)
+        print("\tCreated: ", self.metadata.date) 
+        print("\tDataSet: ", dataset)   
+        tags = self.metadata.tags 
+        t = PrettyTable(['Name'] + tags + ['Author', 'Created date'])
+        if dataset == 'data':
+            rawdataset = self.get_dataset(dataset)
+            for i in range(rawdataset.size()):
+                rawdata = rawdataset.get(i)
+                tags_values = []
+                for key in tags:
+                    tags_values.append(rawdata.tag(key))
+                t.add_row( [ rawdata.metadata.name ] + tags_values + [ rawdata.metadata.author, rawdata.metadata.date ] )
+        else:
+            # TODO implement display processed dataset
+            print('Display processed dataset not yet implemented')
+        print(t)  
+
+    def set_tag(self, tag: str, add_to_data: bool = True):
+        """Add a tag key to the experiment
+
+        It add the tag key (if not already exists) to the 
+        experiment metadata and also add a tag key to all 
+        the images
+
+        Parameters
+        ----------
+        tag
+            Tag key to be added
+        add_to_data
+            if True add an empty tag to all the data in
+            the RawDataSet    
+
+        """ 
+        # add the tag to the experiment  
+        if tag not in self.metadata.tags:
+            self.metadata.tags.append(tag) 
+            self.write()
+        if add_to_data:
+            raw_dataset = RawDataSet(self.metadata.rawdataset)  
+            for i in range(raw_dataset.size):
+                raw_data = raw_dataset.get(i) 
+                if tag not in raw_data.metadata.tags:
+                    raw_data.set_tag(tag, '')
+
 
     def tag_from_name(self, tag: str, values: list):
         """Tag an experiment raw data using file name
@@ -140,8 +242,14 @@ class Experiment():
             List of possible values for the tag to find in the filename    
 
         """
-        # ExperimentFactory.tag_from_name(tag, value)
-        pass
+        self.set_tag(tag, False)  
+        _rawdataset = self.metadata.rawdataset
+        for i in range(_rawdataset.size()):
+            _rawdata = _rawdataset.get(i)
+            for value in values:
+                if value in _rawdata.metadata.name:      
+                    _rawdata.set_tag(tag, value)
+                    break
 
     def tag_using_seperator(self, tag: str, separator: str, value_position: int):
         """Tag an experiment raw data using file name and separator
@@ -156,8 +264,16 @@ class Experiment():
             Position of the value to extract with respect to the separators    
 
         """    
-        # ExperimentFactory.tag_from_separator(tag, separator, value_position)
-        pass
+        self.set_tag(tag, False)  
+        _rawdataset = self.metadata.rawdataset
+        for i in range(_rawdataset.size()):
+            _rawdata = _rawdataset.get(i)
+            basename = os.path.splitext(os.path.basename(_rawdata.url()))[0]
+            splited_name = basename.split(separator)
+            value = ''
+            if len(splited_name) > value_position:
+                value = splited_name[value_position]  
+            _rawdata.set_tag(tag, value) 
 
     def get_dataset(self, name:str):
         """Get the metadata of a dataset
@@ -170,8 +286,14 @@ class Experiment():
             Name of the dataset
 
         """
-        # ExperimentFactory.get_dataset(name)
-        pass
+        if name == 'data':
+            return RawDataSet(self.metadata.rawdataset)
+        else:    
+            for dataset_name in self.metadata.processeddatasets:
+                pdataset = ProcessedDataSet(dataset_name)
+                if pdataset.metadata.name == name:
+                    return pdataset    
+        return None
 
     def get_data(self, dataset:str, filter:str):
         """Get the metadata of a data

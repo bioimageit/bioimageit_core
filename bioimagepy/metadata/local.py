@@ -15,6 +15,7 @@ MetadataServiceProvider
 import os
 import os.path
 import json
+from shutil import copyfile
 
 from bioimagepy.metadata.exceptions import MetadataServiceError
 from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, 
@@ -335,3 +336,43 @@ class LocalMetadataService:
         md_uri = os.path.join(experiment_path, 'experiment.md.json')
         self.write_experiment(container, md_uri)
         return md_uri
+
+    def import_data(self, data_path:str, rawdataset_uri:str, metadata: RawDataContainer, copy:bool):
+        """Import a data to a raw dataset
+
+        Parameters
+        ----------
+        data_path
+            local path of the data to import
+        rawdataset_uri
+            URI of the raw dataset where the data will be imported
+        metadata
+            Metadata of the data to import
+        copy
+            True if the data is copied to the Experiment database
+            False otherwise            
+
+        """
+        data_dir_path = os.path.dirname(rawdataset_uri)
+
+        # create the new data uri
+        data_base_name = os.path.basename(data_path)
+        filtered_name = data_base_name.replace(' ', '')
+        filtered_name, ext = os.path.splitext(filtered_name)
+        md_uri = os.path.join(data_dir_path, filtered_name + '.md.json')
+
+        # import data
+        if copy:
+            copied_data_path = os.path.join(data_dir_path, data_base_name)
+            copyfile(data_path, copied_data_path)
+            metadata.uri = copied_data_path
+        else:    
+            metadata.uri = data_path 
+        self.write_rawdata(metadata, md_uri)    
+
+        # add data to experiment RawDataSet
+        rawdataset_container = self.read_rawdataset(rawdataset_uri)
+        rawdataset_container.uris.append(md_uri)
+        self.write_rawdataset(rawdataset_container, rawdataset_uri)
+            
+        return md_uri   

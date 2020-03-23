@@ -59,7 +59,7 @@ class RawData():
         """
         self.service.write_rawdata(self.metadata, self.md_uri)  
 
-    def tag(self, tag_key:str, tag_value:str):
+    def set_tag(self, tag_key:str, tag_value:str):
         """Set a tag to the data
         
         If the tag key does not exists for this data, it is 
@@ -75,6 +75,26 @@ class RawData():
         """
         self.metadata.tags[tag_key] = tag_value
         self.service.write(self.metadata, self.md_uri)  
+
+    def tag(self, tag_key:str):
+        """get a tag value from key
+
+        get a tag in the metadata. It returns and empty
+        string if the tag does not exists
+
+        Parameters
+        ----------
+        tag_key
+            Key of the tag to get
+
+        Returns
+        -------
+        The value of the tag or an empty string is not exists
+
+        """
+        if tag_key in self.metadata.tags:
+            return self.metadata.tags[tag_key]
+        return ''            
 
     def display(self):
         """Display metadata in console"""

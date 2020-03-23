@@ -34,7 +34,7 @@ class RawDataSet():
 
     """
     
-    def __init__(self, md_uri : str):
+    def __init__(self, md_uri : str = ''):
         self.md_uri = md_uri   
         self.metadata = None # DataSetContainer()
         self.service = metadataServices.get('LOCAL')
@@ -151,7 +151,7 @@ class ProcessedDataSet():
 
     """
     
-    def __init__(self, md_uri : str):
+    def __init__(self, md_uri : str = ''):
         self.md_uri = md_uri   
         self.metadata = None # DataSetContainer()
         self.service = metadataServices.get('LOCAL')
