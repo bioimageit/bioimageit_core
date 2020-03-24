@@ -134,3 +134,19 @@ class TestLocalData(unittest.TestCase):
         experiment = Experiment(self.ref_experiment_file)
         raw_dataset = experiment.get_dataset('process1')    
         self.assertEqual(raw_dataset.metadata.name, 'process1')        
+
+    def test_get_data1(self):
+        experiment = self._create_experiment()
+        experiment.import_dir('tests/test_images/data/', r'\.tif$', 'Sylvain Prigent', 'tif', 'now', True) 
+        experiment.tag_from_name('Population', ['population1', 'population2'])
+        experiment.tag_using_seperator('ID', '_', 1 )
+        data_list = experiment.get_data('data', 'Population=population1')
+        self.assertEqual(len(data_list), 20)
+
+    def test_get_data2(self):
+        experiment = self._create_experiment()
+        experiment.import_dir('tests/test_images/data/', r'\.tif$', 'Sylvain Prigent', 'tif', 'now', True) 
+        experiment.tag_from_name('Population', ['population1', 'population2'])
+        experiment.tag_using_seperator('ID', '_', 1 )
+        data_list = experiment.get_data('data', 'Population=population2 AND ID<=2')
+        self.assertEqual(len(data_list), 2)

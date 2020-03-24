@@ -201,6 +201,18 @@ class SearchContainer():
         """Set the data metadata file uri"""
         self.data['uri'] = uri            
 
+    def is_tag(self, key: str):
+        """Check if a tag exists
+
+        Returns
+        -------
+        True if the tag exists, False otherwise
+
+        """
+        if key in self.data['tags']:
+            return True
+        return False
+
     def tag(self, key: str):
         """Get a tag value
         
