@@ -13,8 +13,12 @@ ProcessedDataSet
 """
 
 import os
+import re
+
 from bioimagepy.data import RawData, ProcessedData
 from bioimagepy.metadata.factory import metadataServices
+from bioimagepy.metadata.query import query_list_single
+from bioimagepy.metadata.containers import SearchContainer
 
 class RawDataSet():
     """Class that store a dataset metadata for RawDataSet
@@ -84,26 +88,58 @@ class RawDataSet():
         """
         return RawData(self.metadata.uris[i])
 
-    def get_data(self, filter:str):
-        """get one data information
-
-        The data is selected using a filter on the name
-        
-        Parameters
-        ----------
-        filter
-            Filter on the name. Ex: name="myimage.tif"
-            Any regular expression can be use
+    def to_search_containers(self):
+        """Convert RawDataSet into a list of SearchContainer
 
         Returns
-        ----------
-        RawData
-            The data common information 
+        -------
+        list
+            List of data as list of SearchContainer    
 
         """
-        # TODO load from services
-        # matadataservice.load_processed_data_from_dataset(md_file, uris[i])
-        return RawData('')    
+        search_list = []
+        for i in range(self.size()):
+            data = RawData(self.metadata.uris[i])
+            search_list.append(data.to_search_container())  
+        return search_list  
+
+    def get_data(self, query: str) -> list:
+        """query on tags
+        
+        In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
+        and performed on the RawData set
+
+        Parameters
+        ----------
+        rawdataset
+            The RawDataSet to query.
+        query
+            String query with the key=value format. 
+
+        Returns
+        -------
+        list
+            List of selected data (md.json files urls are returned)       
+        
+        """
+        
+        queries = re.split(' AND ',query)
+
+        # initially all the rawdata are selected
+        selected_list = self.to_search_containers()
+
+        if query == '':
+            return selected_list
+
+        # run all the AND queries on the preselected dataset
+        for q in queries:
+            selected_list = query_list_single(selected_list, q) 
+
+        # convert SearchContainer list to uri list
+        out = []
+        for d in selected_list:
+            out.append(d.uri())
+        return out            
 
     def add_data(self, data: RawData):
         """Add one data to the dataset
@@ -201,26 +237,68 @@ class ProcessedDataSet():
         """
         return ProcessedData(self.metadata.uris[i])
 
-    def get_data(self, filter:str):
-        """get one data information
-
-        The data is selected using a filter on the name
-        
-        Parameters
-        ----------
-        filter
-            Filter on the name. Ex: name="myimage.tif"
-            Any regular expression can be use
+    def to_search_containers(self):
+        """Convert RawDataSet into a list of SearchContainer
 
         Returns
-        ----------
-        ProcessedData
-            The data common information 
+        -------
+        list
+            List of data as list of SearchContainer    
 
         """
-        # TODO load from services
-        # matadataservice.load_processed_data_from_dataset(md_file, uris[i])
-        return ProcessedData('')
+        search_list = []
+        for i in range(self.size()):
+            data = ProcessedData(self.metadata.uris[i])
+            search_list.append(data.to_search_container())  
+        return search_list
+
+    def get_data(self, query: str, origin_output_name: str = '') -> list:
+        """Run a query on a BiProcessedDataSet
+
+        Parameters
+        ----------
+        query
+            Query on tags (ex: 'Population'='population1')
+        origin_output_name
+            Filter only the process output with the given name
+            if origin_output_name is empty, it gets all the processed
+            data      
+
+        Returns
+        -------
+        list
+            List of the data URIs        
+
+        """
+
+        # get all the tags per data
+        pre_list = self.to_search_containers()
+
+        # remove the data where output origin is not the asked one
+        selected_list = []
+        if origin_output_name != '':
+            for pdata in pre_list:
+                data = ProcessedData(pdata.url())
+                if data.metadata.output["name"] == origin_output_name:
+                    selected_list.append(pdata) 
+        else:
+            selected_list = pre_list
+
+        if query == '':
+            return selected_list
+
+        # query on tags
+        queries = re.split(' AND ',query)
+
+        # run all the AND queries on the preselected dataset
+        for q in queries:
+            selected_list = query_list_single(selected_list, q) 
+        
+        # convert SearchContainer list to uri list
+        out = []
+        for d in selected_list:
+            out.append(d.uri())
+        return out   
 
 
     def add_data(self, data: ProcessedData):

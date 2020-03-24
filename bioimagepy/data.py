@@ -14,7 +14,9 @@ ProcessedData
 
 import os
  
-from bioimagepy.metadata.containers import METADATA_TYPE_RAW, RawDataContainer, ProcessedDataContainer, ProcessedDataInputContainer
+from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, RawDataContainer, 
+                                            ProcessedDataContainer, ProcessedDataInputContainer,
+                                            SearchContainer) 
 from bioimagepy.metadata.factory import metadataServices
 
 class RawData():
@@ -59,6 +61,17 @@ class RawData():
         """
         self.service.write_rawdata(self.metadata, self.md_uri)  
 
+    def to_search_container(self) -> SearchContainer:
+        """convert to SearchContainer
+
+        Create a serch container from the data metadata
+
+        """ 
+        info = SearchContainer()
+        info.data["uri"] = self.metadata.uri
+        info.data['tags'] = self.metadata.tags
+        return info
+
     def set_tag(self, tag_key:str, tag_value:str):
         """Set a tag to the data
         
@@ -74,7 +87,7 @@ class RawData():
         
         """
         self.metadata.tags[tag_key] = tag_value
-        self.service.write(self.metadata, self.md_uri)  
+        self.service.write_rawdata(self.metadata, self.md_uri)  
 
     def tag(self, tag_key:str):
         """get a tag value from key
@@ -191,6 +204,15 @@ class ProcessedData():
         """
         return processed_data_origin(self)
 
+    def to_search_container(self) -> SearchContainer:
+        """convert to SearchContainer
+
+        Create a serch container from the data metadata
+
+        """   
+        return self.get_origin().to_search_container()  
+
+
 # queries
 def processed_data_origin(processed_data:ProcessedData):
     if len(processed_data.metadata.inputs) > 0:
@@ -198,3 +220,4 @@ def processed_data_origin(processed_data:ProcessedData):
             return RawData(processed_data.metadata.inputs[0].uri)
         else:
             return processed_data_origin(ProcessedData(processed_data.metadata.inputs[0].uri))
+         

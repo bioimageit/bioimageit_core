@@ -102,8 +102,9 @@ class ProcessedDataContainer(DataContainer):
         Informations about the inputs that gererated 
         this processed data. It is a list of ProcessedDataInputContainer    
     outputs
-        Informations about how the output is references 
+        Informations about how the output is referenced 
         in the process that generates this processed data
+        ex: {"name": "o", "label": "Denoised image"}
 
     """    
     def __init__(self):
@@ -173,4 +174,47 @@ class ExperimentContainer:
         return len(self.processeddatasets)
 
     def count_tags(self):
-        return len(self.rawdataset)        
+        return len(self.rawdataset)  
+
+
+class SearchContainer():
+    """Container for data queries on tag
+
+    Parameters
+    ----------
+    data 
+        Data are stored in dict as
+            data['uri] = '/url/of/the/metadata/file.md.json'
+            data['tags] = {'tag1'='value1', 'tag2'='value2'}
+
+    """
+
+    def __init__(self):
+        self.data = dict()
+
+    def uri(self):
+        """Returns the data metadata file uri"""
+        if 'uri' in self.data:
+            return self.data['uri']
+
+    def set_uri(self, uri: str):
+        """Set the data metadata file uri"""
+        self.data['uri'] = uri            
+
+    def tag(self, key: str):
+        """Get a tag value
+        
+        Parameters
+        ----------
+        key
+            Tag key
+
+        Returns
+        -------
+        value
+            Value of the tag    
+        """
+        if key in self.data['tags']:
+            return self.data['tags'][key]
+        return ''   
+             

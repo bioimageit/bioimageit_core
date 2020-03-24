@@ -38,6 +38,7 @@ from bioimagepy.core.utils import Observable, format_date
 from bioimagepy.data import RawData, ProcessedData
 from bioimagepy.dataset import RawDataSet, ProcessedDataSet
 from bioimagepy.metadata.factory import metadataServices 
+from bioimagepy.metadata.exceptions import MetadataQueryError
 from bioimagepy.metadata.containers import RawDataContainer, ExperimentContainer
 
 class Experiment(Observable):
@@ -247,7 +248,7 @@ class Experiment(Observable):
 
         """
         self.set_tag(tag, False)  
-        _rawdataset = self.metadata.rawdataset
+        _rawdataset = RawDataSet(self.metadata.rawdataset)
         for i in range(_rawdataset.size()):
             _rawdata = _rawdataset.get(i)
             for value in values:
@@ -269,10 +270,10 @@ class Experiment(Observable):
 
         """    
         self.set_tag(tag, False)  
-        _rawdataset = self.metadata.rawdataset
+        _rawdataset = RawDataSet(self.metadata.rawdataset)
         for i in range(_rawdataset.size()):
             _rawdata = _rawdataset.get(i)
-            basename = os.path.splitext(os.path.basename(_rawdata.url()))[0]
+            basename = os.path.splitext(os.path.basename(_rawdata.metadata.uri))[0]
             splited_name = basename.split(separator)
             value = ''
             if len(splited_name) > value_position:
@@ -299,24 +300,37 @@ class Experiment(Observable):
                     return pdataset    
         return None
 
-    def get_data(self, dataset:str, filter:str):
-        """Get the metadata of a data
-
-        Returns a RawData or a ProcessedData
-
+    def get_data(self, dataset_name: str, query: str, origin_output_name: str = '') -> list:
+        """query a specific dataset of an experiment
+        
+        In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
+        and performed on the data set named dataset
+        
         Parameters
         ----------
-        dataset
-            Name of the dataset
-        filter
-            Filter on the data name. Ex: name=myimage.tif    
+        dataset_name
+            Name of the dataset to query    
+        query
+            String query with the key=value format. 
+        origin_output_name
+            Name of the ouput origin (ex: -o) in the case of ProcessedDataset search       
 
         Returns
         -------
-        data
-            A RawData or a ProcessedData if the data is found.
-            None otherwise 
+        list
+            List of selected data (md.json files urls are returned) 
 
         """
-        # ExperimentFactory.get_dataset(name)
-        pass
+        # search the dataset
+        raw_dataset = RawDataSet(self.metadata.rawdataset)
+        if raw_dataset.metadata.name == dataset_name:
+            return raw_dataset.get_data(query)
+        else:
+            for i in range(len(self.metadata.processeddatasets)):
+                processeddataset = ProcessedDataSet(self.metadata.processeddataset[i])
+                if processeddataset.metadata.name == dataset_name:
+                    return processeddataset.get_data(query, origin_output_name)
+
+        raise MetadataQueryError('Query dataset ', dataset_name, ' not found')
+
+    

@@ -5,6 +5,7 @@ import filecmp
 import shutil
 
 from bioimagepy.experiment import Experiment
+from bioimagepy.data import RawData
 from tests.metadata import create_experiment
  
 class TestLocalData(unittest.TestCase):
@@ -80,7 +81,56 @@ class TestLocalData(unittest.TestCase):
 
     def test_set_tag(self):
         experiment = self._create_experiment()
-        experiment.set_tag("Population", False)
+        experiment.set_tag('Population', False)
         exp2 = Experiment(os.path.join(self.tst_experiment_dir, 'myexperiment', 'experiment.md.json'))    
-        self.assertTrue( "Population" in exp2.metadata.tags)     
+        self.assertTrue( 'Population' in exp2.metadata.tags)   
 
+    def test_tag_from_name(self):
+        experiment = self._create_experiment()
+        experiment.import_dir('tests/test_images/data/', r'\.tif$', 'Sylvain Prigent', 'tif', 'now', True)      
+        experiment.tag_from_name('Population', ['population1', 'population2'])
+        # test if tag Population in the experiment metadata
+        t1 = False
+        if 'Population' in experiment.metadata.tags:
+            t1 = True
+        # test few images tags
+        data1 = RawData(os.path.join(self.tst_experiment_dir, "myexperiment", 'data', 'population1_012.md.json'))
+        t2 = False
+        if 'Population' in data1.metadata.tags and data1.metadata.tags['Population'] == 'population1':
+            t2 = True
+        data2 = RawData(os.path.join(self.tst_experiment_dir, "myexperiment", 'data', 'population2_011.md.json'))
+        t3 = False
+        if 'Population' in data2.metadata.tags and data2.metadata.tags['Population'] == 'population2':
+            t3 = True    
+        self.assertTrue(t1*t2*t3)    
+
+    def test_tag_using_seperator(self):
+        experiment = self._create_experiment()
+        experiment.import_dir('tests/test_images/data/', r'\.tif$', 'Sylvain Prigent', 'tif', 'now', True)   
+        experiment.tag_using_seperator('ID', '_', 1 )
+        # test if tag ID in the experiment metadata
+        t1 = False
+        if 'ID' in experiment.metadata.tags:
+            t1 = True
+        # test few images tags
+        data1 = RawData(os.path.join(self.tst_experiment_dir, "myexperiment", 'data', 'population1_012.md.json'))
+        t2 = False
+        if 'ID' in data1.metadata.tags and data1.metadata.tags['ID'] == '012':
+            t2 = True
+        data2 = RawData(os.path.join(self.tst_experiment_dir, "myexperiment", 'data', 'population2_011.md.json'))
+        t3 = False
+        if 'ID' in data2.metadata.tags and data2.metadata.tags['ID'] == '011':
+            t3 = True    
+        self.assertTrue(t1*t2*t3)   
+
+    def test_get_dataset1(self):
+        # raw dataset
+        experiment = Experiment(self.ref_experiment_file)
+        raw_dataset = experiment.get_dataset('data')    
+        self.assertEqual(raw_dataset.metadata.name, 'data') 
+
+    def test_get_dataset2(self):
+        # processed dataset
+        experiment = Experiment(self.ref_experiment_file)
+        raw_dataset = experiment.get_dataset('process1')    
+        self.assertEqual(raw_dataset.metadata.name, 'process1')        
