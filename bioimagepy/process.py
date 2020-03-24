@@ -1,71 +1,114 @@
 # -*- coding: utf-8 -*-
-"""process module.
+"""BioImagePy process info management.
 
-This module contains the Process class that allows to run a process on any
-individual data. This class just run a data processing tools depending on the 
-backend. It does not generate any metadata. This class purpose is mainly for 
-writting data processing tools demo. If you need to process scientific data, please
-use the Pipeline API.
+This module implement utilities to manage the processes.
+- Read process info from xml file
+- create a dictionnary of processed 
 
-Example
+TODO
+----
+Add example of class usage
+
+Methods
 -------
-    Here is an example of how to use Process with run on data
-    loaded in python:
-
-        >>> myprocess = Process('ndsafir')
-        >>> imageio.imread('myimage.tif')
-        >>> output_image = myprocess.run('i', input_image,
-                'patch', patch,               
-                'iter', iteration)
-
-    Note that the Process class works only on data stored in files. Thus, if your
-    data is loaded in python, the run funciton will save the data in temporary files 
-
-    Another example using the 'exec' method to run the process of files
-
-        >>> myprocess = Process('ndsafir') 
-        >>> myprocess.run('i', 'myimage.tif',
-                'patch', patch,               
-                'iter', iteration,
-                'o', 'denoised.tif') 
+PARAM_NUMBER
+PARAM_STRING
+PARAM_SELECT
+PARAM_BOOLEAN
+PARAM_HIDDEN
+PARAM_FILE
+IO_PARAM
+IO_INPUT
+IO_OUTPUT
 
 Classes
--------
-Process
-        
-"""
+------- 
+CmdSelect
+ProcessParameter
+ProcessMainInfo
+ProcessInfo
+ProcessParser
+ProcessDatabase
+
+""" 
 
 import os
+import xml.etree.ElementTree as ET
 
-class ProcessNotFoundError(Exception):
-   """Raised when a process is not found"""
-   pass
-
+from bioimagepy.processes.containers import ProcessContainer
+from bioimagepy.processes.factory import processServices
+from bioimagepy.config import ConfigManager
 
 class Process():
-    def __init__(self, name:str):
-        self.name=name
-        self.info=None # Process Info
+    """Interact with a process info
 
+    Process allows to read/write and manipulate the metadata
+    of a process.
+
+    Parameters
+    ----------
+    md_uri
+        URI of the metadata in the database or file system
+        depending on backend
+
+    Attributes
+    ----------
+    metadata 
+        Container of the metadata       
+
+    """
+    def __init__(self, uri: str):
+        self.uri = uri
+        config = ConfigManager.instance().config 
+        self.service = processServices.get('LOCAL', **config)
+        self.metadata = self.service.read_process(self.uri)  
 
     def man(self):
-        """Display the process man page of the process. The man information are 
-        collected from the XML file 
-        
-        """
-
+        """Display the process man page"""
         # 1. program name
-        print(self.info.name, ':', self.info.description)
+        print(self.metadata.name, ':', self.metadata.description)
         # 2. list of args key, default, description
-        for param in self.info.inputs:
+        for param in self.metadata.inputs:
             line_new = '\t{:>15}\t{:>15}\t{:>15}'.format(param.name, param.default_value, param.description)
             print(line_new)
-        for param in self.info.outputs:
+        for param in self.metadata.outputs:
             line_new = '\t{:>15}\t{:>15}\t{:>15}'.format(param.name, param.default_value, param.description)
             print(line_new) 
 
-    def run(self, *parameters):
-        pass
 
-    def exec(self, *parameters):
-        pass
+class ProcessAccess():
+    """To request the processed database"""
+    def __init__(self):
+        self.service = processServices.get('LOCAL')                  
+            
+    def search(self, keyword:str):
+        """Search a process using a keyword in the database
+        
+        This method print the list of funded processed
+
+        Parameters
+        ----------
+        keyword
+            Keyword to search in the database  
+        
+        """
+        plist = self.service.search(keyword)
+        for process in plist:
+            print(process.serialize('h'))
+
+    def get(self, name:str) -> Process:
+        """get a process by name
+        
+        Parameters
+        ----------
+        name
+            Fullname of the process ({name}_v{version})
+        
+        Returns
+        -------
+        An instance of the process
+
+        """        
+        uri = self.service.get_process(name)
+        return Process(uri)
+        

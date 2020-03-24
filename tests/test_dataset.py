@@ -5,7 +5,7 @@ import filecmp
 
 from bioimagepy.dataset import RawDataSet, ProcessedDataSet
 from tests.metadata import create_dataset
-from bioimagepy.metadata.local import relative_path
+from bioimagepy.metadata.service_local import relative_path
 
 class TestLocalDataSet(unittest.TestCase):
     def setUp(self):

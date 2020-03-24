@@ -20,7 +20,7 @@ from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, RawDataContainer,
 from bioimagepy.metadata.factory import metadataServices
 
 class RawData():
-    """Class that store a raw data metadata
+    """interact with raw data metadata
     
     RawData allows to read/write and manipulate the metadata
     of a raw data.

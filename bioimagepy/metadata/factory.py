@@ -10,7 +10,7 @@ MetadataServiceProvider
 """
 
 from bioimagepy.core.factory import ObjectFactory
-from bioimagepy.metadata.local import LocalMetadataServiceBuilder
+from bioimagepy.metadata.service_local import LocalMetadataServiceBuilder
 
 class MetadataServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):

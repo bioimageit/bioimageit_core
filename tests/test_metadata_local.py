@@ -5,7 +5,7 @@ import shutil
 
 from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, 
                                             RawDataContainer, ProcessedDataContainer)
-from bioimagepy.metadata.local import (LocalMetadataService, relative_path, 
+from bioimagepy.metadata.service_local import (LocalMetadataService, relative_path, 
                                        absolute_path, simplify_path)
 
 from bioimagepy.data import RawData, ProcessedData

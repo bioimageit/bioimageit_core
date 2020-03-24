@@ -15,6 +15,8 @@ Example
     >>>
     >>> # then to access the config variables
     >>> var = ConfigManager.instance().get('keyname')
+    >>> # or access the config dictionary
+    >>> config_dict = ConfigManager.instance().var 
 
 Classes
 ------- 
@@ -43,14 +45,14 @@ class Config():
 
     Attributes
     ----------
-    var
+    config
         Dictionnary containing the config variables
     
     
     """
     def __init__(self, config_file:str=''):
         self.config_file = config_file
-        self.var = None
+        self.config = {}
         if config_file is not '':
             self.load(config_file)
 
@@ -59,7 +61,7 @@ class Config():
         self.config_file = config_file
         if os.path.getsize(self.config_file) > 0:
             with open(self.config_file) as json_file:  
-                self.var = json.load(json_file)     
+                self.config = json.load(json_file)     
 
     def is_key(self, key:str) -> bool:
         """Check if a key exists in the config dictionnary
@@ -75,10 +77,25 @@ class Config():
             True if the key exists, False otherwise    
         
         """
-        if key in self.var:
+        if key in self.config:
             return True
         else:
             return False    
+
+    def set(self, key:str, value):
+        """Add a variable to the config
+
+        If the variable exists it is changed
+
+        Parameters
+        ----------
+        key
+            Key of the variable
+        value
+            Value to set (can be str, dict, list)
+
+        """
+        self.config[key] = value
 
     def get(self, key:str) -> dict:
         """Read a variable from the config dictionnary
@@ -97,8 +114,8 @@ class Config():
         ConfigKeyNotFoundError: if the configuration key does not exists 
 
         """
-        if key in self.var:
-            return self.var[key]
+        if key in self.config:
+            return self.config[key]
         else:
             raise ConfigKeyNotFoundError('No key ' + key + ' in the config')          
 
