@@ -170,7 +170,7 @@ class ProcessParser():
     def __init__(self, xml_file_url: str):
         self.info = ProcessContainer()
         self.xml_file_url = xml_file_url
-        self.info.xml_file_url = xml_file_url
+        self.info.uri = xml_file_url
 
     def parse_main_info(self) -> ProcessIndexContainer:
         """Parse the name of the process

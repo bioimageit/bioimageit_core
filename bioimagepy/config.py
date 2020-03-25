@@ -6,17 +6,17 @@ and manage configuration parameters
 
 Example
 -------
-    You need to use the ConfigManager which is a singleton to read config
+    You need to use the ConfigAccess which is a singleton to read config
 
     >>> # first call to load the configuration
-    >>> ConfigManager("config.json")
+    >>> ConfigAccess("config.json")
     >>> # or
-    >>> ConfigManager.instance().load("config.json")
+    >>> ConfigAccess.instance().load("config.json")
     >>>
     >>> # then to access the config variables
-    >>> var = ConfigManager.instance().get('keyname')
+    >>> var = ConfigAccess.instance().get('keyname')
     >>> # or access the config dictionary
-    >>> config_dict = ConfigManager.instance().var 
+    >>> config_dict = ConfigAccess.instance().var 
 
 Classes
 ------- 
@@ -120,7 +120,7 @@ class Config():
             raise ConfigKeyNotFoundError('No key ' + key + ' in the config')          
 
 
-class ConfigManager:
+class ConfigAccess:
     """Singleton to access the Config
 
     Parameters
@@ -137,15 +137,16 @@ class ConfigManager:
 
     def __init__(self, config_file:str):
         """ Virtually private constructor. """
-        if ConfigManager.__instance != None:
-            raise Exception("ConfigManager can be initialized only once!")
-        else:
-            ConfigManager.__instance = Config(config_file)
+        #if ConfigAccess.__instance != None:
+        #    raise Exception("ConfigManager can be initialized only once!")
+        #else:
+        #    ConfigAccess.__instance = Config(config_file)
+        ConfigAccess.__instance = Config(config_file)
 
     @staticmethod 
     def instance():
         """ Static access method to the Config. """
-        if ConfigManager.__instance == None:
-            ConfigManager.__instance = Config()
-        return ConfigManager.__instance     
+        if ConfigAccess.__instance == None:
+            ConfigAccess.__instance = Config()
+        return ConfigAccess.__instance     
     

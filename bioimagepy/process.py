@@ -37,7 +37,7 @@ import xml.etree.ElementTree as ET
 
 from bioimagepy.processes.containers import ProcessContainer
 from bioimagepy.processes.factory import processServices
-from bioimagepy.config import ConfigManager
+from bioimagepy.config import ConfigAccess
 
 class Process():
     """Interact with a process info
@@ -59,8 +59,8 @@ class Process():
     """
     def __init__(self, uri: str):
         self.uri = uri
-        config = ConfigManager.instance().config 
-        self.service = processServices.get('LOCAL', **config)
+        config = ConfigAccess.instance().config['process']
+        self.service = processServices.get(config['service'], **config)
         self.metadata = self.service.read_process(self.uri)  
 
     def man(self):
@@ -79,7 +79,8 @@ class Process():
 class ProcessAccess():
     """To request the processed database"""
     def __init__(self):
-        self.service = processServices.get('LOCAL')                  
+        config = ConfigAccess.instance().config['process']
+        self.service = processServices.get(config['service'], **config)               
             
     def search(self, keyword:str):
         """Search a process using a keyword in the database

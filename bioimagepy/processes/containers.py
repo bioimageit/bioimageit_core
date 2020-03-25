@@ -252,7 +252,7 @@ class ProcessContainer():
 
     def __init__(self):
 
-        self.xml_file_url = ''
+        self.uri = ''
         self.id = ''
         self.name = ''
         self.version = ''
@@ -348,7 +348,7 @@ class ProcessContainer():
 
         print('ProcessInfo')
         print('-------------')
-        print('xml file:', self.xml_file_url)  
+        print('xml file:', self.uri)  
         print('id:', self.id)  
         print('name:', self.name) 
         print('version:', self.version) 

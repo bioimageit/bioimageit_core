@@ -19,4 +19,3 @@ class ProcessServiceProvider(ObjectFactory):
 
 processServices = ProcessServiceProvider()
 processServices.register_builder('LOCAL', LocalProcessServiceBuilder())
-#metadataServices.register_builder('SINGULARITY', SingularityProcessServiceBuilder())
