@@ -14,6 +14,7 @@ ProcessedData
 
 import os
  
+from bioimagepy.config import ConfigAccess 
 from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, RawDataContainer, 
                                             ProcessedDataContainer, ProcessedDataInputContainer,
                                             SearchContainer) 
@@ -40,7 +41,8 @@ class RawData():
     def __init__(self, md_uri: str):
         self.md_uri = md_uri   
         self.metadata = None # RawDataContainer()
-        self.service = metadataServices.get('LOCAL')
+        config = ConfigAccess.instance().config['metadata']
+        self.service = metadataServices.get(config["service"], **config)
         self.read()
 
     def read(self):
@@ -136,7 +138,8 @@ class ProcessedData():
     def __init__(self, md_uri: str): 
         self.md_uri = md_uri   
         self.metadata = None #ProcessedDataContainer()
-        self.service = metadataServices.get('LOCAL')
+        config = ConfigAccess.instance().config['metadata']
+        self.service = metadataServices.get(config["service"], **config)
         self.read()
 
     def read(self):

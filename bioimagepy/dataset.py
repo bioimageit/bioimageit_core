@@ -15,6 +15,7 @@ ProcessedDataSet
 import os
 import re
 
+from bioimagepy.config import ConfigAccess
 from bioimagepy.data import RawData, ProcessedData
 from bioimagepy.metadata.factory import metadataServices
 from bioimagepy.metadata.query import query_list_single
@@ -41,7 +42,8 @@ class RawDataSet():
     def __init__(self, md_uri : str = ''):
         self.md_uri = md_uri   
         self.metadata = None # DataSetContainer()
-        self.service = metadataServices.get('LOCAL')
+        config = ConfigAccess.instance().config['metadata']
+        self.service = metadataServices.get(config["service"], **config)
         self.read()
 
     def read(self):
@@ -190,7 +192,8 @@ class ProcessedDataSet():
     def __init__(self, md_uri : str = ''):
         self.md_uri = md_uri   
         self.metadata = None # DataSetContainer()
-        self.service = metadataServices.get('LOCAL')
+        config = ConfigAccess.instance().config['metadata']
+        self.service = metadataServices.get(config["service"], **config)
         self.read()
 
     def read(self):

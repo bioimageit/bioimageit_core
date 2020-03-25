@@ -12,7 +12,7 @@ Example
         >>> myexperiment = Experiment()
         >>> myexperiment.create('myexperiment', 'Sylvain Prigent', './')
         >>> myexperiment.import_data(uri='data_uri', name='mydata', author='Sylvain Prigent', dataformat='tif', createddata='now', copy_data=True)
-        >>> myexperiment.import_dir(dir_uri='./my/local/dir/', author='Sylvain Prigent', dataformat='tif', createddate='now', copy_data=True)
+        >>> myexperiment.import_dir(dir_uri='./my/local/dir/', filter='\.tif$', author='Sylvain Prigent', format='tif', date='now', copy_data=True)
         >>> myexperiment.tag_from_name(tag='population', ['population1', 'population2'])
         >>> myexperiment.tag_using_seperator(tag='ID', separator='_', value_position=1)
         >>> myexperiment.display()
@@ -34,6 +34,7 @@ import datetime
 
 from prettytable import PrettyTable
 
+from bioimagepy.config import ConfigAccess
 from bioimagepy.core.utils import Observable, format_date
 from bioimagepy.data import RawData, ProcessedData
 from bioimagepy.dataset import RawDataSet, ProcessedDataSet
@@ -54,7 +55,8 @@ class Experiment(Observable):
         Observable.__init__(self)
         self.md_uri = md_uri
         self.metadata = None
-        self.service = metadataServices.get('LOCAL')
+        config = ConfigAccess.instance().config['metadata']
+        self.service = metadataServices.get(config["service"], **config)
         self.read()
 
     def read(self):
@@ -130,6 +132,7 @@ class Experiment(Observable):
         metadata = RawDataContainer()
         metadata.name = name
         metadata.author = author
+        metadata.format = format
         metadata.date = format_date(date)  
         metadata.tags = tags
         data_uri = self.service.import_data(data_path, self.metadata.rawdataset, metadata, copy)

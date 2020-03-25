@@ -32,7 +32,7 @@ class LocalProcessServiceBuilder:
         return self._instance
 
 class LocalProcessService:
-    """Service for local process exec
+    """Service for local process
     
     To initialize the database, you need to set the xml_dirs from 
     the configuration and then call initialize

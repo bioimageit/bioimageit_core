@@ -82,7 +82,7 @@ class ProcessAccess():
         config = ConfigAccess.instance().config['process']
         self.service = processServices.get(config['service'], **config)               
             
-    def search(self, keyword:str):
+    def search(self, keyword:str = ''):
         """Search a process using a keyword in the database
         
         This method print the list of funded processed
