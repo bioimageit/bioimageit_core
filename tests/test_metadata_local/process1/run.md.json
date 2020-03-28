@@ -4,6 +4,14 @@
         "url": "../galaxytools/tools/svdeconv/svdeconv2d.xml"
     },
     "processeddataset": "processeddataset.md.json",
+    "inputs": [
+        {
+            "name": "i",
+            "dataset": "data",
+            "query": "",
+            "origin_output_name": ""
+        }
+    ],
     "parameters": [
         {
             "name": "sigma",
@@ -20,14 +28,6 @@
         {
             "name": "method",
             "value": "SV"
-        }
-    ],
-    "inputs": [
-        {
-            "name": "i",
-            "dataset": "data",
-            "query": "",
-            "origin_output_name": ""
         }
     ]
 }

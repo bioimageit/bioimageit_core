@@ -265,6 +265,14 @@ class ProcessContainer():
         self.categories = []
         self.type = 'sequential'
 
+    def fullname(self):
+        """fullname of the process
+
+        the full name is "{name}_v{version}"
+
+        """
+        return self.name + '_v' + self.version
+
     def is_param(self, name: str) -> bool:
         """Check if a parameter exists
         

@@ -1,4 +1,5 @@
 import datetime
+import os
 
 class ProgressObserver():
     """Observer to display or log a process progress
@@ -75,3 +76,8 @@ def format_date(date:str):
         return now.strftime('%Y-%m-%d')
     else:
         return date  
+
+def extract_filename(uri:str):
+    pos = uri.rfind(os.sep)
+    return uri[pos:]  
+     

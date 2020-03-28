@@ -101,6 +101,19 @@ class Experiment(Observable):
         self.metadata.date = format_date(date)
         self.md_uri = self.service.create_experiment(self.metadata, uri)      
         
+    def create_processed_dataset(self, name:str) -> ProcessedDataSet:
+        """Create an empty processed dataset
+
+        Parameters
+        ----------
+        name
+            Name of the dataset
+        run
+            Object containing the Run informations    
+
+        """
+        return self.service.create_processed_dataset(name, self.md_uri)
+
     def import_data(self, data_path:str, name:str, author:str, format:str, date:str = 'now', tags:dict = {}, copy:bool = True):
         """import one data to the experiment 
 

@@ -21,7 +21,8 @@ from bioimagepy.metadata.exceptions import MetadataServiceError
 from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, METADATA_TYPE_PROCESSED, 
                                             RawDataContainer, ProcessedDataContainer,
                                             ProcessedDataInputContainer, DataSetContainer,
-                                            ExperimentContainer)
+                                            ExperimentContainer, RunContainer, RunInputContainer,
+                                            RunParameterContainer)
 
 
 def md_file_path(md_uri:str) -> str:
@@ -268,12 +269,81 @@ class LocalMetadataService:
         return DataSetContainer()        
 
     def write_processeddataset(self, container: DataSetContainer, md_uri: str):  
-        metadata = dict()
+        metadata = {}
         metadata['name'] = container.name
         metadata['urls'] = list()
         for uri in container.uris:
             metadata['urls'].append( relative_path(uri, md_uri ) )
         self._write_json(metadata, md_uri)     
+
+    def add_run_processeddataset(self, run:RunContainer, dataset_md_uri:str):
+        """Add a run to a processed dataset
+
+        Parameters
+        ----------
+        run
+            Container of the Run metadata
+        dataset_md_uri
+            URI of the ProcessedDataset     
+
+        """
+        # create run URI
+        dataset_dir = md_file_path(dataset_md_uri)
+        run_md_file_name = "run.md.json"
+        runid_count = 0
+        while ( os.path.isfile(os.path.join(dataset_dir, run_md_file_name)) ):
+            runid_count += 1
+            run_md_file_name = "run_"+str(runid_count)+".md.json"
+        run_uri = os.path.join(dataset_dir, run_md_file_name)   
+
+        # write run
+        self.write_run(run, run_uri)
+
+
+    def create_processed_dataset(self, name:str, experiment_md_uri: str):
+        """create a new processed dataset
+
+        Parameters
+        ----------
+        name
+            Name of the processed dataset
+        experiment_md_uri
+            URI of the experiment that contains the dataset    
+
+        """
+        experiment_dir = md_file_path(experiment_md_uri)
+        processeddataset_uri = os.path.join(experiment_dir, name, '.md.json')
+        container = DataSetContainer()
+        container.name = name
+        self.write_processeddataset(container, processeddataset_uri)
+
+    def create_data_processeddataset(self, data: ProcessedDataContainer, md_uri: str): 
+        """create a new data metadata in the dataset
+        
+        The input data object must contain only the metadata (ie no
+        uri and no md_uri). 
+        This method generate the uri and the md_uri and save all the
+        metadata
+
+        Parameters
+        ----------
+        data
+            metadata of the processed data to create 
+        md_uri
+            URI of the processed dataset    
+        
+        """    
+        dataset_dir = md_file_path(md_uri)
+
+        # create the data metadata
+        data_md_file = os.path.join(dataset_dir, data.name, '.md.json')
+        data.uri = os.path.join(dataset_dir, data.name, '.', data.format)
+        self.write_processeddata(data, data_md_file)
+        
+        # add the data to the dataset
+        dataset_container = self.read_processeddataset(md_uri)
+        dataset_container.uris.append(data_md_file)
+        self.write_processeddataset(dataset_container, md_uri)
 
     def read_experiment(self, md_uri: str) -> ExperimentContainer:
         if os.path.isfile(md_uri):
@@ -376,3 +446,33 @@ class LocalMetadataService:
         self.write_rawdataset(rawdataset_container, rawdataset_uri)
             
         return md_uri   
+
+    def read_run(self, md_uri: str) -> RunContainer:
+        if os.path.isfile(md_uri): 
+            metadata = self._read_json(md_uri)
+            container = RunContainer()
+            container.process_name = metadata['process']['name']
+            container.process_uri = metadata['process']['url']
+            container.processeddataset = metadata['processeddataset']
+            for input in metadata['inputs']:
+                container.inputs.append(RunInputContainer(input['name'], input['dataset'], input['query'], input['origin_output_name']))
+            for parameter in metadata['parameters']:
+                container.parameters.append(RunParameterContainer(parameter['name'], parameter['value']))   
+            return container
+        return RunContainer()    
+
+    def write_run(self, container: RunContainer, md_uri: str):
+        metadata = dict()
+
+        metadata['process'] = {}
+        metadata['process']['name'] = container.process_name
+        metadata['process']['url'] = container.process_uri
+        metadata['processeddataset'] = container.processeddataset
+        metadata['inputs'] = []
+        for input in container.inputs:
+            metadata['inputs'].append({'name': input.name, 'dataset': input.dataset, 'query': input.query, 'origin_output_name': input.origin_output_name})
+        metadata['parameters'] = []
+        for parameter in container.parameters:
+            metadata['parameters'].append({'name': parameter.name, 'value': parameter.value })
+        
+        self._write_json(metadata, md_uri)    

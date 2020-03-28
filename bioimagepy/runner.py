@@ -23,8 +23,8 @@ Example
 
     Another example using the 'exec' method to run the process of files
 
-        >>> myprocess = Process('ndsafir') 
-        >>> myprocess.run('i', 'myimage.tif',
+        >>> myrunner = Runner(ProcessAccess().get('ndsafir_v1.0.0') 
+        >>> myrunner.exec('i', 'myimage.tif',
                 'patch', patch,               
                 'iter', iteration,
                 'o', 'denoised.tif') 

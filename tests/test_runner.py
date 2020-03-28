@@ -14,8 +14,8 @@ class TestLocalRunner(unittest.TestCase):
 
     def tearDown(self):
         ConfigAccess.__instance = None
-        #if os.path.isfile(self.tst_out_file):
-        #    os.remove(self.tst_out_file)
+        if os.path.isfile(self.tst_out_file):
+            os.remove(self.tst_out_file)
 
     def test_exec(self):
         runner = Runner(Process(self.xml_file))

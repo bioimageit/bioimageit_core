@@ -34,7 +34,7 @@ class Run():
         Container of the metadata       
 
     """
-    def __init__(self, md_uri: str):
+    def __init__(self, md_uri:str=''):
         self.md_uri = md_uri   
         self.metadata = None # RunContainer()
         config = ConfigAccess.instance().config['metadata']

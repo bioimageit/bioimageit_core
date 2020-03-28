@@ -61,7 +61,7 @@ class Process():
         self.uri = uri
         config = ConfigAccess.instance().config['process']
         self.service = processServices.get(config['service'], **config)
-        self.metadata = self.service.read_process(self.uri)  
+        self.metadata = self.service.read_process(self.uri)      
 
     def man(self):
         """Display the process man page"""

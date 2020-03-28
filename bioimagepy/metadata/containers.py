@@ -236,12 +236,12 @@ class RunParameterContainer():
         self.name = name
         self.value = value
 
-class RunInputsContainer():
-    def __init__(self):
-        self.name = ''
-        self.dataset = ''
-        self.query = ''
-        self.origin_output_name = ''
+class RunInputContainer():
+    def __init__(self, name:str='', dataset:str='', query:str='', origin_output_name:str=''):
+        self.name = name
+        self.dataset = dataset
+        self.query = query
+        self.origin_output_name = origin_output_name
 
 class RunContainer():
     def __init__(self):
@@ -249,29 +249,31 @@ class RunContainer():
         self.process_uri = ''
         self.processeddataset = ''
         self.parameters = [] # list of RunParameterContainer
-        self.inputs = [] # list of RunInputsContainer
+        self.inputs = [] # list of RunInputContainer
 
     def serialize(self):
         content = 'Experiment:\n'
-        content += "{ + \n \t process:{\n"
-        content += "\t\tname: " + self.process_name + "\n"
-        content += "\t\turi: " + self.process_uri + "\n"
-        content += "\t}\nprocesseddataset:" + self.processeddataset + '\n'
-        content += "\tparameters: [\n "
+        content += '{\n\t"process":{\n'
+        content += '\t\t"name": "' + self.process_name + '",\n'
+        content += '\t\t"uri": "' + self.process_uri + '"\n'
+        content += '\t}\n\t"processeddataset": "' + self.processeddataset + '",\n'
+        content += '\t"parameters": [\n '
         for param in self.parameters:
-            content += "\t\t{\n"
-            content += "\t\t\tname:" + param.name + "\n"
-            content += "\t\t\tvalue:" + param.value + "\n"
-            content += "\t\t}\n"
-        content += "\t]\n"
-        content += "\tinputs: [\n "
+            content += '\t\t{\n'
+            content += '\t\t\t"name": "' + param.name + '",\n'
+            content += '\t\t\t"value": "' + param.value + '"\n'
+            content += '\t\t},\n'
+        content = content[:-3] + '\n'   
+        content += '\t]\n'
+        content += '\t"inputs": [\n '
         for input in self.inputs:
-            content += "\t\t{\n"
-            content += "\t\t\tname:" + input.name + "\n"
-            content += "\t\t\tdataset:" + input.dataset + "\n"
-            content += "\t\t\tquery:" + input.query + "\n"
-            content += "\t\t\torigin_output_name:" + input.origin_output_name + "\n"
-            content += "\t\t}\n"    
-        content += "\t]\n"
-        content += "}"
+            content += '\t\t{\n'
+            content += '\t\t\t"name": "' + input.name + '",\n'
+            content += '\t\t\t"dataset": "' + input.dataset + '",\n'
+            content += '\t\t\t"query": "' + input.query + '",\n'
+            content += '\t\t\t"origin_output_name": "' + input.origin_output_name + '"\n'
+            content += '\t\t},\n' 
+        content = content[:-3] + '\n'       
+        content += '\t]\n'
+        content += '}'
         return content

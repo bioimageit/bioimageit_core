@@ -32,10 +32,16 @@ Pipeline
         
 """
 
-from bioimagepy.core.utils import Observable
+from bioimagepy.core.utils import Observable, format_date
+from bioimagepy.metadata.run import Run
+from bioimagepy.metadata.containers import (RunParameterContainer, RunInputContainer, 
+                                            ProcessedDataInputContainer)
+from bioimagepy.data import RawData, ProcessedData
 from bioimagepy.experiment import Experiment
 from bioimagepy.process import Process, ProcessAccess
 from bioimagepy.runners.exceptions import RunnerExecError
+from bioimagepy.runner import Runner
+from bioimagepy.config import ConfigAccess
 
 
 class PipelineRunner(Observable):
@@ -180,35 +186,51 @@ class PipelineRunner(Observable):
         # are equal, if not raise an exception
         input_data, data_count = self._query_inputs()            
 
-        # 2- Create the ProcessedDataSet and register it to the Experiment
-        processed_dataset, processed_data_dir = self._create_processeddataset()
+        # 2- Create the ProcessedDataSet
+        processed_dataset = self.experiment.create_processed_dataset(self._output_dataset)
 
-        # 3- create the run.md.json file
-        self._create_runfile(processed_data_dir)
+        # 3- Create run
+        run = Run()
+        run.metadata.process_name = self.process.metadata.fullname()
+        run.metadata.process_uri = self.process.uri
+        for t in range(len(self._inputs_names)):
+            run.metadata.inputs.append(
+                self._inputs_names[t],
+                self._inputs_datasets[t],
+                self._inputs_query[t],
+                self._inputs_origin_output_name[t]
+            )
+        for i in range(0, len(self._process_params), 2):
+            run.metadata.parameters.append(self._process_params[i], self._process_params[i+1])
+
+        processed_dataset.add_run(run)
 
         # 4- loop over the input data
         for i in range(data_count):
+
+            data_info_zero = RawData(input_data[0][i])    
 
             # 4.0- notify observers
             for observer in self._observers:
                 notification = dict()
                 notification['progress'] = int(100*i/data_count)
-                notification['message'] = "Process " + ntpath.basename(input_data[0][i])
+                notification['message'] = "Process " + data_info_zero.metadata.name
                 observer.notify(notification)
 
             # 4.1- Parse IO
             args = []
             # get the input arguments
             inputs_metadata = []
+
             for n in range(len(self._inputs_names)):
                 args.append(self._inputs_names[n])
-                data_info = BiData(input_data[n][i])
-                args.append(data_info.url())
+                data_info = RawData(input_data[n][i]) # input data can be a processedData but we only read the common metadata
+                args.append(data_info.metadata.uri)
 
-                inp_metadata = dict()
-                inp_metadata["name"] = self._inputs_names[n]
-
-                inp_metadata["url"] = '..' + input_data[n][i].replace(self._experiment.md_file_dir(), '') 
+                inp_metadata = ProcessedDataInputContainer()
+                inp_metadata.name = self._inputs_names[n]
+                inp_metadata.uri = input_data[n][i]
+                inp_metadata.type = data_info.metadata.type
                 inputs_metadata.append(inp_metadata)
 
             # get the params arguments
@@ -216,51 +238,58 @@ class PipelineRunner(Observable):
                 args.append(param)
 
             # setup outputs
-            for output in self._process.info.outputs:
-                extension = '.dat'
-                if output.type == DATA_IMAGE() or output.type == "tiff" or output.type == "tif":
-                    extension = '.tif'
-                elif output.type == DATA_TXT(): 
-                    extension = '.txt' 
-                elif output.type == DATA_NUMBER() or output.type == DATA_ARRAY() or output.type == DATA_MATRIX() or output.type == DATA_TABLE() or output.type == "csv": 
-                    extension = '.csv'     
-                
-                input_basename = ntpath.basename(input_data[0][i])
-                output_file_name = input_basename.replace('.md.json', '') + "_" + output.name
+            for output in self.process.metadata.outputs:
+                  
+                # output metadata
+                processedData = ProcessedData()
+                processedData.metadata.name = data_info_zero.metadata.name + "_" + output.name
+                processedData.metadata.author = ConfigAccess.instance().get('user')['name']
+                processedData.metadata.date = format_date('now')
+                processedData.metadata.format = output.format
+
+                processedData.metadata.run_uri = run.md_uri
+                processedData.metadata.inputs = inputs_metadata
+
+                processedData.metadata.output = {'name': output.name, 'label': output.description}
+
+                processed_dataset.create_data(processedData) # save the metadata and create its md_uri and uri
 
                 # args
                 args.append(output.name)
-                args.append(os.path.join(processed_data_dir, output_file_name + extension))
-
-                # md.json file
-                output_data_md_file = os.path.join(processed_data_dir, output_file_name + ".md.json")
-                open(output_data_md_file, 'a').close()
-                output_data = BiProcessedData(output_data_md_file)
-                output_data.metadata["common"] = dict()
-                output_data.metadata["common"]['name'] = output_file_name
-                output_data.metadata["common"]['url'] = output_file_name + extension
-
-
-                output_data.metadata["common"]['createddate'] = self._now_date()
-                output_data.metadata["common"]['author'] = self.author
-                output_data.metadata["common"]['datatype'] = output.type
-                output_data.metadata["origin"] = dict()
-                output_data.metadata["origin"]['type'] = 'processed'
-                output_data.metadata["origin"]['runurl'] = 'run.md.json'
-                output_data.metadata["origin"]['inputs'] = inputs_metadata
-                output_data.metadata["origin"]["output"] = dict()
-                output_data.metadata["origin"]["output"]["name"] = output.name
-                output_data.metadata["origin"]["output"]["label"] = output.description
-                output_data.write()
-                processed_dataset.metadata['urls'].append(output_file_name + ".md.json")
-                processed_dataset.write()
+                args.append(processedData.metadata.uri)
 
             # 4.2- exec    
-            #print("args:", args)
-            self._process.exec(*args)
+            runner = Runner(self.process) 
+            runner.exec(*args)
 
     def run_merged(self):
-        pass           
+        pass    
+
+    def _query_inputs(self):
+        """Run internal method to exec the query 
+        
+        Returns
+        -------
+        input_data: dict
+            Dictionnary of the selected inputs data
+        data_count: int
+            Number of input data
+
+        """
+
+        if len(self._inputs_names) == 0:
+            raise RunnerExecError("No input data specified")
+
+        input_data = dict()
+        data_count = 0
+        for i in range(len(self._inputs_names)):
+            input_data[i] = self.experiment.get_data(self._inputs_datasets[i], self._inputs_query[i], self._inputs_origin_output_name[i])
+            if i == 0:
+                data_count = len(input_data[i]) 
+            else:
+                if len(input_data[i]) != data_count:
+                    raise RunnerExecError("Input dataset queries does not have the same number of data") 
+        return [input_data, data_count]         
 
 
 class Pipeline():

@@ -17,6 +17,7 @@ import re
 
 from bioimagepy.config import ConfigAccess
 from bioimagepy.data import RawData, ProcessedData
+from bioimagepy.metadata.run import Run
 from bioimagepy.metadata.factory import metadataServices
 from bioimagepy.metadata.query import query_list_single
 from bioimagepy.metadata.containers import SearchContainer
@@ -213,6 +214,35 @@ class ProcessedDataSet():
         
         """
         self.service.write_processeddataset(self.metadata, self.md_uri)  
+
+    def add_run(self, run:Run):
+        """Add Run to the dataset
+        
+        The input Run URI is created by this method
+
+        Parameters
+        ----------
+        run 
+            Run to add
+        
+        """
+        run.md_uri = self.service.add_run_processeddataset(run.metadata, self.md_uri)
+         
+    def create_data(self, data:ProcessedData):
+        """create a new data metadata in the dataset
+        
+        The input data object must contain only the metadata (ie no
+        uri and no md_uri). 
+        This method generate the uri and the md_uri and save all the
+        metadata
+
+        Parameters
+        ----------
+        data
+            metadata of the processed data to create 
+        
+        """    
+        self.service.create_data_processeddataset(data, self.md_uri) 
 
     def size(self):
         """get the size of the dataser
