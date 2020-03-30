@@ -112,7 +112,11 @@ class Experiment(Observable):
             Object containing the Run informations    
 
         """
-        return self.service.create_processed_dataset(name, self.md_uri)
+        container, md_uri = self.service.create_processed_dataset(name, self.md_uri)
+        dataset = ProcessedDataSet()
+        dataset.metadata = container
+        dataset.md_uri = md_uri
+        return dataset
 
     def import_data(self, data_path:str, name:str, author:str, format:str, date:str = 'now', tags:dict = {}, copy:bool = True):
         """import one data to the experiment 

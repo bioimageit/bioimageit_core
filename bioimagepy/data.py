@@ -70,7 +70,7 @@ class RawData():
 
         """ 
         info = SearchContainer()
-        info.data["uri"] = self.metadata.uri
+        info.data["uri"] = self.md_uri
         info.data['tags'] = self.metadata.tags
         return info
 
@@ -213,7 +213,9 @@ class ProcessedData():
         Create a serch container from the data metadata
 
         """   
-        return self.get_origin().to_search_container()  
+        container = self.get_origin().to_search_container()  
+        container.data['uri'] = self.md_uri
+        return container
 
 
 # queries

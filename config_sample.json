@@ -10,5 +10,8 @@
     },
     "runner": {
         "service": "LOCAL"
+    },
+    "user":{
+        "name": "Sylvain Prigent"
     }
 }

@@ -83,7 +83,7 @@ class PipelineRunner(Observable):
         """
         self._process_params = args 
 
-    def add_input(self, name:str, dataset:str, filter:str, origin_output_name: str = ''):
+    def add_input(self, name:str, dataset:str, filter:str='', origin_output_name: str = ''):
         """Add an input data to the process
 
         Parameters
@@ -148,7 +148,9 @@ class PipelineRunner(Observable):
         RunnerExecError
         
         """
-        if self.process.metadata.type == "sequential":
+        if self.process.metadata.type == "merge":
+            self.run_merged()         
+        else:    
             if len(self._inputs_urls) > 0 and len(self._inputs_datasets) > 0:
                 raise RunnerExecError("uncompatible inputs. You cannot use both add_input_by_urls and add_input")
             elif len(self._inputs_urls) > 0 and len(self._inputs_datasets) == 0:
@@ -157,8 +159,7 @@ class PipelineRunner(Observable):
                 self.run_sequence()
             else:
                 raise RunnerExecError("No input. Please use add_input or add_input_by_urls")
-        else:
-            self.run_merged()    
+               
 
     def run_sequence_by_urls(self):
         """Run the process in a sequence where inputs are data url list
@@ -194,21 +195,23 @@ class PipelineRunner(Observable):
         run.metadata.process_name = self.process.metadata.fullname()
         run.metadata.process_uri = self.process.uri
         for t in range(len(self._inputs_names)):
-            run.metadata.inputs.append(
+            run.metadata.inputs.append(RunInputContainer(
                 self._inputs_names[t],
                 self._inputs_datasets[t],
                 self._inputs_query[t],
                 self._inputs_origin_output_name[t]
+                )
             )
         for i in range(0, len(self._process_params), 2):
-            run.metadata.parameters.append(self._process_params[i], self._process_params[i+1])
+            run.metadata.parameters.append( RunParameterContainer( self._process_params[i], self._process_params[i+1]))
 
         processed_dataset.add_run(run)
 
         # 4- loop over the input data
         for i in range(data_count):
 
-            data_info_zero = RawData(input_data[0][i])    
+            #print("raw data = ", input_data[0][i].uri())    
+            data_info_zero = RawData(input_data[0][i].uri())    
 
             # 4.0- notify observers
             for observer in self._observers:
@@ -224,12 +227,12 @@ class PipelineRunner(Observable):
 
             for n in range(len(self._inputs_names)):
                 args.append(self._inputs_names[n])
-                data_info = RawData(input_data[n][i]) # input data can be a processedData but we only read the common metadata
+                data_info = RawData(input_data[n][i].uri()) # input data can be a processedData but we only read the common metadata
                 args.append(data_info.metadata.uri)
 
                 inp_metadata = ProcessedDataInputContainer()
                 inp_metadata.name = self._inputs_names[n]
-                inp_metadata.uri = input_data[n][i]
+                inp_metadata.uri = input_data[n][i].uri()
                 inp_metadata.type = data_info.metadata.type
                 inputs_metadata.append(inp_metadata)
 
@@ -245,7 +248,7 @@ class PipelineRunner(Observable):
                 processedData.metadata.name = data_info_zero.metadata.name + "_" + output.name
                 processedData.metadata.author = ConfigAccess.instance().get('user')['name']
                 processedData.metadata.date = format_date('now')
-                processedData.metadata.format = output.format
+                processedData.metadata.format = output.type
 
                 processedData.metadata.run_uri = run.md_uri
                 processedData.metadata.inputs = inputs_metadata
@@ -263,7 +266,7 @@ class PipelineRunner(Observable):
             runner.exec(*args)
 
     def run_merged(self):
-        pass    
+        print('run merge not yet implemented')
 
     def _query_inputs(self):
         """Run internal method to exec the query 

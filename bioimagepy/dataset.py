@@ -242,7 +242,7 @@ class ProcessedDataSet():
             metadata of the processed data to create 
         
         """    
-        self.service.create_data_processeddataset(data, self.md_uri) 
+        self.service.create_data_processeddataset(data.metadata, self.md_uri) 
 
     def size(self):
         """get the size of the dataser
