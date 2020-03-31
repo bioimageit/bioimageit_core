@@ -71,7 +71,6 @@ class TestLocalMetadataService(unittest.TestCase):
         path = os.path.join(self.tst_experiment_dir, 'myexperiment')
         if os.path.isdir(path):
             shutil.rmtree(path)  
-        #pass 
 
     def test_read_rawdata(self):
         rawDataContainer1 = self.service.read_rawdata(self.ref_rawdata_file)
@@ -117,6 +116,10 @@ class TestLocalMetadataService(unittest.TestCase):
     def test_read_experiment(self):
         ref_container = create_experiment() 
         read_container = self.service.read_experiment(self.ref_experiment_file)
+
+        print(read_container.serialize())
+        print(ref_container.serialize())
+
         self.assertEqual(ref_container.serialize(), read_container.serialize())
 
     def test_write_experiment(self):

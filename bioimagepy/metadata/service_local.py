@@ -158,6 +158,7 @@ class LocalMetadataService:
             json.dump(metadata, outfile, indent=4)     
 
     def read_rawdata(self, md_uri: str) -> RawDataContainer:
+        md_uri = os.path.abspath(md_uri)
         if os.path.isfile(md_uri): 
             metadata = self._read_json(md_uri)
             container = RawDataContainer()
@@ -175,6 +176,7 @@ class LocalMetadataService:
         return RawDataContainer()    
 
     def write_rawdata(self, container: RawDataContainer, md_uri: str):
+        md_uri = os.path.abspath(md_uri)
         metadata = dict()
         
         metadata['origin'] = dict()
@@ -194,6 +196,7 @@ class LocalMetadataService:
         self._write_json(metadata, md_uri)
 
     def read_processeddata(self, md_uri: str) -> ProcessedDataContainer:
+        md_uri = os.path.abspath(md_uri)
         if os.path.isfile(md_uri): 
             metadata = self._read_json(md_uri)
             container = ProcessedDataContainer()
@@ -217,6 +220,7 @@ class LocalMetadataService:
         return ProcessedDataContainer() 
 
     def write_processeddata(self, container: ProcessedDataContainer, md_uri: str):
+        md_uri = os.path.abspath(md_uri)
         metadata = dict()
         # common
         metadata['common'] = dict()
@@ -240,6 +244,7 @@ class LocalMetadataService:
         self._write_json(metadata, md_uri)
 
     def read_rawdataset(self, md_uri: str) -> DataSetContainer: 
+        md_uri = os.path.abspath(md_uri)
         if os.path.isfile(md_uri): 
             metadata = self._read_json(md_uri)
             container = DataSetContainer()
@@ -251,6 +256,7 @@ class LocalMetadataService:
         return DataSetContainer()  
 
     def write_rawdataset(self, container: DataSetContainer, md_uri: str):  
+        md_uri = os.path.abspath(md_uri)
         metadata = dict()
         metadata['name'] = container.name
         metadata['urls'] = list()
@@ -259,6 +265,7 @@ class LocalMetadataService:
         self._write_json(metadata, md_uri)      
     
     def read_processeddataset(self, md_uri: str) -> DataSetContainer: 
+        md_uri = os.path.abspath(md_uri)
         if os.path.isfile(md_uri): 
             metadata = self._read_json(md_uri)
             container = DataSetContainer()
@@ -269,7 +276,8 @@ class LocalMetadataService:
             return container
         return DataSetContainer()        
 
-    def write_processeddataset(self, container: DataSetContainer, md_uri: str):  
+    def write_processeddataset(self, container: DataSetContainer, md_uri: str):
+        md_uri = os.path.abspath(md_uri)  
         metadata = {}
         metadata['name'] = container.name
         metadata['urls'] = list()
@@ -289,6 +297,7 @@ class LocalMetadataService:
 
         """
         # create run URI
+        dataset_md_uri = os.path.abspath(dataset_md_uri)
         dataset_dir = md_file_path(dataset_md_uri)
         run_md_file_name = "run.md.json"
         runid_count = 0
@@ -314,6 +323,7 @@ class LocalMetadataService:
 
         """
         # create the dataset metadata
+        experiment_md_uri = os.path.abspath(experiment_md_uri)
         experiment_dir = md_file_path(experiment_md_uri)
         dataset_dir = os.path.join(experiment_dir, name)
         if not os.path.isdir(dataset_dir):
@@ -349,6 +359,7 @@ class LocalMetadataService:
             URI of the processed dataset    
         
         """    
+        md_uri = os.path.abspath(md_uri)
         dataset_dir = md_file_path(md_uri)
 
         # create the data metadata
@@ -363,8 +374,8 @@ class LocalMetadataService:
         self.write_processeddataset(dataset_container, md_uri)
 
     def read_experiment(self, md_uri: str) -> ExperimentContainer:
+        md_uri = os.path.abspath(md_uri)
         if os.path.isfile(md_uri):
-            md_uri = os.path.abspath(md_uri)
             metadata = self._read_json(md_uri)
             container = ExperimentContainer()
             container.name = metadata['information']['name']
@@ -379,6 +390,7 @@ class LocalMetadataService:
         return ExperimentContainer
 
     def write_experiment(self, container:ExperimentContainer, md_uri:str):
+        md_uri = os.path.abspath(md_uri)
         metadata = {}
         metadata['information'] = {}
         metadata['information']['name'] = container.name
@@ -396,6 +408,7 @@ class LocalMetadataService:
     def create_experiment(self, container:ExperimentContainer, uri:str):
 
         # check the destination dir
+        uri = os.path.abspath(uri)
         if not os.path.exists(uri):    
             raise MetadataServiceError('Cannot create Experiment: the destination directory does not exists')
 
@@ -443,6 +456,7 @@ class LocalMetadataService:
             False otherwise            
 
         """
+        rawdataset_uri = os.path.abspath(rawdataset_uri)
         data_dir_path = os.path.dirname(rawdataset_uri)
 
         # create the new data uri
@@ -468,6 +482,7 @@ class LocalMetadataService:
         return md_uri   
 
     def read_run(self, md_uri: str) -> RunContainer:
+        md_uri = os.path.abspath(md_uri)
         if os.path.isfile(md_uri): 
             metadata = self._read_json(md_uri)
             container = RunContainer()

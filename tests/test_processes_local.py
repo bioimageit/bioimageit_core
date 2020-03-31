@@ -17,7 +17,7 @@ class TestLocalMetadataService(unittest.TestCase):
         pass
 
     def test_load_database(self):
-        self.assertEqual(len(self.service.database), 4)
+        self.assertEqual(len(self.service.database), 5)
 
     def test_read_process(self):
         container = self.service.read_process(self.xml_file)
@@ -55,7 +55,7 @@ class TestLocalMetadataService(unittest.TestCase):
 
     def test_search3(self):
         result = self.service.search('') 
-        self.assertEqual(len(result), 4)  
+        self.assertEqual(len(result), 5)  
 
     def test_search4(self):
         result = self.service.search('azertyuiop') 
