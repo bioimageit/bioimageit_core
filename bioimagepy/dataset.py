@@ -311,7 +311,7 @@ class ProcessedDataSet():
         selected_list = []
         if origin_output_name != '':
             for pdata in pre_list:
-                data = ProcessedData(pdata.url())
+                data = ProcessedData(pdata.uri())
                 if data.metadata.output["name"] == origin_output_name:
                     selected_list.append(pdata) 
         else:

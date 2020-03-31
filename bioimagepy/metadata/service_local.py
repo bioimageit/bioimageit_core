@@ -168,8 +168,9 @@ class LocalMetadataService:
             container.format = metadata['common']['format']
             # copy the url if absolute, append md_uri path otherwise
             container.uri = absolute_path(metadata['common']['url'], md_uri)  
-            for key in metadata['tags']:
-                container.tags[key] = metadata['tags'][key]    
+            if 'tags' in metadata:
+                for key in metadata['tags']:
+                    container.tags[key] = metadata['tags'][key]    
             return container
         return RawDataContainer()    
 

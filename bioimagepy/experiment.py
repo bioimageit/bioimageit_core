@@ -347,7 +347,7 @@ class Experiment(Observable):
             return raw_dataset.get_data(query)
         else:
             for i in range(len(self.metadata.processeddatasets)):
-                processeddataset = ProcessedDataSet(self.metadata.processeddataset[i])
+                processeddataset = ProcessedDataSet(self.metadata.processeddatasets[i])
                 if processeddataset.metadata.name == dataset_name:
                     return processeddataset.get_data(query, origin_output_name)
 

@@ -32,6 +32,8 @@ Pipeline
         
 """
 
+import os
+
 from bioimagepy.core.utils import Observable, format_date
 from bioimagepy.metadata.run import Run
 from bioimagepy.metadata.containers import (RunParameterContainer, RunInputContainer, 
@@ -62,7 +64,7 @@ class PipelineRunner(Observable):
         self.experiment = experiment
         # data for runner
         self._output_dataset = ''
-        self._process_params = None
+        self._process_params = []
         self._inputs_names = []  
         self._inputs_datasets = []   
         self._inputs_query = []  
@@ -209,8 +211,7 @@ class PipelineRunner(Observable):
 
         # 4- loop over the input data
         for i in range(data_count):
-
-            #print("raw data = ", input_data[0][i].uri())    
+  
             data_info_zero = RawData(input_data[0][i].uri())    
 
             # 4.0- notify observers
@@ -263,11 +264,119 @@ class PipelineRunner(Observable):
 
             # 4.2- exec    
             runner = Runner(self.process) 
+            #print("args = ", args)
             runner.exec(*args)
 
     def run_merged(self):
-        print('run merge not yet implemented')
+        """Run the process that merge txt number inputs
 
+        This is the main function that run the process on the experiment data
+
+        Raises
+        ------
+        RunnerExecError
+        
+        """
+        # 1- Query all the input data and verify that the size 
+        # are equal, if not raise an exception
+        input_data, data_count = self._query_inputs()            
+
+        # 2- Create the ProcessedDataSet
+        processed_dataset = self.experiment.create_processed_dataset(self._output_dataset)
+
+        # 3- Create run
+        run = Run()
+        run.metadata.process_name = self.process.metadata.fullname()
+        run.metadata.process_uri = self.process.uri
+        for t in range(len(self._inputs_names)):
+            run.metadata.inputs.append(RunInputContainer(
+                self._inputs_names[t],
+                self._inputs_datasets[t],
+                self._inputs_query[t],
+                self._inputs_origin_output_name[t]
+                )
+            )
+        for i in range(0, len(self._process_params), 2):
+            run.metadata.parameters.append( RunParameterContainer( self._process_params[i], self._process_params[i+1]))
+
+        processed_dataset.add_run(run)
+
+        # 4- merge Inputs
+        inputs_values = [0 for i in range(len(self._inputs_names))]
+        
+        for n in range(len(self._inputs_names)):
+            inputs_values[n] = list()
+            for i in range(data_count):
+                data_info = RawData(input_data[n][i])
+                if data_info.metadata.format == "csv" or data_info.metadata.format == "txt":
+                    with open(data_info.metadata.uri, 'r') as file:
+                        value = file.read().replace('\n', '').replace(' ', '')
+                        inputs_values[n].append(value)            
+                else:
+                    raise RunnerExecError('run merge can use only number datatype')   
+
+        # 5- save data in tmp files files in the processed dataset dir
+        tmp_inputs_files = [0 for i in range(len(self._inputs_names))]
+        processed_data_dir = processed_dataset.md_uri.replace("processeddataset.md.json", "")
+        for n in range(len(self._inputs_names)):
+            tmp_inputs_files[n] = os.path.join(processed_data_dir, self._inputs_names[n] + '.csv')
+            f = open(tmp_inputs_files[n],'w')
+            for i in range(len(inputs_values[n])):
+                value = str(inputs_values[n][i])
+                if i < len(inputs_values[n])-1:
+                    f.write(value + ",")
+                else:
+                    f.write(value)    
+            f.close()         
+
+        # 6- create input metadata for output .md.json
+        inputs_metadata = []
+        for n in range(len(tmp_inputs_files)):
+            inp_metadata = ProcessedDataInputContainer()
+            inp_metadata.name = self._inputs_names[n]
+            inp_metadata.uri = tmp_inputs_files[n] 
+            inp_metadata.type = 'txt'
+            inputs_metadata.append(inp_metadata)        
+
+        # 7- run process on generated files
+        args = []
+
+        # 7.1- inputs
+        for n in range(len(self._inputs_names)):
+            args.append(self._inputs_names[n])
+            args.append(tmp_inputs_files[n])
+
+        # 7.2- params
+        for param in self._process_params:
+            args.append(param)
+
+        # 4.3- outputs    
+        for output in self.process.metadata.outputs:
+            extension = '.' + output.type # type = format for process parameters   
+                
+            # args
+            args.append(output.name)
+            output_file_name = output.name
+            args.append(os.path.join(processed_data_dir, output_file_name + extension))
+
+            # output metadata
+            processedData = ProcessedData()
+            processedData.metadata.name = output.name
+            processedData.metadata.author = ConfigAccess.instance().get('user')['name']
+            processedData.metadata.date = format_date('now')
+            processedData.metadata.format = output.type
+
+            processedData.metadata.run_uri = run.md_uri
+            processedData.metadata.inputs = inputs_metadata
+
+            processedData.metadata.output = {'name': output.name, 'label': output.description}
+
+            processed_dataset.create_data(processedData) # save the metadata and create its md_uri and uri
+
+        # 8- exec    
+        runner = Runner(self.process) 
+        runner.exec(*args)    
+        
     def _query_inputs(self):
         """Run internal method to exec the query 
         
