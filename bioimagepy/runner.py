@@ -9,25 +9,30 @@ use the Pipeline API.
 
 Example
 -------
-    Here is an example of how to use Process with run on data
-    loaded in python:
-
-        >>> myprocess = Process('ndsafir')
-        >>> imageio.imread('myimage.tif')
-        >>> output_image = myprocess.run('i', input_image,
-                'patch', patch,               
-                'iter', iteration)
-
-    Note that the Process class works only on data stored in files. Thus, if your
-    data is loaded in python, the run funciton will save the data in temporary files 
-
-    Another example using the 'exec' method to run the process of files
-
+    Runner can be used to run a process on a single data with the 
+    exec method:
         >>> myrunner = Runner(ProcessAccess().get('ndsafir_v1.0.0') 
         >>> myrunner.exec('i', 'myimage.tif',
                 'patch', patch,               
                 'iter', iteration,
                 'o', 'denoised.tif') 
+
+    If you want the outputs to be automatically names you can use
+        >>> myrunner = Runner(ProcessAccess().get('ndsafir_v1.0.0') 
+        >>> myrunner.add_input('i', 'myimage.tif')
+        >>> myrunner.set_parameters('patch', patch,               
+                                    'iter', iteration)
+        >>> myrunner.set_output('/my/output/directory')  
+        >>> myrunner.exec()                                  
+
+    Runner can also run on a batch of data:
+
+        >>> myrunner = Runner(ProcessAccess().get('ndsafir_v1.0.0'))
+        >>> myrunner.add_inputs('i', '/my/input/directory/', '\.tif$')
+        >>> myrunner.set_parameters('patch', patch,               
+                                    'iter', iteration)
+        >>> myrunner.set_output('/my/output/directory')
+        >>> myrunner.exec()                                        
 
 Classes
 -------
@@ -38,21 +43,115 @@ Process
 import os
 import shlex
 
+from bioimagepy.core.utils import Observable
 from bioimagepy.config import ConfigAccess
 from bioimagepy.runners.factory import runnerServices
+from bioimagepy.metadata.factory import metadataServices
 from bioimagepy.process import Process
+from bioimagepy.runners.exceptions import RunnerExecError
 
-class Runner():
+class Runner(Observable):
     def __init__(self, process:Process):
+        super().__init__()
         self.process = process
         config = ConfigAccess.instance().config['runner']
         self.service = runnerServices.get(config['service'], **config) 
+        self.metadataservice = metadataServices.get(ConfigAccess.instance().config['metadata']['service'], **config)
+        self._inputs = [] # list of {"name": "i", "uri": "/my/directory/", "filter": "\.tif$"" }
+        self._parameters = [] # [key1, value1, key2, value1, ...]
+        self._output = '' # output uri (/my/output/folder)
+        self._mode = ''
 
     def man(self):
         """Convenient method to print the process man"""
         self.process.man()
 
+    def add_inputs(self, name:str, uri:str, filter:str):
+        self._mode = 'list'
+        self._inputs.append({"name": name, "uri": uri, "filter": filter })
+
+    def add_input(self, name:str, uri:str):
+        self._mode = 'single'
+        self._inputs.append({"name": name, "uri": uri})    
+
+    def set_parameters(self, *args):
+        self._parameters = args     
+
+    def set_output(self, uri:str):
+        self._output = uri       
+
     def exec(self, *args):
+        """Execute the process 
+        
+        If the arguments list is empty it exec on the data list defined with
+        the setters add_inputs
+
+        Parameters
+        ----------
+        *args
+            List of the parameters and I/O data given as pair 'arg name, arg value' 
+
+        """
+        print("runner exec with len(args)", len(args))
+        print("parameters:", self._parameters)
+        if len(args) == 0:
+            self._exec_list()
+        else:
+            self._exec_file(*args)    
+
+    def _exec_list(self):
+
+        # merge input
+        inputs = {}
+
+        data_count = 0
+        if self._mode == 'list':
+            iter = -1
+            for input in self._inputs:
+                iter = iter + 1
+                
+                uris = self.metadataservice.query_dir(input['uri'], input['filter'])
+                if iter == 0:
+                    data_count = len(uris)
+                else:
+                    if len(uris) != data_count:
+                        raise RunnerExecError("Inputs data number are not equal for all input")         
+                inputs[input['name']] = uris
+        elif self._mode == 'single':
+            data_count = 1
+            for input in self._inputs:
+                inputs[input['name']] = [input['uri']]            
+
+        for i in range(data_count):
+
+            self.notify_observers(100*(i/data_count), "Process data " + str(i) + "/" + str(data_count))
+            args = []
+
+            # create the input
+            for key in inputs:
+                args.append(key)
+                args.append( inputs[key][i] )
+
+            # create output names
+            for output in self.process.metadata.outputs:
+                  
+                # output metadata
+                output_uri = self.metadataservice.create_output_uri(self._output, output.name, output.type, args[1])
+
+                # args
+                args.append(output.name)
+                args.append(output_uri)
+
+            # append parameters
+            for param in self._parameters:
+                args.append(param)
+
+            # exec
+            print('args:', args)
+            self._exec_file(*args)
+        
+
+    def _exec_file(self, *args):
         """Execute the process on files with the given arguments
         
         The inputs and outputs arguments have to be the path of the I/O data.

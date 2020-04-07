@@ -15,6 +15,7 @@ MetadataServiceProvider
 import os
 import os.path
 import json
+import re
 from shutil import copyfile
 
 from bioimagepy.metadata.exceptions import MetadataServiceError
@@ -510,4 +511,20 @@ class LocalMetadataService:
         for parameter in container.parameters:
             metadata['parameters'].append({'name': parameter.name, 'value': parameter.value })
         
-        self._write_json(metadata, md_uri)    
+        self._write_json(metadata, md_uri)  
+
+    def query_rep(self, repository_uri:str, filter:str):
+        files = os.listdir(repository_uri)
+        count = 0
+        out_uris = []
+        for file in files:
+            count += 1
+            r1 = re.compile(filter) # re.compile(r'\.tif$')
+            if r1.search(file):
+                out_uris.append(file)
+        return out_uris        
+                
+    def create_output_uri(self, output_rep_uri:str, output_name:str, format:str, corresponding_input_uri:str):
+        input_name = os.path.basename(corresponding_input_uri)
+        return os.path.join(output_rep_uri, output_name + '_' + input_name + '.' + format)
+
