@@ -117,8 +117,8 @@ class TestLocalMetadataService(unittest.TestCase):
         ref_container = create_experiment() 
         read_container = self.service.read_experiment(self.ref_experiment_file)
 
-        print(read_container.serialize())
-        print(ref_container.serialize())
+        #print(read_container.serialize())
+        #print(ref_container.serialize())
 
         self.assertEqual(ref_container.serialize(), read_container.serialize())
 

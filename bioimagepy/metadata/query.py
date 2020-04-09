@@ -20,8 +20,18 @@ def query_list_single(search_list: list, query: str) -> list:
 
     """
 
-    selected_list = list()  
-    
+    selected_list = list() 
+
+    if 'name' in query:
+        splitted_query = query.split('=')
+        if len(splitted_query) != 2:
+            raise MetadataQueryError('Error: the query ' + query + ' is not correct. Must be (key<=value)' )
+        value = splitted_query[1]  
+        for i in range(len(search_list)):
+            if value in search_list[i].name():
+                selected_list.append(search_list[i])
+        return selected_list        
+
     if "<=" in query:
         splitted_query = query.split('<=')
         if len(splitted_query) != 2:

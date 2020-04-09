@@ -63,4 +63,4 @@ class TestLocalMetadataService(unittest.TestCase):
 
     def test_get_process(self):
         uri = self.service.get_process('svdeconv2d_v0.1.0')
-        self.assertEqual(uri, self.xml_file)         
+        self.assertEqual(uri, os.path.abspath(self.xml_file))         

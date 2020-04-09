@@ -5,11 +5,11 @@
     "process": {
         "service": "LOCAL",
         "xml_dirs": [
-            "tests/test_processes_local/"
+            "../galaxytools/tools/"
         ]
     },
     "runner": {
-        "service": "LOCAL"
+        "service": "SINGULARITY"
     },
     "user":{
         "name": "Sylvain Prigent"

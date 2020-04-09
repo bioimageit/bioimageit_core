@@ -50,7 +50,9 @@ class LocalProcessService:
     
         """
         for dir in self.xml_dirs:
-            self._parse_dir(dir)
+            #print("process database parse dir ", dir)
+            #print("process database parse dir abs ", os.path.abspath(dir))
+            self._parse_dir(os.path.abspath(dir))
     
     def _parse_dir(self, rootdir:str):
         """Load process info XMLs
@@ -65,6 +67,7 @@ class LocalProcessService:
             for file in files:
                 if file.endswith('.xml'):
                     process_path = os.path.join(currentpath, file)
+                    #print("parse file:", process_path)
                     parser = ProcessParser(process_path)
                     info = parser.parse_main_info()
                     if info:

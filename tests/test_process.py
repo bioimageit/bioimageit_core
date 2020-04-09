@@ -36,4 +36,4 @@ class TestLocalProcessAccess(unittest.TestCase):
 
     def test_get_process(self):
         process = ProcessAccess().get('svdeconv2d_v0.1.0')
-        self.assertEqual(process.metadata.uri, self.xml_file)      
+        self.assertEqual(process.metadata.uri, os.path.abspath(self.xml_file))      

@@ -160,7 +160,7 @@ class LocalMetadataService:
 
     def read_rawdata(self, md_uri: str) -> RawDataContainer:
         md_uri = os.path.abspath(md_uri)
-        if os.path.isfile(md_uri): 
+        if os.path.isfile(md_uri) and md_uri.endswith('.md.json'): 
             metadata = self._read_json(md_uri)
             container = RawDataContainer()
             container.type = metadata['origin']['type']
@@ -174,7 +174,7 @@ class LocalMetadataService:
                 for key in metadata['tags']:
                     container.tags[key] = metadata['tags'][key]    
             return container
-        return RawDataContainer()    
+        raise MetadataServiceError('Metadata file format not supported')   
 
     def write_rawdata(self, container: RawDataContainer, md_uri: str):
         md_uri = os.path.abspath(md_uri)
@@ -198,7 +198,7 @@ class LocalMetadataService:
 
     def read_processeddata(self, md_uri: str) -> ProcessedDataContainer:
         md_uri = os.path.abspath(md_uri)
-        if os.path.isfile(md_uri): 
+        if os.path.isfile(md_uri) and md_uri.endswith('.md.json'): 
             metadata = self._read_json(md_uri)
             container = ProcessedDataContainer()
             container.name = metadata['common']['name']
@@ -217,8 +217,8 @@ class LocalMetadataService:
             if 'label' in metadata['origin']['output']:    
                 container.output['label'] = metadata['origin']['output']['label']
                    
-            return container
-        return ProcessedDataContainer() 
+            return container    
+        raise MetadataServiceError('Metadata file format not supported')
 
     def write_processeddata(self, container: ProcessedDataContainer, md_uri: str):
         md_uri = os.path.abspath(md_uri)
@@ -246,7 +246,7 @@ class LocalMetadataService:
 
     def read_rawdataset(self, md_uri: str) -> DataSetContainer: 
         md_uri = os.path.abspath(md_uri)
-        if os.path.isfile(md_uri): 
+        if os.path.isfile(md_uri) and md_uri.endswith('.md.json'): 
             metadata = self._read_json(md_uri)
             container = DataSetContainer()
             container.name = metadata['name']
@@ -254,7 +254,7 @@ class LocalMetadataService:
                 container.uris.append(absolute_path(uri, md_uri))
 
             return container
-        return DataSetContainer()  
+        return DataSetContainer     
 
     def write_rawdataset(self, container: DataSetContainer, md_uri: str):  
         md_uri = os.path.abspath(md_uri)
@@ -267,7 +267,7 @@ class LocalMetadataService:
     
     def read_processeddataset(self, md_uri: str) -> DataSetContainer: 
         md_uri = os.path.abspath(md_uri)
-        if os.path.isfile(md_uri): 
+        if os.path.isfile(md_uri) and md_uri.endswith('.md.json'): 
             metadata = self._read_json(md_uri)
             container = DataSetContainer()
             container.name = metadata['name']
@@ -275,7 +275,7 @@ class LocalMetadataService:
                 container.uris.append(absolute_path(uri, md_uri))
 
             return container
-        return DataSetContainer()        
+        return DataSetContainer      
 
     def write_processeddataset(self, container: DataSetContainer, md_uri: str):
         md_uri = os.path.abspath(md_uri)  
@@ -521,10 +521,11 @@ class LocalMetadataService:
             count += 1
             r1 = re.compile(filter) # re.compile(r'\.tif$')
             if r1.search(file):
-                out_uris.append(file)
+                out_uris.append(os.path.join(repository_uri,file))
         return out_uris        
                 
     def create_output_uri(self, output_rep_uri:str, output_name:str, format:str, corresponding_input_uri:str):
+        if output_rep_uri == '':
+            output_rep_uri = os.path.dirname(os.path.realpath(corresponding_input_uri))
         input_name = os.path.basename(corresponding_input_uri)
         return os.path.join(output_rep_uri, output_name + '_' + input_name + '.' + format)
-

@@ -184,6 +184,7 @@ class SearchContainer():
     ----------
     data 
         Data are stored in dict as
+            data['name] = 'file.tif'
             data['uri] = '/url/of/the/metadata/file.md.json'
             data['tags] = {'tag1'='value1', 'tag2'='value2'}
 
@@ -191,6 +192,9 @@ class SearchContainer():
 
     def __init__(self):
         self.data = dict()
+        self.data['name'] = ''
+        self.data['uri'] = ''  
+        self.data['tags'] = {}
 
     def uri(self):
         """Returns the data metadata file uri"""
@@ -199,7 +203,13 @@ class SearchContainer():
 
     def set_uri(self, uri: str):
         """Set the data metadata file uri"""
-        self.data['uri'] = uri            
+        self.data['uri'] = uri     
+
+    def set_name(self, name:str):
+        self.data['name'] = name 
+
+    def name(self):
+        return self.data['name']              
 
     def is_tag(self, key: str):
         """Check if a tag exists

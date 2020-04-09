@@ -18,6 +18,7 @@ from bioimagepy.config import ConfigAccess
 from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, RawDataContainer, 
                                             ProcessedDataContainer, ProcessedDataInputContainer,
                                             SearchContainer) 
+from bioimagepy.metadata.exceptions import MetadataServiceError                                            
 from bioimagepy.metadata.factory import metadataServices
 
 class RawData():
@@ -43,7 +44,10 @@ class RawData():
         self.metadata = None # RawDataContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
-        self.read()
+        try:
+            self.read()
+        except MetadataServiceError:
+            self.metadata = RawDataContainer() 
 
     def read(self):
         """Read the metadata from database
@@ -70,6 +74,7 @@ class RawData():
 
         """ 
         info = SearchContainer()
+        info.data['name'] = self.metadata.name
         info.data["uri"] = self.md_uri
         info.data['tags'] = self.metadata.tags
         return info
@@ -140,7 +145,10 @@ class ProcessedData():
         self.metadata = None #ProcessedDataContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
-        self.read()
+        try:
+            self.read()
+        except MetadataServiceError:
+            self.metadata = ProcessedDataContainer()     
 
     def read(self):
         """Read the metadata from database
@@ -213,7 +221,16 @@ class ProcessedData():
         Create a serch container from the data metadata
 
         """   
-        container = self.get_origin().to_search_container()  
+        container = None
+        try:
+            origin = self.get_origin()
+            if origin is not None:
+                container = origin.to_search_container()  
+            else:
+                container = SearchContainer() 
+        except MetadataServiceError:
+            container = SearchContainer()    
+        container.data['name'] = self.metadata.name
         container.data['uri'] = self.md_uri
         return container
 
@@ -225,4 +242,3 @@ def processed_data_origin(processed_data:ProcessedData):
             return RawData(processed_data.metadata.inputs[0].uri)
         else:
             return processed_data_origin(ProcessedData(processed_data.metadata.inputs[0].uri))
-         

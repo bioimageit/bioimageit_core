@@ -161,6 +161,7 @@ class PipelineRunner(Observable):
                 self.run_sequence()
             else:
                 raise RunnerExecError("No input. Please use add_input or add_input_by_urls")
+        self.experiment.read()    
                
 
     def run_sequence_by_urls(self):

@@ -48,11 +48,13 @@ class SingularityRunnerService:
             list of arguments    
 
         """
-        if not process.container['type'] == 'singularity':
+        #print('container type = ' , process.container()['type'])
+        if process.container()['type'] != 'singularity':
             raise RunnerExecError("The process " + process.name + " is not compatible with Singularity" )    
 
-        image_uri = replace_env_variables(process, process.container['uri'])
+        image_uri = replace_env_variables(process, process.container()['uri'])
         print("run singularity container:", image_uri)
+        print('args:', args)
         puller = Client.execute(image_uri, args)    
         # TODO add puller to log via observer
         for line in puller:

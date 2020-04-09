@@ -92,8 +92,8 @@ class Runner(Observable):
             List of the parameters and I/O data given as pair 'arg name, arg value' 
 
         """
-        print("runner exec with len(args)", len(args))
-        print("parameters:", self._parameters)
+        #print("runner exec with len(args)", len(args))
+        #print("parameters:", self._parameters)
         if len(args) == 0:
             self._exec_list()
         else:
@@ -110,7 +110,7 @@ class Runner(Observable):
             for input in self._inputs:
                 iter = iter + 1
                 
-                uris = self.metadataservice.query_dir(input['uri'], input['filter'])
+                uris = self.metadataservice.query_rep(input['uri'], input['filter'])
                 if iter == 0:
                     data_count = len(uris)
                 else:
