@@ -1,0 +1,64 @@
+{
+    "categories": [
+        {
+            "id": "colocalization",
+            "name": "Colocalization",
+            "thumbnail": "colocalization.png",
+            "parent": "root"
+        },
+        {
+            "id": "intensity_colocalization",
+            "name": "Intensity colocalization",
+            "thumbnail": "colocalization.png",
+            "parent": "colocalization"
+        },
+        {
+            "id": "object_colocalization",
+            "name": "Object colocalization",
+            "thumbnail": "colocalization.png",
+            "parent": "colocalization"
+        },
+        {
+            "id": "tracking",
+            "name": "Tracking",
+            "thumbnail": "particles_tracking.png",
+            "parent": "root"
+        },
+        {
+            "id": "objects_tracking",
+            "name": "Objects tracking",
+            "thumbnail": "particles_tracking.png",
+            "parent": "tracking"
+        },
+        {
+            "id": "particles_tracking",
+            "name": "Particles tracking",
+            "thumbnail": "particles_tracking.png",
+            "parent": "tracking"
+        },
+        {
+            "id": "Spots detection",
+            "name": "Spots detection",
+            "thumbnail": "spots_detection.png",
+            "parent": "root"
+        },
+        {
+            "id": "denoising_deconvolution",
+            "name": "Denoising & Deconvolution",
+            "thumbnail": "denoising_deconvolution.png",
+            "parent": "root"
+        },
+        {
+            "id": "segmentation",
+            "name": "Segmentation",
+            "thumbnail": "segmentation.png",
+            "parent": "root"
+        },
+        {
+            "id": "statistics",
+            "name": "Statistics",
+            "thumbnail": "statistics.png",
+            "parent": "root"
+        }
+    ]
+}

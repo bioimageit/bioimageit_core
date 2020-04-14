@@ -36,4 +36,16 @@ class TestLocalProcessAccess(unittest.TestCase):
 
     def test_get_process(self):
         process = ProcessAccess().get('svdeconv2d_v0.1.0')
-        self.assertEqual(process.metadata.uri, os.path.abspath(self.xml_file))      
+        self.assertEqual(process.metadata.uri, os.path.abspath(self.xml_file))     
+
+    def test_get_process_categories1(self):
+        categories = ProcessAccess().get_categories('root')
+        self.assertEqual(len(categories), 6)
+
+    def test_get_process_categories2(self):
+        categories = ProcessAccess().get_categories('colocalization')
+        self.assertEqual(len(categories), 2)   
+
+    def test_get_category_processes1(self):
+        processes = ProcessAccess().get_category_processes('Spots detection') 
+        self.assertEqual(len(processes), 1)        

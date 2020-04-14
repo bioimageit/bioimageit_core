@@ -11,12 +11,15 @@ ProcessServiceProvider
 """
 import os
 import xml.etree.ElementTree as ET
+import json
+import yaml
 
 from bioimagepy.processes.containers import (ProcessContainer, ProcessIndexContainer, 
                                              ProcessParameterContainer, CmdSelectContainer, 
                                              IO_INPUT, PARAM_NUMBER,
                                              PARAM_STRING, PARAM_SELECT, PARAM_BOOLEAN, PARAM_FILE,
-                                             IO_PARAM, IO_INPUT, IO_OUTPUT)
+                                             IO_PARAM, IO_INPUT, IO_OUTPUT,
+                                             ProcessCategoryContainer)
 from bioimagepy.processes.exceptions import ProcessServiceError
 
 class LocalProcessServiceBuilder:
@@ -24,11 +27,12 @@ class LocalProcessServiceBuilder:
     def __init__(self):
         self._instance = None
 
-    def __call__(self, xml_dirs, **_ignored):
+    def __call__(self, xml_dirs, categories_file, **_ignored):
         if not self._instance:
             self._instance = LocalProcessService()
             self._instance.xml_dirs = xml_dirs
-            self._instance.load_datbase()
+            self._instance.categories_json = categories_file
+            self._instance._load()
         return self._instance
 
 class LocalProcessService:
@@ -41,9 +45,38 @@ class LocalProcessService:
     def __init__(self):
         self.service_name = 'LocalProcessService'
         self.xml_dirs = []
+        self.categories_json = ''
         self.database = {}
+        self.categories = []
 
-    def load_datbase(self):
+    def _load_categories(self):
+        """Load the categories database
+
+        parse the categories json file and store it in a list 
+        of categories containers
+
+        """    
+        self.categories = []
+        # read json
+        if os.path.getsize(self.categories_json) > 0:
+            with open(self.categories_json) as json_file:  
+                categories_dict = json.load(json_file)
+
+        categories_json_dirname = os.path.dirname(self.categories_json)
+        for categories in categories_dict['categories']:
+            container = ProcessCategoryContainer()
+            container.id = categories['id']
+            container.name = categories['name']
+            container.thumbnail = os.path.join(categories_json_dirname, categories['thumbnail'])
+            container.parent = categories['parent']
+            self.categories.append(container)
+    
+    def _load(self):
+        """Build the process and categories database"""
+        self._load_datbase()
+        self._load_categories()
+
+    def _load_datbase(self):
         """Build the database
 
         Parse the source directories and build the database
@@ -131,7 +164,7 @@ class LocalProcessService:
         return list  
 
     def get_process(self, fullname:str) -> str:
-        """get a process by name
+        """Get a process by name
         
         Parameters
         ----------
@@ -146,6 +179,33 @@ class LocalProcessService:
         if fullname in self.database:
             return self.database[fullname].uri
         return None      
+
+    def get_categories(self, parent:str) -> list:
+        """Get a list of categories for a given parent  
+
+        parent
+            ID of the parent category
+
+        """   
+        outlist = []
+        for category in self.categories:
+            if category.parent == parent:
+                outlist.append(category)
+        return outlist     
+
+    def get_category_processes(self, category:str) -> list:
+        """Get the list of processes with the given category
+
+        category
+            ID of the category
+
+        """    
+        outlist = []
+        for name in self.database:
+            process_container = self.database[name]
+            if category in process_container.categories:
+                outlist.append(process_container)    
+        return outlist        
 
 
 class ProcessParser():
@@ -199,6 +259,15 @@ class ProcessParser():
             info.version = self._root.attrib['version']  
         if 'type' in self._root.attrib:
             info.type = self._root.attrib['type']  
+        for child in self._root:
+            if child.tag == 'help':
+                tmp = child.text 
+                tmp = tmp.replace(" ", "")
+                tmp = tmp.replace("\n", "")
+                tmp = tmp.replace("\t", "")
+                info.help = os.path.join(os.path.dirname(self.xml_file_url), tmp)
+                break  
+        info.categories = self._parse_categories()
         return info        
 
 
@@ -232,7 +301,7 @@ class ProcessParser():
                 self._parse_outputs(child)
             elif child.tag == 'help':
                 self._parse_help(child)   
-
+        self.info.categories = self._parse_categories()
         return self.info
 
     def _parse_requirements(self, node):
@@ -350,4 +419,16 @@ class ProcessParser():
                 if 'format' in child.attrib:
                     output_parameter.type = child.attrib['format']
                     
-                self.info.outputs.append(output_parameter)         
+                self.info.outputs.append(output_parameter)   
+
+    def _parse_categories(self):
+        """Parse categories from the .shed.yml file"""
+        # get the yml file
+        shed_file = os.path.join(os.path.dirname(self.xml_file_url), '.shed.yml')
+        if not os.path.isfile(shed_file):
+            return []
+
+        with open(shed_file) as file:
+            shed_file_content = yaml.load(file, Loader=yaml.FullLoader) 
+ 
+        return shed_file_content["categories"]  

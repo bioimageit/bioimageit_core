@@ -11,7 +11,8 @@ class TestLocalMetadataService(unittest.TestCase):
         self.xml_file = 'tests/test_processes_local/svdeconv/svdeconv2d.xml'
         self.xml_dir = 'tests/test_processes_local'
         self.service.xml_dirs.append(self.xml_dir)
-        self.service.load_datbase()
+        self.service.categories_json = 'tests/test_processes_local/categories.json'
+        self.service._load()
         
     def tearDown(self):
         pass
@@ -63,4 +64,16 @@ class TestLocalMetadataService(unittest.TestCase):
 
     def test_get_process(self):
         uri = self.service.get_process('svdeconv2d_v0.1.0')
-        self.assertEqual(uri, os.path.abspath(self.xml_file))         
+        self.assertEqual(uri, os.path.abspath(self.xml_file))  
+
+    def test_get_categories1(self):
+        categories = self.service.get_categories('root')
+        self.assertEqual(len(categories), 6)
+
+    def test_get_categories2(self):
+        categories = self.service.get_categories('colocalization')
+        self.assertEqual(len(categories), 2)  
+
+    def test_get_category_processes1(self):
+        processes = self.service.get_category_processes('Spots detection') 
+        self.assertEqual(len(processes), 1)   

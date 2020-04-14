@@ -65,6 +65,29 @@ def IO_OUTPUT():
 
     return "output" 
 
+class ProcessCategoryContainer():
+    """Container for a category of process
+
+    These are the metadata of a process caegory for the
+    toolshed structure
+
+    id:
+        ID of the category. It must be a unique name 
+    name:
+        Name of the category. It is the name printed to the user interfaces
+    thumbnail:
+        URI to an image that illustrate the category tools 
+    parent:
+        ID of the parent category in the category tree. Set to 'root' for a 
+        top level category        
+
+    """
+    def __init__(self):
+        self.id = ''
+        self.name = ''
+        self.thumbnail = ''
+        self.parent = 'root'
+
 class ProcessIndexContainer():
     """Container for a process main information
 
@@ -77,7 +100,9 @@ class ProcessIndexContainer():
     version: str
         Process version (ex 1.0.0)
     type
-        Process type ('sequential', 'merge')    
+        Process type ('sequential', 'merge') 
+    categories
+        List of the process categories       
 
     """
     def __init__(self):
@@ -86,6 +111,8 @@ class ProcessIndexContainer():
         self.name = ''
         self.version = ''
         self.type = ''
+        self.categories = []
+        self.help = ''
 
     def serialize(self, direction:str='h'):
         """Serialize the process main info
@@ -105,7 +132,10 @@ class ProcessIndexContainer():
             return '{:>15}\t{:>15}\t{:>15}\t{:>15}\t{:>15}'.format(self.id + '_v' + self.version, self.name, self.version, type, self.uri)
 
         sep = '\n'    
-        return self.id + '_v' + self.version + sep + self.name + sep + self.version + sep + type + sep + self.uri    
+        txt = self.id + '_v' + self.version + sep + self.name + sep + self.version + sep + type + sep + self.uri   
+        for item in self.categories:
+            txt += item + sep 
+        return txt    
 
 
 class CmdSelectContainer():

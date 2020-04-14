@@ -112,4 +112,21 @@ class ProcessAccess():
         """        
         uri = self.service.get_process(name)
         return Process(uri)
-        
+    
+    def get_categories(self, parent:str) -> list:
+        """Get a list of categories for a given parent  
+
+        parent
+            ID of the parent category
+
+        """   
+        return self.service.get_categories(parent)    
+
+    def get_category_processes(self, category:str) -> list:
+        """Get the list of processes with the given category
+
+        category
+            ID of the category
+
+        """    
+        return self.service.get_category_processes(category)    
