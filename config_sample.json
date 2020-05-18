@@ -1,0 +1,18 @@
+{
+    "metadata": {
+        "service": "LOCAL"
+    },
+    "process": {
+        "service": "LOCAL",
+        "xml_dirs": [
+            "../galaxytools/tools/"
+        ],
+        "categories": "../galaxytools/shed/categories.json"
+    },
+    "runner": {
+        "service": "SINGULARITY"
+    },
+    "user":{
+        "name": "Sylvain Prigent"
+    }
+}

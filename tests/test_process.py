@@ -1,22 +1,51 @@
-import os
 import unittest
-from bioimagepy.process import BiProcess
- 
-class TestBiProcess(unittest.TestCase):
+import os
+import os.path
 
+from bioimagepy.config import ConfigAccess
+from bioimagepy.process import Process, ProcessAccess
+
+class TestLocalProcess(unittest.TestCase):
     def setUp(self):
-        self.process = BiProcess('tests/data/process.xml')
+        self.xml_file = 'tests/test_processes_local/svdeconv/svdeconv2d.xml'
+        ConfigAccess('tests/test_config/config_local.json')
 
-    def test_run_process(self):
-        outputFile = 'tests/data/process_result.txt'
-        self.process.exec('-t', '"Hello world"', 
-               '-o', outputFile) 
+    def tearDown(self):
+        ConfigAccess.__instance = None
 
-        with open(outputFile, 'r') as content_file:
-            content = content_file.read()    
-        content = content.replace('\n', '')    
-        os.remove(outputFile)        
+    def test_process(self):
+        process = Process(self.xml_file)
+        t1 = False
+        if process.metadata.name == 'SPARTION 2D':
+            t1 = True
+        t2 = False
+        if process.metadata.version == '0.1.0':
+            t2 = True
+        t3 = False    
+        if process.metadata.id == 'svdeconv2d':
+            t3 = True
+        self.assertTrue(t1*t2*t3) 
 
-        self.assertEqual(content, 'Hello world')
+class TestLocalProcessAccess(unittest.TestCase):        
+    def setUp(self):
+        self.xml_file = 'tests/test_processes_local/svdeconv/svdeconv2d.xml'
+        ConfigAccess('tests/test_config/config_local.json')
 
-    
+    def tearDown(self):
+        ConfigAccess.__instance = None         
+
+    def test_get_process(self):
+        process = ProcessAccess().get('svdeconv2d_v0.1.0')
+        self.assertEqual(process.metadata.uri, os.path.abspath(self.xml_file))     
+
+    def test_get_process_categories1(self):
+        categories = ProcessAccess().get_categories('root')
+        self.assertEqual(len(categories), 6)
+
+    def test_get_process_categories2(self):
+        categories = ProcessAccess().get_categories('colocalization')
+        self.assertEqual(len(categories), 2)   
+
+    def test_get_category_processes1(self):
+        processes = ProcessAccess().get_category_processes('Spots detection') 
+        self.assertEqual(len(processes), 1)        

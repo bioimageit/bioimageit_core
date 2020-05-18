@@ -1,0 +1,15 @@
+{
+    "metadata": {
+        "service": "LOCAL"
+    },
+    "process": {
+        "service": "LOCAL",
+        "xml_dirs": [
+            "tests/test_processes_local/"
+        ],
+        "categories_file": "tests/test_processes_local/categories.json"
+    },
+    "runner": {
+        "service": "LOCAL"
+    }
+}

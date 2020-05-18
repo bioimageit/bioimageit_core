@@ -1,0 +1,27 @@
+<tool id="Wilcoxon" name="Wilcoxon" version="1.0.0" python_template_version="3.5" type="merge">
+    <requirements>
+        <container type="singularity">$__tool_directory__/../../../singularity/bipython</container>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        python3 $__tool_directory__/wilcoxon.py -x ${x} -y ${y} -t ${t} -p ${p}
+    ]]></command>
+    <inputs>
+        <param type="data" name="x" format="csv" label="Population 1" />
+        <param type="data" name="y" format="csv" label="Population 2" />
+    </inputs>
+    <outputs>
+        <data name="t" format="csv" label="t" />
+        <data name="p" format="csv" label="p" />
+    </outputs>
+    <tests>
+        <test>
+            <param name="x" value="x.csv" />
+            <param name="y" value="y.csv" />
+            <output name="t" file="t.csv" compare="sim_size" />
+        </test>
+    </tests>
+    <help>
+    </help>
+    <citations>
+    </citations>
+</tool>
