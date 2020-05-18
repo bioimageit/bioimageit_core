@@ -1,0 +1,15 @@
+image: ubuntu:20.04
+
+variables:
+  JEKYLL_ENV: production
+  DEBIAN_FRONTEND: noninteractive
+
+before_script:
+  - apt-get update
+
+job_unit_tests:
+  stage: test
+  script:
+    - cd bioimagepy
+    - python3 -m unittest discover -v
+    
