@@ -17,4 +17,15 @@ job_unit_tests:
   stage: test
   script:
     - python3 -m unittest discover -v
-    
+
+pages:
+  script:
+    - pip3 install Sphinx
+    - pip3 install sphinx_rtd_theme
+    - cd docs
+    - sphinx-build -b html ./source ../public/
+  artifacts:
+    paths:
+      - public/
+  only:
+    - master
