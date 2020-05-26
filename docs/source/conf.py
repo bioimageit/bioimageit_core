@@ -35,7 +35,6 @@ extensions.append('sphinx.ext.autodoc')
 extensions.append('sphinx.ext.napoleon')
 extensions.append('sphinx.ext.coverage')
 
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 

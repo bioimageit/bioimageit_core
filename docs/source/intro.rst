@@ -7,7 +7,7 @@ called either locally or using containers (Docker, Singularity)
 
 Context
 -------
-BioImagePy has been developped by **Sylvain Prigent** in a project funded by `**France-BioImaging** <https://france-bioimaging.org/>`_
+BioImagePy has been developped by **Sylvain Prigent** in a project funded by `France-BioImaging <https://france-bioimaging.org/>`_
 BioImagePy is just the python API of the project. Please find all the other developped tools `here <https://gitlab.inria.fr/bioimage-it/>`_
 
 What BioImagePy is

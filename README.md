@@ -11,3 +11,12 @@ Run tests with the command:
 cd bioimagepy
 python3 -m unittest discover -v
 ```
+
+# Build the documentation
+
+The documentation is written with Sphinx. To build is run the commands:
+```bash
+cd docs
+mkdir build
+sphinx-build -b html ./source ./build
+```

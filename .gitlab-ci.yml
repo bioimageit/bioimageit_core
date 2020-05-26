@@ -24,6 +24,7 @@ pages:
     - pip3 install sphinx_rtd_theme
     - cd docs
     - sphinx-build -b html ./source ../public/
+    - sphinx-build -b html ./source ../public/
   artifacts:
     paths:
       - public/

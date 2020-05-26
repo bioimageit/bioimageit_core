@@ -12,6 +12,10 @@ Welcome to BioImagePy's documentation!
 
    intro
    guide
+   install
+   tutorial_wrap_a_tool
+   tutorial_write_a_data_plugin
+   tutorial_write_a_process_plugin
    modules
 
 Indices and tables
