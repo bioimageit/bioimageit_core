@@ -5,9 +5,10 @@
     "process": {
         "service": "LOCAL",
         "xml_dirs": [
-            "../galaxytools/tools/"
+            "../toolboxes/tools/"
         ],
-        "categories": "../galaxytools/shed/categories.json"
+        "categories": "../toolboxes/toolboxes.json",
+        "tools": "../toolboxes/tools.json"
     },
     "runner": {
         "service": "SINGULARITY"
