@@ -22,6 +22,7 @@ setuptools.setup(
     install_requires=[
         "PrettyTable>=0.7.2",
         "pyyaml",
-        "wget"
+        "wget",
+        "spython"
     ],
 )
