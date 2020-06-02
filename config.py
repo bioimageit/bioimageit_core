@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     config_json = read_json(os.path.join(bioimagepy_dir, 'config_sample.json'))   
     config_json["process"]["xml_dirs"] = [ os.path.join(package_dir, "toolboxes", "tools") ]
-    config_json["process"]["categories"] = os.path.join(package_dir, "toolboxes", "categories.json")
+    config_json["process"]["categories"] = os.path.join(package_dir, "toolboxes", "toolboxes.json")
     config_json["process"]["tools"] = os.path.join(package_dir, "toolboxes", "tools.json")
     config_json["user"]["name"] = user_name
 
