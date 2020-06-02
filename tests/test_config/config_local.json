@@ -7,7 +7,7 @@
         "xml_dirs": [
             "tests/test_processes_local/"
         ],
-        "categories_file": "tests/test_processes_local/categories.json"
+        "categories": "tests/test_processes_local/categories.json"
     },
     "runner": {
         "service": "LOCAL"
