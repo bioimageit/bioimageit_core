@@ -11,7 +11,7 @@ Example
         >>> from bioimagepy.experiment import Experiment
         >>> myexperiment = Experiment()
         >>> myexperiment.create('myexperiment', 'Sylvain Prigent', './')
-        >>> myexperiment.import_data(uri='data_uri', name='mydata', author='Sylvain Prigent', dataformat='tif', createddata='now', copy_data=True)
+        >>> myexperiment.import_data(data_path='data_uri', name='mydata', author='Sylvain Prigent', format='tif, date = 'now', tags={}, copy = True))
         >>> myexperiment.import_dir(dir_uri='./my/local/dir/', filter='\.tif$', author='Sylvain Prigent', format='tif', date='now', copy_data=True)
         >>> myexperiment.tag_from_name(tag='population', ['population1', 'population2'])
         >>> myexperiment.tag_using_seperator(tag='ID', separator='_', value_position=1)
