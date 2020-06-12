@@ -501,7 +501,7 @@ class LocalMetadataService:
             for tag in metadata['tags']:
                 container.tags.append(tag)  
             return container  
-        return ExperimentContainer
+        return ExperimentContainer()
 
     def write_experiment(self, container:ExperimentContainer, md_uri:str):
         """Write an experiment metadata to the database

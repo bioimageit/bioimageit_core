@@ -265,7 +265,7 @@ class ProcessParser():
                 tmp = tmp.replace(" ", "")
                 tmp = tmp.replace("\n", "")
                 tmp = tmp.replace("\t", "")
-                info.help = os.path.join(os.path.dirname(self.xml_file_url), tmp)
+                info.help = tmp
                 break  
         info.categories = self._parse_categories()
         return info        
@@ -339,8 +339,11 @@ class ProcessParser():
 
     def _parse_help(self, node):
         """Parse the help information"""
-
-        self.info.help = node.text
+        tmp = node.text
+        tmp = tmp.replace(" ", "")
+        tmp = tmp.replace("\n", "")
+        tmp = tmp.replace("\t", "")
+        self.info.help = tmp
 
     def _parse_inputs(self, node):
         """Parse the inputs"""
