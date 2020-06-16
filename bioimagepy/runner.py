@@ -92,12 +92,18 @@ class Runner(Observable):
             List of the parameters and I/O data given as pair 'arg name, arg value' 
 
         """
+
+        if self.observers_count() > self.service.observers_count():
+            for observer in self._observers:
+                self.service.add_observer(observer)
         #print("runner exec with len(args)", len(args))
         #print("parameters:", self._parameters)
+        self.notify_observers(0, "Started")
         if len(args) == 0:
             self._exec_list()
         else:
-            self._exec_file(*args)    
+            self._exec_file(*args) 
+        self.notify_observers(100, "Done")        
 
     def _exec_list(self):
 
@@ -124,7 +130,7 @@ class Runner(Observable):
 
         for i in range(data_count):
 
-            self.notify_observers(100*(i/data_count), "Process data " + str(i) + "/" + str(data_count))
+            self.notify_observers(100*(i/data_count), "Process data " + str(i+1) + "/" + str(data_count))
             args = []
 
             # create the input
@@ -147,9 +153,9 @@ class Runner(Observable):
                 args.append(param)
 
             # exec
-            print('args:', args)
+            #print('args:', args)
             self._exec_file(*args)
-        
+           
 
     def _exec_file(self, *args):
         """Execute the process on files with the given arguments

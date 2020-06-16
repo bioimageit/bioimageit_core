@@ -13,6 +13,7 @@ ProcessServiceProvider
 import os.path
 from spython.main import Client
 
+from bioimagepy.core.utils import Observable
 from bioimagepy.config import ConfigAccess
 from bioimagepy.processes.containers import ProcessContainer
 from bioimagepy.runners.exceptions import RunnerExecError
@@ -27,7 +28,7 @@ class SingularityRunnerServiceBuilder:
             self._instance = SingularityRunnerService()
         return self._instance
 
-class SingularityRunnerService:
+class SingularityRunnerService(Observable):
     """Service for local runner exec
     
     To initialize the database, you need to set the xml_dirs from 
@@ -35,6 +36,7 @@ class SingularityRunnerService:
     
     """
     def __init__(self):
+        super().__init__()
         self.service_name = 'SingularityRunnerService'
 
     def exec(self, process:ProcessContainer, args):
@@ -55,12 +57,15 @@ class SingularityRunnerService:
         image_uri = replace_env_variables(process, process.container()['uri'])
         if process.container()['type'] == 'docker':
             image_uri = 'docker://' + image_uri
-        print("run singularity container:", image_uri)
-        print('args:', args)
-        puller = Client.execute(image_uri, args)    
-        # TODO add puller to log via observer
+
+        self.notify_message('run singularity container: ' + image_uri) 
+        self.notify_message('args:' + ' '.join(args))    
+        #print("run singularity container:", image_uri)
+        #print('args:', args)
+        puller = Client.execute(image_uri, args)   
         for line in puller:
-            print(line)
+            self.notify_message(line)
+            #print(line)
 
 def replace_env_variables(process, cmd) -> str:
     xml_root_path = os.path.dirname(os.path.abspath(process.uri))

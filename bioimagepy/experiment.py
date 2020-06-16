@@ -300,6 +300,30 @@ class Experiment(Observable):
                 value = splited_name[value_position]  
             _rawdata.set_tag(tag, value) 
 
+    def get_processed_datasets_size(self):
+        """Get the number of processed datasets
+
+        Returns
+        -------
+        The number of processed datasets
+
+        """
+        return len(self.metadata.processeddatasets)
+
+    def get_processed_dataset_at(self, idx: int):
+        """Get a processed dataset
+
+        Parameters
+        ----------
+        idx
+            Index of the processed dataset in the processed dataset list
+
+        Returns
+        -------
+        ProcessedDataSet at idx
+        """
+        return ProcessedDataSet(self.metadata.processeddatasets[idx])
+
     def get_dataset(self, name:str):
         """Get the metadata of a dataset
 
