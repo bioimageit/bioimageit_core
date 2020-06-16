@@ -267,6 +267,10 @@ class PipelineRunner(Observable):
             runner = Runner(self.process) 
             #print("args = ", args)
             runner.exec(*args)
+    
+        # 4.0- notify observers
+        for observer in self._observers:
+            observer.notify({'progress': 100, 'message': 'done'})
 
     def run_merged(self):
         """Run the process that merge txt number inputs
