@@ -12,6 +12,7 @@ ProcessServiceProvider
 
 import subprocess
 
+from bioimagepy.core.utils import Observable
 from bioimagepy.processes.containers import ProcessContainer
 from bioimagepy.runners.exceptions import RunnerExecError
 
@@ -25,7 +26,7 @@ class LocalRunnerServiceBuilder:
             self._instance = LocalRunnerService()
         return self._instance
 
-class LocalRunnerService:
+class LocalRunnerService(Observable):
     """Service for local runner exec
     
     To initialize the database, you need to set the xml_dirs from 
@@ -33,6 +34,7 @@ class LocalRunnerService:
     
     """
     def __init__(self):
+        super().__init__()
         self.service_name = 'LocalRunnerService'
 
     def exec(self, process:ProcessContainer, args):
