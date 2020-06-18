@@ -282,6 +282,9 @@ class PipelineRunner(Observable):
         RunnerExecError
         
         """
+        for observer in self._observers:
+            observer.notify({'progress': 0, 'message': 'start'}) 
+
         # 1- Query all the input data and verify that the size 
         # are equal, if not raise an exception
         input_data, data_count = self._query_inputs()            
@@ -380,7 +383,11 @@ class PipelineRunner(Observable):
 
         # 8- exec    
         runner = Runner(self.process) 
-        runner.exec(*args)    
+        runner.exec(*args)   
+
+        # notify observers    
+        for observer in self._observers:
+            observer.notify({'progress': 100, 'message': 'done'}) 
         
     def _query_inputs(self):
         """Run internal method to exec the query 
