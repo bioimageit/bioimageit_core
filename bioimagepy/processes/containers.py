@@ -202,7 +202,7 @@ class ProcessParameterContainer():
     value: str
         Parameter value
     type: str 
-        Parameter type (in PARAM_XXX names)
+        Parameter type (format)
     is_data: bool
         False if parameter is param and True if parameter is data
     io: str 

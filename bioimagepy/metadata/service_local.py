@@ -721,4 +721,7 @@ class LocalMetadataService:
         if output_rep_uri == '':
             output_rep_uri = os.path.dirname(os.path.realpath(corresponding_input_uri))
         input_name = os.path.basename(corresponding_input_uri)
-        return os.path.join(output_rep_uri, output_name + '_' + input_name + '.' + format)
+        output_uri = os.path.join(output_rep_uri, output_name + '_' + input_name + '.' + format)
+        if os.path.isfile(output_uri):
+            os.remove(output_uri)
+        return output_uri

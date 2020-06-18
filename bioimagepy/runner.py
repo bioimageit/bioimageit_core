@@ -61,6 +61,7 @@ class Runner(Observable):
         self._parameters = [] # [key1, value1, key2, value1, ...]
         self._output = '' # output uri (/my/output/folder)
         self._mode = ''
+        self.output_uris = [] # list of generated outputs
 
     def man(self):
         """Convenient method to print the process man"""
@@ -128,6 +129,7 @@ class Runner(Observable):
             for input in self._inputs:
                 inputs[input['name']] = [input['uri']]            
 
+        self.output_uris = []
         for i in range(data_count):
 
             self.notify_observers(100*(i/data_count), "Process data " + str(i+1) + "/" + str(data_count))
@@ -139,6 +141,7 @@ class Runner(Observable):
                 args.append( inputs[key][i] )
 
             # create output names
+            out_list = []
             for output in self.process.metadata.outputs:
                   
                 # output metadata
@@ -147,6 +150,11 @@ class Runner(Observable):
                 # args
                 args.append(output.name)
                 args.append(output_uri)
+
+                # keep output in memory with a dict
+                out_list.append({'name': output.name, 'uri': output_uri, 'format': output.type})
+
+            self.output_uris.append(out_list)    
 
             # append parameters
             for param in self._parameters:
