@@ -31,6 +31,7 @@ if __name__ == '__main__':
     config_json["process"]["xml_dirs"] = [ os.path.join(package_dir, "toolboxes", "tools") ]
     config_json["process"]["categories"] = os.path.join(package_dir, "toolboxes", "toolboxes.json")
     config_json["process"]["tools"] = os.path.join(package_dir, "toolboxes", "tools.json")
+    config_json["gui"]["tmp"] = os.path.join(package_dir, "userdata")
     config_json["user"]["name"] = user_name
 
     config_file = os.path.join(package_dir, 'config.json')
