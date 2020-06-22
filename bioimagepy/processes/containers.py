@@ -114,6 +114,17 @@ class ProcessIndexContainer():
         self.categories = []
         self.help = ''
 
+    def to_dict(self):
+        out = dict()
+        out['uri'] = self.uri
+        out['id'] = self.id
+        out['name'] = self.name
+        out['version'] = self.version
+        out['type'] = self.type
+        out['categories'] = self.categories
+        out['help'] = self.help
+        return out
+
     def serialize(self, direction:str='h'):
         """Serialize the process main info
         

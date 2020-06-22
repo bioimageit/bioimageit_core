@@ -33,6 +33,7 @@ ProcessDatabase
 """ 
 
 import os
+import json
 import xml.etree.ElementTree as ET
 
 from bioimagepy.processes.containers import ProcessContainer
@@ -116,6 +117,8 @@ class ProcessAccess():
     def get_categories(self, parent:str) -> list:
         """Get a list of categories for a given parent  
 
+        Parameters
+        ----------
         parent
             ID of the parent category
 
@@ -125,8 +128,26 @@ class ProcessAccess():
     def get_category_processes(self, category:str) -> list:
         """Get the list of processes with the given category
 
+        Parameters
+        ----------
         category
             ID of the category
 
         """    
-        return self.service.get_category_processes(category)    
+        return self.service.get_category_processes(category)  
+
+    def export_json(self, destination: str):
+        """Export the database into a JSON file
+        
+        Parameters
+        ----------
+        destination
+            URI of the json file where the database is saved
+
+        """      
+        database = self.service.get_processes_database()
+        d_dict = dict()
+        for elem in database:
+           d_dict[elem] = database[elem].to_dict()
+        with open(destination, 'w') as outfile:
+            json.dump(d_dict, outfile, indent=4)  

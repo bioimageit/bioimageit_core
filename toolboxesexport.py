@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+
 from bioimagepy.toolboxes import Toolboxes
 from bioimagepy.config import ConfigAccess
 from bioimagepy.process import ProcessAccess
@@ -15,12 +16,8 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
         database_json = sys.argv[2]    
     
-    # run toolboxes build
+    # run toolboxes export
     ConfigAccess(config_file)
-    builder = Toolboxes()
-    builder.build()
-
-    # save the database
-    if database_json != '':
-        processAccess = ProcessAccess()
-        processAccess.export_json(database_json)
+    processAccess = ProcessAccess()
+    processAccess.search()
+    processAccess.export_json(database_json)

@@ -30,6 +30,7 @@ class LocalProcessServiceBuilder:
     def __call__(self, xml_dirs, categories, **_ignored):
         if not self._instance:
             self._instance = LocalProcessService()
+            print('xml dirs:', xml_dirs)
             self._instance.xml_dirs = xml_dirs
             self._instance.categories_json = categories
             self._instance._load()
@@ -205,7 +206,11 @@ class LocalProcessService:
             process_container = self.database[name]
             if category in process_container.categories:
                 outlist.append(process_container)    
-        return outlist        
+        return outlist  
+
+    def get_processes_database(self):
+        """Get the dictionary of processed"""
+        return self.database          
 
 
 class ProcessParser():
