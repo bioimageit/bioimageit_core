@@ -30,7 +30,6 @@ class LocalProcessServiceBuilder:
     def __call__(self, xml_dirs, categories, **_ignored):
         if not self._instance:
             self._instance = LocalProcessService()
-            print('xml dirs:', xml_dirs)
             self._instance.xml_dirs = xml_dirs
             self._instance.categories_json = categories
             self._instance._load()

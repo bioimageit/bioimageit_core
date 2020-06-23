@@ -191,7 +191,8 @@ class CmdSelectContainer():
     def add(self, name: str, value: str):
         """Add an option
         
-        Parameters:
+        Parameters
+        ----------
         name
             Name of the option
         value

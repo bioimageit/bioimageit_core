@@ -15,6 +15,7 @@ import ntpath
 
 import allgo as ag
 
+from bioimagepy.config import ConfigAccess
 from bioimagepy.core.utils import Observable
 from bioimagepy.processes.containers import ProcessContainer
 from bioimagepy.runners.exceptions import RunnerExecError
@@ -47,6 +48,9 @@ class AllgoRunnerService(Observable):
 
         """
         token = None
+        config = ConfigAccess.instance().config['runner']
+        if 'token' in config:
+            token = config['token']
         client = ag.Client(token)
 
         # exec the process
@@ -63,8 +67,8 @@ class AllgoRunnerService(Observable):
                 filename = ntpath.basename(output.value)
                 params = params.replace(output.value, filename)
 
-        print('files:', files)
-        print('params:', params)
+        #print('files:', files)
+        #print('params:', params)
 
         try:
             out_dict = client.run_job(process.id, files = files, params = params)
@@ -72,7 +76,7 @@ class AllgoRunnerService(Observable):
             print('API status Error:', e.status_code)
             print('API status Error:', e.msg)
 
-        print(out_dict)
+        #print(out_dict)
 
         # get the outputs
         job_id = out_dict['id']
@@ -81,4 +85,4 @@ class AllgoRunnerService(Observable):
             output_dir = os.path.dirname(os.path.abspath(output.value))
             url = out_dict[str(job_id)][output_filename]
             filepath = client.download_file(file_url = url, outdir = output_dir, force = True)
-            print('out file downloaded at :', filepath)
+            #print('out file downloaded at :', filepath)

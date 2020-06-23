@@ -20,11 +20,6 @@ Example
 Classes
 -------
 Experiment
-
-
-TODO:
-    Add methods:
-        add_tag(name:str)
         
 """
 

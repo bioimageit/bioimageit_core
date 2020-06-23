@@ -5,10 +5,6 @@ This module implement utilities to manage the processes.
 - Read process info from xml file
 - create a dictionnary of processed 
 
-TODO
-----
-Add example of class usage
-
 Methods
 -------
 PARAM_NUMBER

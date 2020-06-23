@@ -9,8 +9,7 @@ use the Pipeline API.
 
 Example
 -------
-    Runner can be used to run a process on a single data with the 
-    exec method:
+    Runner can be used to run a process on a single data with the exec method:
         >>> myrunner = Runner(ProcessAccess().get('ndsafir_v1.0.0') 
         >>> myrunner.exec('i', 'myimage.tif',
                 'patch', patch,               
