@@ -12,7 +12,7 @@ RunnerServiceProvider
 from bioimagepy.core.factory import ObjectFactory
 from bioimagepy.runners.service_local import LocalRunnerServiceBuilder
 from bioimagepy.runners.service_singularity import SingularityRunnerServiceBuilder
-#from bioimagepy.runners.service_allgo import AllgoRunnerServiceBuilder
+from bioimagepy.runners.service_allgo import AllgoRunnerServiceBuilder
 
 class RunnerServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):
@@ -22,4 +22,4 @@ class RunnerServiceProvider(ObjectFactory):
 runnerServices = RunnerServiceProvider()
 runnerServices.register_builder('LOCAL', LocalRunnerServiceBuilder())
 runnerServices.register_builder('SINGULARITY', SingularityRunnerServiceBuilder())
-#runnerServices.register_builder('ALLGO', AllgoRunnerServiceBuilder())
+runnerServices.register_builder('ALLGO', AllgoRunnerServiceBuilder())
