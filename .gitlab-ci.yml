@@ -20,6 +20,7 @@ job_unit_tests:
     - git clone https://gitlab.inria.fr/allgo/api-clients/python_client.git
     - cd python_client
     - git checkout client_api
+    - pip3 install requests
     - pip3 install .
     - cd ..
     - python3 -m unittest discover -v
