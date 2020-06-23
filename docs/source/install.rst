@@ -82,7 +82,7 @@ Runner
 The ``runner`` section contains the processing tools runner configuration. 
 The possible runners are:
 
-* LOCAL: run the tools installed locally on the workstation. In this case the tool must be added to the system `PATH`:
+* LOCAL: runs the tools installed locally on the workstation. In this case the tool must be added to the system `PATH`:
 
 .. code-block:: javascript
 
@@ -90,7 +90,7 @@ The possible runners are:
         "service": "LOCAL"
     }
 
-* SINGULARITY: run the tools using *Singularity*. In this case you need to install `Singularity <https://sylabs.io/guides/3.5/user-guide/>`_:
+* SINGULARITY: runs the tools using *Singularity*. In this case you need to install `Singularity <https://sylabs.io/guides/3.5/user-guide/>`_:
 
 .. code-block:: javascript
 
@@ -98,7 +98,16 @@ The possible runners are:
         "service": "SINGULARITY"
     }
 
-* ALLGO: run the tools using the `AllGo <https://allgo18.inria.fr/>`_ platform. In this case you do not need to install anything localy. Nevertheless, all the tools in BioImageIT tools index may not be available in AllGo. When using AllGo, you need to add you AllGo token (account authentication) in the config file or in a `.allgo_token` file in your home directory.      
+* DOCKER: runs the tools using *Docker*. In this case you need to install `Docker <https://docs.docker.com>`_. Docker needs to mount your data directory into the container. To do this, please specify the `working_dir` path in your config file:
+
+.. code-block:: javascript
+
+    "runner": {
+        "service": "DOCKER",
+        "working_dir": "/home/full/path/to/userdata/"
+    }    
+
+* ALLGO: runs the tools using the `AllGo <https://allgo18.inria.fr/>`_ platform. In this case you do not need to install anything localy. Nevertheless, all the tools in BioImageIT tools index may not be available in AllGo. When using AllGo, you need to add you AllGo token (account authentication) in the config file or in a `.allgo_token` file in your home directory.      
 
 .. code-block:: javascript
 

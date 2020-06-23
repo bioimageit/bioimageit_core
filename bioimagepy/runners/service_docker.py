@@ -68,8 +68,8 @@ class DockerRunnerService(Observable):
         # pull the docker image
         
         pull_args = ['docker',  'pull', image_uri]
-        print('pull cmd: ', pull_args)
-        print()  
+        #print('pull cmd: ', pull_args)
+        #print()  
         subprocess.run(pull_args)
         
         # run the docker image (to create container)
@@ -82,8 +82,8 @@ class DockerRunnerService(Observable):
             raise RunnerExecError("The docker runner need a  working_dir. Please setup working_dir in your config file" )      
 
         run_args = ['docker', 'run', '--name', image_name, '-v', working_dir + ':' + docker_data_dir, '-it', '-d', image_uri]
-        print('run cmd: ', run_args) 
-        print()     
+        #print('run cmd: ', run_args) 
+        #print()     
         subprocess.run(run_args)
 
         # exec the command
@@ -101,13 +101,10 @@ class DockerRunnerService(Observable):
                     if modif_arg != '':
                         modified_arg = modif_arg    
             exec_args.append(modified_arg)
-        print('exec cmd: ', exec_args) 
-        print()       
+        #print('exec cmd: ', exec_args) 
+        #print()       
         subprocess.run(exec_args)
 
-        #sudo docker pull registry.gitlab.inria.fr/serpico/simg:afbc555878224840eea7470d1f1238f0d9fd2022
-        #sudo docker run --name simg -v /Users/sprigent/Documents/code/bioimage-it/package/bioimageit/userdata/:/app/data -it -d registry.gitlab.inria.fr/serpico/simg:9b11c7fc3f3abd1fe72e0d5a28b3de95171c489a
-        #sudo docker exec -it simg sdeconv2d -i "/app/data/ISM_vitesse1_16bits.tif" -sigma 2 -regularization 2 -weighting 0.5 -method HSV -normalization sum -o "/app/data/ISM_vitesse1_docker.tif"
 
     def modify_io_path(self, arg:str, data_value:str, working_dir:str, docker_data_dir:str ):
         modified_arg = ''
