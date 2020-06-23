@@ -17,8 +17,9 @@ before_script:
 job_unit_tests:
   stage: test
   script:
-    - git clone git@gitlab.inria.fr:allgo/api-clients/python_client.git
+    - git clone https://gitlab.inria.fr/allgo/api-clients/python_client.git
     - cd python_client
+    - git checkout client_api
     - pip3 install .
     - cd ..
     - python3 -m unittest discover -v
