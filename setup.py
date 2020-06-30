@@ -23,7 +23,6 @@ setuptools.setup(
         "PrettyTable>=0.7.2",
         "pyyaml",
         "wget",
-        "spython",
-        "omero-py==5.6.2"
+        "spython"
     ],
 )
