@@ -180,12 +180,12 @@ class Runner(Observable):
         # 1. check inputs
         for input_arg in self.process.metadata.inputs:
             if input_arg.name not in args and input_arg.type:
-                print('Warning (Runner): cannot find the input ' + input_arg.name + ' will use the default value: ' + input_arg.default_value)
+                print('Warning (Runner): cannot find the input: ' + input_arg.name + ' will use the default value: ' + input_arg.default_value)
                 input_arg.value = input_arg.default_value
 
         for output_arg in self.process.metadata.outputs:
             if output_arg.name not in args:
-                print('Warning (Runner): cannot find the output ' + output_arg.name + ' will use the default value: ' + output_arg.default_value)
+                print('Warning (Runner): cannot find the output: ' + output_arg.name + ' will use the default value: ' + output_arg.default_value)
                 output_arg.value = output_arg.default_value
         
         # 2. exec    

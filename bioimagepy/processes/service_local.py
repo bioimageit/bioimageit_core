@@ -16,6 +16,7 @@ import yaml
 
 from bioimagepy.processes.containers import (ProcessContainer, ProcessIndexContainer, 
                                              ProcessParameterContainer, CmdSelectContainer, 
+                                             ProcessTestParameterContainer,
                                              IO_INPUT, PARAM_NUMBER,
                                              PARAM_STRING, PARAM_SELECT, PARAM_BOOLEAN, PARAM_FILE,
                                              IO_PARAM, IO_INPUT, IO_OUTPUT,
@@ -303,6 +304,8 @@ class ProcessParser():
                 self._parse_inputs(child)        
             elif child.tag == 'outputs':
                 self._parse_outputs(child)
+            elif child.tag == 'tests':
+                self._parse_tests(child)    
             elif child.tag == 'help':
                 self._parse_help(child)   
         self.info.categories = self._parse_categories()
@@ -426,7 +429,32 @@ class ProcessParser():
                 if 'format' in child.attrib:
                     output_parameter.type = child.attrib['format']
                     
-                self.info.outputs.append(output_parameter)   
+                self.info.outputs.append(output_parameter)  
+
+    def _parse_tests(self, node):
+        """Parse the test section"""
+        for child in node:  
+            if child.tag == 'test':
+                info_test = []
+                for subchild in child:
+                    param_info = ProcessTestParameterContainer()
+                    if subchild.tag == 'param':
+                        param_info.type = 'param'
+                        if 'name' in subchild.attrib:
+                            param_info.name = subchild.attrib['name']
+                        if 'value' in subchild.attrib:
+                            param_info.value = subchild.attrib['value']    
+                    if subchild.tag == 'output':  
+                        param_info.type = 'output'
+                        if 'name' in subchild.attrib:
+                            param_info.name = subchild.attrib['name']
+                        if 'file' in subchild.attrib:
+                            param_info.file = subchild.attrib['file'] 
+                        if 'compare' in subchild.attrib:
+                            param_info.compare = subchild.attrib['compare']             
+                    info_test.append(param_info) 
+                self.info.tests.append(info_test)        
+
 
     def _parse_categories(self):
         """Parse categories from the .shed.yml file"""
@@ -438,4 +466,4 @@ class ProcessParser():
         with open(shed_file) as file:
             shed_file_content = yaml.load(file, Loader=yaml.FullLoader) 
  
-        return shed_file_content["categories"]  
+        return shed_file_content["categories"]    

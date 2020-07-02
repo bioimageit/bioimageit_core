@@ -202,6 +202,40 @@ class CmdSelectContainer():
         self.names.append(name)
         self.values.append(value)  
 
+class ProcessTestParameterContainer():
+    """Container for a process test information
+
+    Attributs
+    ---------
+    type: str
+        Parameter type (param or output)
+    name: str
+        Name of the parameter
+    value: str
+        Value of the parameter
+    file: str
+        Reference file path for output
+    compare: str
+        Comparison method name
+
+    """
+    def __init__(self):
+        self.type = '' # param or output
+        self.name = ''
+        self.value = ''
+        self.file = ''
+        self.compare = ''
+
+    def display(self):
+        """Display the container content"""
+
+        print("\ttype:", self.type)  
+        print("\tname:", self.name)  
+        print("\tvalue:", self.value)  
+        print("\tfile:", self.file)
+        print("\tcompare:", self.compare) 
+        print("\t------------")    
+
 class ProcessParameterContainer():
     """Container for a process parameter information
 
@@ -277,6 +311,8 @@ class ProcessContainer():
         Process inputs stored in a list of ProcessParameter
     outputs: list
         Process outputs stored in a list of ProcessParameter
+    tests: list
+        List of unit tests    
     help: str    
         Url to the help page
 
@@ -305,6 +341,7 @@ class ProcessContainer():
         self.outputs = []
         self.help = ''
         self.categories = []
+        self.tests = []
         self.type = 'sequential'
 
     def fullname(self):
@@ -411,6 +448,9 @@ class ProcessContainer():
         print('outputs:')    
         for param in self.outputs:
             param.display()  
+        print('tests:')    
+        for test in self.tests:
+            test.display()      
         print('requirements:')
         for req in self.requirements:
             print("origin:",req['origin'], "type", req['type'], "uri:",req['uri'])
