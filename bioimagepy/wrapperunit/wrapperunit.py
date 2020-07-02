@@ -44,17 +44,18 @@ class WrapperUnit(Observable):
 
             # exec the process in tmp dir
             runner = Runner(process)
-            #runner.add_observer(ProgressObserver())
+            runner.add_observer(ProgressObserver())
             runner.exec(*args)
 
             # compare and clean the outputs
             for param in test:
                 if param.type == 'output':
-                    # compare
-                    if not getattr(compare, param.compare)(param.value, self.format_reference_file(process, param.file)):
-                        print('\033[31m' + 'ERROR: test for ' + process.metadata.name + ' failed' + '\033[0m') 
-                    else:
-                        print('\033[32m' + 'test for "' + process.metadata.name + '" passed' + '\033[0m')        
+                    if param.file != '':
+                        # compare
+                        if not getattr(compare, param.compare)(param.value, self.format_reference_file(process, param.file)):
+                            print('\033[31m' + 'ERROR: test for ' + process.metadata.name + ' failed' + '\033[0m') 
+                        else:
+                            print('\033[32m' + 'test for "' + process.metadata.name + '" passed' + '\033[0m')        
                     # clean  
                     os.remove(param.value)  
 
