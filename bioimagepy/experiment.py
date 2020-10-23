@@ -37,6 +37,7 @@ from bioimagepy.metadata.factory import metadataServices
 from bioimagepy.metadata.exceptions import MetadataQueryError
 from bioimagepy.metadata.containers import RawDataContainer, ExperimentContainer
 
+
 class Experiment(Observable):
     """Allows to interact with the matedata of an experiment
 
@@ -46,6 +47,7 @@ class Experiment(Observable):
         URI of the experiment in the database
 
     """
+
     def __init__(self, md_uri=''):
         Observable.__init__(self)
         self.md_uri = md_uri
@@ -72,7 +74,7 @@ class Experiment(Observable):
         """
         self.service.write_experiment(self.metadata, self.md_uri)
 
-    def create(self, name: str, author: str, date: str = 'now', uri:str = ''):
+    def create(self, name: str, author: str, date: str = 'now', uri: str = ''):
         """Create a new experiment
 
         The create method initialize a new experiment with
@@ -96,7 +98,7 @@ class Experiment(Observable):
         self.metadata.date = format_date(date)
         self.md_uri = self.service.create_experiment(self.metadata, uri)
 
-    def create_processed_dataset(self, name:str) -> ProcessedDataSet:
+    def create_processed_dataset(self, name: str) -> ProcessedDataSet:
         """Create an empty processed dataset
 
         Parameters
@@ -113,7 +115,16 @@ class Experiment(Observable):
         dataset.md_uri = md_uri
         return dataset
 
-    def import_data(self, data_path:str, name:str, author:str, format:str, date:str = 'now', tags:dict = {}, copy:bool = True):
+    def import_data(
+        self,
+        data_path: str,
+        name: str,
+        author: str,
+        format: str,
+        date: str = 'now',
+        tags: dict = {},
+        copy: bool = True,
+    ):
         """import one data to the experiment
 
         The data is imported to the rawdataset
@@ -147,10 +158,20 @@ class Experiment(Observable):
         metadata.format = format
         metadata.date = format_date(date)
         metadata.tags = tags
-        data_uri = self.service.import_data(data_path, self.metadata.rawdataset, metadata, copy)
+        data_uri = self.service.import_data(
+            data_path, self.metadata.rawdataset, metadata, copy
+        )
         return RawData(data_uri)
 
-    def import_dir(self, dir_uri:str, filter:str, author:str, format:str, date:str, copy_data:bool):
+    def import_dir(
+        self,
+        dir_uri: str,
+        filter: str,
+        author: str,
+        format: str,
+        date: str,
+        copy_data: bool,
+    ):
         """Import data from a directory to the experiment
 
         This method import with or whitout copy data contained
@@ -181,14 +202,13 @@ class Experiment(Observable):
         count = 0
         for file in files:
             count += 1
-            r1 = re.compile(filter) # re.compile(r'\.tif$')
+            r1 = re.compile(filter)  # re.compile(r'\.tif$')
             if r1.search(file):
-                self.notify_observers(int(100*count/len(files)), file)
+                self.notify_observers(int(100 * count / len(files)), file)
                 data_url = os.path.join(dir_uri, file)
-                self.import_data(data_url, file, author, format, date, {}, copy_data )
+                self.import_data(data_url, file, author, format, date, {}, copy_data)
 
-
-    def display(self, dataset:str='data'):
+    def display(self, dataset: str = 'data'):
         """Display a dataset content as a table in the console
 
         Parameters
@@ -217,7 +237,11 @@ class Experiment(Observable):
                 tags_values = []
                 for key in tags:
                     tags_values.append(rawdata.tag(key))
-                t.add_row( [ rawdata.metadata.name ] + tags_values + [ rawdata.metadata.author, rawdata.metadata.date ] )
+                t.add_row(
+                    [rawdata.metadata.name]
+                    + tags_values
+                    + [rawdata.metadata.author, rawdata.metadata.date]
+                )
         else:
             # TODO implement display processed dataset
             print('Display processed dataset not yet implemented')
@@ -249,7 +273,6 @@ class Experiment(Observable):
                 raw_data = raw_dataset.get(i)
                 if tag not in raw_data.metadata.tags:
                     raw_data.set_tag(tag, '')
-
 
     def tag_from_name(self, tag: str, values: list):
         """Tag an experiment raw data using file name
@@ -319,7 +342,7 @@ class Experiment(Observable):
         """
         return ProcessedDataSet(self.metadata.processeddatasets[idx])
 
-    def get_dataset(self, name:str):
+    def get_dataset(self, name: str):
         """Get the metadata of a dataset
 
         Returns a RawDataset or a ProcessedDataSet
@@ -339,7 +362,9 @@ class Experiment(Observable):
                     return pdataset
         return None
 
-    def get_data(self, dataset_name: str, query: str, origin_output_name: str = '') -> list:
+    def get_data(
+        self, dataset_name: str, query: str, origin_output_name: str = ''
+    ) -> list:
         """query a specific dataset of an experiment
 
         In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
@@ -371,5 +396,3 @@ class Experiment(Observable):
                     return processeddataset.get_data(query, origin_output_name)
 
         raise MetadataQueryError('Query dataset ', dataset_name, ' not found')
-
-

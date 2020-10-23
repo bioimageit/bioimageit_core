@@ -15,13 +15,18 @@ ProcessedData
 import os
 
 from bioimagepy.config import ConfigAccess
-from bioimagepy.metadata.containers import (METADATA_TYPE_RAW, RawDataContainer,
-                                            ProcessedDataContainer, ProcessedDataInputContainer,
-                                            SearchContainer)
+from bioimagepy.metadata.containers import (
+    METADATA_TYPE_RAW,
+    RawDataContainer,
+    ProcessedDataContainer,
+    ProcessedDataInputContainer,
+    SearchContainer,
+)
 from bioimagepy.metadata.exceptions import MetadataServiceError
 from bioimagepy.metadata.factory import metadataServices
 
-class RawData():
+
+class RawData:
     """interact with raw data metadata
 
     RawData allows to read/write and manipulate the metadata
@@ -39,9 +44,10 @@ class RawData():
         Container of the metadata
 
     """
+
     def __init__(self, md_uri: str):
         self.md_uri = md_uri
-        self.metadata = None # RawDataContainer()
+        self.metadata = None  # RawDataContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
         try:
@@ -79,7 +85,7 @@ class RawData():
         info.data['tags'] = self.metadata.tags
         return info
 
-    def set_tag(self, tag_key:str, tag_value:str):
+    def set_tag(self, tag_key: str, tag_value: str):
         """Set a tag to the data
 
         If the tag key does not exists for this data, it is
@@ -96,7 +102,7 @@ class RawData():
         self.metadata.tags[tag_key] = tag_value
         self.service.write_rawdata(self.metadata, self.md_uri)
 
-    def tag(self, tag_key:str):
+    def tag(self, tag_key: str):
         """get a tag value from key
 
         get a tag in the metadata. It returns and empty
@@ -121,7 +127,7 @@ class RawData():
         print(self.metadata.serialize())
 
 
-class ProcessedData():
+class ProcessedData:
     """Class that store a raw data metadata
 
     RawData allows to read/write and manipulate the metadata
@@ -140,9 +146,9 @@ class ProcessedData():
 
     """
 
-    def __init__(self, md_uri: str=''):
+    def __init__(self, md_uri: str = ''):
         self.md_uri = md_uri
-        self.metadata = None #ProcessedDataContainer()
+        self.metadata = None  # ProcessedDataContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
         try:
@@ -174,10 +180,10 @@ class ProcessedData():
         """Display metadata in console"""
         print(self.metadata.serialize())
 
-    def add_input(self, name:str, uri:str, type:str):
+    def add_input(self, name: str, uri: str, type: str):
         self.metadata.inputs.append(ProcessedDataInputContainer(name, uri, type))
 
-    def set_output(self, name:str, label:str):
+    def set_output(self, name: str, label: str):
         self.metadata.output['name'] = name
         self.metadata.output['label'] = label
 
@@ -236,9 +242,11 @@ class ProcessedData():
 
 
 # queries
-def processed_data_origin(processed_data:ProcessedData):
+def processed_data_origin(processed_data: ProcessedData):
     if len(processed_data.metadata.inputs) > 0:
         if processed_data.metadata.inputs[0].type == METADATA_TYPE_RAW():
             return RawData(processed_data.metadata.inputs[0].uri)
         else:
-            return processed_data_origin(ProcessedData(processed_data.metadata.inputs[0].uri))
+            return processed_data_origin(
+                ProcessedData(processed_data.metadata.inputs[0].uri)
+            )

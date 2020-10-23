@@ -15,6 +15,7 @@ from bioimagepy.runners.service_singularity import SingularityRunnerServiceBuild
 from bioimagepy.runners.service_allgo import AllgoRunnerServiceBuilder
 from bioimagepy.runners.service_docker import DockerRunnerServiceBuilder
 
+
 class RunnerServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):
         return self.create(service_id, **kwargs)

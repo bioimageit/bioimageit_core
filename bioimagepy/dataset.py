@@ -22,7 +22,8 @@ from bioimagepy.metadata.factory import metadataServices
 from bioimagepy.metadata.query import query_list_single
 from bioimagepy.metadata.containers import SearchContainer
 
-class RawDataSet():
+
+class RawDataSet:
     """Class that store a dataset metadata for RawDataSet
 
     Parameters
@@ -40,9 +41,9 @@ class RawDataSet():
 
     """
 
-    def __init__(self, md_uri : str = ''):
+    def __init__(self, md_uri: str = ''):
         self.md_uri = md_uri
-        self.metadata = None # DataSetContainer()
+        self.metadata = None  # DataSetContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
         self.read()
@@ -126,7 +127,7 @@ class RawDataSet():
 
         """
 
-        queries = re.split(' AND ',query)
+        queries = re.split(' AND ', query)
 
         # initially all the rawdata are selected
         selected_list = self.to_search_containers()
@@ -172,7 +173,7 @@ class RawDataSet():
         return data_list
 
 
-class ProcessedDataSet():
+class ProcessedDataSet:
     """Class that store a dataset metadata for ProcessedDataSet
 
     Parameters
@@ -190,9 +191,9 @@ class ProcessedDataSet():
 
     """
 
-    def __init__(self, md_uri : str = ''):
+    def __init__(self, md_uri: str = ''):
         self.md_uri = md_uri
-        self.metadata = None # DataSetContainer()
+        self.metadata = None  # DataSetContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
         self.read()
@@ -215,7 +216,7 @@ class ProcessedDataSet():
         """
         self.service.write_processeddataset(self.metadata, self.md_uri)
 
-    def add_run(self, run:Run):
+    def add_run(self, run: Run):
         """Add Run to the dataset
 
         The input Run URI is created by this method
@@ -228,7 +229,7 @@ class ProcessedDataSet():
         """
         run.md_uri = self.service.add_run_processeddataset(run.metadata, self.md_uri)
 
-    def create_data(self, data:ProcessedData):
+    def create_data(self, data: ProcessedData):
         """create a new data metadata in the dataset
 
         The input data object must contain only the metadata (ie no
@@ -321,7 +322,7 @@ class ProcessedDataSet():
             return selected_list
 
         # query on tags
-        queries = re.split(' AND ',query)
+        queries = re.split(' AND ', query)
 
         # run all the AND queries on the preselected dataset
         for q in queries:
@@ -332,7 +333,6 @@ class ProcessedDataSet():
         for d in selected_list:
             out.append(d.uri())
         return out
-
 
     def add_data(self, data: ProcessedData):
         """Add one data to the dataset

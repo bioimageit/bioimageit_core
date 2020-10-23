@@ -11,14 +11,15 @@ Run
 """
 
 import os
- 
-from bioimagepy.config import ConfigAccess 
-from bioimagepy.metadata.containers import RunContainer 
+
+from bioimagepy.config import ConfigAccess
+from bioimagepy.metadata.containers import RunContainer
 from bioimagepy.metadata.factory import metadataServices
 
-class Run():
+
+class Run:
     """interact with raw data metadata
-    
+
     RawData allows to read/write and manipulate the metadata
     of a raw data.
 
@@ -30,31 +31,32 @@ class Run():
 
     Attributes
     ----------
-    metadata 
-        Container of the metadata       
+    metadata
+        Container of the metadata
 
     """
-    def __init__(self, md_uri:str=''):
-        self.md_uri = md_uri   
-        self.metadata = None # RunContainer()
+
+    def __init__(self, md_uri: str = ''):
+        self.md_uri = md_uri
+        self.metadata = None  # RunContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
         self.read()
 
     def read(self):
         """Read the metadata from database
-        
-        The data base connection is managed by the configuration 
+
+        The data base connection is managed by the configuration
         object
-        
+
         """
         self.metadata = self.service.read_run(self.md_uri)
 
     def write(self):
         """Write the metadata to database
-                
-        The data base connection is managed by the configuration 
+
+        The data base connection is managed by the configuration
         object
-        
+
         """
-        self.service.write_run(self.metadata, self.md_uri)  
+        self.service.write_run(self.metadata, self.md_uri)
