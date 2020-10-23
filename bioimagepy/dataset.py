@@ -2,10 +2,10 @@
 """BioImagePy dataset metadata definitions.
 
 This module contains classes that allows to describe the
-metadata of scientific dataset 
+metadata of scientific dataset
 
 Classes
-------- 
+-------
 DataSet
 RawDataSet
 ProcessedDataSet
@@ -24,7 +24,7 @@ from bioimagepy.metadata.containers import SearchContainer
 
 class RawDataSet():
     """Class that store a dataset metadata for RawDataSet
-  
+
     Parameters
     ----------
     md_uri
@@ -33,15 +33,15 @@ class RawDataSet():
 
     Attributes
     ----------
-    name 
+    name
         Name of the dataset
     uris
         List of the URIs of the data metadata
 
     """
-    
+
     def __init__(self, md_uri : str = ''):
-        self.md_uri = md_uri   
+        self.md_uri = md_uri
         self.metadata = None # DataSetContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
@@ -49,21 +49,21 @@ class RawDataSet():
 
     def read(self):
         """Read the metadata from database
-        
-        The data base connection is managed by the configuration 
+
+        The data base connection is managed by the configuration
         object
-        
+
         """
         self.metadata = self.service.read_rawdataset(self.md_uri)
 
     def write(self):
         """Write the metadata to database
-                
-        The data base connection is managed by the configuration 
+
+        The data base connection is managed by the configuration
         object
-        
+
         """
-        self.service.write_rawdataset(self.metadata, self.md_uri)     
+        self.service.write_rawdataset(self.metadata, self.md_uri)
 
     def size(self):
         """get the size of the dataser
@@ -77,7 +77,7 @@ class RawDataSet():
 
     def get(self, i: int) -> RawData:
         """get one data information
-        
+
         Parameters
         ----------
         i
@@ -86,7 +86,7 @@ class RawDataSet():
         Returns
         ----------
         RawData
-            The data common information 
+            The data common information
 
         """
         return RawData(self.metadata.uris[i])
@@ -97,18 +97,18 @@ class RawDataSet():
         Returns
         -------
         list
-            List of data as list of SearchContainer    
+            List of data as list of SearchContainer
 
         """
         search_list = []
         for i in range(self.size()):
             data = RawData(self.metadata.uris[i])
-            search_list.append(data.to_search_container())  
-        return search_list  
+            search_list.append(data.to_search_container())
+        return search_list
 
     def get_data(self, query: str) -> list:
         """query on tags
-        
+
         In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
         and performed on the RawData set
 
@@ -117,15 +117,15 @@ class RawDataSet():
         rawdataset
             The RawDataSet to query.
         query
-            String query with the key=value format. 
+            String query with the key=value format.
 
         Returns
         -------
         list
-            List of selected data (md.json files urls are returned)       
-        
+            List of selected data (md.json files urls are returned)
+
         """
-        
+
         queries = re.split(' AND ',query)
 
         # initially all the rawdata are selected
@@ -136,17 +136,17 @@ class RawDataSet():
 
         # run all the AND queries on the preselected dataset
         for q in queries:
-            selected_list = query_list_single(selected_list, q) 
+            selected_list = query_list_single(selected_list, q)
 
         # convert SearchContainer list to uri list
         out = []
         for d in selected_list:
             out.append(d.uri())
-        return out            
+        return out
 
     def add_data(self, data: RawData):
         """Add one data to the dataset
-        
+
         Parameters
         ----------
         data
@@ -159,7 +159,7 @@ class RawDataSet():
 
     def get_data_list(self) -> list:
         """Get the metadata information as a list
-        
+
         Returns
         -------
         list
@@ -168,13 +168,13 @@ class RawDataSet():
         """
         data_list = []
         for i in range(self.size()):
-            data_list.append(RawData(self.metadata.uris[i]))   
+            data_list.append(RawData(self.metadata.uris[i]))
         return data_list
-      
+
 
 class ProcessedDataSet():
     """Class that store a dataset metadata for ProcessedDataSet
-  
+
     Parameters
     ----------
     md_uri
@@ -183,15 +183,15 @@ class ProcessedDataSet():
 
     Attributes
     ----------
-    name 
+    name
         Name of the dataset
     uris
         List of the URIs of the data metadata
 
     """
-    
+
     def __init__(self, md_uri : str = ''):
-        self.md_uri = md_uri   
+        self.md_uri = md_uri
         self.metadata = None # DataSetContainer()
         config = ConfigAccess.instance().config['metadata']
         self.service = metadataServices.get(config["service"], **config)
@@ -199,50 +199,50 @@ class ProcessedDataSet():
 
     def read(self):
         """Read the metadata from database
-        
-        The data base connection is managed by the configuration 
+
+        The data base connection is managed by the configuration
         object
-        
+
         """
         self.metadata = self.service.read_processeddataset(self.md_uri)
 
     def write(self):
         """Write the metadata to database
-                
-        The data base connection is managed by the configuration 
+
+        The data base connection is managed by the configuration
         object
-        
+
         """
-        self.service.write_processeddataset(self.metadata, self.md_uri)  
+        self.service.write_processeddataset(self.metadata, self.md_uri)
 
     def add_run(self, run:Run):
         """Add Run to the dataset
-        
+
         The input Run URI is created by this method
 
         Parameters
         ----------
-        run 
+        run
             Run to add
-        
+
         """
         run.md_uri = self.service.add_run_processeddataset(run.metadata, self.md_uri)
-         
+
     def create_data(self, data:ProcessedData):
         """create a new data metadata in the dataset
-        
+
         The input data object must contain only the metadata (ie no
-        uri and no md_uri). 
+        uri and no md_uri).
         This method generate the uri and the md_uri and save all the
         metadata
 
         Parameters
         ----------
         data
-            metadata of the processed data to create 
-        
-        """    
-        self.service.create_data_processeddataset(data.metadata, self.md_uri) 
+            metadata of the processed data to create
+
+        """
+        self.service.create_data_processeddataset(data.metadata, self.md_uri)
 
     def size(self):
         """get the size of the dataser
@@ -256,7 +256,7 @@ class ProcessedDataSet():
 
     def get(self, i: int) -> ProcessedData:
         """get one data information
-        
+
         Parameters
         ----------
         i
@@ -265,7 +265,7 @@ class ProcessedDataSet():
         Returns
         ----------
         RawData
-            The data common information 
+            The data common information
 
         """
         return ProcessedData(self.metadata.uris[i])
@@ -276,13 +276,13 @@ class ProcessedDataSet():
         Returns
         -------
         list
-            List of data as list of SearchContainer    
+            List of data as list of SearchContainer
 
         """
         search_list = []
         for i in range(self.size()):
             data = ProcessedData(self.metadata.uris[i])
-            search_list.append(data.to_search_container())  
+            search_list.append(data.to_search_container())
         return search_list
 
     def get_data(self, query: str, origin_output_name: str = '') -> list:
@@ -295,12 +295,12 @@ class ProcessedDataSet():
         origin_output_name
             Filter only the process output with the given name
             if origin_output_name is empty, it gets all the processed
-            data      
+            data
 
         Returns
         -------
         list
-            List of the data URIs        
+            List of the data URIs
 
         """
 
@@ -313,7 +313,7 @@ class ProcessedDataSet():
             for pdata in pre_list:
                 data = ProcessedData(pdata.uri())
                 if data.metadata.output["name"] == origin_output_name:
-                    selected_list.append(pdata) 
+                    selected_list.append(pdata)
         else:
             selected_list = pre_list
 
@@ -325,18 +325,18 @@ class ProcessedDataSet():
 
         # run all the AND queries on the preselected dataset
         for q in queries:
-            selected_list = query_list_single(selected_list, q) 
-        
+            selected_list = query_list_single(selected_list, q)
+
         # convert SearchContainer list to uri list
         out = []
         for d in selected_list:
             out.append(d.uri())
-        return out   
+        return out
 
 
     def add_data(self, data: ProcessedData):
         """Add one data to the dataset
-        
+
         Parameters
         ----------
         data
@@ -349,7 +349,7 @@ class ProcessedDataSet():
 
     def get_data_list(self) -> list:
         """Get the metadata information as a list
-        
+
         Returns
         -------
         list
@@ -358,5 +358,5 @@ class ProcessedDataSet():
         """
         data_list = []
         for i in range(self.size()):
-            data_list.append(ProcessedData(self.metadata.uris[i]))   
+            data_list.append(ProcessedData(self.metadata.uris[i]))
         return data_list
