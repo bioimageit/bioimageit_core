@@ -7,12 +7,12 @@ from bioimagepy.config import ConfigAccess
 from bioimagepy.wrapperunit.wrapperunit import WrapperUnit
 
 if __name__ == '__main__':
-    
+
     # parse args
     # xml input
     wrapper_file_or_dir = ''
     if len(sys.argv) > 1:
-        wrapper_file_or_dir = sys.argv[1] 
+        wrapper_file_or_dir = sys.argv[1]
 
     bioimagepy_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
     package_dir = Path(bioimagepy_dir).parent

@@ -4,24 +4,25 @@ Guide
 =====
 
 BioImagePy is a python3 library. It implements the concepts described in the BioImageIT recommendations. 
-In the scheme below we can see the position of BioImagePy in the BioImageIT ecosystem. In fact BioImagePy is the 
-API that connect low level image processing and data management to high level end users applications.
+In the scheme below we can see the position of BioImagePy in the BioImageIT ecosystem. In fact, BioImagePy is the 
+API that connects low level image processing and data management to high level end users applications.
 
 .. figure::  images/apps_layers.png
    :align:   center
 
 
-For data management, BioImagePy implement a set of function to manage and annotate data at the Experiment 
-scale. For image processing tools BioImagePy implements a set of functions to query a tool database and 
-to run tools on data.  
-For Data management and process management, BioImagePy define an API that can be implemented with plugins. For data 
-management by default, data are managed in a JSON file system. If we want to use the BioImagePy API to manage data on 
-a SQL database for example, we can implement a data management plugin that plug the BioImagePy API with the SQL database. 
-For process run, BioImagePy by defaut run tools using Docker containers in the local machine. If we want to run processing
-tool with a job sckeduler for example, we can write a process runner plugin that plug the BioImagePy API to the job sckeduler.
+For data management, BioImagePy implements a set of functions to manage and annotate data at the Experiment 
+level. For image processing tools, BioImagePy implements a set of functions to query a tool database and 
+to run tools on data.
 
-The advantage of this BioImagePy architecture it to enable writing high level python code to manage and annotate data and deploy it 
-in different hardware or network architecture without need to update the high level code, but just the configuration file.
+For Data management and process management, BioImagePy defines an API that can be implemented with plugins. For data 
+management by default, data is managed in a JSON file system. If we want to use the BioImagePy API to manage data on 
+a SQL database for example, we can implement a data management plugin that links the BioImagePy API with the SQL database. 
+For process run, BioImagePy by defaut runs tools using Docker containers in the local machine. If we want to run a processing
+tool with a job scheduler for example, we can write a process runner plugin that links the BioImagePy API to the job scheduler.
+
+The advantage of this BioImagePy architecture is to enable writing high level python code to manage and annotate data and deploy it 
+in different hardware or network architecture without the need to update the high level code, only the configuration file.
 
 
 Data Management
@@ -35,7 +36,7 @@ In the BioImageIT recommendations, we propose to manage data using a three layer
 
 In this section we show the main functions implemented in the BioImagePy library to handle ``Data``, ``Dataset`` and ``Experiment``. Please
 refer to the docstring documentation to get more advanced features.
-To create an experiment, *BioImagePy* have a dedicated function with the following syntax:
+To create an experiment, *BioImagePy* has a dedicated function with the following syntax:
 
 .. code-block:: python3
 
@@ -150,5 +151,5 @@ Finally the ``Pipeline`` class is a convenient class that allows to run a sequen
 Further reading
 ---------------
 
-In this short introduction guide we show the basic informations we need to use *BioImagePy*. For a more advanced use, we preconise 
+In this short introduction guide we show the basic informations we need to use *BioImagePy*. For a more advanced use, we recommend
 reading the following tutorials.

@@ -12,6 +12,7 @@ MetadataServiceProvider
 from bioimagepy.core.factory import ObjectFactory
 from bioimagepy.metadata.service_local import LocalMetadataServiceBuilder
 
+
 class MetadataServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):
         return self.create(service_id, **kwargs)
@@ -19,4 +20,4 @@ class MetadataServiceProvider(ObjectFactory):
 
 metadataServices = MetadataServiceProvider()
 metadataServices.register_builder('LOCAL', LocalMetadataServiceBuilder())
-#metadataServices.register_builder('OMERO', OmeroMetadataServiceBuilder())
+# metadataServices.register_builder('OMERO', OmeroMetadataServiceBuilder())

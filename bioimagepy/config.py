@@ -16,10 +16,10 @@ Example
     >>> # then to access the config variables
     >>> var = ConfigAccess.instance().get('keyname')
     >>> # or access the config dictionary
-    >>> config_dict = ConfigAccess.instance().var 
+    >>> config_dict = ConfigAccess.instance().var
 
 Classes
-------- 
+-------
 Config
 ConfigManager
 
@@ -28,13 +28,16 @@ ConfigManager
 import os
 import json
 
-class ConfigKeyNotFoundError(Exception):
-   """Raised when key is not found in the config"""
-   pass
 
-class Config():
+class ConfigKeyNotFoundError(Exception):
+    """Raised when key is not found in the config"""
+
+    pass
+
+
+class Config:
     """Allows to access config variables
-    
+
     The configuration can be instantiate manually but the
     usage is to instantiate it with the singloton ConfigManager
 
@@ -47,25 +50,26 @@ class Config():
     ----------
     config
         Dictionnary containing the config variables
-    
-    
+
+
     """
-    def __init__(self, config_file:str=''):
+
+    def __init__(self, config_file: str = ''):
         self.config_file = config_file
         self.config = {}
         if config_file is not '':
             self.load(config_file)
 
-    def load(self, config_file:str):
+    def load(self, config_file: str):
         """Read the metadata from the a json file"""
         self.config_file = config_file
         if os.path.getsize(self.config_file) > 0:
-            with open(self.config_file) as json_file:  
-                self.config = json.load(json_file)     
+            with open(self.config_file) as json_file:
+                self.config = json.load(json_file)
 
-    def is_key(self, key:str) -> bool:
+    def is_key(self, key: str) -> bool:
         """Check if a key exists in the config dictionnary
-        
+
         Parameters
         ----------
         key
@@ -74,15 +78,15 @@ class Config():
         Returns
         -------
         bool
-            True if the key exists, False otherwise    
-        
+            True if the key exists, False otherwise
+
         """
         if key in self.config:
             return True
         else:
-            return False    
+            return False
 
-    def set(self, key:str, value):
+    def set(self, key: str, value):
         """Add a variable to the config
 
         If the variable exists it is changed
@@ -97,7 +101,7 @@ class Config():
         """
         self.config[key] = value
 
-    def get(self, key:str) -> dict:
+    def get(self, key: str) -> dict:
         """Read a variable from the config dictionnary
 
         Parameters
@@ -107,17 +111,17 @@ class Config():
 
         Returns
         -------
-        Value of the config variable   
+        Value of the config variable
 
         Raises
         ------
-        ConfigKeyNotFoundError: if the configuration key does not exists 
+        ConfigKeyNotFoundError: if the configuration key does not exists
 
         """
         if key in self.config:
             return self.config[key]
         else:
-            raise ConfigKeyNotFoundError('No key ' + key + ' in the config')          
+            raise ConfigKeyNotFoundError('No key ' + key + ' in the config')
 
 
 class ConfigAccess:
@@ -133,20 +137,20 @@ class ConfigAccess:
     Exception: if multiple instanciation of the Config is tried
 
     """
+
     __instance = None
 
-    def __init__(self, config_file:str):
+    def __init__(self, config_file: str):
         """ Virtually private constructor. """
-        #if ConfigAccess.__instance != None:
+        # if ConfigAccess.__instance != None:
         #    raise Exception("ConfigManager can be initialized only once!")
-        #else:
+        # else:
         #    ConfigAccess.__instance = Config(config_file)
         ConfigAccess.__instance = Config(config_file)
 
-    @staticmethod 
+    @staticmethod
     def instance():
         """ Static access method to the Config. """
         if ConfigAccess.__instance == None:
             ConfigAccess.__instance = Config()
-        return ConfigAccess.__instance     
-    
+        return ConfigAccess.__instance

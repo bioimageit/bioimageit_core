@@ -29,6 +29,7 @@ from omero.gateway import BlitzGateway, ImageWrapper
 from bioimagepy.core.utils import Observable
 from bioimagepy.experiment import Experiment
 
+
 class Omero(Observable):
     """Run a process for a pipeline
 
@@ -44,9 +45,10 @@ class Omero(Observable):
     username
         Username to authenticate to the database
     password
-        User password            
+        User password
 
     """
+
     def __init__(self, host: str, port: int, username: str, password: str):
         Observable.__init__(self)
         self.conn = None
@@ -58,15 +60,15 @@ class Omero(Observable):
 
     def _connect(self, host: str, port: int, username: str, password: str):
 
-        #with BlitzGateway(username, password, host=host, port=port, secure=True) as conn:
+        # with BlitzGateway(username, password, host=host, port=port, secure=True) as conn:
         #    for p in conn.getObjects('Project'):
-        #        print(p.name)    
+        #        print(p.name)
 
         self.conn = BlitzGateway(username, password, host=host, port=port, secure=True)
-        rv = self.conn.connect()  
+        rv = self.conn.connect()
         if not rv:
             print("Unable to connect to the Omero database")
-        else:     
+        else:
             user = self.conn.getUser()
             print("Current user:")
             print("   ID:", user.getId())
@@ -74,24 +76,26 @@ class Omero(Observable):
             print("   Full Name:", user.getFullName())
 
     def import_dataset(self, experiment: Experiment, omero_dataset_id: int):
-        dataset = self.conn.getObject("Dataset", omero_dataset_id) 
+        dataset = self.conn.getObject("Dataset", omero_dataset_id)
 
         image_count = dataset.countChildren()
 
         k = 0
         for image in dataset.listChildren():
             k += 1
-            self.notify_observers(100*k/image_count, 'import image ' + str(k) + '/' + str(image_count))
-            self._import_image(experiment, image)  
+            self.notify_observers(
+                100 * k / image_count, 'import image ' + str(k) + '/' + str(image_count)
+            )
+            self._import_image(experiment, image)
 
-        self.notify_observers(100, 'Done')          
-            
+        self.notify_observers(100, 'Done')
+
     def import_image(self, experiment: Experiment, omero_image_id: int):
-        image = self.conn.getObject("Image", omero_image_id) 
+        image = self.conn.getObject("Image", omero_image_id)
         self._import_image(experiment, image)
 
     def _import_image(self, experiment: Experiment, image):
-  
+
         # read metadata from omero
         rawdatasetdir = os.path.dirname(experiment.md_uri)
         filename = os.path.join(rawdatasetdir, 'data', image.getName())
@@ -105,28 +109,35 @@ class Omero(Observable):
                 for kv in ann.getValue():
                     tags[kv[0]] = kv[1]
 
-        #print('readed tags:')
-        #print('\t author:', author)
-        #print('\t date:', date)
-        #print('\t extension:', extension)
-        #print('\t tags:', tags)
+        # print('readed tags:')
+        # print('\t author:', author)
+        # print('\t date:', date)
+        # print('\t extension:', extension)
+        # print('\t tags:', tags)
 
         # write metadata to the experiment
-        experiment.import_data(filename, image.getName(), author=author, format=extension, date=date, tags=tags, copy=False)    
+        experiment.import_data(
+            filename,
+            image.getName(),
+            author=author,
+            format=extension,
+            date=date,
+            tags=tags,
+            copy=False,
+        )
 
         # register tag to experiment if not exists
         for tag in tags:
             experiment.set_tag(tag, False)
 
-        # copy image        
+        # copy image
         channel = 0
         imageData = self._get_data(image, channel)
         tif = TIFF.open(filename, mode='w')
         for t in range(imageData.shape[0]):
             for z in range(imageData.shape[1]):
-                tif.write_image(imageData[t,z,:,:])
+                tif.write_image(imageData[t, z, :, :])
         tif.close()
-
 
     def _get_data(self, img, c=0):
         """
@@ -145,8 +156,7 @@ class Omero(Observable):
         for t in range(size_t):
             z_stack = []
             for z in range(size_z):
-                #print("plane c:%s, t:%s, z:%s" % (c, t, z))
+                # print("plane c:%s, t:%s, z:%s" % (c, t, z))
                 z_stack.append(next(plane_gen))
             t_stacks.append(numpy.array(z_stack))
         return numpy.array(t_stacks)
-

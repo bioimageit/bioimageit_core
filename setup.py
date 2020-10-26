@@ -11,7 +11,7 @@ setuptools.setup(
     description="write biological data processing pipelines",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://gitlab.inria.fr/serpico/bioimagepy",
+    url="https://gitlab.inria.fr/bioimage-it/bioimagepy",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

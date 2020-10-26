@@ -14,31 +14,35 @@ ExperimentContainer
 
 """
 
+
 def METADATA_TYPE_RAW():
-    """Type for matadata for raw data""" 
+    """Type for matadata for raw data"""
     return "raw"
 
+
 def METADATA_TYPE_PROCESSED():
-    """Type for matadata for processed data""" 
-    return "processed"   
+    """Type for matadata for processed data"""
+    return "processed"
+
 
 class DataContainer:
     """Metadata container for generic data
-    
+
     Attributes
     ----------
-    name 
+    name
         Name of the data
     author
-        Author of the data 
+        Author of the data
     date
         Date when the data is created
     format
         Data format (txt, csv, tif, ...)
     uri
-        URI of the data as stored in the database 
+        URI of the data as stored in the database
 
     """
+
     def __init__(self):
         self.name = ''
         self.author = ''
@@ -47,22 +51,24 @@ class DataContainer:
         self.uri = ''
 
     def serialize(self):
-        content = 'name = ' + self.name + '\n' 
+        content = 'name = ' + self.name + '\n'
         content += 'author = ' + self.author + '\n'
         content += 'date = ' + self.date + '\n'
         content += 'format = ' + self.format + '\n'
         content += 'uri = ' + self.uri + '\n'
-        return content     
+        return content
+
 
 class RawDataContainer(DataContainer):
     """Metadata container for raw data
-    
+
     Attributes
     ----------
     tags
         Dictionnary containing the tags (key=value)
-    
+
     """
+
     def __init__(self):
         DataContainer.__init__(self)
         self.tags = dict()
@@ -74,50 +80,54 @@ class RawDataContainer(DataContainer):
         for tag in self.tags:
             content += self.tags[tag] + ':' + self.tags[tag] + ','
         content = content[:-1] + '}'
-        return content       
+        return content
+
 
 class ProcessedDataInputContainer:
     """Container for processed data origin input
-    
+
     Attributes
     ----------
     name
         Name of the input (the unique name in the process)
     uri
-        The uri of the input metadata    
+        The uri of the input metadata
     """
-    def __init__(self, name:str='', uri:str='', type:str=METADATA_TYPE_RAW()):
+
+    def __init__(self, name: str = '', uri: str = '', type: str = METADATA_TYPE_RAW()):
         self.name = name
         self.uri = uri
         self.type = type
+
 
 class ProcessedDataContainer(DataContainer):
     """Metadata container for processed data
 
     Attributes
-    ---------- 
+    ----------
     run_uri
         URI of the Run metadata file
     inputs
-        Informations about the inputs that gererated 
-        this processed data. It is a list of ProcessedDataInputContainer    
+        Informations about the inputs that gererated
+        this processed data. It is a list of ProcessedDataInputContainer
     outputs
-        Informations about how the output is referenced 
+        Informations about how the output is referenced
         in the process that generates this processed data
         ex: {"name": "o", "label": "Denoised image"}
 
-    """    
+    """
+
     def __init__(self):
         DataContainer.__init__(self)
         self.run_uri = ''
         self.inputs = list()
         self.output = dict()
 
-    def add_input(self, name:str, uri:str, type:str):
-        self.inputs.append(ProcessedDataInputContainer(name, uri, type))  
+    def add_input(self, name: str, uri: str, type: str):
+        self.inputs.append(ProcessedDataInputContainer(name, uri, type))
 
-    def set_output(self, name:str, label:str):
-        self.output = {'name':name, 'label':label} 
+    def set_output(self, name: str, label: str):
+        self.output = {'name': name, 'label': label}
 
     def serialize(self):
         content = 'ProcessedData:\n'
@@ -125,9 +135,15 @@ class ProcessedDataContainer(DataContainer):
         content += 'run_uri = ' + self.run_uri + '\n'
         content += 'inputs = [ \n'
         for input in self.inputs:
-            content += 'name:'+input.name+', uri:'+input.uri+'\n'   
-        content += 'output={name:'+self.output['name']+', label:'+self.output['label']+'}'     
-        return content     
+            content += 'name:' + input.name + ', uri:' + input.uri + '\n'
+        content += (
+            'output={name:'
+            + self.output['name']
+            + ', label:'
+            + self.output['label']
+            + '}'
+        )
+        return content
 
 
 class DataSetContainer:
@@ -137,12 +153,12 @@ class DataSetContainer:
 
     def serialize(self):
         content = 'Dataset:\n'
-        content += 'name = ' + self.name   
+        content += 'name = ' + self.name
         content += 'uris = \n'
-        for uri in self.uris: 
+        for uri in self.uris:
             content += '\t' + uri
-        content += '\n'     
-        return content       
+        content += '\n'
+        return content
 
 
 class ExperimentContainer:
@@ -167,22 +183,22 @@ class ExperimentContainer:
         content += 'tags = [ \n'
         for tag in self.tags:
             content += '\t' + tag + '\n'
-        content += ']'               
-        return content  
+        content += ']'
+        return content
 
     def count_processed_dataset(self):
         return len(self.processeddatasets)
 
     def count_tags(self):
-        return len(self.rawdataset)  
+        return len(self.rawdataset)
 
 
-class SearchContainer():
+class SearchContainer:
     """Container for data queries on tag
 
     Parameters
     ----------
-    data 
+    data
         Data are stored in dict as
             data['name] = 'file.tif'
             data['uri] = '/url/of/the/metadata/file.md.json'
@@ -193,7 +209,7 @@ class SearchContainer():
     def __init__(self):
         self.data = dict()
         self.data['name'] = ''
-        self.data['uri'] = ''  
+        self.data['uri'] = ''
         self.data['tags'] = {}
 
     def uri(self):
@@ -203,13 +219,13 @@ class SearchContainer():
 
     def set_uri(self, uri: str):
         """Set the data metadata file uri"""
-        self.data['uri'] = uri     
+        self.data['uri'] = uri
 
-    def set_name(self, name:str):
-        self.data['name'] = name 
+    def set_name(self, name: str):
+        self.data['name'] = name
 
     def name(self):
-        return self.data['name']              
+        return self.data['name']
 
     def is_tag(self, key: str):
         """Check if a tag exists
@@ -225,7 +241,7 @@ class SearchContainer():
 
     def tag(self, key: str):
         """Get a tag value
-        
+
         Parameters
         ----------
         key
@@ -234,32 +250,40 @@ class SearchContainer():
         Returns
         -------
         value
-            Value of the tag    
+            Value of the tag
         """
         if key in self.data['tags']:
             return self.data['tags'][key]
-        return ''   
-             
+        return ''
 
-class RunParameterContainer():
-    def __init__(self, name:str='', value:str=''):
+
+class RunParameterContainer:
+    def __init__(self, name: str = '', value: str = ''):
         self.name = name
         self.value = value
 
-class RunInputContainer():
-    def __init__(self, name:str='', dataset:str='', query:str='', origin_output_name:str=''):
+
+class RunInputContainer:
+    def __init__(
+        self,
+        name: str = '',
+        dataset: str = '',
+        query: str = '',
+        origin_output_name: str = '',
+    ):
         self.name = name
         self.dataset = dataset
         self.query = query
         self.origin_output_name = origin_output_name
 
-class RunContainer():
+
+class RunContainer:
     def __init__(self):
         self.process_name = ''
         self.process_uri = ''
         self.processeddataset = ''
-        self.parameters = [] # list of RunParameterContainer
-        self.inputs = [] # list of RunInputContainer
+        self.parameters = []  # list of RunParameterContainer
+        self.inputs = []  # list of RunInputContainer
 
     def serialize(self):
         content = 'Experiment:\n'
@@ -273,7 +297,7 @@ class RunContainer():
             content += '\t\t\t"name": "' + param.name + '",\n'
             content += '\t\t\t"value": "' + param.value + '"\n'
             content += '\t\t},\n'
-        content = content[:-3] + '\n'   
+        content = content[:-3] + '\n'
         content += '\t]\n'
         content += '\t"inputs": [\n '
         for input in self.inputs:
@@ -281,9 +305,11 @@ class RunContainer():
             content += '\t\t\t"name": "' + input.name + '",\n'
             content += '\t\t\t"dataset": "' + input.dataset + '",\n'
             content += '\t\t\t"query": "' + input.query + '",\n'
-            content += '\t\t\t"origin_output_name": "' + input.origin_output_name + '"\n'
-            content += '\t\t},\n' 
-        content = content[:-3] + '\n'       
+            content += (
+                '\t\t\t"origin_output_name": "' + input.origin_output_name + '"\n'
+            )
+            content += '\t\t},\n'
+        content = content[:-3] + '\n'
         content += '\t]\n'
         content += '}'
         return content

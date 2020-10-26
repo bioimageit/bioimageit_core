@@ -6,7 +6,7 @@ from bioimagepy.config import ConfigAccess
 from bioimagepy.process import ProcessAccess
 
 if __name__ == '__main__':
-    
+
     # parse args
     config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.json')
     if len(sys.argv) > 1:
@@ -14,8 +14,8 @@ if __name__ == '__main__':
 
     database_json = ''
     if len(sys.argv) > 2:
-        database_json = sys.argv[2]    
-    
+        database_json = sys.argv[2]
+
     # run toolboxes export
     ConfigAccess(config_file)
     processAccess = ProcessAccess()
