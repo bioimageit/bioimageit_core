@@ -1,15 +1,15 @@
 Tutorial: write a runner plugin
 ===============================
 
-In this tutorial we describe step by step how to implement a process ``Runner`` for **BioImagePy**. By default 
-the **BioImagePy** library has two runners: 
+In this tutorial we describe step by step how to implement a process ``Runner`` for **bioimageit_core**. By default 
+the **bioimageit_core** library has two runners: 
 
 * LOCAL: a runner that execute process localy. This means that the binaries of the process have to be installed localy.
 * SINGULARITY: a runner that execute a process from a Docker image using the Singularity software.
 
 Runners are implemented using the service design pattern. To make it easier to identify the services plugins in the 
 python code repository we prefix the python plugin file with ``service_``. 
-Thus, to create a new ``Runner`` you need to create a python file at ``bioimagepy/runners/service_yourservicename.py``
+Thus, to create a new ``Runner`` you need to create a python file at ``bioimageit_core/runners/service_yourservicename.py``
 
 Then, all the code will be in this single file. A runner service plugin file contains two classes: the ``ServiceBuilder`` and 
 the ``RunnerService``
@@ -43,7 +43,7 @@ The runner service is the class that implements the runner functionalities. The 
 the ``LocalRunnerService``. As we can see, a runner service has a single method called ``exec``. This method has two inputs: the ``ProcessContainer``
 which is a class that contains all the metadata of the ``Process``, and ``args`` the list of the command line arguments. For the 
 example of local runner, we just call the command line arguments with subprocess. Another example of runner service implementation can 
-be found at ``bioimagepy/runners/service_singularity.py`` 
+be found at ``bioimageit_core/runners/service_singularity.py`` 
 
 .. code-block:: python
 
@@ -73,7 +73,7 @@ be found at ``bioimagepy/runners/service_singularity.py``
 Register the runner
 -------------------
 
-The last step is to register the runner to the **BioImagePy** runner factory. Open the file ``bioimagepy/runners/factory.py``, and add 
+The last step is to register the runner to the **bioimageit_core** runner factory. Open the file ``bioimageit_core/runners/factory.py``, and add 
 a line at the end to register the runner:
 
 .. code-block:: python
@@ -95,8 +95,8 @@ Summary
 
 To summarize, in order to create a new ``Runner`` we need to follow these steps:
 
-* create a python file in ``bioimagepy/runner/``
+* create a python file in ``bioimageit_core/runner/``
 * implement a ``RunnerServiceBuilder`` class.
 * implement a ``RunnerService`` class.
-* register the runner at ``bioimagepy/runners/factory.py``
+* register the runner at ``bioimageit_core/runners/factory.py``
 * setup the config.json file with the new builder to be able to use it

@@ -8,8 +8,8 @@ Example
 -------
     Here is an example of how to write a Pipeline:
 
-        >>> from bioimagepy.experiment import Experiment
-        >>> from bioimagepy.pipeline import Pipeline
+        >>> from bioimageit_core.experiment import Experiment
+        >>> from bioimageit_core.pipeline import Pipeline
         >>> 
         >>> mypipeline = Pipeline(Experiment('my/experiment/uri'))
         >>>
@@ -34,19 +34,17 @@ Pipeline
 
 import os
 
-from bioimagepy.core.utils import Observable, format_date
-from bioimagepy.metadata.run import Run
-from bioimagepy.metadata.containers import (
-    RunParameterContainer,
-    RunInputContainer,
-    ProcessedDataInputContainer,
-)
-from bioimagepy.data import RawData, ProcessedData
-from bioimagepy.experiment import Experiment
-from bioimagepy.process import Process, ProcessAccess
-from bioimagepy.runners.exceptions import RunnerExecError
-from bioimagepy.runner import Runner
-from bioimagepy.config import ConfigAccess
+from bioimageit_core.core.utils import Observable, format_date
+from bioimageit_core.metadata.run import Run
+from bioimageit_core.metadata.containers import (RunParameterContainer,
+                                                 RunInputContainer,
+                                                 ProcessedDataInputContainer)
+from bioimageit_core.data import RawData, ProcessedData
+from bioimageit_core.experiment import Experiment
+from bioimageit_core.process import Process, ProcessAccess
+from bioimageit_core.runners.exceptions import RunnerExecError
+from bioimageit_core.runner import Runner
+from bioimageit_core.config import ConfigAccess
 
 
 class PipelineRunner(Observable):
@@ -57,11 +55,12 @@ class PipelineRunner(Observable):
 
     Parameters
     ----------
-    name
-        Unique name of the process
+    experiment: Experiment
+        Instance of the Experiment class that contains the data
+    process: Process
+        Instance of the process class
 
     """
-
     def __init__(self, experiment: Experiment, process: Process):
         Observable.__init__(self)
         self.process = process
@@ -90,7 +89,8 @@ class PipelineRunner(Observable):
         self._process_params = args
 
     def add_input(
-        self, name: str, dataset: str, filter: str = '', origin_output_name: str = ''
+        self, name: str, dataset: str,
+        filter_: str = '', origin_output_name: str = ''
     ):
         """Add an input data to the process
 
@@ -100,7 +100,7 @@ class PipelineRunner(Observable):
             Name of the input
         dataset
             Name of the dataset containing this input data
-        filter
+        filter_
             Regular expression to filter the data to process
         origin_output_name
             name of the origin output if the dataset is a processed
@@ -109,7 +109,7 @@ class PipelineRunner(Observable):
         """
         self._inputs_names.append(name)
         self._inputs_datasets.append(dataset)
-        self._inputs_query.append(filter)
+        self._inputs_query.append(filter_)
         self._inputs_origin_output_name.append(origin_output_name)
 
     def add_input_by_urls(self, name: str, urls: list):
@@ -161,7 +161,8 @@ class PipelineRunner(Observable):
         else:
             if len(self._inputs_urls) > 0 and len(self._inputs_datasets) > 0:
                 raise RunnerExecError(
-                    "uncompatible inputs. You cannot use both add_input_by_urls and add_input"
+                    "incompatible inputs. You cannot use both "
+                    "add_input_by_urls and add_input "
                 )
             elif len(self._inputs_urls) > 0 and len(self._inputs_datasets) == 0:
                 self.run_sequence_by_urls()
@@ -176,7 +177,8 @@ class PipelineRunner(Observable):
     def run_sequence_by_urls(self):
         """Run the process in a sequence where inputs are data url list
 
-        This is the main function that run the process on the experiment data list
+        This is the main function that run the process on the experiment data
+        list
 
         Raises
         ------
@@ -235,7 +237,8 @@ class PipelineRunner(Observable):
             for observer in self._observers:
                 notification = dict()
                 notification['progress'] = int(100 * i / data_count)
-                notification['message'] = "Process " + data_info_zero.metadata.name
+                notification['message'] = "Process " + \
+                                          data_info_zero.metadata.name
                 observer.notify(notification)
 
             # 4.1- Parse IO
@@ -245,9 +248,9 @@ class PipelineRunner(Observable):
 
             for n in range(len(self._inputs_names)):
                 args.append(self._inputs_names[n])
-                data_info = RawData(
-                    input_data[n][i].uri()
-                )  # input data can be a processedData but we only read the common metadata
+                data_info = RawData(input_data[n][i].uri())
+                # input data can be a processedData but
+                # we only read the common metadata
                 args.append(data_info.metadata.uri)
 
                 inp_metadata = ProcessedDataInputContainer()
@@ -264,31 +267,29 @@ class PipelineRunner(Observable):
             for output in self.process.metadata.outputs:
 
                 # output metadata
-                processedData = ProcessedData()
-                processedData.metadata.name = (
+                processed_data = ProcessedData()
+                processed_data.metadata.name = (
                     data_info_zero.metadata.name + "_" + output.name
                 )
-                processedData.metadata.author = ConfigAccess.instance().get('user')[
-                    'name'
-                ]
-                processedData.metadata.date = format_date('now')
-                processedData.metadata.format = output.type
+                processed_data.metadata.author = \
+                    ConfigAccess.instance().get('user')['name']
+                processed_data.metadata.date = format_date('now')
+                processed_data.metadata.format = output.type
 
-                processedData.metadata.run_uri = run.md_uri
-                processedData.metadata.inputs = inputs_metadata
+                processed_data.metadata.run_uri = run.md_uri
+                processed_data.metadata.inputs = inputs_metadata
 
-                processedData.metadata.output = {
+                processed_data.metadata.output = {
                     'name': output.name,
                     'label': output.description,
                 }
 
-                processed_dataset.create_data(
-                    processedData
-                )  # save the metadata and create its md_uri and uri
+                # save the metadata and create its md_uri and uri
+                processed_dataset.create_data(processed_data)
 
                 # args
                 args.append(output.name)
-                args.append(processedData.metadata.uri)
+                args.append(processed_dataset.metadata.uri)
 
             # 4.2- exec
             runner = Runner(self.process)
@@ -358,7 +359,8 @@ class PipelineRunner(Observable):
                         value = file.read().replace('\n', '').replace(' ', '')
                         inputs_values[n].append(value)
                 else:
-                    raise RunnerExecError('run merge can use only number datatype')
+                    raise RunnerExecError(
+                        'run merge can use only number datatype')
 
         # 5- save data in tmp files files in the processed dataset dir
         tmp_inputs_files = [0 for i in range(len(self._inputs_names))]
@@ -401,31 +403,31 @@ class PipelineRunner(Observable):
 
         # 4.3- outputs
         for output in self.process.metadata.outputs:
-            extension = '.' + output.type  # type = format for process parameters
+            extension = '.' + output.type  # type=format for process parameters
 
             # args
             args.append(output.name)
             output_file_name = output.name
-            args.append(os.path.join(processed_data_dir, output_file_name + extension))
+            args.append(os.path.join(processed_data_dir,
+                                     output_file_name + extension))
 
             # output metadata
-            processedData = ProcessedData()
-            processedData.metadata.name = output.name
-            processedData.metadata.author = ConfigAccess.instance().get('user')['name']
-            processedData.metadata.date = format_date('now')
-            processedData.metadata.format = output.type
+            processed_data = ProcessedData()
+            processed_data.metadata.name = output.name
+            processed_data.metadata.author = \
+                ConfigAccess.instance().get('user')['name']
+            processed_data.metadata.date = format_date('now')
+            processed_data.metadata.format = output.type
 
-            processedData.metadata.run_uri = run.md_uri
-            processedData.metadata.inputs = inputs_metadata
+            processed_data.metadata.run_uri = run.md_uri
+            processed_data.metadata.inputs = inputs_metadata
 
-            processedData.metadata.output = {
+            processed_data.metadata.output = {
                 'name': output.name,
                 'label': output.description,
             }
-
-            processed_dataset.create_data(
-                processedData
-            )  # save the metadata and create its md_uri and uri
+            # save the metadata and create its md_uri and uri
+            processed_dataset.create_data(processed_data)
 
         # 8- exec
         runner = Runner(self.process)
@@ -441,7 +443,7 @@ class PipelineRunner(Observable):
         Returns
         -------
         input_data: dict
-            Dictionnary of the selected inputs data
+            Dictionary of the selected inputs data
         data_count: int
             Number of input data
 
@@ -463,7 +465,8 @@ class PipelineRunner(Observable):
             else:
                 if len(input_data[i]) != data_count:
                     raise RunnerExecError(
-                        "Input dataset queries does not have the same number of data"
+                        "Input dataset queries does not "
+                        "have the same number of data"
                     )
         return [input_data, data_count]
 
@@ -505,9 +508,9 @@ class Pipeline:
         the PipelineRunner associated to the process
 
         """
-        pipelineRunner = PipelineRunner(self.experiment, process)
-        self.processes.append(pipelineRunner)
-        return pipelineRunner
+        pipeline_runner = PipelineRunner(self.experiment, process)
+        self.processes.append(pipeline_runner)
+        return pipeline_runner
 
     def add_process_by_name(self, name: str):
         """Add a process to the pipeline

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""BioImagePy Run definitions.
+"""bioimageit_core Run definitions.
 
 This module contains classes that to manipulate a run
 metadata
@@ -10,11 +10,8 @@ Run
 
 """
 
-import os
-
-from bioimagepy.config import ConfigAccess
-from bioimagepy.metadata.containers import RunContainer
-from bioimagepy.metadata.factory import metadataServices
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.metadata.factory import metadataServices
 
 
 class Run:

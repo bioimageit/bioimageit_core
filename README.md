@@ -1,6 +1,7 @@
-# BioImagePy
 
-BioImagePy is a python library to write biological data analysis pipelines.
+# BioImageIT core
+
+BioImageIT core is a python library to write biological data analysis pipelines.
 
 # Documentation
 
@@ -14,7 +15,7 @@ Test are written with unittest python package. All tests are located in the subp
 Run tests with the command:
 
 ```bash
-cd bioimagepy
+cd bioimageit_core
 pipenv run python -m unittest discover -v
 ```
 

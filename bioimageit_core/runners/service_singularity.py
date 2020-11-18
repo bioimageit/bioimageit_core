@@ -13,10 +13,10 @@ ProcessServiceProvider
 import os.path
 from spython.main import Client
 
-from bioimagepy.core.utils import Observable
-from bioimagepy.config import ConfigAccess
-from bioimagepy.processes.containers import ProcessContainer
-from bioimagepy.runners.exceptions import RunnerExecError
+from bioimageit_core.core.utils import Observable
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.processes.containers import ProcessContainer
+from bioimageit_core.runners.exceptions import RunnerExecError
 
 
 class SingularityRunnerServiceBuilder:
@@ -60,7 +60,8 @@ class SingularityRunnerService(Observable):
             and process.container()['type'] != 'docker'
         ):
             raise RunnerExecError(
-                "The process " + process.name + " is not compatible with Singularity"
+                "The process " + process.name +
+                " is not compatible with Singularity"
             )
 
         image_uri = replace_env_variables(process, process.container()['uri'])
@@ -83,5 +84,6 @@ def replace_env_variables(process, cmd) -> str:
     config = ConfigAccess.instance()
     if config.is_key('env'):
         for element in config.get('env'):
-            cmd_out = cmd_out.replace("${" + element["name"] + "}", element["value"])
+            cmd_out = cmd_out.replace("${" + element["name"] + "}",
+                                      element["value"])
     return cmd_out

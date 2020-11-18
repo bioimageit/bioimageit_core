@@ -3,8 +3,9 @@ import os
 import os.path
 import filecmp
 
-from bioimagepy.metadata.run import Run
+from bioimageit_core.metadata.run import Run
 from tests.test_run_local import create_run_metadata
+
 
 class TestLocalRun(unittest.TestCase):
     def setUp(self):
@@ -18,10 +19,12 @@ class TestLocalRun(unittest.TestCase):
     def test_read_run(self):
         run_read = Run(self.ref_run_file) 
         run_ref_metadata = create_run_metadata()
-        self.assertEqual(run_read.metadata.serialize(), run_ref_metadata.serialize()) 
+        self.assertEqual(run_read.metadata.serialize(),
+                         run_ref_metadata.serialize())
 
     def test_write_run(self):
         run = Run(self.tst_run_file) 
         run.metadata = create_run_metadata()
         run.write()
-        self.assertTrue(filecmp.cmp(self.tst_run_file, self.ref_run_file, shallow=False))
+        self.assertTrue(filecmp.cmp(self.tst_run_file, self.ref_run_file,
+                                    shallow=False))

@@ -77,7 +77,7 @@ def IO_OUTPUT():
 class ProcessCategoryContainer:
     """Container for a category of process
 
-    These are the metadata of a process caegory for the
+    These are the metadata of a process category for the
     toolshed structure
 
     id:
@@ -147,13 +147,14 @@ class ProcessIndexContainer:
 
         """
 
-        type = 'sequential'
+        type_ = 'sequential'
         if self.type != '':
-            type = self.type
+            type_ = self.type
 
         if direction == 'h':
             return '{:>15}\t{:>15}\t{:>15}\t{:>15}\t{:>15}'.format(
-                self.id + '_v' + self.version, self.name, self.version, type, self.uri
+                self.id + '_v' + self.version, self.name, self.version,
+                type_, self.uri
             )
 
         sep = '\n'
@@ -166,7 +167,7 @@ class ProcessIndexContainer:
             + sep
             + self.version
             + sep
-            + type
+            + type_
             + sep
             + self.uri
         )
@@ -202,7 +203,7 @@ class CmdSelectContainer:
         content = ""
         for i in range(len(self.values)):
             content += self.values[i] + ";"
-        print("contentstr", content)
+        print("content_str", content)
         return content[:-1]
 
     def size(self):
@@ -233,8 +234,8 @@ class CmdSelectContainer:
 class ProcessTestParameterContainer:
     """Container for a process test information
 
-    Attributs
-    ---------
+    Attributes
+    ----------
     type: str
         Parameter type (param or output)
     name: str
@@ -269,11 +270,11 @@ class ProcessTestParameterContainer:
 class ProcessParameterContainer:
     """Container for a process parameter information
 
-    Attributs
+    Attributes
     ---------
     name: str
         Parameter name
-    desscription: str
+    description: str
         Parameter description
     value: str
         Parameter value
@@ -285,10 +286,8 @@ class ProcessParameterContainer:
         IO type if parameter is IO (in IO_XXX names)
     default_value: str
         Parameter default value
-    selectInfo: BiCmdSelect
+    select_info: BiCmdSelect
         Choices for a select parameter
-    value_suffix: str
-        Parameter suffix (needed if programm add suffix to IO)
     is_advanced: bool
         True if parameter is advanced
 
@@ -299,9 +298,8 @@ class ProcessParameterContainer:
         self.description = ''  # str: Parameter description
         self.value = ''  # str: Parameter value
         self.type = ''  # str: parameter type (in PARAM_XXX names)
-        self.is_data = (
-            False  # bool: False if parameter is param and True if parameter is data
-        )
+        self.is_data = False
+        # bool: False if parameter is param and True if parameter is data
         self.io = ''  # str: IO type if parameter is IO (in IO_XXX names)
         self.default_value = ''  # str: Parameter default value
         self.select_info = (
@@ -311,7 +309,7 @@ class ProcessParameterContainer:
         self.help = ''  # str: help text
 
     def display(self):
-        """Display the process parameter informations to console"""
+        """Display the process parameter information to console"""
 
         print("\tname:", self.name)
         print("\tdescription:", self.description)
@@ -326,7 +324,7 @@ class ProcessParameterContainer:
 class ProcessContainer:
     """Container for a process parameter information
 
-    Attributs
+    Attributes
     ---------
     id: str
         Id of the process
@@ -338,10 +336,6 @@ class ProcessContainer:
         Process short description (used for the man page)
     command: str
         Command executed when process is ran
-    command_args: list
-        List of arguments obtained by parsing the command
-    program: str
-        Name (or path) of the program obtained by parsing the command
     inputs: list
         Process inputs stored in a list of ProcessParameter
     outputs: list
@@ -360,7 +354,7 @@ class ProcessContainer:
     outputs_size
         Returns the number of outputs
     display
-        Display the process informations to console
+        Display the process information to console
     """
 
     def __init__(self):
@@ -398,7 +392,7 @@ class ProcessContainer:
         Returns
         -------
         bool
-            True if the parameter exists, False otherwhise
+            True if the parameter exists, False otherwise
 
         """
 
@@ -416,7 +410,7 @@ class ProcessContainer:
         Returns
         -------
         dict
-            Desctiption of the container requirement (origin, type, uri)
+            Description of the container requirement (origin, type, uri)
 
         """
         for req in self.requirements:
@@ -487,4 +481,5 @@ class ProcessContainer:
             test.display()
         print('requirements:')
         for req in self.requirements:
-            print("origin:", req['origin'], "type", req['type'], "uri:", req['uri'])
+            print("origin:", req['origin'], "type", req['type'], "uri:",
+                  req['uri'])

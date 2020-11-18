@@ -4,4 +4,4 @@ bioimagepy
 .. toctree::
    :maxdepth: 4
 
-   bioimagepy
+   bioimageit_core

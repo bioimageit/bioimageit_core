@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""BioImagePy docker process service.
+"""bioimageit_core docker process service.
 
 This module implements a service to run process in
 using Docker. 
@@ -12,12 +12,11 @@ ProcessServiceProvider
 
 import os
 import subprocess
-import ntpath
 
-from bioimagepy.config import ConfigAccess
-from bioimagepy.core.utils import Observable
-from bioimagepy.processes.containers import ProcessContainer
-from bioimagepy.runners.exceptions import RunnerExecError
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.utils import Observable
+from bioimageit_core.processes.containers import ProcessContainer
+from bioimageit_core.runners.exceptions import RunnerExecError
 
 
 class DockerRunnerServiceBuilder:
@@ -86,7 +85,8 @@ class DockerRunnerService(Observable):
             working_dir = config['working_dir']
         else:
             raise RunnerExecError(
-                "The docker runner need a  working_dir. Please setup working_dir in your config file"
+                "The docker runner need a  working_dir. "
+                "Please setup working_dir in your config file"
             )
 
         run_args = [
@@ -134,10 +134,12 @@ class DockerRunnerService(Observable):
         if arg == data_value:
             absolute_path = os.path.abspath(data_value)
             if working_dir in absolute_path:
-                modified_arg = absolute_path.replace(working_dir, docker_data_dir)
+                modified_arg = absolute_path.replace(working_dir,
+                                                     docker_data_dir)
             else:
                 raise RunnerExecError(
-                    "The docker runner can process only files in the working_dir"
+                    "The docker runner can process only files "
+                    "in the working_dir"
                 )
         return modified_arg
 
@@ -158,19 +160,20 @@ class DockerRunnerService(Observable):
         """
         separator = os.sep
         file = file.replace(separator + separator, separator)
-        reference_file = reference_file.replace(separator + separator, separator)
+        reference_file = reference_file.replace(separator + separator,
+                                                separator)
 
         for i in range(len(file)):
             common_part = reference_file[0:i]
-            if not common_part in file:
+            if common_part not in file:
                 break
 
         last_separator = common_part.rfind(separator)
 
-        shortreference_file = reference_file[last_separator + 1 :]
+        shortreference_file = reference_file[last_separator + 1:]
 
         numberOfSubFolder = shortreference_file.count(separator)
-        shortfile = file[last_separator + 1 :]
+        shortfile = file[last_separator + 1:]
         for i in range(numberOfSubFolder):
             shortfile = '..' + separator + shortfile
 

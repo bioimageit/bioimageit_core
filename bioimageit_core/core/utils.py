@@ -20,7 +20,7 @@ class ProgressObserver:
         Parameters
         ----------
         data
-            Data descibing the progress
+            Data describing the progress
         """
 
         if 'progress' in data:
@@ -43,6 +43,7 @@ class Observable:
 
     def __init__(self):
         self._observers = []
+        self._progress_message = ''
 
     def observers_count(self):
         """Get the number of observers"""
@@ -59,27 +60,13 @@ class Observable:
         """
         self._observers.append(observer)
 
-    def addObserver(self, observer: ProgressObserver):
-        """Add an observer (obsolete)
-
-        Parameters
-        ----------
-        observer
-            ProgressObserver to add
-
-        """
-        self._observers.append(observer)
-
     def notify_message(self, message: str):
         """Notify observer the progress of the import
 
         Parameters
         ----------
-        count
-            Purcentage of file processed
-
-        file
-            Name of the current processed file as a progress message
+        message
+            Process message
 
         """
         progress = dict()
@@ -94,13 +81,11 @@ class Observable:
         Parameters
         ----------
         progress
-            Purcentage progress (in [0,100])
-
+            Percentage progress (in [0,100])
         message
             Progress message
 
         """
-
         progress_dict = dict()
         progress_dict['progress'] = progress
         progress_dict['message'] = message

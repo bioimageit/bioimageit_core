@@ -9,8 +9,8 @@ MetadataServiceProvider
 
 """
 
-from bioimagepy.core.factory import ObjectFactory
-from bioimagepy.processes.service_local import LocalProcessServiceBuilder
+from bioimageit_core.core.factory import ObjectFactory
+from bioimageit_core.processes.service_local import LocalProcessServiceBuilder
 
 
 class ProcessServiceProvider(ObjectFactory):

@@ -65,7 +65,7 @@ class RawDataContainer(DataContainer):
     Attributes
     ----------
     tags
-        Dictionnary containing the tags (key=value)
+        Dictionary containing the tags (key=value)
 
     """
 
@@ -94,10 +94,11 @@ class ProcessedDataInputContainer:
         The uri of the input metadata
     """
 
-    def __init__(self, name: str = '', uri: str = '', type: str = METADATA_TYPE_RAW()):
+    def __init__(self, name: str = '', uri: str = '',
+                 type_: str = METADATA_TYPE_RAW()):
         self.name = name
         self.uri = uri
-        self.type = type
+        self.type = type_
 
 
 class ProcessedDataContainer(DataContainer):
@@ -108,12 +109,12 @@ class ProcessedDataContainer(DataContainer):
     run_uri
         URI of the Run metadata file
     inputs
-        Informations about the inputs that gererated
+        Information about the inputs that generated
         this processed data. It is a list of ProcessedDataInputContainer
-    outputs
-        Informations about how the output is referenced
+    output
+        Information about how the output is referenced
         in the process that generates this processed data
-        ex: {"name": "o", "label": "Denoised image"}
+        ex: {"name": "o", "label": "Processed image"}
 
     """
 
@@ -123,8 +124,8 @@ class ProcessedDataContainer(DataContainer):
         self.inputs = list()
         self.output = dict()
 
-    def add_input(self, name: str, uri: str, type: str):
-        self.inputs.append(ProcessedDataInputContainer(name, uri, type))
+    def add_input(self, name: str, uri: str, type_: str):
+        self.inputs.append(ProcessedDataInputContainer(name, uri, type_))
 
     def set_output(self, name: str, label: str):
         self.output = {'name': name, 'label': label}
@@ -134,8 +135,8 @@ class ProcessedDataContainer(DataContainer):
         content += DataContainer.serialize(self)
         content += 'run_uri = ' + self.run_uri + '\n'
         content += 'inputs = [ \n'
-        for input in self.inputs:
-            content += 'name:' + input.name + ', uri:' + input.uri + '\n'
+        for input_ in self.inputs:
+            content += 'name:' + input_.name + ', uri:' + input_.uri + '\n'
         content += (
             'output={name:'
             + self.output['name']
@@ -290,7 +291,8 @@ class RunContainer:
         content += '{\n\t"process":{\n'
         content += '\t\t"name": "' + self.process_name + '",\n'
         content += '\t\t"uri": "' + self.process_uri + '"\n'
-        content += '\t}\n\t"processeddataset": "' + self.processeddataset + '",\n'
+        content += '\t}\n\t"processeddataset": "' + self.processeddataset + \
+                   '",\n'
         content += '\t"parameters": [\n '
         for param in self.parameters:
             content += '\t\t{\n'
@@ -300,13 +302,14 @@ class RunContainer:
         content = content[:-3] + '\n'
         content += '\t]\n'
         content += '\t"inputs": [\n '
-        for input in self.inputs:
+        for input_ in self.inputs:
             content += '\t\t{\n'
-            content += '\t\t\t"name": "' + input.name + '",\n'
-            content += '\t\t\t"dataset": "' + input.dataset + '",\n'
-            content += '\t\t\t"query": "' + input.query + '",\n'
+            content += '\t\t\t"name": "' + input_.name + '",\n'
+            content += '\t\t\t"dataset": "' + input_.dataset + '",\n'
+            content += '\t\t\t"query": "' + input_.query + '",\n'
             content += (
-                '\t\t\t"origin_output_name": "' + input.origin_output_name + '"\n'
+                '\t\t\t"origin_output_name": "' + input_.origin_output_name +
+                '"\n'
             )
             content += '\t\t},\n'
         content = content[:-3] + '\n'

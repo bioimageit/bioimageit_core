@@ -23,11 +23,10 @@ Example
                                        
 Classes
 -------
-Process
+Toolboxes
         
 """
 
-import sys
 import os
 import json
 import wget
@@ -35,14 +34,25 @@ from zipfile import ZipFile
 import shutil
 import glob
 
-from bioimagepy.core.utils import Observable
-from bioimagepy.config import ConfigAccess
+from bioimageit_core.core.utils import Observable
+from bioimageit_core.config import ConfigAccess
 
 
 class ToolboxesError(Exception):
-    """Raised when an error happen in the tollboxes management"""
+    """Raised when an error happen in the toolboxes management"""
 
     pass
+
+
+def _recursive_move(source_dir, destination):
+    files = glob.iglob(os.path.join(source_dir, "*.*"))
+    for file in files:
+        if os.path.isfile(file):
+            shutil.move(file, destination)
+    files = glob.iglob(os.path.join(source_dir, ".*"))
+    for file in files:
+        if os.path.isfile(file):
+            shutil.move(file, destination)
 
 
 class Toolboxes(Observable):
@@ -68,7 +78,8 @@ class Toolboxes(Observable):
         if not os.path.isdir(self.xml_dir):
             os.mkdir(self.xml_dir)
         if not os.path.isdir(self.xml_dir):
-            raise ToolboxesError('Cannot create the tools directory for toolboxes')
+            raise ToolboxesError(
+                'Cannot create the tools directory for toolboxes')
 
     def _read_tools_file(self):
         if os.path.getsize(self.tools_file) > 0:
@@ -76,11 +87,12 @@ class Toolboxes(Observable):
                 return json.load(json_file)["tools"]
 
     def _import_tool(self, tool):
-
-        if not "url" in tool or not "name" in tool:
-            print("Warning one entry does not has 'url' or 'name' tag is ignored")
+        if "url" not in tool or "name" not in tool:
+            print(
+                "Warning one entry does not has 'url' or 'name' tag is ignored")
             self.notify_observers(
-                0, "Warning one entry does not has 'url' or 'name' tag is ignored"
+                0,
+                "Warning one entry does not has 'url' or 'name' tag is ignored"
             )
             return
 
@@ -105,7 +117,7 @@ class Toolboxes(Observable):
         files = glob.glob(tool_dir + '**/**', recursive=True)
         for file in files:
             if file.endswith('/tools') and file != tool_dir_tool:
-                self.recursive_move(file, tool_dir_tool)
+                _recursive_move(file, tool_dir_tool)
         tool_dir_files = os.listdir(tool_dir)
         for file in tool_dir_files:
             if file != 'tools':
@@ -114,13 +126,3 @@ class Toolboxes(Observable):
                     shutil.rmtree(file_path)
                 else:
                     os.remove(file_path)
-
-    def recursive_move(self, source_dir, destination):
-        files = glob.iglob(os.path.join(source_dir, "*.*"))
-        for file in files:
-            if os.path.isfile(file):
-                shutil.move(file, destination)
-        files = glob.iglob(os.path.join(source_dir, ".*"))
-        for file in files:
-            if os.path.isfile(file):
-                shutil.move(file, destination)

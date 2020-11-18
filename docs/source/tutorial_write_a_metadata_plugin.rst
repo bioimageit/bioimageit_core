@@ -1,14 +1,14 @@
 Tutorial: write a metadata plugin
 =================================
 
-In this tutorial we describe step by step how to implement a plugin to manage metadata for **BioImagePy**. By default 
-the **BioImagePy** library has one metadata plugin: 
+In this tutorial we describe step by step how to implement a plugin to manage metadata for **bioimageit_core**. By default 
+the **bioimageit_core** library has one metadata plugin: 
 
 * LOCAL: a metadata manager based on local file system. Each experiment is a local directory and each data metadata are stored using *JSON* files.
 
 Metadata plugins are implemented using the service design pattern. To make it easier to identify the services plugins in the 
 python code repository we prefix the python plugin file with ``service_``. 
-Thus, to create a new metadata plugin you need to create a python file at ``bioimagepy/metadata/service_yourservicename.py``
+Thus, to create a new metadata plugin you need to create a python file at ``bioimageit_core/metadata/service_yourservicename.py``
 
 Then, all the code will be in this single file. A metadata service plugin file contains two classes: the ``ServiceBuilder`` and 
 the ``MetadataService``
@@ -346,8 +346,8 @@ comments indicate the inputs and outputs of the method.
 Register the service
 --------------------
 
-The last step is to register the metadata service to the **BioImagePy** metadata services factory. Open the file 
-``bioimagepy/metadata/factory.py``, and add 
+The last step is to register the metadata service to the **bioimageit_core** metadata services factory. Open the file 
+``bioimageit_core/metadata/factory.py``, and add 
 a line at the end to register the service:
 
 .. code-block:: python
@@ -369,8 +369,8 @@ Summary
 
 To summarize, in order to create a new metadata plugin we need to follow these steps:
 
-* create a python file in ``bioimagepy/metadata/``
+* create a python file in ``bioimageit_core/metadata/``
 * implement a ``MetadataServiceBuilder`` class.
 * implement a ``MetadataService`` class.
-* register the runner at ``bioimagepy/metadata/factory.py``
+* register the runner at ``bioimageit_core/metadata/factory.py``
 * setup the config.json file with the new builder to be able to use it

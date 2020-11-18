@@ -9,8 +9,8 @@ MetadataServiceProvider
 
 """
 
-from bioimagepy.core.factory import ObjectFactory
-from bioimagepy.metadata.service_local import LocalMetadataServiceBuilder
+from bioimageit_core.core.factory import ObjectFactory
+from bioimageit_core.metadata.service_local import LocalMetadataServiceBuilder
 
 
 class MetadataServiceProvider(ObjectFactory):

@@ -2,7 +2,8 @@ import unittest
 import os
 import os.path
 
-from bioimagepy.processes.service_local import LocalProcessService
+from bioimageit_core.processes.service_local import LocalProcessService
+
 
 class TestLocalMetadataService(unittest.TestCase):
 
@@ -11,7 +12,8 @@ class TestLocalMetadataService(unittest.TestCase):
         self.xml_file = 'tests/test_processes_local/svdeconv/svdeconv2d.xml'
         self.xml_dir = 'tests/test_processes_local'
         self.service.xml_dirs.append(self.xml_dir)
-        self.service.categories_json = 'tests/test_processes_local/categories.json'
+        self.service.categories_json = \
+            'tests/test_processes_local/categories.json'
         self.service._load()
         
     def tearDown(self):
@@ -76,4 +78,4 @@ class TestLocalMetadataService(unittest.TestCase):
 
     def test_get_category_processes1(self):
         processes = self.service.get_category_processes('Spots detection') 
-        self.assertEqual(len(processes), 1)   
+        self.assertEqual(len(processes), 1)

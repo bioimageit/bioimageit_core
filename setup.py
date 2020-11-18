@@ -18,11 +18,13 @@ setuptools.setup(
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     install_requires=[
-        "PrettyTable>=0.7.2",
-        "pyyaml",
-        "wget",
-        "spython"
+        "PrettyTable>=1.0.1",
+        "pyyaml>=5.3.1",
+        "wget>=3.2",
+        "spython>=0.0.85",
+        "allgo>=0.1.11",
+        "omero-py>=5.8.3"
     ],
 )

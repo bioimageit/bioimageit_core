@@ -12,18 +12,14 @@ ProcessedData
 
 """
 
-import os
-
-from bioimagepy.config import ConfigAccess
-from bioimagepy.metadata.containers import (
-    METADATA_TYPE_RAW,
-    RawDataContainer,
-    ProcessedDataContainer,
-    ProcessedDataInputContainer,
-    SearchContainer,
-)
-from bioimagepy.metadata.exceptions import MetadataServiceError
-from bioimagepy.metadata.factory import metadataServices
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.metadata.containers import (METADATA_TYPE_RAW,
+                                                 RawDataContainer,
+                                                 ProcessedDataContainer,
+                                                 ProcessedDataInputContainer,
+                                                 SearchContainer)
+from bioimageit_core.metadata.exceptions import MetadataServiceError
+from bioimageit_core.metadata.factory import metadataServices
 
 
 class RawData:
@@ -180,8 +176,10 @@ class ProcessedData:
         """Display metadata in console"""
         print(self.metadata.serialize())
 
-    def add_input(self, name: str, uri: str, type: str):
-        self.metadata.inputs.append(ProcessedDataInputContainer(name, uri, type))
+    def add_input(self, name: str, uri: str, type_: str):
+        self.metadata.inputs.append(ProcessedDataInputContainer(name,
+                                                                uri,
+                                                                type_))
 
     def set_output(self, name: str, label: str):
         self.metadata.output['name'] = name
@@ -212,7 +210,7 @@ class ProcessedData:
         """Get the first metadata of the parent data.
 
         The origin data is a RawData. It is the first data that have
-        been seen by bioimagepy
+        been seen by bioimageit_core
 
         Returns
         -------
@@ -224,7 +222,7 @@ class ProcessedData:
     def to_search_container(self) -> SearchContainer:
         """convert to SearchContainer
 
-        Create a serch container from the data metadata
+        Create a search container from the data metadata
 
         """
         container = None

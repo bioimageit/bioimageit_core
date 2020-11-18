@@ -14,7 +14,7 @@ Example
     >>> ConfigAccess.instance().load("config.json")
     >>>
     >>> # then to access the config variables
-    >>> var = ConfigAccess.instance().get('keyname')
+    >>> var = ConfigAccess.instance().get('key_name')
     >>> # or access the config dictionary
     >>> config_dict = ConfigAccess.instance().var
 
@@ -39,7 +39,7 @@ class Config:
     """Allows to access config variables
 
     The configuration can be instantiate manually but the
-    usage is to instantiate it with the singloton ConfigManager
+    usage is to instantiate it with the singleton ConfigManager
 
     Parameters
     ----------
@@ -49,11 +49,9 @@ class Config:
     Attributes
     ----------
     config
-        Dictionnary containing the config variables
-
+        Dictionary containing the config variables
 
     """
-
     def __init__(self, config_file: str = ''):
         self.config_file = config_file
         self.config = {}
@@ -68,7 +66,7 @@ class Config:
                 self.config = json.load(json_file)
 
     def is_key(self, key: str) -> bool:
-        """Check if a key exists in the config dictionnary
+        """Check if a key exists in the config dictionary
 
         Parameters
         ----------
@@ -102,7 +100,7 @@ class Config:
         self.config[key] = value
 
     def get(self, key: str) -> dict:
-        """Read a variable from the config dictionnary
+        """Read a variable from the config dictionary
 
         Parameters
         ----------
@@ -134,7 +132,7 @@ class ConfigAccess:
 
     Raises
     ------
-    Exception: if multiple instanciation of the Config is tried
+    Exception: if multiple instantiation of the Config is tried
 
     """
 
@@ -151,6 +149,6 @@ class ConfigAccess:
     @staticmethod
     def instance():
         """ Static access method to the Config. """
-        if ConfigAccess.__instance == None:
+        if ConfigAccess.__instance is None:
             ConfigAccess.__instance = Config()
         return ConfigAccess.__instance

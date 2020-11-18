@@ -1,4 +1,4 @@
 class RunnerExecError(Exception):
-    """Raised when an error occure during a runner execution"""
+    """Raised when an error occur during a runner execution"""
 
     pass

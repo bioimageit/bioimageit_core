@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""BioImagePy Allgo process service.
+"""bioimageit_core Allgo process service.
 
 This module implements a service to run a process
 using the AllGo client API (allgo18.inria.fr). 
@@ -15,10 +15,9 @@ import ntpath
 
 import allgo as ag
 
-from bioimagepy.config import ConfigAccess
-from bioimagepy.core.utils import Observable
-from bioimagepy.processes.containers import ProcessContainer
-from bioimagepy.runners.exceptions import RunnerExecError
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.utils import Observable
+from bioimageit_core.processes.containers import ProcessContainer
 
 
 class AllgoRunnerServiceBuilder:
@@ -60,11 +59,11 @@ class AllgoRunnerService(Observable):
         # exec the process
         params = ' '.join(args[1:])
         files = []
-        for input in process.inputs:
-            if input.is_data:
-                filename = ntpath.basename(input.value)
-                params = params.replace(input.value, filename)
-                files.append(input.value)
+        for input_ in process.inputs:
+            if input_.is_data:
+                filename = ntpath.basename(input_.value)
+                params = params.replace(input_.value, filename)
+                files.append(input_.value)
 
         for output in process.outputs:
             if output.is_data:
@@ -88,5 +87,6 @@ class AllgoRunnerService(Observable):
             output_filename = ntpath.basename(output.value)
             output_dir = os.path.dirname(os.path.abspath(output.value))
             url = out_dict[str(job_id)][output_filename]
-            filepath = client.download_file(file_url=url, outdir=output_dir, force=True)
+            filepath = client.download_file(file_url=url, outdir=output_dir,
+                                            force=True)
             # print('out file downloaded at :', filepath)

@@ -28,13 +28,9 @@ ProcessDatabase
 
 """
 
-import os
 import json
-import xml.etree.ElementTree as ET
-
-from bioimagepy.processes.containers import ProcessContainer
-from bioimagepy.processes.factory import processServices
-from bioimagepy.config import ConfigAccess
+from bioimageit_core.processes.factory import processServices
+from bioimageit_core.config import ConfigAccess
 
 
 class Process:
@@ -45,7 +41,7 @@ class Process:
 
     Parameters
     ----------
-    md_uri
+    uri
         URI of the metadata in the database or file system
         depending on backend
 

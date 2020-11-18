@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""BioImagePy local process service.
+"""bioimageit_core local process service.
 
 This module implements the local service for process
 (Process class) execution. 
@@ -12,9 +12,8 @@ ProcessServiceProvider
 
 import subprocess
 
-from bioimagepy.core.utils import Observable
-from bioimagepy.processes.containers import ProcessContainer
-from bioimagepy.runners.exceptions import RunnerExecError
+from bioimageit_core.core.utils import Observable
+from bioimageit_core.processes.containers import ProcessContainer
 
 
 class LocalRunnerServiceBuilder:

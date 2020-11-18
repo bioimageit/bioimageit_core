@@ -14,24 +14,21 @@ import xml.etree.ElementTree as ET
 import json
 import yaml
 
-from bioimagepy.processes.containers import (
-    ProcessContainer,
-    ProcessIndexContainer,
-    ProcessParameterContainer,
-    CmdSelectContainer,
-    ProcessTestParameterContainer,
-    IO_INPUT,
-    PARAM_NUMBER,
-    PARAM_STRING,
-    PARAM_SELECT,
-    PARAM_BOOLEAN,
-    PARAM_FILE,
-    IO_PARAM,
-    IO_INPUT,
-    IO_OUTPUT,
-    ProcessCategoryContainer,
-)
-from bioimagepy.processes.exceptions import ProcessServiceError
+from bioimageit_core.processes.containers import (ProcessContainer,
+                                                  ProcessIndexContainer,
+                                                  ProcessParameterContainer,
+                                                  CmdSelectContainer,
+                                                  ProcessTestParameterContainer,
+                                                  ProcessCategoryContainer,
+                                                  IO_INPUT,
+                                                  IO_OUTPUT,
+                                                  IO_PARAM,
+                                                  PARAM_NUMBER,
+                                                  PARAM_SELECT,
+                                                  PARAM_BOOLEAN,
+                                                  PARAM_STRING
+                                                  )
+from bioimageit_core.processes.exceptions import ProcessServiceError
 
 
 class LocalProcessServiceBuilder:
@@ -90,19 +87,19 @@ class LocalProcessService:
 
     def _load(self):
         """Build the process and categories database"""
-        self._load_datbase()
+        self._load_database()
         self._load_categories()
 
-    def _load_datbase(self):
+    def _load_database(self):
         """Build the database
 
         Parse the source directories and build the database
 
         """
-        for dir in self.xml_dirs:
-            # print("process database parse dir ", dir)
-            # print("process database parse dir abs ", os.path.abspath(dir))
-            self._parse_dir(os.path.abspath(dir))
+        for dir_ in self.xml_dirs:
+            # print("process database parse dir ", dir_)
+            # print("process database parse dir abs ", os.path.abspath(dir_))
+            self._parse_dir(os.path.abspath(dir_))
 
     def _parse_dir(self, rootdir: str):
         """Load process info XMLs
@@ -113,10 +110,10 @@ class LocalProcessService:
             Directory to parse
 
         """
-        for currentpath, subs, files in os.walk(rootdir):
+        for current_path, subs, files in os.walk(rootdir):
             for file in files:
                 if file.endswith('.xml'):
-                    process_path = os.path.join(currentpath, file)
+                    process_path = os.path.join(current_path, file)
                     # print("parse file:", process_path)
                     parser = ProcessParser(process_path)
                     info = parser.parse_main_info()
@@ -170,17 +167,17 @@ class LocalProcessService:
         The list of the processes index information
 
         """
-        list = []
+        list_ = []
         if keyword == '':
             for name in self.database:
-                list.append(self.database[name])
+                list_.append(self.database[name])
         else:
             for name in self.database:
                 if keyword.lower() in name.lower():
-                    list.append(self.database[name])
-        return list
+                    list_.append(self.database[name])
+        return list_
 
-    def get_process(self, fullname: str) -> str:
+    def get_process(self, fullname: str):
         """Get a process by name
 
         Parameters
@@ -190,7 +187,7 @@ class LocalProcessService:
 
         Returns
         -------
-        The URI of the process
+        The URI of the process or None
 
         """
         if fullname in self.database:
@@ -245,7 +242,7 @@ class ProcessParser:
     xml_file_url
         Path of the XML process file
 
-    Methodes
+    Methods
     --------
     parse
         Parse the XML file and returns the information into a ProcessInfo
@@ -256,13 +253,14 @@ class ProcessParser:
         self.info = ProcessContainer()
         self.xml_file_url = xml_file_url
         self.info.uri = xml_file_url
+        self._root = None
 
-    def parse_main_info(self) -> ProcessIndexContainer:
+    def parse_main_info(self):
         """Parse the name of the process
 
         Returns
         -------
-        The name of the process
+        The the process container (ProcessIndexContainer) or None
 
         """
         tree = ET.parse(self.xml_file_url)
@@ -308,7 +306,7 @@ class ProcessParser:
                 'The process xml file must contains a <tool> root tag'
             )
 
-        self._parseTool()
+        self._parse_tool()
         for child in self._root:
             if child.tag == 'description':
                 desc = child.text
@@ -342,7 +340,7 @@ class ProcessParser:
 
             self.info.requirements.append(requirement)
 
-    def _parseTool(self):
+    def _parse_tool(self):
         """Parse the tool information"""
 
         if 'id' in self._root.attrib:
@@ -381,7 +379,8 @@ class ProcessParser:
                     input_parameter.name = child.attrib['name']
 
                 if 'argument' in child.attrib:
-                    input_parameter.name = child.attrib['argument'].replace("-", "")
+                    input_parameter.name = child.attrib['argument'].\
+                        replace("-", "")
 
                 if 'label' in child.attrib:
                     input_parameter.description = child.attrib['label']
@@ -433,10 +432,11 @@ class ProcessParser:
                             input_parameter.type = PARAM_SELECT()
                             input_parameter.select_info = CmdSelectContainer()
                             # print("select parse option:")
-                            for optionnode in child:
-                                if optionnode.tag == 'option':
+                            for option_node in child:
+                                if option_node.tag == 'option':
                                     input_parameter.select_info.add(
-                                        optionnode.text, optionnode.attrib['value']
+                                        option_node.text,
+                                        option_node.attrib['value']
                                     )
                         else:
                             raise ProcessServiceError(
@@ -494,7 +494,8 @@ class ProcessParser:
     def _parse_categories(self):
         """Parse categories from the .shed.yml file"""
         # get the yml file
-        shed_file = os.path.join(os.path.dirname(self.xml_file_url), '.shed.yml')
+        shed_file = os.path.join(os.path.dirname(self.xml_file_url),
+                                 '.shed.yml')
         if not os.path.isfile(shed_file):
             return []
 

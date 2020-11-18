@@ -2,8 +2,9 @@ import unittest
 import os
 import os.path
 
-from bioimagepy.config import ConfigAccess
-from bioimagepy.process import Process, ProcessAccess
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.process import Process, ProcessAccess
+
 
 class TestLocalProcess(unittest.TestCase):
     def setUp(self):
@@ -25,6 +26,7 @@ class TestLocalProcess(unittest.TestCase):
         if process.metadata.id == 'svdeconv2d':
             t3 = True
         self.assertTrue(t1*t2*t3) 
+
 
 class TestLocalProcessAccess(unittest.TestCase):        
     def setUp(self):
@@ -48,4 +50,4 @@ class TestLocalProcessAccess(unittest.TestCase):
 
     def test_get_category_processes1(self):
         processes = ProcessAccess().get_category_processes('Spots detection') 
-        self.assertEqual(len(processes), 1)        
+        self.assertEqual(len(processes), 1)

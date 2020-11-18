@@ -2,9 +2,10 @@ import unittest
 import os
 import os.path
 
-from bioimagepy.config import ConfigAccess
-from bioimagepy.process import Process
-from bioimagepy.runner import Runner
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.process import Process
+from bioimageit_core.runner import Runner
+
 
 class TestLocalRunner(unittest.TestCase):
     def setUp(self):
@@ -23,4 +24,4 @@ class TestLocalRunner(unittest.TestCase):
         runner.exec("m", message, "o", self.tst_out_file)
         with open(self.tst_out_file, 'r') as content_file:
             content = content_file.read()
-        self.assertEqual(content, message)    
+        self.assertEqual(content, message)

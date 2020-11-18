@@ -1,11 +1,11 @@
 import os
 
-from bioimagepy.core.utils import Observable
-from bioimagepy.config import ConfigAccess
-from bioimagepy.process import Process
-from bioimagepy.runner import Runner
-from bioimagepy.core.utils import ProgressObserver
-from bioimagepy.wrapperunit import compare
+from bioimageit_core.core.utils import Observable
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.process import Process
+from bioimageit_core.runner import Runner
+from bioimageit_core.core.utils import ProgressObserver
+from bioimageit_core.wrapperunit import compare
 
 
 class WrapperUnit(Observable):
@@ -41,7 +41,8 @@ class WrapperUnit(Observable):
                     args.append(param.value)
                 else:
                     args.append(param.name)
-                    param.value = self.format_output_tmp_value(process, param.name)
+                    param.value = self.format_output_tmp_value(process,
+                                                               param.name)
                     args.append(param.value)
 
             # exec the process in tmp dir
@@ -55,7 +56,8 @@ class WrapperUnit(Observable):
                     if param.file != '':
                         # compare
                         if not getattr(compare, param.compare)(
-                            param.value, self.format_reference_file(process, param.file)
+                            param.value, self.format_reference_file(process,
+                                                                    param.file)
                         ):
                             print(
                                 '\033[31m'
@@ -95,7 +97,7 @@ class WrapperUnit(Observable):
         file_dir = os.path.join(
             os.path.dirname(os.path.realpath(process.uri)), 'test-data'
         )
-        for input in process.metadata.inputs:
-            if input.name == name and input.io == 'input':
+        for input_ in process.metadata.inputs:
+            if input_.name == name and input_.io == 'input':
                 return os.path.join(file_dir, value)
         return value

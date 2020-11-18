@@ -9,11 +9,12 @@ RunnerServiceProvider
 
 """
 
-from bioimagepy.core.factory import ObjectFactory
-from bioimagepy.runners.service_local import LocalRunnerServiceBuilder
-from bioimagepy.runners.service_singularity import SingularityRunnerServiceBuilder
-from bioimagepy.runners.service_allgo import AllgoRunnerServiceBuilder
-from bioimagepy.runners.service_docker import DockerRunnerServiceBuilder
+from bioimageit_core.core.factory import ObjectFactory
+from bioimageit_core.runners.service_local import LocalRunnerServiceBuilder
+from bioimageit_core.runners.service_singularity import \
+    SingularityRunnerServiceBuilder
+from bioimageit_core.runners.service_allgo import AllgoRunnerServiceBuilder
+from bioimageit_core.runners.service_docker import DockerRunnerServiceBuilder
 
 
 class RunnerServiceProvider(ObjectFactory):
@@ -23,6 +24,7 @@ class RunnerServiceProvider(ObjectFactory):
 
 runnerServices = RunnerServiceProvider()
 runnerServices.register_builder('LOCAL', LocalRunnerServiceBuilder())
-runnerServices.register_builder('SINGULARITY', SingularityRunnerServiceBuilder())
+runnerServices.register_builder('SINGULARITY',
+                                SingularityRunnerServiceBuilder())
 runnerServices.register_builder('ALLGO', AllgoRunnerServiceBuilder())
 runnerServices.register_builder('DOCKER', DockerRunnerServiceBuilder())

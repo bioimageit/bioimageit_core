@@ -12,15 +12,13 @@ ProcessedDataSet
 
 """
 
-import os
 import re
 
-from bioimagepy.config import ConfigAccess
-from bioimagepy.data import RawData, ProcessedData
-from bioimagepy.metadata.run import Run
-from bioimagepy.metadata.factory import metadataServices
-from bioimagepy.metadata.query import query_list_single
-from bioimagepy.metadata.containers import SearchContainer
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.data import RawData, ProcessedData
+from bioimageit_core.metadata.run import Run
+from bioimageit_core.metadata.factory import metadataServices
+from bioimageit_core.metadata.query import query_list_single
 
 
 class RawDataSet:
@@ -34,9 +32,7 @@ class RawDataSet:
 
     Attributes
     ----------
-    name
-        Name of the dataset
-    uris
+    md_uri
         List of the URIs of the data metadata
 
     """
@@ -110,13 +106,12 @@ class RawDataSet:
     def get_data(self, query: str) -> list:
         """query on tags
 
-        In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
+        In this verion only AND queries are supported
+        (ex: tag1=value1 AND tag2=value2)
         and performed on the RawData set
 
         Parameters
         ----------
-        rawdataset
-            The RawDataSet to query.
         query
             String query with the key=value format.
 
@@ -129,7 +124,7 @@ class RawDataSet:
 
         queries = re.split(' AND ', query)
 
-        # initially all the rawdata are selected
+        # initially all the raw data are selected
         selected_list = self.to_search_containers()
 
         if query == '':
@@ -184,9 +179,7 @@ class ProcessedDataSet:
 
     Attributes
     ----------
-    name
-        Name of the dataset
-    uris
+    md_uri
         List of the URIs of the data metadata
 
     """
@@ -227,7 +220,8 @@ class ProcessedDataSet:
             Run to add
 
         """
-        run.md_uri = self.service.add_run_processeddataset(run.metadata, self.md_uri)
+        run.md_uri = self.service.add_run_processeddataset(run.metadata,
+                                                           self.md_uri)
 
     def create_data(self, data: ProcessedData):
         """create a new data metadata in the dataset

@@ -15,7 +15,7 @@ def sim_content(image1: str, image2: str):
     """
     np_image1 = imageio.imread(image1)
     np_image2 = imageio.imread(image2)
-    MSE = np.square(np.subtract(np_image1, np_image2)).mean()
-    if MSE < 0.001:
+    mse = np.square(np.subtract(np_image1, np_image2)).mean()
+    if mse < 0.001:
         return True
     return False

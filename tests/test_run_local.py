@@ -3,8 +3,11 @@ import os
 import os.path
 import filecmp
 
-from bioimagepy.metadata.service_local import LocalMetadataService
-from bioimagepy.metadata.containers import RunContainer, RunInputContainer, RunParameterContainer
+from bioimageit_core.metadata.service_local import LocalMetadataService
+from bioimageit_core.metadata.containers import (RunContainer,
+                                                 RunInputContainer,
+                                                 RunParameterContainer)
+
 
 def create_run_metadata():
     container = RunContainer()
@@ -34,8 +37,10 @@ class TestLocalRunService(unittest.TestCase):
     def test_read_run(self):
         tst_run_container = self.service.read_run(self.ref_run_file)
         ref_run_container = create_run_metadata()
-        self.assertEqual(ref_run_container.serialize(), tst_run_container.serialize())
+        self.assertEqual(ref_run_container.serialize(),
+                         tst_run_container.serialize())
 
     def test_write_run(self):
         self.service.write_run(create_run_metadata(), self.tst_run_file)
-        self.assertTrue(filecmp.cmp(self.tst_run_file, self.ref_run_file, shallow=False))        
+        self.assertTrue(filecmp.cmp(self.tst_run_file, self.ref_run_file,
+                                    shallow=False))

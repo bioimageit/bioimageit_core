@@ -4,8 +4,8 @@
 This module contains the Process class that allows to run a process on any
 individual data. This class just run a data processing tools depending on the 
 backend. It does not generate any metadata. This class purpose is mainly for 
-writting data processing tools demo. If you need to process scientific data, please
-use the Pipeline API.
+writting data processing tools demo. If you need to process scientific data,
+pleaseuse the Pipeline API.
 
 Example
 -------
@@ -35,19 +35,19 @@ Example
 
 Classes
 -------
-Process
+Runner
         
 """
 
 import os
 import shlex
 
-from bioimagepy.core.utils import Observable
-from bioimagepy.config import ConfigAccess
-from bioimagepy.runners.factory import runnerServices
-from bioimagepy.metadata.factory import metadataServices
-from bioimagepy.process import Process
-from bioimagepy.runners.exceptions import RunnerExecError
+from bioimageit_core.core.utils import Observable
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.runners.factory import runnerServices
+from bioimageit_core.metadata.factory import metadataServices
+from bioimageit_core.process import Process
+from bioimageit_core.runners.exceptions import RunnerExecError
 
 
 class Runner(Observable):
@@ -61,7 +61,7 @@ class Runner(Observable):
         )
         self._inputs = (
             []
-        )  # list of {"name": "i", "uri": "/my/directory/", "filter": "\.tif$"" }
+        )  # list of {"name": "i", "uri": "/my/directory/", "filter": "\.tif$""}
         self._parameters = []  # [key1, value1, key2, value1, ...]
         self._output = ''  # output uri (/my/output/folder)
         self._mode = ''
@@ -71,9 +71,9 @@ class Runner(Observable):
         """Convenient method to print the process man"""
         self.process.man()
 
-    def add_inputs(self, name: str, uri: str, filter: str):
+    def add_inputs(self, name: str, uri: str, filter_: str):
         self._mode = 'list'
-        self._inputs.append({"name": name, "uri": uri, "filter": filter})
+        self._inputs.append({"name": name, "uri": uri, "filter": filter_})
 
     def add_input(self, name: str, uri: str):
         self._mode = 'single'
@@ -94,7 +94,8 @@ class Runner(Observable):
         Parameters
         ----------
         *args
-            List of the parameters and I/O data given as pair 'arg name, arg value'
+            List of the parameters and I/O data given as pair 'arg name, arg
+            value'
 
         """
 
@@ -117,29 +118,30 @@ class Runner(Observable):
 
         data_count = 0
         if self._mode == 'list':
-            iter = -1
-            for input in self._inputs:
-                iter = iter + 1
+            iter_ = -1
+            for input_ in self._inputs:
+                iter_ = iter_ + 1
 
-                uris = self.metadataservice.query_rep(input['uri'], input['filter'])
-                if iter == 0:
+                uris = self.metadataservice.query_rep(input_['uri'],
+                                                      input_['filter'])
+                if iter_ == 0:
                     data_count = len(uris)
                 else:
                     if len(uris) != data_count:
                         raise RunnerExecError(
                             "Inputs data number are not equal for all input"
                         )
-                inputs[input['name']] = uris
+                inputs[input_['name']] = uris
         elif self._mode == 'single':
             data_count = 1
-            for input in self._inputs:
-                inputs[input['name']] = [input['uri']]
+            for input_ in self._inputs:
+                inputs[input_['name']] = [input_['uri']]
 
         self.output_uris = []
         for i in range(data_count):
 
             self.notify_observers(
-                100 * (i / data_count),
+                int(100 * (i / data_count)),
                 "Process data " + str(i + 1) + "/" + str(data_count),
             )
             args = []
@@ -164,7 +166,9 @@ class Runner(Observable):
 
                 # keep output in memory with a dict
                 out_list.append(
-                    {'name': output.name, 'uri': output_uri, 'format': output.type}
+                    {'name': output.name,
+                     'uri': output_uri,
+                     'format': output.type}
                 )
 
             self.output_uris.append(out_list)
@@ -187,7 +191,8 @@ class Runner(Observable):
         Parameters
         ----------
         *args
-            List of the parameters and I/O data given as pair 'arg name, arg value'
+            List of the parameters and I/O data given as pair 'arg name,
+            arg value'
 
         """
         # 1. check inputs
@@ -225,11 +230,14 @@ class Runner(Observable):
         # 2.2.1. build the command line
         cmd = self.process.metadata.command
         for input_arg in self.process.metadata.inputs:
-            cmd = cmd.replace("${" + input_arg.name + "}", str(input_arg.value))
+            cmd = cmd.replace("${" + input_arg.name + "}",
+                              str(input_arg.value))
             input_arg_name_simple = input_arg.name.replace("-", "")
-            cmd = cmd.replace("${" + input_arg_name_simple + "}", str(input_arg.value))
+            cmd = cmd.replace("${" + input_arg_name_simple + "}",
+                              str(input_arg.value))
         for output_arg in self.process.metadata.outputs:
-            cmd = cmd.replace("${" + output_arg.name + "}", str(output_arg.value))
+            cmd = cmd.replace("${" + output_arg.name + "}",
+                              str(output_arg.value))
 
         # 2.2.2. replace the command variables
         cmd = self.replace_env_variables(cmd)

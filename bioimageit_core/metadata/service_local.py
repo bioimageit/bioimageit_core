@@ -18,19 +18,18 @@ import json
 import re
 from shutil import copyfile
 
-from bioimagepy.metadata.exceptions import MetadataServiceError
-from bioimagepy.metadata.containers import (
-    METADATA_TYPE_RAW,
-    METADATA_TYPE_PROCESSED,
-    RawDataContainer,
-    ProcessedDataContainer,
-    ProcessedDataInputContainer,
-    DataSetContainer,
-    ExperimentContainer,
-    RunContainer,
-    RunInputContainer,
-    RunParameterContainer,
-)
+from bioimageit_core.metadata.exceptions import MetadataServiceError
+from bioimageit_core.metadata.containers import (METADATA_TYPE_RAW,
+                                                 METADATA_TYPE_PROCESSED,
+                                                 RawDataContainer,
+                                                 ProcessedDataContainer,
+                                                 ProcessedDataInputContainer,
+                                                 DataSetContainer,
+                                                 ExperimentContainer,
+                                                 RunContainer,
+                                                 RunInputContainer,
+                                                 RunParameterContainer,
+                                                 )
 
 
 def md_file_path(md_uri: str) -> str:
@@ -67,23 +66,23 @@ def relative_path(file: str, reference_file: str):
 
     for i in range(len(file)):
         common_part = reference_file[0:i]
-        if not common_part in file:
+        if common_part not in file:
             break
 
     last_separator = common_part.rfind(separator)
 
-    shortreference_file = reference_file[last_separator + 1 :]
+    short_reference_file = reference_file[last_separator + 1:]
 
-    numberOfSubFolder = shortreference_file.count(separator)
-    shortfile = file[last_separator + 1 :]
-    for i in range(numberOfSubFolder):
-        shortfile = '..' + separator + shortfile
+    number_of_sub_folder = short_reference_file.count(separator)
+    short_file = file[last_separator + 1:]
+    for i in range(number_of_sub_folder):
+        short_file = '..' + separator + short_file
 
-    return shortfile
+    return short_file
 
 
 def absolute_path(file: str, reference_file: str):
-    """convert file relative ro referenceFilte into an absolut path
+    """convert file relative to reference_file into an absolute path
 
     Parameters
     ----------
@@ -102,7 +101,7 @@ def absolute_path(file: str, reference_file: str):
 
     separator = os.sep
     last_separator = reference_file.rfind(separator)
-    canonical_path = reference_file[0 : last_separator + 1]
+    canonical_path = reference_file[0: last_separator + 1]
     return simplify_path(canonical_path + file)
 
 
@@ -241,7 +240,8 @@ class LocalMetadataService:
 
         Returns
         -------
-        ProcessedDataContainer: object that contains the readed processed data metadata
+        ProcessedDataContainer: object that contains the read processed
+        data metadata
 
         """
 
@@ -255,26 +255,29 @@ class LocalMetadataService:
             container.format = metadata['common']['format']
             container.uri = absolute_path(metadata['common']['url'], md_uri)
             # origin run
-            container.run_uri = absolute_path(metadata['origin']['runurl'], md_uri)
+            container.run_uri = absolute_path(metadata['origin']['runurl'],
+                                              md_uri)
             # origin input
-            for input in metadata['origin']['inputs']:
+            for input_ in metadata['origin']['inputs']:
                 container.inputs.append(
                     ProcessedDataInputContainer(
-                        input['name'],
-                        absolute_path(input['url'], md_uri),
-                        input['type'],
+                        input_['name'],
+                        absolute_path(input_['url'], md_uri),
+                        input_['type'],
                     )
                 )
             # origin
             if 'name' in metadata['origin']['output']:
                 container.output['name'] = metadata['origin']['output']["name"]
             if 'label' in metadata['origin']['output']:
-                container.output['label'] = metadata['origin']['output']['label']
+                container.output['label'] = \
+                    metadata['origin']['output']['label']
 
             return container
         raise MetadataServiceError('Metadata file format not supported')
 
-    def write_processeddata(self, container: ProcessedDataContainer, md_uri: str):
+    def write_processeddata(self, container: ProcessedDataContainer,
+                            md_uri: str):
         """Write a processed data metadata to the database
 
         Parameters
@@ -302,12 +305,12 @@ class LocalMetadataService:
         metadata['origin']['runurl'] = relative_path(container.run_uri, md_uri)
         # origin inputs
         metadata['origin']['inputs'] = list()
-        for input in container.inputs:
+        for input_ in container.inputs:
             metadata['origin']['inputs'].append(
                 {
-                    'name': input.name,
-                    'url': relative_path(input.uri, md_uri),
-                    'type': input.type,
+                    'name': input_.name,
+                    'url': relative_path(input_.uri, md_uri),
+                    'type': input_.type,
                 }
             )
         # origin ouput
@@ -328,7 +331,7 @@ class LocalMetadataService:
 
         Returns
         -------
-        DataSetContainer: object that contains the readed dataset metadata
+        DataSetContainer: object that contains the read dataset metadata
 
         """
 
@@ -341,7 +344,7 @@ class LocalMetadataService:
                 container.uris.append(absolute_path(uri, md_uri))
 
             return container
-        return DataSetContainer
+        return DataSetContainer()
 
     def write_rawdataset(self, container: DataSetContainer, md_uri: str):
         """Write a raw dataset metadata to the database
@@ -373,7 +376,7 @@ class LocalMetadataService:
 
         Returns
         -------
-        DataSetContainer: object that contains the readed dataset metadata
+        DataSetContainer: object that contains the read dataset metadata
 
         """
 
@@ -386,7 +389,7 @@ class LocalMetadataService:
                 container.uris.append(absolute_path(uri, md_uri))
 
             return container
-        return DataSetContainer
+        return DataSetContainer()
 
     def write_processeddataset(self, container: DataSetContainer, md_uri: str):
         """Write a processed dataset metadata to the database
@@ -402,7 +405,7 @@ class LocalMetadataService:
         """
 
         md_uri = os.path.abspath(md_uri)
-        metadata = {}
+        metadata = dict()
         metadata['name'] = container.name
         metadata['urls'] = list()
         for uri in container.uris:
@@ -464,13 +467,14 @@ class LocalMetadataService:
         print("create the processed dataset at:", processeddataset_uri)
 
         # add the dataset to the experiment
-        experiment_contanier = self.read_experiment(experiment_md_uri)
-        experiment_contanier.processeddatasets.append(processeddataset_uri)
-        self.write_experiment(experiment_contanier, experiment_md_uri)
+        experiment_container = self.read_experiment(experiment_md_uri)
+        experiment_container.processeddatasets.append(processeddataset_uri)
+        self.write_experiment(experiment_container, experiment_md_uri)
 
-        return (container, processeddataset_uri)
+        return container, processeddataset_uri
 
-    def create_data_processeddataset(self, data: ProcessedDataContainer, md_uri: str):
+    def create_data_processeddataset(self, data: ProcessedDataContainer,
+                                     md_uri: str):
         """create a new data metadata in the dataset
 
         The input data object must contain only the metadata (ie no
@@ -524,7 +528,8 @@ class LocalMetadataService:
             container.date = metadata['information']['date']
             container.rawdataset = absolute_path(metadata['rawdataset'], md_uri)
             for dataset in metadata['processeddatasets']:
-                container.processeddatasets.append(absolute_path(dataset, md_uri))
+                container.processeddatasets.append(absolute_path(dataset,
+                                                                 md_uri))
             for tag in metadata['tags']:
                 container.tags.append(tag)
             return container
@@ -543,7 +548,7 @@ class LocalMetadataService:
         """
 
         md_uri = os.path.abspath(md_uri)
-        metadata = {}
+        metadata = dict()
         metadata['information'] = {}
         metadata['information']['name'] = container.name
         metadata['information']['author'] = container.author
@@ -573,7 +578,8 @@ class LocalMetadataService:
         uri = os.path.abspath(uri)
         if not os.path.exists(uri):
             raise MetadataServiceError(
-                'Cannot create Experiment: the destination directory does not exists'
+                'Cannot create Experiment: the destination '
+                'directory does not exists'
             )
 
         uri = os.path.abspath(uri)
@@ -585,7 +591,8 @@ class LocalMetadataService:
             os.mkdir(experiment_path)
         else:
             raise MetadataServiceError(
-                'Cannot create Experiment: the experiment directory already exists'
+                'Cannot create Experiment: the experiment '
+                'directory already exists'
             )
 
         # create an empty raw dataset
@@ -596,7 +603,8 @@ class LocalMetadataService:
             os.mkdir(rawdata_path)
         else:
             raise MetadataServiceError(
-                'Cannot create Experiment raw dataset: the experiment directory does not exists'
+                'Cannot create Experiment raw dataset: the experiment '
+                'directory does not exists'
             )
 
         rawdataset = DataSetContainer()
@@ -666,7 +674,7 @@ class LocalMetadataService:
 
         Returns
         -------
-        RunContainer: object contining the run metadata
+        RunContainer: object containing the run metadata
 
         """
 
@@ -677,13 +685,13 @@ class LocalMetadataService:
             container.process_name = metadata['process']['name']
             container.process_uri = metadata['process']['url']
             container.processeddataset = metadata['processeddataset']
-            for input in metadata['inputs']:
+            for input_ in metadata['inputs']:
                 container.inputs.append(
                     RunInputContainer(
-                        input['name'],
-                        input['dataset'],
-                        input['query'],
-                        input['origin_output_name'],
+                        input_['name'],
+                        input_['dataset'],
+                        input_['query'],
+                        input_['origin_output_name'],
                     )
                 )
             for parameter in metadata['parameters']:
@@ -699,7 +707,7 @@ class LocalMetadataService:
         Parameters
         ----------
         container
-            Object contining the run metadata
+            Object containing the run metadata
         md_uri
             URI of the run entry in the database
 
@@ -712,13 +720,13 @@ class LocalMetadataService:
         metadata['process']['url'] = container.process_uri
         metadata['processeddataset'] = container.processeddataset
         metadata['inputs'] = []
-        for input in container.inputs:
+        for input_ in container.inputs:
             metadata['inputs'].append(
                 {
-                    'name': input.name,
-                    'dataset': input.dataset,
-                    'query': input.query,
-                    'origin_output_name': input.origin_output_name,
+                    'name': input_.name,
+                    'dataset': input_.dataset,
+                    'query': input_.query,
+                    'origin_output_name': input_.origin_output_name,
                 }
             )
         metadata['parameters'] = []
@@ -729,14 +737,14 @@ class LocalMetadataService:
 
         self._write_json(metadata, md_uri)
 
-    def query_rep(self, repository_uri: str, filter: str) -> list:
+    def query_rep(self, repository_uri: str, filter_: str) -> list:
         """Query files in a repository
 
         Parameters
         ----------
         repository_uri
             URI of the repository
-        filter
+        filter_
             Regular expression to select a subset of file base on their names
 
         Returns
@@ -750,7 +758,7 @@ class LocalMetadataService:
         out_uris = []
         for file in files:
             count += 1
-            r1 = re.compile(filter)  # re.compile(r'\.tif$')
+            r1 = re.compile(filter_)  # re.compile(r'\.tif$')
             if r1.search(file):
                 out_uris.append(os.path.join(repository_uri, file))
         return out_uris
@@ -759,7 +767,7 @@ class LocalMetadataService:
         self,
         output_rep_uri: str,
         output_name: str,
-        format: str,
+        format_: str,
         corresponding_input_uri: str,
     ) -> str:
         """Create the URI of an run output data file
@@ -770,7 +778,7 @@ class LocalMetadataService:
             Output directory of the run
         output_name
             Output filename
-        format
+        format_
             Output file format
         corresponding_input_uri
             URI of the origin input data
@@ -782,10 +790,11 @@ class LocalMetadataService:
         """
 
         if output_rep_uri == '':
-            output_rep_uri = os.path.dirname(os.path.realpath(corresponding_input_uri))
+            output_rep_uri = os.path.dirname(os.path.realpath(
+                corresponding_input_uri))
         input_name = os.path.basename(corresponding_input_uri)
         output_uri = os.path.join(
-            output_rep_uri, output_name + '_' + input_name + '.' + format
+            output_rep_uri, output_name + '_' + input_name + '.' + format_
         )
         if os.path.isfile(output_uri):
             os.remove(output_uri)

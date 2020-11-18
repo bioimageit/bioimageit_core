@@ -2,9 +2,8 @@ import sys
 import os
 from pathlib import Path
 
-from bioimagepy.toolboxes import Toolboxes
-from bioimagepy.config import ConfigAccess
-from bioimagepy.wrapperunit.wrapperunit import WrapperUnit
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.wrapperunit.wrapperunit import WrapperUnit
 
 if __name__ == '__main__':
 
@@ -14,8 +13,9 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         wrapper_file_or_dir = sys.argv[1]
 
-    bioimagepy_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-    package_dir = Path(bioimagepy_dir).parent
+    bioimageit_core_dir = os.path.join(os.path.dirname(
+        os.path.realpath(__file__)))
+    package_dir = Path(bioimageit_core_dir).parent
     config_file = os.path.join(package_dir, 'config.json')
     if len(sys.argv) > 2:
         config_file = sys.argv[2]

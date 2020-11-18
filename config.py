@@ -2,8 +2,9 @@ import sys
 import os
 import json
 from pathlib import Path
-from bioimagepy.toolboxes import Toolboxes
-from bioimagepy.config import ConfigAccess
+from bioimageit_core.toolboxes import Toolboxes
+from bioimageit_core.config import ConfigAccess
+
 
 def read_json(md_uri: str):
     """Read the metadata from the a json file"""
@@ -11,10 +12,12 @@ def read_json(md_uri: str):
         with open(md_uri) as json_file:
             return json.load(json_file)
 
+
 def write_json(metadata: dict, md_uri: str):
     """Write the metadata to the a json file"""
     with open(md_uri, 'w') as outfile:
         json.dump(metadata, outfile, indent=4)
+
 
 if __name__ == '__main__':
 
@@ -28,9 +31,13 @@ if __name__ == '__main__':
     package_dir = Path(bioimagepy_dir).parent
 
     config_json = read_json(os.path.join(bioimagepy_dir, 'config_sample.json'))
-    config_json["process"]["xml_dirs"] = [ os.path.join(package_dir, "toolboxes", "tools") ]
-    config_json["process"]["categories"] = os.path.join(package_dir, "toolboxes", "toolboxes.json")
-    config_json["process"]["tools"] = os.path.join(package_dir, "toolboxes", "tools.json")
+    config_json["process"]["xml_dirs"] = [ os.path.join(package_dir,
+                                                        "toolboxes", "tools")]
+    config_json["process"]["categories"] = os.path.join(package_dir,
+                                                        "toolboxes",
+                                                        "toolboxes.json")
+    config_json["process"]["tools"] = os.path.join(package_dir, "toolboxes",
+                                                   "tools.json")
     config_json["gui"] = {"tmp": os.path.join(package_dir, "userdata")}
     config_json["user"]["name"] = user_name
 

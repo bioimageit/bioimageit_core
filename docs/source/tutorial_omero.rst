@@ -15,11 +15,11 @@ To import a single image from `Omero <https://www.openmicroscopy.org/>`_, we can
 
 .. code-block:: python
 
-  from bioimagepy.config import ConfigAccess
-  from bioimagepy.omero import Omero
-  from bioimagepy.experiment import Experiment
+  from bioimageit_core.config import ConfigAccess
+  from bioimageit_core.omero import Omero
+  from bioimageit_core.experiment import Experiment
  
-  # init bioimagepy settings
+  # init bioimageit_core settings
   ConfigAccess('../config.json')
 
   # load the experiment
@@ -37,11 +37,11 @@ To import a full dataset from `Omero <https://www.openmicroscopy.org/>`_, we can
 
 .. code-block:: python
 
-  from bioimagepy.config import ConfigAccess
-  from bioimagepy.omero import Omero
-  from bioimagepy.experiment import Experiment
+  from BioImageIT_core.config import ConfigAccess
+  from BioImageIT_core.omero import Omero
+  from BioImageIT_core.experiment import Experiment
  
-  # init bioimagepy settings
+  # init BioImageIT_core settings
   ConfigAccess('../config.json')
 
   # load the experiment

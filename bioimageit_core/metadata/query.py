@@ -1,5 +1,4 @@
-from bioimagepy.metadata.containers import SearchContainer
-from bioimagepy.metadata.exceptions import MetadataQueryError
+from bioimageit_core.metadata.exceptions import MetadataQueryError
 
 
 def query_list_single(search_list: list, query: str) -> list:
@@ -24,25 +23,27 @@ def query_list_single(search_list: list, query: str) -> list:
     selected_list = list()
 
     if 'name' in query:
-        splitted_query = query.split('=')
-        if len(splitted_query) != 2:
+        split_query = query.split('=')
+        if len(split_query) != 2:
             raise MetadataQueryError(
-                'Error: the query ' + query + ' is not correct. Must be (key<=value)'
+                'Error: the query ' + query +
+                ' is not correct. Must be (key<=value)'
             )
-        value = splitted_query[1]
+        value = split_query[1]
         for i in range(len(search_list)):
             if value in search_list[i].name():
                 selected_list.append(search_list[i])
         return selected_list
 
     if "<=" in query:
-        splitted_query = query.split('<=')
-        if len(splitted_query) != 2:
+        split_query = query.split('<=')
+        if len(split_query) != 2:
             raise MetadataQueryError(
-                'Error: the query ' + query + ' is not correct. Must be (key<=value)'
+                'Error: the query ' + query +
+                ' is not correct. Must be (key<=value)'
             )
-        key = splitted_query[0]
-        value = float(splitted_query[1].replace(' ', ''))
+        key = split_query[0]
+        value = float(split_query[1].replace(' ', ''))
         for i in range(len(search_list)):
             if (
                 search_list[i].is_tag(key)
@@ -51,52 +52,59 @@ def query_list_single(search_list: list, query: str) -> list:
                 selected_list.append(search_list[i])
 
     elif ">=" in query:
-        splitted_query = query.split('>=')
-        if len(splitted_query) != 2:
+        split_query = query.split('>=')
+        if len(split_query) != 2:
             raise MetadataQueryError(
-                'Error: the query ' + query + ' is not correct. Must be (key>=value)'
+                'Error: the query ' + query +
+                ' is not correct. Must be (key>=value)'
             )
-        key = splitted_query[0]
-        value = splitted_query[1]
+        key = split_query[0]
+        value = split_query[1]
         for i in range(len(search_list)):
-            if search_list[i].is_tag(key) and float(search_list[i].tag(key)) >= float(
+            if search_list[i].is_tag(key) and \
+                    float(search_list[i].tag(key)) >= float(
                 value
             ):
                 selected_list.append(search_list[i])
     elif "=" in query:
-        splitted_query = query.split('=')
-        if len(splitted_query) != 2:
+        split_query = query.split('=')
+        if len(split_query) != 2:
             raise MetadataQueryError(
-                'Error: the query ' + query + ' is not correct. Must be (key=value)'
+                'Error: the query ' + query +
+                ' is not correct. Must be (key=value)'
             )
-        key = splitted_query[0]
-        value = splitted_query[1]
+        key = split_query[0]
+        value = split_query[1]
         for i in range(len(search_list)):
             if search_list[i].is_tag(key) and search_list[i].tag(key) == value:
                 selected_list.append(search_list[i])
     elif "<" in query:
-        splitted_query = query.split('<')
-        if len(splitted_query) != 2:
+        split_query = query.split('<')
+        if len(split_query) != 2:
             raise MetadataQueryError(
-                'Error: the query ' + query + ' is not correct. Must be (key<value)'
+                'Error: the query ' + query +
+                ' is not correct. Must be (key<value)'
             )
-        key = splitted_query[0]
-        value = splitted_query[1]
+        key = split_query[0]
+        value = split_query[1]
         for i in range(len(search_list)):
-            if search_list[i].is_tag(key) and float(search_list[i].tag(key)) < float(
+            if search_list[i].is_tag(key) and \
+                    float(search_list[i].tag(key)) < float(
                 value
             ):
                 selected_list.append(search_list[i])
     elif ">" in query:
-        splitted_query = query.split('>')
-        if len(splitted_query) != 2:
+        split_query = query.split('>')
+        if len(split_query) != 2:
             raise MetadataQueryError(
-                'Error: the query ' + query + ' is not correct. Must be (key>value)'
+                'Error: the query ' + query +
+                ' is not correct. Must be (key>value)'
             )
-        key = splitted_query[0]
-        value = splitted_query[1]
+        key = split_query[0]
+        value = split_query[1]
         for i in range(len(search_list)):
-            if search_list[i].is_tag(key) and float(search_list[i].tag(key)) > float(
+            if search_list[i].is_tag(key) and \
+                    float(search_list[i].tag(key)) > float(
                 value
             ):
                 selected_list.append(search_list[i])

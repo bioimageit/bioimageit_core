@@ -8,13 +8,26 @@ Example
 -------
     Here is an example of how to create an experiment and add data to it:
 
-        >>> from bioimagepy.experiment import Experiment
+        >>> from bioimageit_core.experiment import Experiment
         >>> myexperiment = Experiment()
         >>> myexperiment.create('myexperiment', 'Sylvain Prigent', './')
-        >>> myexperiment.import_data(data_path='data_uri', name='mydata', author='Sylvain Prigent', format='tif, date = 'now', tags={}, copy = True))
-        >>> myexperiment.import_dir(dir_uri='./my/local/dir/', filter='\.tif$', author='Sylvain Prigent', format='tif', date='now', copy_data=True)
-        >>> myexperiment.tag_from_name(tag='population', ['population1', 'population2'])
-        >>> myexperiment.tag_using_seperator(tag='ID', separator='_', value_position=1)
+        >>> myexperiment.import_data(data_path='data_uri',
+        >>>                          name='mydata',
+        >>>                          author='Sylvain Prigent',
+        >>>                          format='tif',
+        >>>                          date='now',
+        >>>                          tags={},
+        >>>                          copy=True))
+        >>> myexperiment.import_dir(dir_uri='./my/local/dir/',
+        >>>                         filter_='\.tif$',
+        >>>                         author='Sylvain Prigent',
+        >>>                         format='tif',
+        >>>                         date='now',
+        >>>                         copy_data=True)
+        >>> myexperiment.tag_from_name(tag='population',
+        >>>                            ['population1', 'population2'])
+        >>> myexperiment.tag_using_seperator(tag='ID', separator='_',
+        >>>                                  value_position=1)
         >>> myexperiment.display()
 
 Classes
@@ -25,17 +38,17 @@ Experiment
 
 import os
 import re
-import datetime
 
 from prettytable import PrettyTable
 
-from bioimagepy.config import ConfigAccess
-from bioimagepy.core.utils import Observable, format_date
-from bioimagepy.data import RawData, ProcessedData
-from bioimagepy.dataset import RawDataSet, ProcessedDataSet
-from bioimagepy.metadata.factory import metadataServices
-from bioimagepy.metadata.exceptions import MetadataQueryError
-from bioimagepy.metadata.containers import RawDataContainer, ExperimentContainer
+from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.utils import Observable, format_date
+from bioimageit_core.data import RawData
+from bioimageit_core.dataset import RawDataSet, ProcessedDataSet
+from bioimageit_core.metadata.factory import metadataServices
+from bioimageit_core.metadata.exceptions import MetadataQueryError
+from bioimageit_core.metadata.containers import (RawDataContainer,
+                                                 ExperimentContainer)
 
 
 class Experiment(Observable):
@@ -86,6 +99,8 @@ class Experiment(Observable):
             Name of the experiment
         author
             Name of the person who created the experiment
+        date
+            Date of the experiment (YYYY-mm-dd format or 'now')
         uri
             URI of the experiment. For local it is the directory
             where the experiment will be saved. For Omero, it is the
@@ -105,11 +120,14 @@ class Experiment(Observable):
         ----------
         name
             Name of the dataset
-        run
-            Object containing the Run informations
+
+        Returns
+        -------
+            The new ProcessedDataSet
 
         """
-        container, md_uri = self.service.create_processed_dataset(name, self.md_uri)
+        container, md_uri = self.service.create_processed_dataset(name,
+                                                                  self.md_uri)
         dataset = ProcessedDataSet()
         dataset.metadata = container
         dataset.md_uri = md_uri
@@ -120,9 +138,9 @@ class Experiment(Observable):
         data_path: str,
         name: str,
         author: str,
-        format: str,
+        format_: str,
         date: str = 'now',
-        tags: dict = {},
+        tags: dict = dict,
         copy: bool = True,
     ):
         """import one data to the experiment
@@ -137,15 +155,15 @@ class Experiment(Observable):
             Name of the data
         author
             Person who created the data
-        format:
+        format_:
             Format of the data (ex: tif)
         date
             Date when the data where created
         tags
-            Dictonnary {key:value, key:value} of tags
+            Dictionary {key:value, key:value} of tags
         copy
             True to copy the data to the Experiment database
-            False otherwhise
+            False otherwise
 
         Returns
         -------
@@ -155,7 +173,7 @@ class Experiment(Observable):
         metadata = RawDataContainer()
         metadata.name = name
         metadata.author = author
-        metadata.format = format
+        metadata.format = format_
         metadata.date = format_date(date)
         metadata.tags = tags
         data_uri = self.service.import_data(
@@ -166,15 +184,15 @@ class Experiment(Observable):
     def import_dir(
         self,
         dir_uri: str,
-        filter: str,
+        filter_: str,
         author: str,
-        format: str,
+        format_: str,
         date: str,
         copy_data: bool,
     ):
         """Import data from a directory to the experiment
 
-        This method import with or whitout copy data contained
+        This method import with or without copy data contained
         in a local folder into an experiment. Imported data are
         considered as RawData for the experiment
 
@@ -182,12 +200,12 @@ class Experiment(Observable):
         ----------
         dir_uri
             URI of the directory containing the data to be imported
-        filter
+        filter_
             Regular expression to filter which files in the folder
             to import
         author
             Name of the person who created the data
-        format
+        format_
             Format of the image (ex: tif)
         date
             Date when the data where created
@@ -202,11 +220,12 @@ class Experiment(Observable):
         count = 0
         for file in files:
             count += 1
-            r1 = re.compile(filter)  # re.compile(r'\.tif$')
+            r1 = re.compile(filter_)  # re.compile(r'\.tif$')
             if r1.search(file):
                 self.notify_observers(int(100 * count / len(files)), file)
                 data_url = os.path.join(dir_uri, file)
-                self.import_data(data_url, file, author, format, date, {}, copy_data)
+                self.import_data(data_url, file, author, format_, date, {},
+                                 copy_data)
 
     def display(self, dataset: str = 'data'):
         """Display a dataset content as a table in the console
@@ -269,7 +288,7 @@ class Experiment(Observable):
             self.write()
         if add_to_data:
             raw_dataset = RawDataSet(self.metadata.rawdataset)
-            for i in range(raw_dataset.size):
+            for i in range(int(raw_dataset.size)):
                 raw_data = raw_dataset.get(i)
                 if tag not in raw_data.metadata.tags:
                     raw_data.set_tag(tag, '')
@@ -294,7 +313,8 @@ class Experiment(Observable):
                     _rawdata.set_tag(tag, value)
                     break
 
-    def tag_using_seperator(self, tag: str, separator: str, value_position: int):
+    def tag_using_seperator(self, tag: str, separator: str,
+                            value_position: int):
         """Tag an experiment raw data using file name and separator
 
         Parameters
@@ -311,7 +331,8 @@ class Experiment(Observable):
         _rawdataset = RawDataSet(self.metadata.rawdataset)
         for i in range(_rawdataset.size()):
             _rawdata = _rawdataset.get(i)
-            basename = os.path.splitext(os.path.basename(_rawdata.metadata.uri))[0]
+            basename = os.path.splitext(os.path.basename(
+                _rawdata.metadata.uri))[0]
             splited_name = basename.split(separator)
             value = ''
             if len(splited_name) > value_position:
@@ -367,7 +388,8 @@ class Experiment(Observable):
     ) -> list:
         """query a specific dataset of an experiment
 
-        In this verion only AND queries are supported (ex: tag1=value1 AND tag2=value2)
+        In this version only AND queries are supported
+        (ex: tag1=value1 AND tag2=value2)
         and performed on the data set named dataset
 
         Parameters
@@ -377,7 +399,8 @@ class Experiment(Observable):
         query
             String query with the key=value format.
         origin_output_name
-            Name of the ouput origin (ex: -o) in the case of ProcessedDataset search
+            Name of the ouput origin (ex: -o) in the case of ProcessedDataset
+            search
 
         Returns
         -------
@@ -391,7 +414,8 @@ class Experiment(Observable):
             return raw_dataset.get_data(query)
         else:
             for i in range(len(self.metadata.processeddatasets)):
-                processeddataset = ProcessedDataSet(self.metadata.processeddatasets[i])
+                processeddataset = ProcessedDataSet(
+                    self.metadata.processeddatasets[i])
                 if processeddataset.metadata.name == dataset_name:
                     return processeddataset.get_data(query, origin_output_name)
 
