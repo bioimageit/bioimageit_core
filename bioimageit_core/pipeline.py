@@ -289,7 +289,7 @@ class PipelineRunner(Observable):
 
                 # args
                 args.append(output.name)
-                args.append(processed_dataset.metadata.uri)
+                args.append(processed_data.metadata.uri)
 
             # 4.2- exec
             runner = Runner(self.process)

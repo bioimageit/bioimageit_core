@@ -55,7 +55,7 @@ class Config:
     def __init__(self, config_file: str = ''):
         self.config_file = config_file
         self.config = {}
-        if config_file is not '':
+        if config_file != '':
             self.load(config_file)
 
     def load(self, config_file: str):

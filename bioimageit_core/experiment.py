@@ -14,7 +14,7 @@ Example
         >>> myexperiment.import_data(data_path='data_uri',
         >>>                          name='mydata',
         >>>                          author='Sylvain Prigent',
-        >>>                          format='tif',
+        >>>                          format_='tif',
         >>>                          date='now',
         >>>                          tags={},
         >>>                          copy=True))

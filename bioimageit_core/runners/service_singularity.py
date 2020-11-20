@@ -54,7 +54,7 @@ class SingularityRunnerService(Observable):
             list of arguments
 
         """
-        # print('container type = ' , process.container()['type'])
+        # print('container type = ', process.container()['type'])
         if (
             process.container()['type'] != 'singularity'
             and process.container()['type'] != 'docker'
@@ -75,7 +75,7 @@ class SingularityRunnerService(Observable):
         puller = Client.execute(image_uri, args)
         for line in puller:
             self.notify_message(line)
-            # print(line)
+            print(line)
 
 
 def replace_env_variables(process, cmd) -> str:

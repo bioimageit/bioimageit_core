@@ -98,7 +98,6 @@ class Runner(Observable):
             value'
 
         """
-
         if self.observers_count() > self.service.observers_count():
             for observer in self._observers:
                 self.service.add_observer(observer)
@@ -246,6 +245,7 @@ class Runner(Observable):
         # 2.3. exec
         # print("cmd:", cmd)
         args = shlex.split(cmd)
+        # print("cmd:", args)
 
         self.service.exec(self.process.metadata, args)
 
