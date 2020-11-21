@@ -240,6 +240,8 @@ class Runner(Observable):
 
         # 2.2.2. replace the command variables
         cmd = self.replace_env_variables(cmd)
+        cmd = cmd.replace('/', os.sep).replace('\\', '\\\\')
+
         cmd = " ".join(cmd.split())
 
         # 2.3. exec

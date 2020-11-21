@@ -9,8 +9,8 @@ from tests.test_run_local import create_run_metadata
 
 class TestLocalRun(unittest.TestCase):
     def setUp(self):
-        self.ref_run_file = 'tests/test_metadata_local/process1/run.md.json'
-        self.tst_run_file = 'tests/test_metadata_local/process1/run_tst.md.json'
+        self.ref_run_file = os.path.join('tests', 'test_metadata_local', 'process1', 'run.md.json')
+        self.tst_run_file = os.path.join('tests', 'test_metadata_local', 'process1', 'run_tst.md.json')
 
     def tearDown(self):
         if os.path.isfile(self.tst_run_file): 

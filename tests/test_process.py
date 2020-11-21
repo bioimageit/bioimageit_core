@@ -8,8 +8,8 @@ from bioimageit_core.process import Process, ProcessAccess
 
 class TestLocalProcess(unittest.TestCase):
     def setUp(self):
-        self.xml_file = 'tests/test_processes_local/svdeconv/svdeconv2d.xml'
-        ConfigAccess('tests/test_config/config_local.json')
+        self.xml_file = os.path.join('tests', 'test_processes_local', 'svdeconv', 'svdeconv2d.xml')
+        ConfigAccess(os.path.join('tests', 'test_config','config_local.json'))
 
     def tearDown(self):
         ConfigAccess.__instance = None
@@ -30,8 +30,8 @@ class TestLocalProcess(unittest.TestCase):
 
 class TestLocalProcessAccess(unittest.TestCase):        
     def setUp(self):
-        self.xml_file = 'tests/test_processes_local/svdeconv/svdeconv2d.xml'
-        ConfigAccess('tests/test_config/config_local.json')
+        self.xml_file = os.path.join('tests', 'test_processes_local', 'svdeconv', 'svdeconv2d.xml')
+        ConfigAccess(os.path.join('tests', 'test_config', 'config_local.json'))
 
     def tearDown(self):
         ConfigAccess.__instance = None         

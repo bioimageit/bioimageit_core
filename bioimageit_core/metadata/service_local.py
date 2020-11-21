@@ -139,6 +139,39 @@ def simplify_path(path: str) -> str:
     return clean_path
 
 
+def normalize_path_sep(path: str) -> str:
+    """Normalize the separators of a path
+    
+    Parameters
+    ----------
+    path: str
+        Path to normalize
+        
+    Returns
+    -------
+    path normalized
+
+    """
+    p1 = path.replace('/', os.sep).replace('\\\\', os.sep)
+    return p1
+
+
+def to_unix_path(path: str) -> str:
+    """Transform a path to unix path
+
+    Parameters
+    ----------
+    path: str
+        Path to unixify
+
+    Returns
+    -------
+    Path with unix separator
+
+    """
+    return path.replace('\\\\', '/').replace('\\', '/')
+
+
 class LocalMetadataServiceBuilder:
     """Service builder for the metadata service"""
 
@@ -192,7 +225,7 @@ class LocalMetadataService:
             container.date = metadata['common']['date']
             container.format = metadata['common']['format']
             # copy the url if absolute, append md_uri path otherwise
-            container.uri = absolute_path(metadata['common']['url'], md_uri)
+            container.uri = absolute_path(normalize_path_sep(metadata['common']['url']), md_uri)
             if 'tags' in metadata:
                 for key in metadata['tags']:
                     container.tags[key] = metadata['tags'][key]
@@ -222,7 +255,7 @@ class LocalMetadataService:
         metadata['common']['author'] = container.author
         metadata['common']['date'] = container.date
         metadata['common']['format'] = container.format
-        metadata['common']['url'] = relative_path(container.uri, md_uri)
+        metadata['common']['url'] = to_unix_path(relative_path(container.uri, md_uri))
 
         metadata['tags'] = dict()
         for key in container.tags:
@@ -253,16 +286,16 @@ class LocalMetadataService:
             container.author = metadata['common']['author']
             container.date = metadata['common']['date']
             container.format = metadata['common']['format']
-            container.uri = absolute_path(metadata['common']['url'], md_uri)
+            container.uri = absolute_path(normalize_path_sep(metadata['common']['url']), md_uri)
             # origin run
-            container.run_uri = absolute_path(metadata['origin']['runurl'],
-                                              md_uri)
+            container.run_uri = absolute_path(normalize_path_sep(metadata['origin']['runurl']),
+                                                                 md_uri)
             # origin input
             for input_ in metadata['origin']['inputs']:
                 container.inputs.append(
                     ProcessedDataInputContainer(
                         input_['name'],
-                        absolute_path(input_['url'], md_uri),
+                        absolute_path(normalize_path_sep(input_['url']), md_uri),
                         input_['type'],
                     )
                 )
@@ -297,19 +330,19 @@ class LocalMetadataService:
         metadata['common']['author'] = container.author
         metadata['common']['date'] = container.date
         metadata['common']['format'] = container.format
-        metadata['common']['url'] = relative_path(container.uri, md_uri)
+        metadata['common']['url'] = to_unix_path(relative_path(container.uri, md_uri))
         # origin type
         metadata['origin'] = dict()
         metadata['origin']['type'] = METADATA_TYPE_PROCESSED()
         # run url
-        metadata['origin']['runurl'] = relative_path(container.run_uri, md_uri)
+        metadata['origin']['runurl'] = to_unix_path(relative_path(container.run_uri, md_uri))
         # origin inputs
         metadata['origin']['inputs'] = list()
         for input_ in container.inputs:
             metadata['origin']['inputs'].append(
                 {
                     'name': input_.name,
-                    'url': relative_path(input_.uri, md_uri),
+                    'url': to_unix_path(relative_path(input_.uri, md_uri)),
                     'type': input_.type,
                 }
             )
@@ -341,7 +374,7 @@ class LocalMetadataService:
             container = DataSetContainer()
             container.name = metadata['name']
             for uri in metadata['urls']:
-                container.uris.append(absolute_path(uri, md_uri))
+                container.uris.append(absolute_path(normalize_path_sep(uri), md_uri))
 
             return container
         return DataSetContainer()
@@ -363,7 +396,7 @@ class LocalMetadataService:
         metadata['name'] = container.name
         metadata['urls'] = list()
         for uri in container.uris:
-            metadata['urls'].append(relative_path(uri, md_uri))
+            metadata['urls'].append(to_unix_path(relative_path(uri, md_uri)))
         self._write_json(metadata, md_uri)
 
     def read_processeddataset(self, md_uri: str) -> DataSetContainer:
@@ -386,7 +419,7 @@ class LocalMetadataService:
             container = DataSetContainer()
             container.name = metadata['name']
             for uri in metadata['urls']:
-                container.uris.append(absolute_path(uri, md_uri))
+                container.uris.append(absolute_path(normalize_path_sep(uri), md_uri))
 
             return container
         return DataSetContainer()
@@ -409,7 +442,7 @@ class LocalMetadataService:
         metadata['name'] = container.name
         metadata['urls'] = list()
         for uri in container.uris:
-            metadata['urls'].append(relative_path(uri, md_uri))
+            metadata['urls'].append(to_unix_path(relative_path(uri, md_uri)))
         self._write_json(metadata, md_uri)
 
     def add_run_processeddataset(self, run: RunContainer, dataset_md_uri: str):
@@ -468,7 +501,7 @@ class LocalMetadataService:
 
         # add the dataset to the experiment
         experiment_container = self.read_experiment(experiment_md_uri)
-        experiment_container.processeddatasets.append(processeddataset_uri)
+        experiment_container.processeddatasets.append(to_unix_path(processeddataset_uri))
         self.write_experiment(experiment_container, experiment_md_uri)
 
         return container, processeddataset_uri
@@ -526,9 +559,9 @@ class LocalMetadataService:
             container.name = metadata['information']['name']
             container.author = metadata['information']['author']
             container.date = metadata['information']['date']
-            container.rawdataset = absolute_path(metadata['rawdataset'], md_uri)
+            container.rawdataset = absolute_path(normalize_path_sep(metadata['rawdataset']), md_uri)
             for dataset in metadata['processeddatasets']:
-                container.processeddatasets.append(absolute_path(dataset,
+                container.processeddatasets.append(absolute_path(normalize_path_sep(dataset),
                                                                  md_uri))
             for tag in metadata['tags']:
                 container.tags.append(tag)
@@ -553,10 +586,10 @@ class LocalMetadataService:
         metadata['information']['name'] = container.name
         metadata['information']['author'] = container.author
         metadata['information']['date'] = container.date
-        metadata['rawdataset'] = relative_path(container.rawdataset, md_uri)
+        metadata['rawdataset'] = to_unix_path(relative_path(container.rawdataset, md_uri))
         metadata['processeddatasets'] = []
         for dataset in container.processeddatasets:
-            metadata['processeddatasets'].append(relative_path(dataset, md_uri))
+            metadata['processeddatasets'].append(to_unix_path(relative_path(dataset, md_uri)))
         metadata['tags'] = []
         for tag in container.tags:
             metadata['tags'].append(tag)
@@ -683,7 +716,7 @@ class LocalMetadataService:
             metadata = self._read_json(md_uri)
             container = RunContainer()
             container.process_name = metadata['process']['name']
-            container.process_uri = metadata['process']['url']
+            container.process_uri = normalize_path_sep(metadata['process']['url'])
             container.processeddataset = metadata['processeddataset']
             for input_ in metadata['inputs']:
                 container.inputs.append(
@@ -717,7 +750,7 @@ class LocalMetadataService:
 
         metadata['process'] = {}
         metadata['process']['name'] = container.process_name
-        metadata['process']['url'] = container.process_uri
+        metadata['process']['url'] = to_unix_path(container.process_uri)
         metadata['processeddataset'] = container.processeddataset
         metadata['inputs'] = []
         for input_ in container.inputs:

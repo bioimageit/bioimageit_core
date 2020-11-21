@@ -9,9 +9,9 @@ from bioimageit_core.runner import Runner
 
 class TestLocalRunner(unittest.TestCase):
     def setUp(self):
-        self.xml_file = 'tests/test_processes_local/helloworld.xml'
-        self.tst_out_file = 'tests/test_processes_local/helloworld.txt'
-        ConfigAccess('tests/test_config/config_local.json')
+        self.xml_file = os.path.abspath(os.path.join('tests', 'test_processes_local', 'helloworld.xml'))
+        self.tst_out_file = os.path.abspath(os.path.join('tests', 'test_processes_local', 'helloworld.txt'))
+        ConfigAccess(os.path.abspath(os.path.join('tests', 'test_config', 'config_local.json')))
 
     def tearDown(self):
         ConfigAccess.__instance = None

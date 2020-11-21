@@ -10,15 +10,15 @@ from tests.metadata import create_raw_data, create_processed_data
 class TestLocalData(unittest.TestCase):
     def setUp(self):
         self.ref_rawdata_file = \
-            'tests/test_metadata_local/data/population1_001.md.json'
+            os.path.join('tests', 'test_metadata_local', 'data/population1_001.md.json')
         self.tst_rawdata_file = \
-            'tests/test_metadata_local/data/population1_001_tst.md.json'
+            os.path.join('tests', 'test_metadata_local', 'data', 'population1_001_tst.md.json')
         self.ref_processeddata_file = \
-            'tests/test_metadata_local/process1/population1_001_o.md.json'
+            os.path.join('tests', 'test_metadata_local', 'process1', 'population1_001_o.md.json')
         self.tst_processeddata_file = \
-            'tests/test_metadata_local/process1/population1_001_o_tst.md.json'
+            os.path.join('tests', 'test_metadata_local', 'process1', 'population1_001_o_tst.md.json')
         self.ref_processeddata2_file = \
-            'tests/test_metadata_local/process2/population1_001_o_o.md.json'
+            os.path.join('tests', 'test_metadata_local', 'process2', 'population1_001_o_o.md.json')
 
     def tearDown(self):
         if os.path.isfile(self.tst_rawdata_file): 
