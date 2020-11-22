@@ -82,7 +82,7 @@ class DockerRunnerService(Observable):
         working_dir = ''
         config = ConfigAccess.instance().config['runner']
         if 'working_dir' in config:
-            working_dir = config['working_dir']
+            working_dir = config['working_dir'].replace('\\\\', '/').replace('\\', '/')
         else:
             raise RunnerExecError(
                 "The docker runner need a  working_dir. "
@@ -100,42 +100,53 @@ class DockerRunnerService(Observable):
             '-d',
             image_uri,
         ]
-        # print('run cmd: ', run_args)
-        # print()
+        print('run cmd: ', run_args)
+        print()
         subprocess.run(run_args)
 
         # exec the command
-        exec_args = ['docker', 'exec', '-it', image_name]
+
+        exec_args = ['docker', 'exec', image_name]
         for arg in args:
+            arg = arg.replace('\\\\', '/').replace('\\', "/")
+            print('arg =', arg)
             modified_arg = arg
-            for input in process.inputs:
-                if input.is_data:
+            for input_ in process.inputs:
+                #print('input ', input_.name, ' is data ', input_.is_data)
+                if input_.is_data:
+                    print('input ', input_.name, ' goes to  modify_io_path with value ', input_.value)
                     modif_arg = self.modify_io_path(
-                        arg, input.value, working_dir, docker_data_dir
+                        arg, input_.value, working_dir, docker_data_dir
                     )
                     if modif_arg != '':
                         modified_arg = modif_arg
             for output in process.outputs:
                 if output.is_data:
+                    print('output ', output.name, ' goes to  modify_io_path with value ', output.value)
                     modif_arg = self.modify_io_path(
                         arg, output.value, working_dir, docker_data_dir
                     )
                     if modif_arg != '':
                         modified_arg = modif_arg
             exec_args.append(modified_arg)
-        # print('exec cmd: ', exec_args)
-        # print()
+        print('exec cmd: ', exec_args)
+        print()
         subprocess.run(exec_args)
+        # subprocess.run(['docker', 'stop', image_name])
 
     def modify_io_path(
         self, arg: str, data_value: str, working_dir: str, docker_data_dir: str
     ):
         modified_arg = ''
-        if arg == data_value:
-            absolute_path = os.path.abspath(data_value)
+        if arg == data_value or arg == data_value.replace('\\\\', '/').replace('\\', '/'):
+            absolute_path = os.path.abspath(data_value).replace('\\\\', '/').replace('\\', '/')
+            print("absolute path=", absolute_path)
+            print("working_dir path=", working_dir)
             if working_dir in absolute_path:
                 modified_arg = absolute_path.replace(working_dir,
                                                      docker_data_dir)
+                modified_arg = modified_arg # .replace('\\\\', '/').replace('\\', '/')
+                print("modified_arg=", modified_arg)
             else:
                 raise RunnerExecError(
                     "The docker runner can process only files "
