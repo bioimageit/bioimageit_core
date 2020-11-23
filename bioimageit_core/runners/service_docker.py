@@ -114,7 +114,7 @@ class DockerRunnerService(Observable):
             for input_ in process.inputs:
                 #print('input ', input_.name, ' is data ', input_.is_data)
                 if input_.is_data:
-                    print('input ', input_.name, ' goes to  modify_io_path with value ', input_.value)
+                    # print('input ', input_.name, ' goes to  modify_io_path with value ', input_.value)
                     modif_arg = self.modify_io_path(
                         arg, input_.value, working_dir, docker_data_dir
                     )
@@ -122,7 +122,7 @@ class DockerRunnerService(Observable):
                         modified_arg = modif_arg
             for output in process.outputs:
                 if output.is_data:
-                    print('output ', output.name, ' goes to  modify_io_path with value ', output.value)
+                    # print('output ', output.name, ' goes to  modify_io_path with value ', output.value)
                     modif_arg = self.modify_io_path(
                         arg, output.value, working_dir, docker_data_dir
                     )
@@ -140,13 +140,13 @@ class DockerRunnerService(Observable):
         modified_arg = ''
         if arg == data_value or arg == data_value.replace('\\\\', '/').replace('\\', '/'):
             absolute_path = os.path.abspath(data_value).replace('\\\\', '/').replace('\\', '/')
-            print("absolute path=", absolute_path)
-            print("working_dir path=", working_dir)
+            # print("absolute path=", absolute_path)
+            # print("working_dir path=", working_dir)
             if working_dir in absolute_path:
                 modified_arg = absolute_path.replace(working_dir,
                                                      docker_data_dir)
                 modified_arg = modified_arg # .replace('\\\\', '/').replace('\\', '/')
-                print("modified_arg=", modified_arg)
+                # print("modified_arg=", modified_arg)
             else:
                 raise RunnerExecError(
                     "The docker runner can process only files "
