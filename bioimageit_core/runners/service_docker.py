@@ -112,7 +112,7 @@ class DockerRunnerService(Observable):
             print('arg =', arg)
             modified_arg = arg
             for input_ in process.inputs:
-                #print('input ', input_.name, ' is data ', input_.is_data)
+                # print('input ', input_.name, ' is data ', input_.is_data)
                 if input_.is_data:
                     # print('input ', input_.name, ' goes to  modify_io_path with value ', input_.value)
                     modif_arg = self.modify_io_path(
