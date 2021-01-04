@@ -43,6 +43,19 @@ class SingularityRunnerService(Observable):
         super().__init__()
         self.service_name = 'SingularityRunnerService'
 
+    def set_up(self, process: ProcessContainer):
+        """setup the runner
+
+        Add here the code to initialize the runner
+
+        Parameters
+        ----------
+        process
+            Metadata of the process
+
+        """
+        pass
+
     def exec(self, process: ProcessContainer, args):
         """Execute a process
 
@@ -76,6 +89,19 @@ class SingularityRunnerService(Observable):
         for line in puller:
             self.notify_message(line)
             print(line)
+
+    def tear_down(self, process: ProcessContainer):
+        """tear down the runner
+
+        Add here the code to down/clean the runner
+
+        Parameters
+        ----------
+        process
+            Metadata of the process
+
+        """
+        pass
 
 
 def replace_env_variables(process, cmd) -> str:

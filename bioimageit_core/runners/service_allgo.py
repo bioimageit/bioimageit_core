@@ -39,6 +39,19 @@ class AllgoRunnerService(Observable):
         super().__init__()
         self.service_name = 'AllgoRunnerService'
 
+    def set_up(self, process: ProcessContainer):
+        """setup the runner
+
+        Add here the code to initialize the runner
+
+        Parameters
+        ----------
+        process
+            Metadata of the process
+
+        """
+        pass
+
     def exec(self, process: ProcessContainer, args):
         """Execute a process
 
@@ -90,3 +103,16 @@ class AllgoRunnerService(Observable):
             filepath = client.download_file(file_url=url, outdir=output_dir,
                                             force=True)
             # print('out file downloaded at :', filepath)
+
+    def tear_down(self, process: ProcessContainer):
+        """tear down the runner
+
+        Add here the code to down/clean the runner
+
+        Parameters
+        ----------
+        process
+            Metadata of the process
+
+        """
+        pass

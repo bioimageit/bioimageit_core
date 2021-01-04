@@ -107,7 +107,7 @@ class Runner(Observable):
         if len(args) == 0:
             self._exec_list()
         else:
-            self._exec_file(*args)
+            self._exec_file(False, *args)
         self.notify_observers(100, "Done")
 
     def _exec_list(self):
@@ -137,6 +137,7 @@ class Runner(Observable):
                 inputs[input_['name']] = [input_['uri']]
 
         self.output_uris = []
+        self.service.set_up(self.process.metadata)
         for i in range(data_count):
 
             self.notify_observers(
@@ -178,9 +179,10 @@ class Runner(Observable):
 
             # exec
             # print('args:', args)
-            self._exec_file(*args)
+            self._exec_file(True, *args)
+        self.service.tear_down(self.process.metadata)
 
-    def _exec_file(self, *args):
+    def _exec_file(self, from_list, *args):
         """Execute the process on files with the given arguments
 
         The inputs and outputs arguments have to be the path of the I/O data.
@@ -189,6 +191,8 @@ class Runner(Observable):
 
         Parameters
         ----------
+        from_list: bool
+            Exec process in a list of file
         *args
             List of the parameters and I/O data given as pair 'arg name,
             arg value'
@@ -247,7 +251,15 @@ class Runner(Observable):
         args = shlex.split(cmd)
         # print("cmd:", args)
 
-        self.service.exec(self.process.metadata, args)
+        if from_list:
+            self.service.exec(self.process.metadata, args)
+        else:
+            print('exec file set_up')
+            self.service.set_up(self.process.metadata)
+            print('exec file exec')
+            self.service.exec(self.process.metadata, args)
+            print('exec file tear_down')
+            self.service.tear_down(self.process.metadata)
 
     def replace_env_variables(self, cmd) -> str:
         xml_root_path = os.path.dirname(os.path.abspath(self.process.uri))
