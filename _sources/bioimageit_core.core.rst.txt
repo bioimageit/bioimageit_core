@@ -1,5 +1,5 @@
 bioimageit_core.core package
-=======================
+============================
 
 Submodules
 ----------
