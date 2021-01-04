@@ -1,0 +1,7 @@
+categories:
+    - Spots detection
+description: Analyse particles in an image
+homepage_url: project.inria.fr/bioimageit
+long_description: Threshold an image, 
+name: threshold_particles
+owner: sprigent

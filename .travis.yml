@@ -1,0 +1,17 @@
+language: python
+python:
+- '3.8'
+install:
+- pip install -r requirements.txt
+- pip install sphinx_rtd_theme
+script:
+- python -m unittest discover -v
+- make -C docs/ html
+- touch docs/build/html/.nojekyll
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master

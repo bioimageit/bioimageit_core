@@ -1,0 +1,16 @@
+{
+    "information": {
+        "name": "myexperiment",
+        "author": "Sylvain Prigent",
+        "date": "2020-03-04"
+    },
+    "rawdataset": "data/rawdataset.md.json",
+    "processeddatasets": [
+        "process1/processeddataset.md.json",
+        "process2/processeddataset.md.json"
+    ],
+    "tags": [
+        "Population",
+        "number"
+    ]
+}

@@ -1,0 +1,21 @@
+<tool id="helloworld" name="Hello World" version="1.0.0" python_template_version="3.5">
+    <command detect_errors="exit_code"><![CDATA[
+        python $__tool_directory__/helloworld.py -m ${m} -o ${o}
+    ]]></command>
+    <inputs>
+        <param argument="-m" type="text" value="Hello World!" label="Message" help="The message to print in the txt file" />
+    </inputs>
+    <outputs>
+        <data name="o" format="txt" label="Output file" />
+    </outputs>
+    <tests>
+        <test>
+            <param name="m" value="Hello World!" />
+            <output name="o" file="hello.txt" compare="sim_size" />
+        </test>
+    </tests>
+    <help><![CDATA[
+        Just save a message in a txt file
+    ]]></help>
+    
+</tool>

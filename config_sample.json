@@ -1,0 +1,19 @@
+{
+    "metadata": {
+        "service": "LOCAL"
+    },
+    "process": {
+        "service": "LOCAL",
+        "xml_dirs": [
+            "../toolboxes/tools/"
+        ],
+        "categories": "../toolboxes/toolboxes.json",
+        "tools": "../toolboxes/tools.json"
+    },
+    "runner": {
+        "service": "SINGULARITY"
+    },
+    "user":{
+        "name": "Sylvain Prigent"
+    }
+}
