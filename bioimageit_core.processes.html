@@ -1,0 +1,1119 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>bioimageit_core.processes package &mdash; BioImagePy 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="bioimageit_core.runners package" href="bioimageit_core.runners.html" />
+    <link rel="prev" title="bioimageit_core.metadata package" href="bioimageit_core.metadata.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> BioImagePy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_omero.html">Tutorial: Omero</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_wrap_a_tool.html">Tutorial: wrap a tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_metadata_plugin.html">Tutorial: write a metadata plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_runner_plugin.html">Tutorial: write a runner plugin</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">bioimageit_core</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="bioimageit_core.html">bioimageit_core package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="bioimageit_core.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html">bioimageit_core.core package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.metadata.html">bioimageit_core.metadata package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">bioimageit_core.processes package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.runners.html">bioimageit_core.runners package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core.config">bioimageit_core.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core.data">bioimageit_core.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core.dataset">bioimageit_core.dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core.experiment">bioimageit_core.experiment module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core.pipeline">bioimageit_core.pipeline module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core.process">bioimageit_core.process module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core.runner">bioimageit_core.runner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.html#module-bioimageit_core">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BioImagePy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">bioimageit_core</a> &raquo;</li>
+        
+          <li><a href="bioimageit_core.html">bioimageit_core package</a> &raquo;</li>
+        
+      <li>bioimageit_core.processes package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/bioimageit_core.processes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bioimageit-core-processes-package">
+<h1>bioimageit_core.processes package<a class="headerlink" href="#bioimageit-core-processes-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-bioimageit_core.processes.containers">
+<span id="bioimageit-core-processes-containers-module"></span><h2>bioimageit_core.processes.containers module<a class="headerlink" href="#module-bioimageit_core.processes.containers" title="Permalink to this headline">¶</a></h2>
+<p>BioImagePy process containers.</p>
+<p>This module contains containers for Process info
+and process database</p>
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.PARAM_NUMBER">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_NUMBER</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.PARAM_NUMBER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.PARAM_STRING">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_STRING</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.PARAM_STRING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.PARAM_SELECT">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_SELECT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.PARAM_SELECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.PARAM_BOOLEAN">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_BOOLEAN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.PARAM_BOOLEAN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.PARAM_FILE">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_FILE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.PARAM_FILE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.IO_PARAM">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">IO_PARAM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.IO_PARAM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.IO_INPUT">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">IO_INPUT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.IO_INPUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.IO_OUTPUT">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">IO_OUTPUT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.IO_OUTPUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.Classes">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">Classes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.Classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">-------</code></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessIndexContainer">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessIndexContainer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessIndexContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessContainer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessParameterContainer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessDatabaseContainer">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessDatabaseContainer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessDatabaseContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.CmdSelectContainer">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">CmdSelectContainer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.CmdSelectContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="id0">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">CmdSelectContainer</code><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for a select parameter options</p>
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.CmdSelectContainer.names">
+<code class="sig-name descname">names</code><a class="headerlink" href="#bioimageit_core.processes.containers.CmdSelectContainer.names" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of the options names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.CmdSelectContainer.values">
+<code class="sig-name descname">values</code><a class="headerlink" href="#bioimageit_core.processes.containers.CmdSelectContainer.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of the options values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.CmdSelectContainer.size">
+<code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.CmdSelectContainer.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of options</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.CmdSelectContainer.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.CmdSelectContainer.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an option</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id1">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an option</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of the option</p></li>
+<li><p><strong>value</strong> – Value of the option</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.CmdSelectContainer.content_str">
+<code class="sig-name descname">content_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.CmdSelectContainer.content_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="id2">
+<code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the number of options</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of options</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="id3">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">IO_INPUT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dd><p>I/O for data input</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="id4">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">IO_OUTPUT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dd><p>I/O for data output</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="id5">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">IO_PARAM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dd><p>I/O for parameter</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="id6">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_BOOLEAN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type for parameter boolean</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="id7">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_FILE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type for parameter hidden</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="id8">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_NUMBER</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type for parameter number</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="id9">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_SELECT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id9" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type for parameter select</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="id10">
+<code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">PARAM_STRING</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id10" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type for parameter string</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="bioimageit_core.processes.containers.ProcessCategoryContainer">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessCategoryContainer</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessCategoryContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for a category of process</p>
+<p>These are the metadata of a process category for the
+toolshed structure</p>
+<dl class="simple">
+<dt>id:</dt><dd><p>ID of the category. It must be a unique name</p>
+</dd>
+<dt>name:</dt><dd><p>Name of the category. It is the name printed to the user interfaces</p>
+</dd>
+<dt>thumbnail:</dt><dd><p>URI to an image that illustrate the category tools</p>
+</dd>
+<dt>parent:</dt><dd><p>ID of the parent category in the category tree. Set to ‘root’ for a
+top level category</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="id11">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessContainer</code><a class="headerlink" href="#id11" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for a process parameter information</p>
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id of the process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process version (ex 1.0.0)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process short description (used for the man page)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.command">
+<code class="sig-name descname">command</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command executed when process is ran</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.inputs">
+<code class="sig-name descname">inputs</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process inputs stored in a list of ProcessParameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.outputs">
+<code class="sig-name descname">outputs</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process outputs stored in a list of ProcessParameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.tests">
+<code class="sig-name descname">tests</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.tests" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of unit tests</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.help">
+<code class="sig-name descname">help</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Url to the help page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.is_param">
+<code class="sig-name descname">is_param</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.is_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a parameter exists</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.inputs_size">
+<code class="sig-name descname">inputs_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.inputs_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.outputs_size">
+<code class="sig-name descname">outputs_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.outputs_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of outputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.display">
+<code class="sig-name descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the process information to console</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.container">
+<code class="sig-name descname">container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the first container in the requirements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Description of the container requirement (origin, type, uri)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id12">
+<code class="sig-name descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the process information to console.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.fullname">
+<code class="sig-name descname">fullname</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.fullname" title="Permalink to this definition">¶</a></dt>
+<dd><p>fullname of the process</p>
+<p>the full name is “{name}_v{version}”</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id13">
+<code class="sig-name descname">inputs_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id13" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the number of inputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of inputs</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id14">
+<code class="sig-name descname">is_param</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#id14" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a parameter exists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of the parameter to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the parameter exists, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id15">
+<code class="sig-name descname">outputs_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id15" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the number of outputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of outputs</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessContainer.param_size">
+<code class="sig-name descname">param_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessContainer.param_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the number of parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Number of inputs</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="id16">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessIndexContainer</code><a class="headerlink" href="#id16" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for a process main information</p>
+<dl class="simple">
+<dt>uri</dt><dd><p>URI of the XML file</p>
+</dd>
+<dt>id: str</dt><dd><p>Id of the process</p>
+</dd>
+<dt>name: str</dt><dd><p>Process name</p>
+</dd>
+<dt>version: str</dt><dd><p>Process version (ex 1.0.0)</p>
+</dd>
+<dt>type</dt><dd><p>Process type (‘sequential’, ‘merge’)</p>
+</dd>
+<dt>categories</dt><dd><p>List of the process categories</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessIndexContainer.serialize">
+<code class="sig-name descname">serialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">direction</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'h'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessIndexContainer.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize the process main info</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>direction</strong> – h for horizontal, and v for vertical</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessIndexContainer.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessIndexContainer.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="id17">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessParameterContainer</code><a class="headerlink" href="#id17" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for a process parameter information</p>
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter description</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.type">
+<code class="sig-name descname">type</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter type (format)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.is_data">
+<code class="sig-name descname">is_data</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.is_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>False if parameter is param and True if parameter is data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.io">
+<code class="sig-name descname">io</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.io" title="Permalink to this definition">¶</a></dt>
+<dd><p>IO type if parameter is IO (in IO_XXX names)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.default_value">
+<code class="sig-name descname">default_value</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.default_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter default value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.select_info">
+<code class="sig-name descname">select_info</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.select_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Choices for a select parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>BiCmdSelect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.is_advanced">
+<code class="sig-name descname">is_advanced</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.is_advanced" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if parameter is advanced</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessParameterContainer.display">
+<code class="sig-name descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessParameterContainer.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the process parameter information to console</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="bioimageit_core.processes.containers.ProcessTestParameterContainer">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.containers.</code><code class="sig-name descname">ProcessTestParameterContainer</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessTestParameterContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for a process test information</p>
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessTestParameterContainer.type">
+<code class="sig-name descname">type</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessTestParameterContainer.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter type (param or output)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessTestParameterContainer.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessTestParameterContainer.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessTestParameterContainer.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessTestParameterContainer.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessTestParameterContainer.file">
+<code class="sig-name descname">file</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessTestParameterContainer.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference file path for output</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.containers.ProcessTestParameterContainer.compare">
+<code class="sig-name descname">compare</code><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessTestParameterContainer.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Comparison method name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.containers.ProcessTestParameterContainer.display">
+<code class="sig-name descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.containers.ProcessTestParameterContainer.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the container content</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-bioimageit_core.processes.exceptions">
+<span id="bioimageit-core-processes-exceptions-module"></span><h2>bioimageit_core.processes.exceptions module<a class="headerlink" href="#module-bioimageit_core.processes.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="bioimageit_core.processes.exceptions.ProcessNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">bioimageit_core.processes.exceptions.</code><code class="sig-name descname">ProcessNotFoundError</code><a class="headerlink" href="#bioimageit_core.processes.exceptions.ProcessNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when a process is not found</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="bioimageit_core.processes.exceptions.ProcessServiceError">
+<em class="property">exception </em><code class="sig-prename descclassname">bioimageit_core.processes.exceptions.</code><code class="sig-name descname">ProcessServiceError</code><a class="headerlink" href="#bioimageit_core.processes.exceptions.ProcessServiceError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when an error happen when running a process</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bioimageit_core.processes.factory">
+<span id="bioimageit-core-processes-factory-module"></span><h2>bioimageit_core.processes.factory module<a class="headerlink" href="#module-bioimageit_core.processes.factory" title="Permalink to this headline">¶</a></h2>
+<p>BioImagePy process service provider.</p>
+<p>This module implement the process service provider</p>
+<div class="section" id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<p>MetadataServiceProvider</p>
+<dl class="py class">
+<dt id="bioimageit_core.processes.factory.ProcessServiceProvider">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.factory.</code><code class="sig-name descname">ProcessServiceProvider</code><a class="headerlink" href="#bioimageit_core.processes.factory.ProcessServiceProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.factory.ObjectFactory" title="bioimageit_core.core.factory.ObjectFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.factory.ObjectFactory</span></code></a></p>
+<dl class="py method">
+<dt id="bioimageit_core.processes.factory.ProcessServiceProvider.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">service_id</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.factory.ProcessServiceProvider.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-bioimageit_core.processes.service_local">
+<span id="bioimageit-core-processes-service-local-module"></span><h2>bioimageit_core.processes.service_local module<a class="headerlink" href="#module-bioimageit_core.processes.service_local" title="Permalink to this headline">¶</a></h2>
+<p>BioImagePy local process service.</p>
+<p>This module implements the local service for process
+(Process class) execution.</p>
+<div class="section" id="id18">
+<h3>Classes<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<p>ProcessServiceProvider</p>
+<dl class="py class">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.service_local.</code><code class="sig-name descname">LocalProcessService</code><a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Service for local process</p>
+<p>To initialize the database, you need to set the xml_dirs from
+the configuration and then call initialize</p>
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService.get_categories">
+<code class="sig-name descname">get_categories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService.get_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of categories for a given parent</p>
+<dl class="simple">
+<dt>parent</dt><dd><p>ID of the parent category</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService.get_category_processes">
+<code class="sig-name descname">get_category_processes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService.get_category_processes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of processes with the given category</p>
+<dl class="simple">
+<dt>category</dt><dd><p>ID of the category</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService.get_process">
+<code class="sig-name descname">get_process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fullname</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService.get_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a process by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fullname</strong> – Fullname of the process ({name}_v{version})</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The URI of the process or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService.get_processes_database">
+<code class="sig-name descname">get_processes_database</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService.get_processes_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the dictionary of processed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService.read_process">
+<code class="sig-name descname">read_process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a><a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService.read_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a process from its URI</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uri</strong> – URI of the process</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A container of the process metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService.read_process_index">
+<code class="sig-name descname">read_process_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#id16" title="bioimageit_core.processes.containers.ProcessIndexContainer">bioimageit_core.processes.containers.ProcessIndexContainer</a><a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService.read_process_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the basic indexation information of a Process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uri</strong> – URI of the process</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>process index information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.LocalProcessService.search">
+<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keyword</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessService.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search a process using a keyword in the database</p>
+<p>This method print the list of funded processed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keyword</strong> – Keyword to search in the database</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The list of the processes index information</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="bioimageit_core.processes.service_local.LocalProcessServiceBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.service_local.</code><code class="sig-name descname">LocalProcessServiceBuilder</code><a class="headerlink" href="#bioimageit_core.processes.service_local.LocalProcessServiceBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Service builder for the process service</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="bioimageit_core.processes.service_local.ProcessParser">
+<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.processes.service_local.</code><code class="sig-name descname">ProcessParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_file_url</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.service_local.ProcessParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parse a process XML file</p>
+<p>The process information are parsed from the XML file and stored into
+a ProcessInfo structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xml_file_url</strong> – Path of the XML process file</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="bioimageit_core.processes.service_local.ProcessParser.xml_file_url">
+<code class="sig-name descname">xml_file_url</code><a class="headerlink" href="#bioimageit_core.processes.service_local.ProcessParser.xml_file_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path of the XML process file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.ProcessParser.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.service_local.ProcessParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the XML file and returns the information into a ProcessInfo</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id19">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a><a class="headerlink" href="#id19" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the XML file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>The process information extracted from the XML file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bioimageit_core.processes.service_local.ProcessParser.parse_main_info">
+<code class="sig-name descname">parse_main_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.processes.service_local.ProcessParser.parse_main_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the name of the process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>The the process container (<a class="reference internal" href="#id16" title="bioimageit_core.processes.containers.ProcessIndexContainer">ProcessIndexContainer</a>) or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-bioimageit_core.processes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-bioimageit_core.processes" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="bioimageit_core.runners.html" class="btn btn-neutral float-right" title="bioimageit_core.runners package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bioimageit_core.metadata.html" class="btn btn-neutral float-left" title="bioimageit_core.metadata package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Sylvain Prigent
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
