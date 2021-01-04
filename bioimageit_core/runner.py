@@ -244,7 +244,7 @@ class Runner(Observable):
 
         # 2.2.2. replace the command variables
         cmd = self.replace_env_variables(cmd)
-        cmd = cmd.replace('/', os.sep) # .replace('\\', '\\\\')
+        cmd = cmd.replace('/', os.sep)  # .replace('\\', '\\\\')
 
         # cmd = " ".join(cmd.split())
 
@@ -256,11 +256,11 @@ class Runner(Observable):
         if from_list:
             self.service.exec(self.process.metadata, args)
         else:
-            print('exec file set_up')
+            # print('exec file set_up')
             self.service.set_up(self.process.metadata)
-            print('exec file exec')
+            # print('exec file exec')
             self.service.exec(self.process.metadata, args)
-            print('exec file tear_down')
+            # print('exec file tear_down')
             self.service.tear_down(self.process.metadata)
 
     def replace_env_variables(self, cmd) -> str:

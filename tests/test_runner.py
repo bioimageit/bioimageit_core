@@ -20,7 +20,7 @@ class TestLocalRunner(unittest.TestCase):
 
     def test_exec(self):
         runner = Runner(Process(self.xml_file))
-        message = "Hello World From test!"
+        message = 'Hello World From test'
         runner.exec("m", message, "o", self.tst_out_file)
         with open(self.tst_out_file, 'r') as content_file:
             content = content_file.read()

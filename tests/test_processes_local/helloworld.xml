@@ -1,6 +1,6 @@
 <tool id="helloworld" name="Hello World" version="1.0.0" python_template_version="3.5">
     <command detect_errors="exit_code"><![CDATA[
-        python $__tool_directory__/helloworld.py -m "${m}" -o "${o}"
+        python $__tool_directory__/helloworld.py -m ${m} -o ${o}
     ]]></command>
     <inputs>
         <param argument="-m" type="text" value="Hello World!" label="Message" help="The message to print in the txt file" />
