@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'BioImagePy'
+project = 'BioImageIT_core'
 copyright = '2020, Sylvain Prigent'
 author = 'Sylvain Prigent'
 
