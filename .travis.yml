@@ -9,9 +9,9 @@ script:
 - make -C docs/ html
 - touch docs/build/html/.nojekyll
 deploy:
-  - provider: pages:git
-    verbose: true
-    token: $GITHUB_TOKEN
-    egde: true
-    local_dir: ./docs/build/html/
-    keep_history: true
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
