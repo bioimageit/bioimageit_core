@@ -234,22 +234,24 @@ class Runner(Observable):
         cmd = self.process.metadata.command
         for input_arg in self.process.metadata.inputs:
             cmd = cmd.replace("${" + input_arg.name + "}",
-                              str(input_arg.value))
+                              "'" + str(input_arg.value) + "'")
             input_arg_name_simple = input_arg.name.replace("-", "")
             cmd = cmd.replace("${" + input_arg_name_simple + "}",
-                              str(input_arg.value))
+                              "'" + str(input_arg.value) + "'")
         for output_arg in self.process.metadata.outputs:
             cmd = cmd.replace("${" + output_arg.name + "}",
-                              str(output_arg.value))
+                              "'" + str(output_arg.value) + "'")
 
         # 2.2.2. replace the command variables
         cmd = self.replace_env_variables(cmd)
-        cmd = " ".join(cmd.split())
+        cmd = cmd.replace('/', os.sep) # .replace('\\', '\\\\')
+
+        # cmd = " ".join(cmd.split())
 
         # 2.3. exec
-        # print("cmd:", cmd)
+        print("runner cmd:", cmd)
         args = shlex.split(cmd)
-        # print("cmd:", args)
+        print("runner cmd shell split:", args)
 
         if from_list:
             self.service.exec(self.process.metadata, args)

@@ -9,11 +9,11 @@ class TestLocalMetadataService(unittest.TestCase):
 
     def setUp(self):
         self.service = LocalProcessService()
-        self.xml_file = 'tests/test_processes_local/svdeconv/svdeconv2d.xml'
-        self.xml_dir = 'tests/test_processes_local'
+        self.xml_file = os.path.join('tests', 'test_processes_local', 'svdeconv', 'svdeconv2d.xml')
+        self.xml_dir = os.path.join('tests', 'test_processes_local')
         self.service.xml_dirs.append(self.xml_dir)
         self.service.categories_json = \
-            'tests/test_processes_local/categories.json'
+            os.path.join('tests', 'test_processes_local', 'categories.json')
         self.service._load()
         
     def tearDown(self):

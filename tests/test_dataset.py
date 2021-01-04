@@ -10,9 +10,9 @@ from tests.metadata import create_dataset
 class TestLocalDataSet(unittest.TestCase):
     def setUp(self):
         self.ref_dataset_file = \
-            'tests/test_metadata_local/data/rawdataset.md.json'
+            os.path.join('tests', 'test_metadata_local', 'data', 'rawdataset.md.json')
         self.tst_dataset_file = \
-            'tests/test_metadata_local/data/rawdataset_tst.md.json'
+            os.path.join('tests', 'test_metadata_local', 'data', 'rawdataset_tst.md.json')
 
     def tearDown(self):
         if os.path.isfile(self.tst_dataset_file):

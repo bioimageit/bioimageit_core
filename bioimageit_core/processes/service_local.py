@@ -114,7 +114,6 @@ class LocalProcessService:
             for file in files:
                 if file.endswith('.xml'):
                     process_path = os.path.join(current_path, file)
-                    # print("parse file:", process_path)
                     parser = ProcessParser(process_path)
                     info = parser.parse_main_info()
                     if info:
@@ -263,6 +262,7 @@ class ProcessParser:
         The the process container (ProcessIndexContainer) or None
 
         """
+        # print('parse xml file:', self.xml_file_url)
         tree = ET.parse(self.xml_file_url)
         self._root = tree.getroot()
 

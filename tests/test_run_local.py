@@ -12,7 +12,7 @@ from bioimageit_core.metadata.containers import (RunContainer,
 def create_run_metadata():
     container = RunContainer()
     container.process_name = 'SPARTION 2D'
-    container.process_uri = '../galaxytools/tools/svdeconv/svdeconv2d.xml'
+    container.process_uri = os.path.join('..', 'galaxytools', 'tools', 'svdeconv', 'svdeconv2d.xml')
     container.processeddataset = 'processeddataset.md.json'
     container.inputs.append(RunInputContainer('i', 'data', '', ''))
     container.parameters.append(RunParameterContainer("sigma", "3"))
@@ -26,8 +26,8 @@ class TestLocalRunService(unittest.TestCase):
 
     def setUp(self):
         self.service = LocalMetadataService()
-        self.ref_run_file = 'tests/test_metadata_local/process1/run.md.json'
-        self.tst_run_file = 'tests/test_metadata_local/process1/run_tst.md.json'
+        self.ref_run_file = os.path.join('tests', 'test_metadata_local', 'process1', 'run.md.json')
+        self.tst_run_file = os.path.join('tests', 'test_metadata_local', 'process1', 'run_tst.md.json')
 
     def tearDown(self):
         if os.path.isfile(self.tst_run_file): 

@@ -1,5 +1,5 @@
 import unittest
-
+import os
 from bioimageit_core.config import Config, ConfigAccess
 
 
@@ -18,7 +18,7 @@ def _check_content(config):
 
 class TestLocalData(unittest.TestCase):
     def setUp(self):
-        self.config_local_file = 'tests/test_config/config_local.json'
+        self.config_local_file = os.path.join('tests', 'test_config', 'config_local.json')
 
     def tearDown(self):
         ConfigAccess.__instance = None

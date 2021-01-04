@@ -14,73 +14,81 @@ from tests.metadata import (create_raw_data, create_processed_data,
 class TestMetadataLocalFunctions(unittest.TestCase):
 
     def test_simplify_path1(self):
-        file = '/my/computer/experiment/svdeconv/../data/raw.md.json'
+        sep = os.sep
+        file = sep+'my'+sep+'computer'+sep+'experiment'+sep+'svdeconv'+sep+'..'+sep+'data'+sep+'raw.md.json'
         simplified_file = simplify_path(file)    
         self.assertEqual(simplified_file,
-                         '/my/computer/experiment/data/raw.md.json')
+                         sep+'my'+sep+'computer'+sep+'experiment'+sep+'data'+sep+'raw.md.json')
 
     def test_simplify_path2(self):
-        file = '/my/computer/experiment/svdeconv/denoise/../../data/raw.md.json'
+        sep = os.sep
+        file = sep + 'my' + sep + 'computer' + sep + 'experiment' + sep + 'svdeconv' + sep + 'denoise' + sep + '..' + \
+               sep + '..' + sep + 'data' + sep + 'raw.md.json'
         simplified_file = simplify_path(file)    
         self.assertEqual(simplified_file,
-                         '/my/computer/experiment/data/raw.md.json')
+                         sep + 'my' + sep + 'computer' + sep + 'experiment' + sep + 'data' + sep + 'raw.md.json')
         
     def test_relative_path1(self):
-        reference_file = 'my/computer/experiment/data/rawdata.md.json'
-        file = 'my/computer/experiment/data/rawdata.tif'
+        sep = os.sep
+        reference_file = 'my' + sep + 'computer' + sep + 'experiment' + sep + 'data' + sep + 'rawdata.md.json'
+        file = 'my' + sep + 'computer' + sep + 'experiment' + sep + 'data' + sep + 'rawdata.tif'
         relative_file = relative_path(file, reference_file)
         self.assertEqual(relative_file, 'rawdata.tif')
 
-    def test_relative_path2(self):   
-        reference_file = 'my/computer/experiment/svdeconv/processeddata.md.json'
-        file = 'my/computer/experiment/data/raw.md.json'
+    def test_relative_path2(self):
+        sep = os.sep
+        reference_file = 'my' + sep + 'computer' + sep + 'experiment' + sep + 'svdeconv' + sep + 'processeddata.md.json'
+        file = 'my' + sep + 'computer' + sep + 'experiment' + sep + 'data' + sep + 'raw.md.json'
         relative_file = relative_path(file, reference_file) 
-        self.assertEqual(relative_file, '../data/raw.md.json')
+        self.assertEqual(relative_file, '..' + sep + 'data' + sep + 'raw.md.json')
 
-    def test_absolute_path(self):   
-        reference_file = 'my/computer/experiment/data/rawdata.md.json'
+    def test_absolute_path(self):
+        sep = os.sep
+        reference_file = 'my' + sep + 'computer' + sep + 'experiment' + sep + 'data' + sep + 'rawdata.md.json'
         file = 'rawdata.tif'
         abs_file = absolute_path(file, reference_file)  
-        self.assertEqual(abs_file, 'my/computer/experiment/data/rawdata.tif')      
+        self.assertEqual(abs_file, 'my' + sep + 'computer' + sep + 'experiment' + sep + 'data' + sep + 'rawdata.tif')
 
 
 class TestLocalMetadataService(unittest.TestCase):
 
     def setUp(self):
+        sep = os.sep
         self.service = LocalMetadataService()
         self.ref_rawdata_file = \
-            'tests/test_metadata_local/data/population1_001.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'data' + sep + 'population1_001.md.json'
         self.tst_rawdata_file = \
-            'tests/test_metadata_local/data/population1_001_tst.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'data' + sep + 'population1_001_tst.md.json'
         self.ref_processeddata_file = \
-            'tests/test_metadata_local/process1/population1_001_o.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'process1' + sep + 'population1_001_o.md.json'
         self.tst_processeddata_file = \
-            'tests/test_metadata_local/process1/population1_001_o_tst.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'process1' + sep + 'population1_001_o_tst.md.json'
         self.ref_processeddata2_file = \
-            'tests/test_metadata_local/process1/population1_002_o.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'process1' + sep + 'population1_002_o.md.json'
         self.ref_dataset_file = \
-            'tests/test_metadata_local/data/rawdataset.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'data' + sep + 'rawdataset.md.json'
         self.tst_dataset_file = \
-            'tests/test_metadata_local/data/rawdataset_tst.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'data' + sep + 'rawdataset_tst.md.json'
         self.ref_experiment_file = \
-            'tests/test_metadata_local/experiment.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'experiment.md.json'
         self.tst_experiment_file = \
-            'tests/test_metadata_local/experiment_tst.md.json'
+            'tests' + sep + 'test_metadata_local' + sep + 'experiment_tst.md.json'
         self.tst_experiment_dir = \
-            'tests/test_metadata_local/'
+            'tests' + sep + 'test_metadata_local' + sep
 
     def tearDown(self):
-        if os.path.isfile(self.tst_rawdata_file): 
+        if os.path.isfile(self.tst_rawdata_file):
             os.remove(self.tst_rawdata_file)
-        if os.path.isfile(self.tst_processeddata_file): 
-            os.remove(self.tst_processeddata_file)   
+        if os.path.isfile(self.tst_processeddata_file):
+            os.remove(self.tst_processeddata_file)
         if os.path.isfile(self.tst_dataset_file):
-            os.remove(self.tst_dataset_file)  
+            os.remove(self.tst_dataset_file)
         if os.path.isfile(self.tst_experiment_file):
             os.remove(self.tst_experiment_file)
         path = os.path.join(self.tst_experiment_dir, 'myexperiment')
         if os.path.isdir(path):
-            shutil.rmtree(path)  
+            shutil.rmtree(path)
+        pass
 
     def test_read_rawdata(self):
         raw_data_container1 = self.service.read_rawdata(self.ref_rawdata_file)

@@ -12,10 +12,10 @@ from tests.metadata import create_experiment
 class TestLocalData(unittest.TestCase):
     def setUp(self):
         self.ref_experiment_file = \
-            'tests/test_metadata_local/experiment.md.json'
+            os.path.join('tests', 'test_metadata_local', 'experiment.md.json')
         self.tst_experiment_file = \
-            'tests/test_metadata_local/experiment_tst.md.json'
-        self.tst_experiment_dir = 'tests/test_metadata_local/'
+            os.path.join('tests', 'test_metadata_local', 'experiment_tst.md.json')
+        self.tst_experiment_dir = os.path.join('tests', 'test_metadata_local') + os.sep
 
     def _create_experiment(self):
         experiment = Experiment()
@@ -66,7 +66,7 @@ class TestLocalData(unittest.TestCase):
     def test_import_data(self):
         experiment = self._create_experiment()
         data = experiment.import_data(
-            'tests/test_images/data/population1_001.tif',
+            os.path.join('tests', 'test_images', 'data', 'population1_001.tif'),
             'population1_001.tif',
             'Sylvain Prigent',
             'tif',
@@ -91,7 +91,7 @@ class TestLocalData(unittest.TestCase):
 
     def test_import_dir(self):
         experiment = self._create_experiment()
-        experiment.import_dir('tests/test_images/data/',
+        experiment.import_dir(os.path.join('tests', 'test_images', 'data') + os.sep,
                               r'\.tif$',
                               'Sylvain Prigent',
                               'tif',
@@ -122,7 +122,7 @@ class TestLocalData(unittest.TestCase):
 
     def test_tag_from_name(self):
         experiment = self._create_experiment()
-        experiment.import_dir('tests/test_images/data/',
+        experiment.import_dir(os.path.join('tests', 'test_images', 'data') + os.sep,
                               r'\.tif$',
                               'Sylvain Prigent',
                               'tif',
@@ -154,7 +154,7 @@ class TestLocalData(unittest.TestCase):
 
     def test_tag_using_seperator(self):
         experiment = self._create_experiment()
-        experiment.import_dir('tests/test_images/data/',
+        experiment.import_dir(os.path.join('tests', 'test_images', 'data') + os.sep,
                               r'\.tif$', 'Sylvain Prigent', 'tif', 'now', True)
         experiment.tag_using_seperator('ID', '_', 1)
         # test if tag ID in the experiment metadata
@@ -192,7 +192,7 @@ class TestLocalData(unittest.TestCase):
 
     def test_get_data1(self):
         experiment = self._create_experiment()
-        experiment.import_dir('tests/test_images/data/',
+        experiment.import_dir(os.path.join('tests', 'test_images', 'data') + os.sep,
                               r'\.tif$',
                               'Sylvain Prigent',
                               'tif', 'now', True)
@@ -203,7 +203,7 @@ class TestLocalData(unittest.TestCase):
 
     def test_get_data2(self):
         experiment = self._create_experiment()
-        experiment.import_dir('tests/test_images/data/',
+        experiment.import_dir(os.path.join('tests', 'test_images', 'data') + os.sep,
                               r'\.tif$',
                               'Sylvain Prigent',
                               'tif', 'now', True)
