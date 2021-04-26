@@ -48,6 +48,7 @@ if __name__ == '__main__':
         config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
     config_json["gui"] = {"tmp": os.path.join(package_dir, "userdata")}
     config_json["user"]["name"] = user_name
+    config_json["formats"]["file"] = os.path.join(package_dir, "formats.json")
 
     config_file = os.path.join(package_dir, 'config.json')
     write_json(config_json, config_file)
