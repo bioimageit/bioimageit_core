@@ -23,8 +23,13 @@ if __name__ == '__main__':
 
     # parse args
     user_name = "unknown"
+    runner_name = "SINGULARITY"
     if len(sys.argv) > 1:
         user_name = sys.argv[1]
+    if len(sys.argv) > 2:
+        runner_name = sys.argv[2]    
+
+    runner_name = runner_name.upper()
 
     # create the config file from config_sample.json
     bioimagepy_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)))
@@ -38,6 +43,9 @@ if __name__ == '__main__':
                                                         "toolboxes.json")
     config_json["process"]["tools"] = os.path.join(package_dir, "toolboxes",
                                                    "tools.json")
+    config_json["runner"]["service"] = runner_name
+    if runner_name == 'DOCKER':
+        config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
     config_json["gui"] = {"tmp": os.path.join(package_dir, "userdata")}
     config_json["user"]["name"] = user_name
 

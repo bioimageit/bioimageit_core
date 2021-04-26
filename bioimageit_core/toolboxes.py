@@ -86,6 +86,12 @@ class Toolboxes(Observable):
             with open(self.tools_file) as json_file:
                 return json.load(json_file)["tools"]
 
+    def _find_tools_subfolder(self, dir):
+        for root, subFolder, files in os.walk(dir):
+            if ('tools' in subFolder):
+                return os.path.join(root, 'tools')
+        return ''        
+
     def _import_tool(self, tool):
         if "url" not in tool or "name" not in tool:
             print(
@@ -110,19 +116,16 @@ class Toolboxes(Observable):
         with ZipFile(tool_zip, 'r') as zipObj:
             zipObj.extractall(tool_dir)
 
-        # clean
-        tool_dir_tool = os.path.join(tool_dir, "tools")
-        if not os.path.isdir(tool_dir_tool):
-            os.mkdir(tool_dir_tool)
-        files = glob.glob(tool_dir + '**/**', recursive=True)
-        for file in files:
-            if file.endswith('/tools') and file != tool_dir_tool:
-                _recursive_move(file, tool_dir_tool)
-        tool_dir_files = os.listdir(tool_dir)
-        for file in tool_dir_files:
-            if file != 'tools':
-                file_path = os.path.join(tool_dir, file)
-                if os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
-                else:
-                    os.remove(file_path)
+        # copy tools to /tools
+        tool_dir_tool = self._find_tools_subfolder(tool_dir)
+        if tool_dir_tool != '':
+            for root, subFolder, files in os.walk(tool_dir_tool):
+                if (root.endswith('tools')):
+                    for subFold in subFolder:
+                        source = os.path.join(root, subFold)
+                        destination = os.path.join(self.xml_dir, subFold)
+                        shutil.move(source, destination)
+
+        # remove 
+        shutil.rmtree(tool_dir)
+
