@@ -48,6 +48,7 @@ from bioimageit_core.runners.factory import runnerServices
 from bioimageit_core.metadata.factory import metadataServices
 from bioimageit_core.process import Process
 from bioimageit_core.runners.exceptions import RunnerExecError
+from bioimageit_core.formats import FormatsAccess
 
 
 class Runner(Observable):
@@ -156,8 +157,9 @@ class Runner(Observable):
             for output in self.process.metadata.outputs:
 
                 # output metadata
+                ext = FormatsAccess.instance().get(output.type)['extension']
                 output_uri = self.metadataservice.create_output_uri(
-                    self._output, output.name, output.type, args[1]
+                    self._output, output.name, ext, args[1]
                 )
 
                 # args

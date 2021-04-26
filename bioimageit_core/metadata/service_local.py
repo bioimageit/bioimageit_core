@@ -14,6 +14,7 @@ MetadataServiceProvider
 
 import os
 import os.path
+from pathlib import Path
 import json
 import re
 from shutil import copyfile
@@ -825,7 +826,7 @@ class LocalMetadataService:
         if output_rep_uri == '':
             output_rep_uri = os.path.dirname(os.path.realpath(
                 corresponding_input_uri))
-        input_name = os.path.basename(corresponding_input_uri)
+        input_name = Path(corresponding_input_uri).stem
         output_uri = os.path.join(
             output_rep_uri, output_name + '_' + input_name + '.' + format_
         )
