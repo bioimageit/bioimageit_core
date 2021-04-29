@@ -337,6 +337,17 @@ class ProcessParser:
                 if 'type' in child.attrib:
                     requirement['type'] = child.attrib['type']
                 requirement['uri'] = child.text
+            elif child.tag == 'package':
+                requirement['origin'] = 'package'
+                if 'type' in child.attrib:
+                    requirement['type'] = child.attrib['type']
+                else:
+                    requirement['type'] = ''
+                if 'init' in child.attrib:
+                    requirement['init'] = child.attrib['init']
+                else:
+                    requirement['init'] = ''
+                requirement['package'] = child.text
 
             self.info.requirements.append(requirement)
 
