@@ -139,6 +139,9 @@ class DockerRunnerService(Observable):
             arg = arg.replace('\\\\', '/').replace('\\', "/")
             print('arg =', arg)
             modified_arg = arg
+
+            modified_arg = modified_arg.replace(working_dir, docker_data_dir)
+
             for input_ in process.inputs:
                 # print('input ', input_.name, ' is data ', input_.is_data)
                 if input_.is_data:
