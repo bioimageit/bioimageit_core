@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -304,8 +306,8 @@ and manage configuration parameters</p>
 <p>Config
 ConfigManager</p>
 <dl class="py class">
-<dt id="bioimageit_core.config.Config">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.config.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config_file</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.Config" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Allows to access config variables</p>
 <p>The configuration can be instantiate manually but the
@@ -316,14 +318,14 @@ usage is to instantiate it with the singleton ConfigManager</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="bioimageit_core.config.Config.config">
-<code class="sig-name descname">config</code><a class="headerlink" href="#bioimageit_core.config.Config.config" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.Config.config">
+<span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#bioimageit_core.config.Config.config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary containing the config variables</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.config.Config.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#bioimageit_core.config.Config.get" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.Config.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="headerlink" href="#bioimageit_core.config.Config.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a variable from the config dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -342,8 +344,8 @@ usage is to instantiate it with the singleton ConfigManager</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.config.Config.is_key">
-<code class="sig-name descname">is_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#bioimageit_core.config.Config.is_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.Config.is_key">
+<span class="sig-name descname"><span class="pre">is_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#bioimageit_core.config.Config.is_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a key exists in the config dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -359,14 +361,14 @@ usage is to instantiate it with the singleton ConfigManager</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.config.Config.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.Config.load" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.Config.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.Config.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the metadata from the a json file</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.config.Config.set">
-<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.Config.set" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.Config.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.Config.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a variable to the config</p>
 <p>If the variable exists it is changed</p>
 <dl class="field-list simple">
@@ -382,8 +384,8 @@ usage is to instantiate it with the singleton ConfigManager</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.config.ConfigAccess">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.config.</code><code class="sig-name descname">ConfigAccess</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.ConfigAccess" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.ConfigAccess">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.config.</span></span><span class="sig-name descname"><span class="pre">ConfigAccess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.ConfigAccess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Singleton to access the Config</p>
 <dl class="field-list simple">
@@ -395,16 +397,16 @@ usage is to instantiate it with the singleton ConfigManager</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="bioimageit_core.config.ConfigAccess.instance">
-<em class="property">static </em><code class="sig-name descname">instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.ConfigAccess.instance" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.ConfigAccess.instance">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.config.ConfigAccess.instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static access method to the Config.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py exception">
-<dt id="bioimageit_core.config.ConfigKeyNotFoundError">
-<em class="property">exception </em><code class="sig-prename descclassname">bioimageit_core.config.</code><code class="sig-name descname">ConfigKeyNotFoundError</code><a class="headerlink" href="#bioimageit_core.config.ConfigKeyNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.config.ConfigKeyNotFoundError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.config.</span></span><span class="sig-name descname"><span class="pre">ConfigKeyNotFoundError</span></span><a class="headerlink" href="#bioimageit_core.config.ConfigKeyNotFoundError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Raised when key is not found in the config</p>
 </dd></dl>
@@ -422,8 +424,8 @@ data metadata using RawData and ProcessedData</p>
 RawData
 ProcessedData</p>
 <dl class="py class">
-<dt id="bioimageit_core.data.ProcessedData">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.data.</code><code class="sig-name descname">ProcessedData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">md_uri</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.data.</span></span><span class="sig-name descname"><span class="pre">ProcessedData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class that store a raw data metadata</p>
 <p>RawData allows to read/write and manipulate the metadata
@@ -435,25 +437,25 @@ depending on backend</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="bioimageit_core.data.ProcessedData.metadata">
-<code class="sig-name descname">metadata</code><a class="headerlink" href="#bioimageit_core.data.ProcessedData.metadata" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Container of the metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.add_input">
-<code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">type_</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.add_input" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.add_input">
+<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.add_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.display">
-<code class="sig-name descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.display" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.display" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display metadata in console</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.get_origin">
-<code class="sig-name descname">get_origin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.data.RawData" title="bioimageit_core.data.RawData">bioimageit_core.data.RawData</a><a class="headerlink" href="#bioimageit_core.data.ProcessedData.get_origin" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.get_origin">
+<span class="sig-name descname"><span class="pre">get_origin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.data.RawData" title="bioimageit_core.data.RawData"><span class="pre">bioimageit_core.data.RawData</span></a><a class="headerlink" href="#bioimageit_core.data.ProcessedData.get_origin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the first metadata of the parent data.</p>
 <p>The origin data is a RawData. It is the first data that have
 been seen by bioimageit_core</p>
@@ -468,8 +470,8 @@ been seen by bioimageit_core</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.get_parent">
-<code class="sig-name descname">get_parent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.get_parent" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.get_parent">
+<span class="sig-name descname"><span class="pre">get_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.get_parent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the metadata of the parent data.</p>
 <p>The parent data can be a RawData or a ProcessedData
 depending on the process chain</p>
@@ -484,28 +486,28 @@ depending on the process chain</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the metadata from database</p>
 <p>The data base connection is managed by the configuration
 object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.set_output">
-<code class="sig-name descname">set_output</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.set_output" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.set_output">
+<span class="sig-name descname"><span class="pre">set_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.set_output" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.to_search_container">
-<code class="sig-name descname">to_search_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="bioimageit_core.metadata.html#bioimageit_core.metadata.containers.SearchContainer" title="bioimageit_core.metadata.containers.SearchContainer">bioimageit_core.metadata.containers.SearchContainer</a><a class="headerlink" href="#bioimageit_core.data.ProcessedData.to_search_container" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.to_search_container">
+<span class="sig-name descname"><span class="pre">to_search_container</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="bioimageit_core.metadata.html#bioimageit_core.metadata.containers.SearchContainer" title="bioimageit_core.metadata.containers.SearchContainer"><span class="pre">bioimageit_core.metadata.containers.SearchContainer</span></a><a class="headerlink" href="#bioimageit_core.data.ProcessedData.to_search_container" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert to SearchContainer</p>
 <p>Create a search container from the data metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.ProcessedData.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.write" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.ProcessedData.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.ProcessedData.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the metadata to database</p>
 <p>The data base connection is managed by the configuration
 object</p>
@@ -514,8 +516,8 @@ object</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.data.RawData">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.data.</code><code class="sig-name descname">RawData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">md_uri</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.data.</span></span><span class="sig-name descname"><span class="pre">RawData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>interact with raw data metadata</p>
 <p>RawData allows to read/write and manipulate the metadata
@@ -527,28 +529,28 @@ depending on backend</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="bioimageit_core.data.RawData.metadata">
-<code class="sig-name descname">metadata</code><a class="headerlink" href="#bioimageit_core.data.RawData.metadata" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#bioimageit_core.data.RawData.metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Container of the metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.RawData.display">
-<code class="sig-name descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.display" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.display" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display metadata in console</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.RawData.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the metadata from database</p>
 <p>The data base connection is managed by the configuration
 object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.RawData.set_tag">
-<code class="sig-name descname">set_tag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_key</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">tag_value</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.set_tag" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData.set_tag">
+<span class="sig-name descname"><span class="pre">set_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag_value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.set_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a tag to the data</p>
 <p>If the tag key does not exists for this data, it is
 created. If the tag key exists the value is changed</p>
@@ -563,8 +565,8 @@ created. If the tag key exists the value is changed</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.RawData.tag">
-<code class="sig-name descname">tag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag_key</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.tag" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>get a tag value from key</p>
 <p>get a tag in the metadata. It returns and empty
 string if the tag does not exists</p>
@@ -582,15 +584,15 @@ string if the tag does not exists</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.RawData.to_search_container">
-<code class="sig-name descname">to_search_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="bioimageit_core.metadata.html#bioimageit_core.metadata.containers.SearchContainer" title="bioimageit_core.metadata.containers.SearchContainer">bioimageit_core.metadata.containers.SearchContainer</a><a class="headerlink" href="#bioimageit_core.data.RawData.to_search_container" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData.to_search_container">
+<span class="sig-name descname"><span class="pre">to_search_container</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="bioimageit_core.metadata.html#bioimageit_core.metadata.containers.SearchContainer" title="bioimageit_core.metadata.containers.SearchContainer"><span class="pre">bioimageit_core.metadata.containers.SearchContainer</span></a><a class="headerlink" href="#bioimageit_core.data.RawData.to_search_container" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert to SearchContainer</p>
 <p>Create a serch container from the data metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.data.RawData.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.write" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.RawData.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.RawData.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the metadata to database</p>
 <p>The data base connection is managed by the configuration
 object</p>
@@ -599,8 +601,8 @@ object</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="bioimageit_core.data.processed_data_origin">
-<code class="sig-prename descclassname">bioimageit_core.data.</code><code class="sig-name descname">processed_data_origin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">processed_data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData">bioimageit_core.data.ProcessedData</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.processed_data_origin" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.data.processed_data_origin">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.data.</span></span><span class="sig-name descname"><span class="pre">processed_data_origin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processed_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData"><span class="pre">bioimageit_core.data.ProcessedData</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.data.processed_data_origin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -616,8 +618,8 @@ metadata of scientific dataset</p>
 RawDataSet
 ProcessedDataSet</p>
 <dl class="py class">
-<dt id="bioimageit_core.dataset.ProcessedDataSet">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.dataset.</code><code class="sig-name descname">ProcessedDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">md_uri</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.dataset.</span></span><span class="sig-name descname"><span class="pre">ProcessedDataSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class that store a dataset metadata for ProcessedDataSet</p>
 <dl class="field-list simple">
@@ -627,14 +629,14 @@ depending on backend</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.md_uri">
-<code class="sig-name descname">md_uri</code><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.md_uri" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.md_uri">
+<span class="sig-name descname"><span class="pre">md_uri</span></span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.md_uri" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of the URIs of the data metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.add_data">
-<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData">bioimageit_core.data.ProcessedData</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.add_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.add_data">
+<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData"><span class="pre">bioimageit_core.data.ProcessedData</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add one data to the dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -644,8 +646,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.add_run">
-<code class="sig-name descname">add_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span><span class="p">:</span> <span class="n"><a class="reference internal" href="bioimageit_core.metadata.html#bioimageit_core.metadata.run.Run" title="bioimageit_core.metadata.run.Run">bioimageit_core.metadata.run.Run</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.add_run" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.add_run">
+<span class="sig-name descname"><span class="pre">add_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="bioimageit_core.metadata.html#bioimageit_core.metadata.run.Run" title="bioimageit_core.metadata.run.Run"><span class="pre">bioimageit_core.metadata.run.Run</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.add_run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add Run to the dataset</p>
 <p>The input Run URI is created by this method</p>
 <dl class="field-list simple">
@@ -656,8 +658,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.create_data">
-<code class="sig-name descname">create_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData">bioimageit_core.data.ProcessedData</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.create_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.create_data">
+<span class="sig-name descname"><span class="pre">create_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData"><span class="pre">bioimageit_core.data.ProcessedData</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.create_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>create a new data metadata in the dataset</p>
 <p>The input data object must contain only the metadata (ie no
 uri and no md_uri).
@@ -671,8 +673,8 @@ metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData">bioimageit_core.data.ProcessedData</a><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.get" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.data.ProcessedData" title="bioimageit_core.data.ProcessedData"><span class="pre">bioimageit_core.data.ProcessedData</span></a><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>get one data information</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -688,8 +690,8 @@ metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.get_data">
-<code class="sig-name descname">get_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">origin_output_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.get_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_output_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a query on a BiProcessedDataSet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -710,8 +712,8 @@ data</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.get_data_list">
-<code class="sig-name descname">get_data_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.get_data_list" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.get_data_list">
+<span class="sig-name descname"><span class="pre">get_data_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.get_data_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the metadata information as a list</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -724,16 +726,16 @@ data</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the metadata from database</p>
 <p>The data base connection is managed by the configuration
 object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.size">
-<code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.size" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the size of the dataser</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -746,8 +748,8 @@ object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.to_search_containers">
-<code class="sig-name descname">to_search_containers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.to_search_containers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.to_search_containers">
+<span class="sig-name descname"><span class="pre">to_search_containers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.to_search_containers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert RawDataSet into a list of SearchContainer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -760,8 +762,8 @@ object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.ProcessedDataSet.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.write" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.ProcessedDataSet.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.ProcessedDataSet.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the metadata to database</p>
 <p>The data base connection is managed by the configuration
 object</p>
@@ -770,8 +772,8 @@ object</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.dataset.RawDataSet">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.dataset.</code><code class="sig-name descname">RawDataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">md_uri</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.dataset.</span></span><span class="sig-name descname"><span class="pre">RawDataSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class that store a dataset metadata for RawDataSet</p>
 <dl class="field-list simple">
@@ -781,14 +783,14 @@ depending on backend</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="bioimageit_core.dataset.RawDataSet.md_uri">
-<code class="sig-name descname">md_uri</code><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.md_uri" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.md_uri">
+<span class="sig-name descname"><span class="pre">md_uri</span></span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.md_uri" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of the URIs of the data metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.add_data">
-<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.RawData" title="bioimageit_core.data.RawData">bioimageit_core.data.RawData</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.add_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.add_data">
+<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#bioimageit_core.data.RawData" title="bioimageit_core.data.RawData"><span class="pre">bioimageit_core.data.RawData</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add one data to the dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -798,8 +800,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.data.RawData" title="bioimageit_core.data.RawData">bioimageit_core.data.RawData</a><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.get" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.data.RawData" title="bioimageit_core.data.RawData"><span class="pre">bioimageit_core.data.RawData</span></a><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>get one data information</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -815,8 +817,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.get_data">
-<code class="sig-name descname">get_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.get_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>query on tags</p>
 <p>In this verion only AND queries are supported
 (ex: tag1=value1 AND tag2=value2)
@@ -835,8 +837,8 @@ and performed on the RawData set</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.get_data_list">
-<code class="sig-name descname">get_data_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.get_data_list" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.get_data_list">
+<span class="sig-name descname"><span class="pre">get_data_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.get_data_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the metadata information as a list</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -849,16 +851,16 @@ and performed on the RawData set</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the metadata from database</p>
 <p>The data base connection is managed by the configuration
 object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.size">
-<code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.size" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the size of the dataser</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -871,8 +873,8 @@ object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.to_search_containers">
-<code class="sig-name descname">to_search_containers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.to_search_containers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.to_search_containers">
+<span class="sig-name descname"><span class="pre">to_search_containers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.to_search_containers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert RawDataSet into a list of SearchContainer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -885,8 +887,8 @@ object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.dataset.RawDataSet.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.write" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.dataset.RawDataSet.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.dataset.RawDataSet.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the metadata to database</p>
 <p>The data base connection is managed by the configuration
 object</p>
@@ -930,8 +932,8 @@ an experiment metadata.</p>
 <h3>Classes<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Experiment</p>
 <dl class="py class">
-<dt id="bioimageit_core.experiment.Experiment">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.experiment.</code><code class="sig-name descname">Experiment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">md_uri</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.experiment.</span></span><span class="sig-name descname"><span class="pre">Experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_uri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.Observable" title="bioimageit_core.core.utils.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.utils.Observable</span></code></a></p>
 <p>Allows to interact with the matedata of an experiment</p>
 <dl class="field-list simple">
@@ -940,8 +942,8 @@ an experiment metadata.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.create">
-<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">author</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'now'</span></em>, <em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.create" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'now'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new experiment</p>
 <p>The create method initialize a new experiment with
 the main metadata architecture</p>
@@ -960,8 +962,8 @@ user workspace</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.create_processed_dataset">
-<code class="sig-name descname">create_processed_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.dataset.ProcessedDataSet" title="bioimageit_core.dataset.ProcessedDataSet">bioimageit_core.dataset.ProcessedDataSet</a><a class="headerlink" href="#bioimageit_core.experiment.Experiment.create_processed_dataset" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.create_processed_dataset">
+<span class="sig-name descname"><span class="pre">create_processed_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.dataset.ProcessedDataSet" title="bioimageit_core.dataset.ProcessedDataSet"><span class="pre">bioimageit_core.dataset.ProcessedDataSet</span></a><a class="headerlink" href="#bioimageit_core.experiment.Experiment.create_processed_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an empty processed dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -977,8 +979,8 @@ user workspace</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.display">
-<code class="sig-name descname">display</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'data'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.display" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'data'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.display" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display a dataset content as a table in the console</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -988,8 +990,8 @@ user workspace</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.get_data">
-<code class="sig-name descname">get_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">query</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">origin_output_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_output_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>query a specific dataset of an experiment</p>
 <p>In this version only AND queries are supported
 (ex: tag1=value1 AND tag2=value2)
@@ -1013,8 +1015,8 @@ search</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.get_dataset">
-<code class="sig-name descname">get_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_dataset" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.get_dataset">
+<span class="sig-name descname"><span class="pre">get_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the metadata of a dataset</p>
 <p>Returns a RawDataset or a ProcessedDataSet</p>
 <dl class="field-list simple">
@@ -1025,8 +1027,8 @@ search</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.get_processed_dataset_at">
-<code class="sig-name descname">get_processed_dataset_at</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">idx</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_processed_dataset_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.get_processed_dataset_at">
+<span class="sig-name descname"><span class="pre">get_processed_dataset_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_processed_dataset_at" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a processed dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1042,8 +1044,8 @@ search</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.get_processed_datasets_size">
-<code class="sig-name descname">get_processed_datasets_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_processed_datasets_size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.get_processed_datasets_size">
+<span class="sig-name descname"><span class="pre">get_processed_datasets_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.get_processed_datasets_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the number of processed datasets</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -1056,8 +1058,8 @@ search</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.import_data">
-<code class="sig-name descname">import_data</code><span class="sig-paren">(</span><em class="sig-param">data_path: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">author: str</em>, <em class="sig-param">format_: str</em>, <em class="sig-param">date: str = 'now'</em>, <em class="sig-param">tags: dict = &lt;class 'dict'&gt;</em>, <em class="sig-param">copy: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.import_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.import_data">
+<span class="sig-name descname"><span class="pre">import_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data_path:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">name:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">author:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">format_:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">date:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'now'</span></em>, <em class="sig-param"><span class="pre">tags:</span> <span class="pre">dict</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dict'&gt;</span></em>, <em class="sig-param"><span class="pre">copy:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.import_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>import one data to the experiment</p>
 <p>The data is imported to the rawdataset</p>
 <dl class="field-list simple">
@@ -1083,8 +1085,8 @@ False otherwise</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.import_dir">
-<code class="sig-name descname">import_dir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_uri</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">filter_</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">author</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">format_</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">copy_data</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.import_dir" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.import_dir">
+<span class="sig-name descname"><span class="pre">import_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.import_dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import data from a directory to the experiment</p>
 <p>This method import with or without copy data contained
 in a local folder into an experiment. Imported data are
@@ -1108,16 +1110,16 @@ changed for the experiment to find the data.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the metadata from database</p>
 <p>The data base connection is managed by the configuration
 object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.set_tag">
-<code class="sig-name descname">set_tag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">add_to_data</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.set_tag" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.set_tag">
+<span class="sig-name descname"><span class="pre">set_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_to_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.set_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a tag key to the experiment</p>
 <p>It add the tag key (if not already exists) to the
 experiment metadata and also add a tag key to all
@@ -1134,8 +1136,8 @@ the RawDataSet</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.tag_from_name">
-<code class="sig-name descname">tag_from_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">values</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.tag_from_name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.tag_from_name">
+<span class="sig-name descname"><span class="pre">tag_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.tag_from_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tag an experiment raw data using file name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1148,8 +1150,8 @@ the RawDataSet</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.tag_using_seperator">
-<code class="sig-name descname">tag_using_seperator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">separator</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">value_position</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.tag_using_seperator" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.tag_using_seperator">
+<span class="sig-name descname"><span class="pre">tag_using_seperator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_position</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.tag_using_seperator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tag an experiment raw data using file name and separator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1163,8 +1165,8 @@ the RawDataSet</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.experiment.Experiment.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.write" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.experiment.Experiment.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.experiment.Experiment.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the metadata to database</p>
 <p>The data base connection is managed by the configuration
 object</p>
@@ -1204,8 +1206,8 @@ to process data contained in an Experiment</p>
 <p>PipelineRunner
 Pipeline</p>
 <dl class="py class">
-<dt id="bioimageit_core.pipeline.Pipeline">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.pipeline.</code><code class="sig-name descname">Pipeline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">experiment</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.experiment.Experiment" title="bioimageit_core.experiment.Experiment">bioimageit_core.experiment.Experiment</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.Pipeline">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.pipeline.</span></span><span class="sig-name descname"><span class="pre">Pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#bioimageit_core.experiment.Experiment" title="bioimageit_core.experiment.Experiment"><span class="pre">bioimageit_core.experiment.Experiment</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class that store a raw data metadata</p>
 <p>RawData allows to read/write and manipulate the metadata
@@ -1216,20 +1218,20 @@ of a raw data.</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="bioimageit_core.pipeline.Pipeline.experiment">
-<code class="sig-name descname">experiment</code><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.experiment" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.Pipeline.experiment">
+<span class="sig-name descname"><span class="pre">experiment</span></span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Experiment where the process runs</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="bioimageit_core.pipeline.Pipeline.processes">
-<code class="sig-name descname">processes</code><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.processes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.Pipeline.processes">
+<span class="sig-name descname"><span class="pre">processes</span></span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.processes" title="Permalink to this definition">¶</a></dt>
 <dd><p>The list of the processes (PipelineRunner) in the pipeline</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.Pipeline.add_process">
-<code class="sig-name descname">add_process</code><span class="sig-paren">(</span><em class="sig-param">process=&lt;class 'bioimageit_core.process.Process'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.add_process" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.Pipeline.add_process">
+<span class="sig-name descname"><span class="pre">add_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">process=&lt;class</span> <span class="pre">'bioimageit_core.process.Process'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.add_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a process to the pipeline</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1245,8 +1247,8 @@ of a raw data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.Pipeline.add_process_by_name">
-<code class="sig-name descname">add_process_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.add_process_by_name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.Pipeline.add_process_by_name">
+<span class="sig-name descname"><span class="pre">add_process_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.add_process_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a process to the pipeline</p>
 <p>The process is created by searching the process
 in the database.</p>
@@ -1267,8 +1269,8 @@ in the database.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.Pipeline.add_process_by_uri">
-<code class="sig-name descname">add_process_by_uri</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.add_process_by_uri" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.Pipeline.add_process_by_uri">
+<span class="sig-name descname"><span class="pre">add_process_by_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.add_process_by_uri" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a process to the pipeline</p>
 <p>The process is created using it URI (xml file)</p>
 <dl class="field-list simple">
@@ -1285,16 +1287,16 @@ in the database.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.Pipeline.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.run" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.Pipeline.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.Pipeline.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the pipeline</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.pipeline.PipelineRunner">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.pipeline.</code><code class="sig-name descname">PipelineRunner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">experiment</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.experiment.Experiment" title="bioimageit_core.experiment.Experiment">bioimageit_core.experiment.Experiment</a></span></em>, <em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.process.Process" title="bioimageit_core.process.Process">bioimageit_core.process.Process</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.pipeline.</span></span><span class="sig-name descname"><span class="pre">PipelineRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#bioimageit_core.experiment.Experiment" title="bioimageit_core.experiment.Experiment"><span class="pre">bioimageit_core.experiment.Experiment</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#bioimageit_core.process.Process" title="bioimageit_core.process.Process"><span class="pre">bioimageit_core.process.Process</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.Observable" title="bioimageit_core.core.utils.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.utils.Observable</span></code></a></p>
 <p>Run a process for a pipeline</p>
 <p>Run a process from data in an Experiment and save the
@@ -1308,8 +1310,8 @@ results in new ProcessedDataset in the experiment</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.add_input">
-<code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">filter_</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">origin_output_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.add_input" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.add_input">
+<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_output_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.add_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an input data to the process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1325,8 +1327,8 @@ dataset</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.add_input_by_urls">
-<code class="sig-name descname">add_input_by_urls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">urls</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.add_input_by_urls" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.add_input_by_urls">
+<span class="sig-name descname"><span class="pre">add_input_by_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">urls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.add_input_by_urls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an input (ie data) to the process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1339,20 +1341,20 @@ dataset</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.exec">
-<code class="sig-name descname">exec</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.exec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.exec">
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.exec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the process</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.man">
-<code class="sig-name descname">man</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.man" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.man">
+<span class="sig-name descname"><span class="pre">man</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.man" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the man page of the process.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the process</p>
 <p>This is the main function that run the process on the experiment data</p>
 <dl class="field-list simple">
@@ -1363,8 +1365,8 @@ dataset</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.run_merged">
-<code class="sig-name descname">run_merged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run_merged" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.run_merged">
+<span class="sig-name descname"><span class="pre">run_merged</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run_merged" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the process that merge txt number inputs</p>
 <p>This is the main function that run the process on the experiment data</p>
 <dl class="field-list simple">
@@ -1375,8 +1377,8 @@ dataset</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.run_sequence">
-<code class="sig-name descname">run_sequence</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run_sequence" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.run_sequence">
+<span class="sig-name descname"><span class="pre">run_sequence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the process in a sequence</p>
 <p>This is the main function that run the process on the experiment data</p>
 <dl class="field-list simple">
@@ -1387,8 +1389,8 @@ dataset</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.run_sequence_by_urls">
-<code class="sig-name descname">run_sequence_by_urls</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run_sequence_by_urls" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.run_sequence_by_urls">
+<span class="sig-name descname"><span class="pre">run_sequence_by_urls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.run_sequence_by_urls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the process in a sequence where inputs are data url list</p>
 <p>This is the main function that run the process on the experiment data
 list</p>
@@ -1400,8 +1402,8 @@ list</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.set_dataset_name">
-<code class="sig-name descname">set_dataset_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.set_dataset_name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.set_dataset_name">
+<span class="sig-name descname"><span class="pre">set_dataset_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.set_dataset_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the name of the dataset where output will be saved</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1411,8 +1413,8 @@ list</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.pipeline.PipelineRunner.set_parameters">
-<code class="sig-name descname">set_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.pipeline.PipelineRunner.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.pipeline.PipelineRunner.set_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>set the parameters of the process</p>
 <p>Set the parameters to the process using the convention
 ‘key’, ‘value’ pairs.</p>
@@ -1434,93 +1436,93 @@ list</p>
 - Read process info from xml file
 - create a dictionnary of processed</p>
 <dl class="py method">
-<dt id="bioimageit_core.process.PARAM_NUMBER">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">PARAM_NUMBER</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_NUMBER" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.PARAM_NUMBER">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">PARAM_NUMBER</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_NUMBER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.PARAM_STRING">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">PARAM_STRING</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_STRING" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.PARAM_STRING">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">PARAM_STRING</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_STRING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.PARAM_SELECT">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">PARAM_SELECT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_SELECT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.PARAM_SELECT">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">PARAM_SELECT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_SELECT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.PARAM_BOOLEAN">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">PARAM_BOOLEAN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_BOOLEAN" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.PARAM_BOOLEAN">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">PARAM_BOOLEAN</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_BOOLEAN" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.PARAM_HIDDEN">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">PARAM_HIDDEN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_HIDDEN" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.PARAM_HIDDEN">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">PARAM_HIDDEN</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_HIDDEN" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.PARAM_FILE">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">PARAM_FILE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_FILE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.PARAM_FILE">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">PARAM_FILE</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.PARAM_FILE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.IO_PARAM">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">IO_PARAM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.IO_PARAM" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.IO_PARAM">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">IO_PARAM</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.IO_PARAM" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.IO_INPUT">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">IO_INPUT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.IO_INPUT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.IO_INPUT">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">IO_INPUT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.IO_INPUT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.IO_OUTPUT">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">IO_OUTPUT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.IO_OUTPUT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.IO_OUTPUT">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">IO_OUTPUT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.IO_OUTPUT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.Classes">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">Classes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.Classes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.Classes">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">Classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.Classes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt>
-<code class="sig-name descname">-------</code></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-------</span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.CmdSelect">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">CmdSelect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.CmdSelect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.CmdSelect">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">CmdSelect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.CmdSelect" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessParameter">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">ProcessParameter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessParameter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessParameter">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">ProcessParameter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessParameter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessMainInfo">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">ProcessMainInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessMainInfo" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessMainInfo">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">ProcessMainInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessMainInfo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessInfo">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">ProcessInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessInfo" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessInfo">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">ProcessInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessInfo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessParser">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">ProcessParser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessParser" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessParser">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">ProcessParser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessParser" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessDatabase">
-<code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">ProcessDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessDatabase" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessDatabase">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">ProcessDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessDatabase" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.process.Process">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">Process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.Process" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.Process">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">Process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.Process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Interact with a process info</p>
 <p>Process allows to read/write and manipulate the metadata
@@ -1532,27 +1534,27 @@ depending on backend</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="bioimageit_core.process.Process.metadata">
-<code class="sig-name descname">metadata</code><a class="headerlink" href="#bioimageit_core.process.Process.metadata" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.Process.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#bioimageit_core.process.Process.metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Container of the metadata</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.Process.man">
-<code class="sig-name descname">man</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.Process.man" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.Process.man">
+<span class="sig-name descname"><span class="pre">man</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.Process.man" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the process man page</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.process.ProcessAccess">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.process.</code><code class="sig-name descname">ProcessAccess</code><a class="headerlink" href="#bioimageit_core.process.ProcessAccess" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessAccess">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.process.</span></span><span class="sig-name descname"><span class="pre">ProcessAccess</span></span><a class="headerlink" href="#bioimageit_core.process.ProcessAccess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>To request the processed database</p>
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessAccess.export_json">
-<code class="sig-name descname">export_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.export_json" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessAccess.export_json">
+<span class="sig-name descname"><span class="pre">export_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.export_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export the database into a JSON file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1562,8 +1564,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessAccess.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.process.Process" title="bioimageit_core.process.Process">bioimageit_core.process.Process</a><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.get" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessAccess.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#bioimageit_core.process.Process" title="bioimageit_core.process.Process"><span class="pre">bioimageit_core.process.Process</span></a><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>get a process by name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1579,8 +1581,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessAccess.get_categories">
-<code class="sig-name descname">get_categories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.process.ProcessAccess.get_categories" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessAccess.get_categories">
+<span class="sig-name descname"><span class="pre">get_categories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.get_categories" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of categories for a given parent</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1590,8 +1592,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessAccess.get_category_processes">
-<code class="sig-name descname">get_category_processes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#bioimageit_core.process.ProcessAccess.get_category_processes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessAccess.get_category_processes">
+<span class="sig-name descname"><span class="pre">get_category_processes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.get_category_processes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the list of processes with the given category</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1601,8 +1603,8 @@ depending on backend</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.process.ProcessAccess.search">
-<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keyword</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.search" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.process.ProcessAccess.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.process.ProcessAccess.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search a process using a keyword in the database</p>
 <p>This method print the list of funded processed</p>
 <dl class="field-list simple">
@@ -1656,22 +1658,22 @@ pleaseuse the Pipeline API.</p>
 <h3>Classes<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>Runner</p>
 <dl class="py class">
-<dt id="bioimageit_core.runner.Runner">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.runner.</code><code class="sig-name descname">Runner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#bioimageit_core.process.Process" title="bioimageit_core.process.Process">bioimageit_core.process.Process</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.runner.</span></span><span class="sig-name descname"><span class="pre">Runner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#bioimageit_core.process.Process" title="bioimageit_core.process.Process"><span class="pre">bioimageit_core.process.Process</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.Observable" title="bioimageit_core.core.utils.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.utils.Observable</span></code></a></p>
 <dl class="py method">
-<dt id="bioimageit_core.runner.Runner.add_input">
-<code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.add_input" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner.add_input">
+<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.add_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runner.Runner.add_inputs">
-<code class="sig-name descname">add_inputs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">filter_</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.add_inputs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner.add_inputs">
+<span class="sig-name descname"><span class="pre">add_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.add_inputs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runner.Runner.exec">
-<code class="sig-name descname">exec</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.exec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner.exec">
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.exec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the process</p>
 <p>If the arguments list is empty it exec on the data list defined with
 the setters add_inputs</p>
@@ -1684,24 +1686,24 @@ value’</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runner.Runner.man">
-<code class="sig-name descname">man</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.man" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner.man">
+<span class="sig-name descname"><span class="pre">man</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.man" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenient method to print the process man</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runner.Runner.replace_env_variables">
-<code class="sig-name descname">replace_env_variables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#bioimageit_core.runner.Runner.replace_env_variables" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner.replace_env_variables">
+<span class="sig-name descname"><span class="pre">replace_env_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#bioimageit_core.runner.Runner.replace_env_variables" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runner.Runner.set_output">
-<code class="sig-name descname">set_output</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.set_output" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner.set_output">
+<span class="sig-name descname"><span class="pre">set_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.set_output" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runner.Runner.set_parameters">
-<code class="sig-name descname">set_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runner.Runner.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runner.Runner.set_parameters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

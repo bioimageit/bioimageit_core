@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -194,8 +196,8 @@
 <div class="section" id="module-bioimageit_core.runners.exceptions">
 <span id="bioimageit-core-runners-exceptions-module"></span><h2>bioimageit_core.runners.exceptions module<a class="headerlink" href="#module-bioimageit_core.runners.exceptions" title="Permalink to this headline">¶</a></h2>
 <dl class="py exception">
-<dt id="bioimageit_core.runners.exceptions.RunnerExecError">
-<em class="property">exception </em><code class="sig-prename descclassname">bioimageit_core.runners.exceptions.</code><code class="sig-name descname">RunnerExecError</code><a class="headerlink" href="#bioimageit_core.runners.exceptions.RunnerExecError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.exceptions.RunnerExecError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.runners.exceptions.</span></span><span class="sig-name descname"><span class="pre">RunnerExecError</span></span><a class="headerlink" href="#bioimageit_core.runners.exceptions.RunnerExecError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Raised when an error occur during a runner execution</p>
 </dd></dl>
@@ -209,12 +211,12 @@
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <p>RunnerServiceProvider</p>
 <dl class="py class">
-<dt id="bioimageit_core.runners.factory.RunnerServiceProvider">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.runners.factory.</code><code class="sig-name descname">RunnerServiceProvider</code><a class="headerlink" href="#bioimageit_core.runners.factory.RunnerServiceProvider" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.factory.RunnerServiceProvider">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.runners.factory.</span></span><span class="sig-name descname"><span class="pre">RunnerServiceProvider</span></span><a class="headerlink" href="#bioimageit_core.runners.factory.RunnerServiceProvider" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.factory.ObjectFactory" title="bioimageit_core.core.factory.ObjectFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.factory.ObjectFactory</span></code></a></p>
 <dl class="py method">
-<dt id="bioimageit_core.runners.factory.RunnerServiceProvider.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">service_id</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.factory.RunnerServiceProvider.get" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.factory.RunnerServiceProvider.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.factory.RunnerServiceProvider.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -230,15 +232,15 @@
 <h3>Classes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>ProcessServiceProvider</p>
 <dl class="py class">
-<dt id="bioimageit_core.runners.service_local.LocalRunnerService">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.runners.service_local.</code><code class="sig-name descname">LocalRunnerService</code><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_local.LocalRunnerService">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.runners.service_local.</span></span><span class="sig-name descname"><span class="pre">LocalRunnerService</span></span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.Observable" title="bioimageit_core.core.utils.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.utils.Observable</span></code></a></p>
 <p>Service for local runner exec</p>
 <p>To initialize the database, you need to set the xml_dirs from
 the configuration and then call initialize</p>
 <dl class="py method">
-<dt id="bioimageit_core.runners.service_local.LocalRunnerService.exec">
-<code class="sig-name descname">exec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a></span></em>, <em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService.exec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_local.LocalRunnerService.exec">
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer"><span class="pre">bioimageit_core.processes.containers.ProcessContainer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService.exec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -251,8 +253,8 @@ the configuration and then call initialize</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runners.service_local.LocalRunnerService.set_up">
-<code class="sig-name descname">set_up</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService.set_up" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_local.LocalRunnerService.set_up">
+<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer"><span class="pre">bioimageit_core.processes.containers.ProcessContainer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService.set_up" title="Permalink to this definition">¶</a></dt>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
@@ -263,8 +265,8 @@ the configuration and then call initialize</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runners.service_local.LocalRunnerService.tear_down">
-<code class="sig-name descname">tear_down</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService.tear_down" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_local.LocalRunnerService.tear_down">
+<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer"><span class="pre">bioimageit_core.processes.containers.ProcessContainer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerService.tear_down" title="Permalink to this definition">¶</a></dt>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
@@ -277,8 +279,8 @@ the configuration and then call initialize</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.runners.service_local.LocalRunnerServiceBuilder">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.runners.service_local.</code><code class="sig-name descname">LocalRunnerServiceBuilder</code><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerServiceBuilder" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_local.LocalRunnerServiceBuilder">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.runners.service_local.</span></span><span class="sig-name descname"><span class="pre">LocalRunnerServiceBuilder</span></span><a class="headerlink" href="#bioimageit_core.runners.service_local.LocalRunnerServiceBuilder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Service builder for the runner service</p>
 </dd></dl>
@@ -294,15 +296,15 @@ the configuration and then call initialize</p>
 <h3>Classes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>ProcessServiceProvider</p>
 <dl class="py class">
-<dt id="bioimageit_core.runners.service_singularity.SingularityRunnerService">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.runners.service_singularity.</code><code class="sig-name descname">SingularityRunnerService</code><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_singularity.SingularityRunnerService">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.runners.service_singularity.</span></span><span class="sig-name descname"><span class="pre">SingularityRunnerService</span></span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.Observable" title="bioimageit_core.core.utils.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.utils.Observable</span></code></a></p>
 <p>Service for local runner exec</p>
 <p>To initialize the database, you need to set the xml_dirs from
 the configuration and then call initialize</p>
 <dl class="py method">
-<dt id="bioimageit_core.runners.service_singularity.SingularityRunnerService.exec">
-<code class="sig-name descname">exec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a></span></em>, <em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService.exec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_singularity.SingularityRunnerService.exec">
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer"><span class="pre">bioimageit_core.processes.containers.ProcessContainer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService.exec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -315,8 +317,8 @@ the configuration and then call initialize</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runners.service_singularity.SingularityRunnerService.set_up">
-<code class="sig-name descname">set_up</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService.set_up" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_singularity.SingularityRunnerService.set_up">
+<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer"><span class="pre">bioimageit_core.processes.containers.ProcessContainer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService.set_up" title="Permalink to this definition">¶</a></dt>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
@@ -327,8 +329,8 @@ the configuration and then call initialize</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="bioimageit_core.runners.service_singularity.SingularityRunnerService.tear_down">
-<code class="sig-name descname">tear_down</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span><span class="p">:</span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer">bioimageit_core.processes.containers.ProcessContainer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService.tear_down" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_singularity.SingularityRunnerService.tear_down">
+<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="bioimageit_core.processes.html#id11" title="bioimageit_core.processes.containers.ProcessContainer"><span class="pre">bioimageit_core.processes.containers.ProcessContainer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerService.tear_down" title="Permalink to this definition">¶</a></dt>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
@@ -341,15 +343,15 @@ the configuration and then call initialize</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="bioimageit_core.runners.service_singularity.SingularityRunnerServiceBuilder">
-<em class="property">class </em><code class="sig-prename descclassname">bioimageit_core.runners.service_singularity.</code><code class="sig-name descname">SingularityRunnerServiceBuilder</code><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerServiceBuilder" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_singularity.SingularityRunnerServiceBuilder">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.runners.service_singularity.</span></span><span class="sig-name descname"><span class="pre">SingularityRunnerServiceBuilder</span></span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.SingularityRunnerServiceBuilder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Service builder for the runner service</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="bioimageit_core.runners.service_singularity.replace_env_variables">
-<code class="sig-prename descclassname">bioimageit_core.runners.service_singularity.</code><code class="sig-name descname">replace_env_variables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process</span></em>, <em class="sig-param"><span class="n">cmd</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#bioimageit_core.runners.service_singularity.replace_env_variables" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="bioimageit_core.runners.service_singularity.replace_env_variables">
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.runners.service_singularity.</span></span><span class="sig-name descname"><span class="pre">replace_env_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#bioimageit_core.runners.service_singularity.replace_env_variables" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
