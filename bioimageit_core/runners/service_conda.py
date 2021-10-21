@@ -41,6 +41,7 @@ class CondaRunnerService(Observable):
         super().__init__()
         self.service_name = 'LocalRunnerService'
         self.condash = ConfigAccess.instance().get('runner')['condash']
+        print(self.condash)
 
     def set_up(self, process: ProcessContainer):
         """setup the runner
@@ -60,17 +61,17 @@ class CondaRunnerService(Observable):
             init_cmd = requirements['init']
 
             # install env if not exists
-            args_exists = '. ' + self.condash + ' && conda env list'
+            args_exists = self.condash + ' env list'
             print("exists env cmd:", args_exists)
-            proc = subprocess.run(args_exists, shell=True,
-                                  executable='/bin/bash', check=True,
+            proc = subprocess.run(args_exists,
+                                    check=True,
                                   stdout=subprocess.PIPE)
             if process.id not in str(proc.stdout):
                 # install
-                args_install = '. ' + self.condash + ' && conda create -y -n ' \
+                args_install = self.condash + ' create -y -n ' \
                                + process.id + ' ' + package
                 print("install env cmd:", args_install)
-                subprocess.run(args_install, shell=True, executable='/bin/bash',
+                subprocess.run(args_install,
                                check=True)
             else:
                 print(process.id + ' env already exists')
@@ -88,11 +89,11 @@ class CondaRunnerService(Observable):
             list of arguments
 
         """
-        args_str = '. ' + self.condash + ' && conda activate '+process.id+' &&'
+        args_str = '"' + self.condash + '"' + ' activate '+process.id+' &&'
         for arg in args:
-            args_str += ' ' + arg
+            args_str += ' ' + '"' + arg + '"'
         print("final exec cmd:", args_str)
-        subprocess.run(args_str, shell=True, executable='/bin/bash', check=True)
+        subprocess.run(args_str, check=True)
 
     def tear_down(self, process: ProcessContainer):
         """tear down the runner
