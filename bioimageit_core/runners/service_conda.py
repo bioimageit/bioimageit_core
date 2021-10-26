@@ -64,15 +64,14 @@ class CondaRunnerService(Observable):
             init_cmd = requirements['init']
 
             # install env if not exists
-            args_exists = self.condash + ' env list'
+            args_exists = [self.condash, 'env', 'list']
             print("exists env cmd:", args_exists)
             proc = subprocess.run(args_exists,
                                   check=True,
                                   stdout=subprocess.PIPE)
             if env_name not in str(proc.stdout):
                 # install: create env
-                args_install = self.condash + ' create -y -n ' \
-                               + env_name + ' ' + package
+                args_install = [self.condash, 'create', '-y', '-n', env_name, ' ', package]
                 print("install env cmd:", args_install)
                 subprocess.run(args_install,
                                check=True)
