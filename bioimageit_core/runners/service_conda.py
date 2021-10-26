@@ -9,7 +9,7 @@ Classes
 ProcessServiceProvider
 
 """
-
+import platform
 import subprocess
 
 from bioimageit_core.core.utils import Observable
@@ -61,21 +61,28 @@ class CondaRunnerService(Observable):
             env_name = process.id
             if 'env' in requirements:
                 env_name = requirements['env']
-            init_cmd = requirements['init']
+            #init_cmd = requirements['init']
 
             # install env if not exists
             args_exists = [self.condash, 'env', 'list']
             print("exists env cmd:", args_exists)
-            proc = subprocess.run(args_exists,
-                                  check=True,
-                                  stdout=subprocess.PIPE)
+            if platform.system() == 'Windows':
+                proc = subprocess.run(args_exists, check=True, stdout=subprocess.PIPE)
+            else:    
+                proc = subprocess.run(args_exists, shell=True, executable='/bin/bash',
+                                      check=True, stdout=subprocess.PIPE)
+
             if env_name not in str(proc.stdout):
                 # install: create env
                 package_list = package.split()
                 args_install = [self.condash, 'create', '-y', '-n', env_name] + package_list
                 print("install env cmd:", args_install)
-                subprocess.run(args_install,
-                               check=True)
+
+                if platform.system() == 'Windows':
+                    subprocess.run(args_install, check=True)
+                else:    
+                    subprocess.run(args_install, shell=True, executable='/bin/bash',
+                                   check=True)
             else:
                 print(env_name + ' env already exists')
         else:
@@ -98,7 +105,12 @@ class CondaRunnerService(Observable):
             env_name = requirements['env']
 
         args_list = [self.condash, 'activate', env_name, '&&'] + args
-        subprocess.run(args_list, check=True)
+
+        if platform.system() == 'Windows':
+            subprocess.run(args_list, check=True)
+        else:    
+            subprocess.run(args_list, shell=True, executable='/bin/bash',
+                           check=True)
 
         #args_str = '"' + self.condash + '"' + ' activate '+env_name+' &&'
         #for arg in args:
