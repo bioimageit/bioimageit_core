@@ -61,6 +61,7 @@ if __name__ == '__main__':
         config_json["apps"]["runner"] = os.path.join(package_dir, "runnerapp.sh")
         config_json["apps"]["processing"] = os.path.join(package_dir, "data_processing.sh")
         config_json["apps"]["viewer"] = os.path.join(package_dir, "viewer.sh")
+        config_json["runner"]["condash"] = os.path.join(package_dir, "miniconda", "condabin", "conda")
 
     config_file = os.path.join(package_dir, 'config.json')
     write_json(config_json, config_file)

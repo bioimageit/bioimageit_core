@@ -58,23 +58,26 @@ class CondaRunnerService(Observable):
         if requirements['origin'] == 'package' \
                 and requirements['type'] == 'conda':
             package = requirements['package']
+            env_name = process.id
+            if 'env' in requirements:
+                env_name = requirements['env']
             init_cmd = requirements['init']
 
             # install env if not exists
             args_exists = self.condash + ' env list'
             print("exists env cmd:", args_exists)
             proc = subprocess.run(args_exists,
-                                    check=True,
+                                  check=True,
                                   stdout=subprocess.PIPE)
-            if process.id not in str(proc.stdout):
-                # install
+            if env_name not in str(proc.stdout):
+                # install: create env
                 args_install = self.condash + ' create -y -n ' \
-                               + process.id + ' ' + package
+                               + env_name + ' ' + package
                 print("install env cmd:", args_install)
                 subprocess.run(args_install,
                                check=True)
             else:
-                print(process.id + ' env already exists')
+                print(env_name + ' env already exists')
         else:
             print('Error: service conda cannot run this process')
 
@@ -89,7 +92,12 @@ class CondaRunnerService(Observable):
             list of arguments
 
         """
-        args_str = '"' + self.condash + '"' + ' activate '+process.id+' &&'
+        requirements = process.requirements[0]
+        env_name = process.id
+        if 'env' in requirements:
+            env_name = requirements['env']
+
+        args_str = '"' + self.condash + '"' + ' activate '+env_name+' &&'
         for arg in args:
             args_str += ' ' + '"' + arg + '"'
         print("final exec cmd:", args_str)

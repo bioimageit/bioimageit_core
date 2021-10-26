@@ -343,6 +343,10 @@ class ProcessParser:
                     requirement['type'] = child.attrib['type']
                 else:
                     requirement['type'] = ''
+                if 'env' in child.attrib:
+                    requirement['env'] = child.attrib['env']
+                else:
+                    requirement['env'] = ''    
                 if 'init' in child.attrib:
                     requirement['init'] = child.attrib['init']
                 else:
