@@ -64,7 +64,7 @@ class CondaRunnerService(Observable):
             #init_cmd = requirements['init']
 
             # install env if not exists
-            args_exists = [self.condash, 'env', 'list']
+            args_exists = f"{self.condash} env list"
             print("exists env cmd:", args_exists)
             if platform.system() == 'Windows':
                 proc = subprocess.run(args_exists, check=True, stdout=subprocess.PIPE)
@@ -74,8 +74,10 @@ class CondaRunnerService(Observable):
 
             if env_name not in str(proc.stdout):
                 # install: create env
-                package_list = package.split()
-                args_install = [self.condash, 'create', '-y', '-n', env_name] + package_list
+                args_install = f"{self.condash} create -y -n {env_name} {package}"
+
+                #package_list = package.split()
+                #args_install = [self.condash, 'create', '-y', '-n', env_name] + package_list
                 print("install env cmd:", args_install)
 
                 if platform.system() == 'Windows':
@@ -104,19 +106,17 @@ class CondaRunnerService(Observable):
         if 'env' in requirements:
             env_name = requirements['env']
 
-        args_list = [self.condash, 'activate', env_name, '&&'] + args
+        #args_list = [self.condash, 'activate', env_name, '&&'] + args
+        args_str = '"' + self.condash + '"' + ' activate '+env_name+' &&'
+        for arg in args:
+            args_str += ' ' + '"' + arg + '"'
+        print("final exec cmd:", args_str)
 
         if platform.system() == 'Windows':
-            subprocess.run(args_list, check=True)
+            subprocess.run(args_str, check=True)
         else:    
-            subprocess.run(args_list, shell=True, executable='/bin/bash',
+            subprocess.run(args_str, shell=True, executable='/bin/bash',
                            check=True)
-
-        #args_str = '"' + self.condash + '"' + ' activate '+env_name+' &&'
-        #for arg in args:
-        #    args_str += ' ' + '"' + arg + '"'
-        #print("final exec cmd:", args_str)
-        #subprocess.run(args_str, check=True)
 
     def tear_down(self, process: ProcessContainer):
         """tear down the runner
