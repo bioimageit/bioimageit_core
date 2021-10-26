@@ -67,7 +67,7 @@ class Formats:
                 else:
                     raise FormatKeyNotFoundError('No key formats'
                                                  ' in the format base')
-        print('formats=', self.formats)
+        #print('formats=', self.formats)
 
     def is_format(self, name: str) -> bool:
         """Check if a name exists in the format dictionary
