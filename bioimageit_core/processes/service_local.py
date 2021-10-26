@@ -373,6 +373,7 @@ class ProcessParser:
         command = node.text
         command = command.replace('\t', '')
         command = command.replace('\n', '')
+        command = command.replace('$__tool_directory__', os.path.dirname(self.xml_file_url))
         self.info.command = command
 
     def _parse_help(self, node):
