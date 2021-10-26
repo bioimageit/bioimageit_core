@@ -71,7 +71,8 @@ class CondaRunnerService(Observable):
                                   stdout=subprocess.PIPE)
             if env_name not in str(proc.stdout):
                 # install: create env
-                args_install = [self.condash, 'create', '-y', '-n', env_name, ' ', package]
+                package_list = package.split()
+                args_install = [self.condash, 'create', '-y', '-n', env_name] + package_list
                 print("install env cmd:", args_install)
                 subprocess.run(args_install,
                                check=True)
@@ -96,11 +97,14 @@ class CondaRunnerService(Observable):
         if 'env' in requirements:
             env_name = requirements['env']
 
-        args_str = '"' + self.condash + '"' + ' activate '+env_name+' &&'
-        for arg in args:
-            args_str += ' ' + '"' + arg + '"'
-        print("final exec cmd:", args_str)
-        subprocess.run(args_str, check=True)
+        args_list = [self.condash, 'activate', env_name, '&&'] + args
+        subprocess.run(args_list, check=True)
+
+        #args_str = '"' + self.condash + '"' + ' activate '+env_name+' &&'
+        #for arg in args:
+        #    args_str += ' ' + '"' + arg + '"'
+        #print("final exec cmd:", args_str)
+        #subprocess.run(args_str, check=True)
 
     def tear_down(self, process: ProcessContainer):
         """tear down the runner
