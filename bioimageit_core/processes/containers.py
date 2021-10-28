@@ -96,6 +96,7 @@ class ProcessCategoryContainer:
         self.id = ''
         self.name = ''
         self.thumbnail = ''
+        self.doc = ''
         self.parent = 'root'
 
 

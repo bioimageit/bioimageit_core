@@ -79,6 +79,8 @@ class LocalProcessService:
             container = ProcessCategoryContainer()
             container.id = categories['id']
             container.name = categories['name']
+            if 'doc' in categories:
+                container.doc = categories['doc']
             container.thumbnail = os.path.join(
                 categories_json_dirname, categories['thumbnail']
             )
