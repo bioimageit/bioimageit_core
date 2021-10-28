@@ -52,7 +52,7 @@ class Formats:
     """
     def __init__(self, formats_file: str = ''):
         self.formats_file = formats_file
-        self.formats = {}
+        self.formats = []
         if formats_file != '':
             self.load(formats_file)
 
@@ -68,6 +68,19 @@ class Formats:
                     raise FormatKeyNotFoundError('No key formats'
                                                  ' in the format base')
         #print('formats=', self.formats)
+
+    def names(self):
+        """Get all the formats names
+
+        Returns
+        -------
+        list of the formats names
+        
+        """
+        names = []
+        for format in self.formats:
+            names.append(format['name'])
+        return names    
 
     def is_format(self, name: str) -> bool:
         """Check if a name exists in the format dictionary
