@@ -20,6 +20,7 @@ setuptools.setup(
     ],
     python_requires='>=3.7',
     install_requires=[
+        "bioimageit_formats",
         "PrettyTable>=1.0.1",
         "pyyaml>=5.3.1",
         "wget>=3.2",
