@@ -46,12 +46,13 @@ if __name__ == '__main__':
     config_json["runner"]["service"] = runner_name
     if runner_name == 'DOCKER':
         config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
-    config_json["gui"] = {"tmp": os.path.join(package_dir, "userdata")}
+    #config_json["gui"] = {"tmp": os.path.join(package_dir, "userdata")}
     config_json["user"]["name"] = user_name
     config_json["formats"]["file"] = os.path.join(package_dir, "formats.json")
     config_json["apps"] = {}
     config_json["install_dir"] = str(package_dir)
     config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
+    config_json["workspace"] = os.path.join(package_dir, "userdata")
     if os.name == 'nt' :
         config_json["apps"]["runner"] = os.path.join(package_dir, "runnerapp.bat")
         config_json["apps"]["processing"] = os.path.join(package_dir, "data_processing.bat")

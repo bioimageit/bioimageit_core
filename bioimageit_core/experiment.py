@@ -266,6 +266,20 @@ class Experiment(Observable):
             print('Display processed dataset not yet implemented')
         print(t)
 
+    def set_tags(self, tags: list):
+        """Set all the tags to the experiements
+        
+        Previous existing tags are removed
+
+        Parameters
+        ----------
+        tags: list
+            List of tags (str)
+
+        """
+        self.metadata.tags = tags
+        self.write()
+
     def set_tag(self, tag: str, add_to_data: bool = True):
         """Add a tag key to the experiment
 
@@ -288,7 +302,7 @@ class Experiment(Observable):
             self.write()
         if add_to_data:
             raw_dataset = RawDataSet(self.metadata.rawdataset)
-            for i in range(int(raw_dataset.size)):
+            for i in range(int(raw_dataset.size())):
                 raw_data = raw_dataset.get(i)
                 if tag not in raw_data.metadata.tags:
                     raw_data.set_tag(tag, '')

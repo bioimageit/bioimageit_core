@@ -19,6 +19,7 @@ import json
 import re
 from shutil import copyfile
 
+from bioimageit_formats import formatsServices
 from bioimageit_core.metadata.exceptions import MetadataServiceError
 from bioimageit_core.metadata.containers import (METADATA_TYPE_RAW,
                                                  METADATA_TYPE_PROCESSED,
@@ -684,9 +685,13 @@ class LocalMetadataService:
 
         # import data
         if copy:
-            copied_data_path = os.path.join(data_dir_path, data_base_name)
-            copyfile(data_path, copied_data_path)
-            metadata.uri = copied_data_path
+            format_service = formatsServices.get(metadata.format)
+            files_to_copy = format_service.files(data_path)
+            for file_ in files_to_copy:
+                origin_base_name = os.path.basename(file_)
+                destination_path = os.path.join(data_dir_path, origin_base_name)
+                copyfile(file_, destination_path)
+            metadata.uri = os.path.join(data_dir_path, data_base_name) # URI is main file    
         else:
             metadata.uri = data_path
         self.write_rawdata(metadata, md_uri)
