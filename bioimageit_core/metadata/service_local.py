@@ -852,10 +852,13 @@ class LocalMetadataService:
         list of experiment containers    
 
         """
-        dirs = os.listdir(workspace_uri)
-        experiments = []
-        for dir in dirs:
-            exp_path = os.path.join(workspace_uri, dir, 'experiment.md.json')
-            if os.path.exists(exp_path):
-                experiments.append(self.read_experiment(exp_path))
-        return experiments
+        if os.path.exists(workspace_uri):
+            dirs = os.listdir(workspace_uri)
+            experiments = []
+            for dir in dirs:
+                exp_path = os.path.join(workspace_uri, dir, 'experiment.md.json')
+                if os.path.exists(exp_path):
+                    experiments.append(self.read_experiment(exp_path))
+            return experiments
+        else:
+            return []    
