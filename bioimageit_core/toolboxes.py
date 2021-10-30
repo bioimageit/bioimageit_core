@@ -84,7 +84,7 @@ class Toolboxes(Observable):
     def _read_tools_file(self):
         if os.path.getsize(self.tools_file) > 0:
             with open(self.tools_file) as json_file:
-                return json.load(json_file)["tools"]
+                return json.load(json_file)["tools"] 
 
     def _find_tools_subfolder(self, dir):
         for root, subFolder, files in os.walk(dir):
@@ -128,4 +128,3 @@ class Toolboxes(Observable):
 
         # remove 
         shutil.rmtree(tool_dir)
-

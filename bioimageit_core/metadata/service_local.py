@@ -838,3 +838,24 @@ class LocalMetadataService:
         if os.path.isfile(output_uri):
             os.remove(output_uri)
         return output_uri
+
+    def workspace_experiments(self, workspace_uri: str):
+        """Read the experiments in the user workspace
+
+        Parameters
+        ----------
+        workspace_uri: str
+            URI of the workspace
+
+        Returns
+        -------
+        list of experiment containers    
+
+        """
+        dirs = os.listdir(workspace_uri)
+        experiments = []
+        for dir in dirs:
+            exp_path = os.path.join(workspace_uri, dir, 'experiment.md.json')
+            if os.path.exists(exp_path):
+                experiments.append(self.read_experiment(exp_path))
+        return experiments

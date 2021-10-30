@@ -51,6 +51,18 @@ from bioimageit_core.metadata.containers import (RawDataContainer,
                                                  ExperimentContainer)
 
 
+class Workspace(Observable):
+    """Allows to interact with a database of Experiments"""
+    def __init__(self):
+        self.workspace_dir = ConfigAccess.instance().config['workspace']
+        config = ConfigAccess.instance().config['metadata']
+        self.service = metadataServices.get(config["service"], **config)
+
+    def experiments(self):
+        """Get the list of experiments"""
+        return self.service.workspace_experiments(self.workspace_dir)
+
+
 class Experiment(Observable):
     """Allows to interact with the matedata of an experiment
 
