@@ -48,7 +48,7 @@ from bioimageit_core.runners.factory import runnerServices
 from bioimageit_core.metadata.factory import metadataServices
 from bioimageit_core.process import Process
 from bioimageit_core.runners.exceptions import RunnerExecError
-from bioimageit_core.formats import FormatsAccess
+from bioimageit_formats import FormatsAccess
 
 
 class Runner(Observable):
