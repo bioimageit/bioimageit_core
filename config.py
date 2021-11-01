@@ -52,11 +52,11 @@ if __name__ == '__main__':
     config_json["apps"] = {}
     config_json["install_dir"] = str(package_dir)
     config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
-    config_json["workspace"] = os.path.join(package_dir, "userdata")
+    config_json["workspace"] = os.path.join(package_dir, "workspace")
     if os.name == 'nt' :
-        config_json["apps"]["runner"] = os.path.join(package_dir, "runnerapp.bat")
-        config_json["apps"]["processing"] = os.path.join(package_dir, "data_processing.bat")
-        config_json["apps"]["viewer"] = os.path.join(package_dir, "viewer.bat")
+        config_json["apps"]["runner"] = os.path.join(package_dir, "BioImageIT-Runner.bat")
+        config_json["apps"]["processing"] = os.path.join(package_dir, "BioImageIT-toolboxes.bat")
+        config_json["apps"]["viewer"] = os.path.join(package_dir, "BioImageIT-Viewer.bat")
         config_json["apps"]["experiment"] = os.path.join(package_dir, "BioImageIT-Experiment.bat")
         config_json["runner"]["condash"] = os.path.join(package_dir, "Miniconda3", "condabin", "conda.bat")
     else :
