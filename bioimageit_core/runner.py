@@ -157,7 +157,7 @@ class Runner(Observable):
             for output in self.process.metadata.outputs:
 
                 # output metadata
-                ext = FormatsAccess.instance().get(output.type)['extension']
+                ext = FormatsAccess.instance().get(output.type).extension
                 output_uri = self.metadataservice.create_output_uri(
                     self._output, output.name, ext, args[1]
                 )
