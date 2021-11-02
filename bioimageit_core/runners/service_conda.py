@@ -9,6 +9,7 @@ Classes
 ProcessServiceProvider
 
 """
+import os
 import platform
 import subprocess
 
@@ -40,8 +41,8 @@ class CondaRunnerService(Observable):
     def __init__(self):
         super().__init__()
         self.service_name = 'LocalRunnerService'
-        self.condash = ConfigAccess.instance().get('runner')['condash']
-        print(self.condash)
+        self.conda_dir = ConfigAccess.instance().get('runner')['conda_dir']
+        print(self.conda_dir)
 
     def set_up(self, process: ProcessContainer):
         """setup the runner
@@ -64,24 +65,29 @@ class CondaRunnerService(Observable):
             #init_cmd = requirements['init']
 
             # install env if not exists
-            if platform.system() == 'Windows':
-                args_exists = f"{self.condash} env list"
-                print("exists env cmd:", args_exists)
-                proc = subprocess.run(args_exists, check=True, stdout=subprocess.PIPE)
-            else:    
-                args_exists = f". {self.condash} && conda env list"
-                print("exists env cmd:", args_exists)
-                proc = subprocess.run(args_exists, shell=True, executable='/bin/bash',
-                                      check=True, stdout=subprocess.PIPE)
+            #if platform.system() == 'Windows':
+            #    args_exists = f"{self.condash} env list"
+            #    print("exists env cmd:", args_exists)
+            #    proc = subprocess.run(args_exists, check=True, stdout=subprocess.PIPE)
+            #else:    
+            #    args_exists = f". {self.condash} && conda env list"
+            #    print("exists env cmd:", args_exists)
+            #    proc = subprocess.run(args_exists, shell=True, executable='/bin/bash',
+            #                          check=True, stdout=subprocess.PIPE)
 
-            if env_name not in str(proc.stdout):
+            # get the list of envs
+            envs_list = os.listdir(os.path.join(self.conda_dir, 'envs'))
+
+            if env_name not in envs_list:
                 # install: create env
                 if platform.system() == 'Windows':
-                    args_install = f"{self.condash} create -y -n {env_name} {package}"
+                    condaexe = os.path.join(self.conda_dir, 'condabin', 'conda.bat')
+                    args_install = f"{condaexe} create -y -n {env_name} {package}"
                     print("install env cmd:", args_install)
                     subprocess.run(args_install, check=True)
                 else:    
-                    args_install = f". {self.condash} && conda create -y -n {env_name} {package}"
+                    condash = os.path.join(self.conda_dir, 'etc', 'profile.d', 'conda.sh')
+                    args_install = f". {condash} && conda create -y -n {env_name} {package}"
                     print("install env cmd:", args_install)
                     subprocess.run(args_install, shell=True, executable='/bin/bash',
                                    check=True)
@@ -108,13 +114,15 @@ class CondaRunnerService(Observable):
 
         #args_list = [self.condash, 'activate', env_name, '&&'] + args
         if platform.system() == 'Windows':
-            args_str = '"' + self.condash + '"' + 'activate '+env_name+' &&'
+            condaexe = os.path.join(self.conda_dir, 'condabin', 'conda.bat')
+            args_str = '"' + condaexe + '"' + 'activate '+env_name+' &&'
             for arg in args:
                 args_str += ' ' + '"' + arg + '"'
             print("final exec cmd:", args_str)
             subprocess.run(args_str, check=True)
         else:    
-            args_str = '".' + self.condash + '"' + ' && conda activate '+env_name+' &&'
+            condash = os.path.join(self.conda_dir, 'etc', 'profile.d', 'conda.sh')
+            args_str = '. "' + condash + '"' + ' && conda activate '+env_name+' &&'
             for arg in args:
                 args_str += ' ' + '"' + arg + '"'
             print("final exec cmd:", args_str)

@@ -58,13 +58,13 @@ if __name__ == '__main__':
         config_json["apps"]["processing"] = os.path.join(package_dir, "BioImageIT-toolboxes.bat")
         config_json["apps"]["viewer"] = os.path.join(package_dir, "BioImageIT-Viewer.bat")
         config_json["apps"]["experiment"] = os.path.join(package_dir, "BioImageIT-Experiment.bat")
-        config_json["runner"]["condash"] = os.path.join(package_dir, "Miniconda3", "condabin", "conda.bat")
+        config_json["runner"]["conda_dir"] = os.path.join(package_dir, "Miniconda3")
     else :
         config_json["apps"]["runner"] = os.path.join(package_dir, "BioImageIT-Runner.sh")
         config_json["apps"]["processing"] = os.path.join(package_dir, "BioImageIT-toolboxes.sh")
         config_json["apps"]["viewer"] = os.path.join(package_dir, "BioImageIT-Viewer.sh")
         config_json["apps"]["experiment"] = os.path.join(package_dir, "BioImageIT-Experiment.sh")
-        config_json["runner"]["condash"] = os.path.join(package_dir, "miniconda3", "etc", "profile.d", "conda.sh")
+        config_json["runner"]["conda_dir"] = os.path.join(package_dir, "miniconda3")
     config_file = os.path.join(package_dir, 'config.json')
     write_json(config_json, config_file)
 
