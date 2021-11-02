@@ -64,25 +64,25 @@ class CondaRunnerService(Observable):
             #init_cmd = requirements['init']
 
             # install env if not exists
-            args_exists = f"{self.condash} env list"
-            print("exists env cmd:", args_exists)
             if platform.system() == 'Windows':
+                args_exists = f"{self.condash} env list"
+                print("exists env cmd:", args_exists)
                 proc = subprocess.run(args_exists, check=True, stdout=subprocess.PIPE)
             else:    
+                args_exists = f". {self.condash} && conda env list"
+                print("exists env cmd:", args_exists)
                 proc = subprocess.run(args_exists, shell=True, executable='/bin/bash',
                                       check=True, stdout=subprocess.PIPE)
 
             if env_name not in str(proc.stdout):
                 # install: create env
-                args_install = f"{self.condash} create -y -n {env_name} {package}"
-
-                #package_list = package.split()
-                #args_install = [self.condash, 'create', '-y', '-n', env_name] + package_list
-                print("install env cmd:", args_install)
-
                 if platform.system() == 'Windows':
+                    args_install = f"{self.condash} create -y -n {env_name} {package}"
+                    print("install env cmd:", args_install)
                     subprocess.run(args_install, check=True)
                 else:    
+                    args_install = f". {self.condash} && conda create -y -n {env_name} {package}"
+                    print("install env cmd:", args_install)
                     subprocess.run(args_install, shell=True, executable='/bin/bash',
                                    check=True)
             else:
@@ -107,14 +107,17 @@ class CondaRunnerService(Observable):
             env_name = requirements['env']
 
         #args_list = [self.condash, 'activate', env_name, '&&'] + args
-        args_str = '"' + self.condash + '"' + ' activate '+env_name+' &&'
-        for arg in args:
-            args_str += ' ' + '"' + arg + '"'
-        print("final exec cmd:", args_str)
-
         if platform.system() == 'Windows':
+            args_str = '"' + self.condash + '"' + 'activate '+env_name+' &&'
+            for arg in args:
+                args_str += ' ' + '"' + arg + '"'
+            print("final exec cmd:", args_str)
             subprocess.run(args_str, check=True)
         else:    
+            args_str = '".' + self.condash + '"' + ' && conda activate '+env_name+' &&'
+            for arg in args:
+                args_str += ' ' + '"' + arg + '"'
+            print("final exec cmd:", args_str)
             subprocess.run(args_str, shell=True, executable='/bin/bash',
                            check=True)
 
