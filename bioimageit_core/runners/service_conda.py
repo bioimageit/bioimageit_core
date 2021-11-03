@@ -115,7 +115,7 @@ class CondaRunnerService(Observable):
         #args_list = [self.condash, 'activate', env_name, '&&'] + args
         if platform.system() == 'Windows':
             condaexe = os.path.join(self.conda_dir, 'condabin', 'conda.bat')
-            args_str = '"' + condaexe + '"' + 'activate '+env_name+' &&'
+            args_str = '"' + condaexe + '"' + ' activate '+env_name+' &&'
             for arg in args:
                 args_str += ' ' + '"' + arg + '"'
             print("final exec cmd:", args_str)
