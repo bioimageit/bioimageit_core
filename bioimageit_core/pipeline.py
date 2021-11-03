@@ -34,6 +34,7 @@ Pipeline
 
 import os
 
+from bioimageit_formats import FormatsAccess
 from bioimageit_core.core.utils import Observable, format_date
 from bioimageit_core.metadata.run import Run
 from bioimageit_core.metadata.containers import (RunParameterContainer,
@@ -68,7 +69,7 @@ class PipelineRunner(Observable):
         # data for runner
         self._output_dataset = ''
         self._process_params = []
-        self._inputs_names = []
+        self._inputs_names = [] 
         self._inputs_datasets = []
         self._inputs_query = []
         self._inputs_origin_output_name = []

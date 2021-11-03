@@ -110,7 +110,7 @@ class Runner(Observable):
         else:
             self._exec_file(False, *args)
         self.notify_observers(100, "Done")
-
+ 
     def _exec_list(self):
 
         # merge input
@@ -136,6 +136,8 @@ class Runner(Observable):
             data_count = 1
             for input_ in self._inputs:
                 inputs[input_['name']] = [input_['uri']]
+        elif self._mode == '': # no input mode
+            data_count = 1        
 
         self.output_uris = []
         self.service.set_up(self.process.metadata)
@@ -158,8 +160,11 @@ class Runner(Observable):
 
                 # output metadata
                 ext = FormatsAccess.instance().get(output.type).extension
+                corresponding_input_uri = ''
+                if (len(args) > 0):
+                    corresponding_input_uri = args[1]
                 output_uri = self.metadataservice.create_output_uri(
-                    self._output, output.name, ext, args[1]
+                    self._output, output.name, ext, corresponding_input_uri
                 )
 
                 # args
@@ -241,6 +246,8 @@ class Runner(Observable):
             cmd = cmd.replace("${" + input_arg_name_simple + "}",
                               "'" + str(input_arg.value) + "'")
         for output_arg in self.process.metadata.outputs:
+            print('output arg name = ', output_arg.name)
+            print('output arg value = ', output_arg.value)
             cmd = cmd.replace("${" + output_arg.name + "}",
                               "'" + str(output_arg.value) + "'")
 
