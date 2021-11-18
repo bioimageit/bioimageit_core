@@ -275,6 +275,7 @@ class Runner(Observable):
     def replace_env_variables(self, cmd) -> str:
         xml_root_path = os.path.dirname(os.path.abspath(self.process.uri))
         cmd_out = cmd.replace("$__tool_directory__", xml_root_path)
+        cmd_out = cmd_out.replace("$__fiji__", ConfigAccess.instance().config['fiji'])
         config = ConfigAccess.instance()
         if config.is_key('env'):
             for element in config.get('env'):
