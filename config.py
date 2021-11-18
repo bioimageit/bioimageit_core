@@ -1,5 +1,6 @@
 import sys
 import os
+import platform
 import json
 from pathlib import Path
 from bioimageit_core.toolboxes import Toolboxes
@@ -60,6 +61,10 @@ if __name__ == '__main__':
         config_json["apps"]["experiment"] = os.path.join(package_dir, "BioImageIT-Experiment.bat")
         config_json["runner"]["conda_dir"] = os.path.join(package_dir, "Miniconda3")
         config_json["fiji_os"]["windows"] = os.path.join(package_dir, "Fiji.app", "ImageJ-win64.exe")
+    if platform.system() == 'Linux' :
+        config_json["fiji_os"]["linux"] = os.path.join(package_dir, "Fiji.app", "ImageJ-linux64")
+    if platform.system() == 'Darwin' :
+        config_json["fiji_os"]["macos"] = os.path.join(package_dir, "Fiji.app", "Contents", "MacOS", "ImageJ-macosx")
     else :
         config_json["apps"]["runner"] = os.path.join(package_dir, "BioImageIT-Runner.sh")
         config_json["apps"]["processing"] = os.path.join(package_dir, "BioImageIT-toolboxes.sh")
