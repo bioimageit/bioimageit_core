@@ -231,6 +231,13 @@ class LocalMetadataService:
             if 'tags' in metadata:
                 for key in metadata['tags']:
                     container.tags[key] = metadata['tags'][key]
+            # get the tags from the experiment
+            experiment_uri = os.path.join(Path(Path(md_uri).parent).parent, 'experiment.md.json')
+            print('experiment path=', experiment_uri)  
+            experiment = self.read_experiment(experiment_uri) 
+            for key in experiment.tags:
+                if key not in metadata['tags']:
+                    container.tags[key] = ''
             return container
         raise MetadataServiceError('Metadata file format not supported')
 
