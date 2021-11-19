@@ -272,6 +272,31 @@ class LocalMetadataService:
 
         self._write_json(metadata, md_uri)
 
+    def delete_rawdata(self, md_uri:str):
+        """Delete a raw data and remove it from the raw dataset
+        
+        Parameters
+        ----------
+        md_uri
+            URI of the data to delete
+        
+        """
+        # delete the data
+        metadata = self.read_rawdata(md_uri)
+        os.remove(metadata.uri)
+        os.remove(md_uri)
+        # remove from raw dataset
+        raw_dataset_md_uri = os.path.join(Path(md_uri).parent, 'rawdataset.md.json')
+        print('read the raw dataset from:', raw_dataset_md_uri)
+        rawdataset = self.read_rawdataset(raw_dataset_md_uri)
+        print('remove data name=', os.path.basename(md_uri))
+        for uri in rawdataset.uris:
+            print('uri=', uri)
+            if uri == md_uri:
+                print('found uri:', uri)
+        rawdataset.uris.remove(md_uri)
+        self.write_rawdataset(rawdataset, raw_dataset_md_uri)
+
     def read_processeddata(self, md_uri: str) -> ProcessedDataContainer:
         """Read a processed data metadata from the database
 
