@@ -46,7 +46,7 @@ if __name__ == '__main__':
                                                    "tools.json")
     config_json["runner"]["service"] = runner_name
     if runner_name == 'DOCKER':
-        config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
+        config_json["runner"]["working_dir"] = os.path.join(package_dir, "workspace")
     #config_json["gui"] = {"tmp": os.path.join(package_dir, "userdata")}
     config_json["user"]["name"] = user_name
     config_json["formats"]["file"] = os.path.join(package_dir, "formats.json")
