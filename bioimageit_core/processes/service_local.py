@@ -24,6 +24,8 @@ from bioimageit_core.processes.containers import (ProcessContainer,
                                                   IO_OUTPUT,
                                                   IO_PARAM,
                                                   PARAM_NUMBER,
+                                                  PARAM_FLOAT,
+                                                  PARAM_INTEGER,
                                                   PARAM_SELECT,
                                                   PARAM_BOOLEAN,
                                                   PARAM_STRING
@@ -430,21 +432,15 @@ class ProcessParser:
                         input_parameter.io = IO_PARAM()
                         input_parameter.is_data = False
 
-                        if (
-                            child.attrib['type'] == 'number'
-                            or child.attrib['type'] == 'float'
-                            or child.attrib['type'] == 'integer'
-                        ):
+                        if child.attrib['type'] == 'number':
                             input_parameter.type = PARAM_NUMBER()
-                        elif (
-                            child.attrib['type'] == 'string'
-                            or child.attrib['type'] == 'text'
-                        ):
+                        elif child.attrib['type'] == 'float':
+                            input_parameter.type = PARAM_FLOAT()    
+                        elif child.attrib['type'] == 'integer':
+                            input_parameter.type = PARAM_INTEGER()         
+                        elif child.attrib['type'] == 'string' or child.attrib['type'] == 'text':
                             input_parameter.type = PARAM_STRING()
-                        elif (
-                            child.attrib['type'] == 'bool'
-                            or child.attrib['type'] == 'boolean'
-                        ):
+                        elif child.attrib['type'] == 'bool' or child.attrib['type'] == 'boolean':
                             input_parameter.type = PARAM_BOOLEAN()
                         elif child.attrib['type'] == PARAM_SELECT():
                             input_parameter.type = PARAM_SELECT()
