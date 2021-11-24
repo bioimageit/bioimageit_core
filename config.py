@@ -55,17 +55,9 @@ if __name__ == '__main__':
     config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
     config_json["workspace"] = os.path.join(package_dir, "workspace")
     if os.name == 'nt' :
-        config_json["apps"]["runner"] = os.path.join(package_dir, "BioImageIT-Runner.bat")
-        config_json["apps"]["processing"] = os.path.join(package_dir, "BioImageIT-toolboxes.bat")
-        config_json["apps"]["viewer"] = os.path.join(package_dir, "BioImageIT-Viewer.bat")
-        config_json["apps"]["experiment"] = os.path.join(package_dir, "BioImageIT-Experiment.bat")
         config_json["runner"]["conda_dir"] = os.path.join(package_dir, "Miniconda3")
         config_json["fiji"] = os.path.join(package_dir, "Fiji.app", "ImageJ-win64.exe")
     else :
-        config_json["apps"]["runner"] = os.path.join(package_dir, "BioImageIT-Runner.sh")
-        config_json["apps"]["processing"] = os.path.join(package_dir, "BioImageIT-toolboxes.sh")
-        config_json["apps"]["viewer"] = os.path.join(package_dir, "BioImageIT-Viewer.sh")
-        config_json["apps"]["experiment"] = os.path.join(package_dir, "BioImageIT-Experiment.sh")
         config_json["runner"]["conda_dir"] = os.path.join(package_dir, "miniconda3")
     if platform.system() == 'Linux' :
         config_json["fiji"] = os.path.join(package_dir, "Fiji.app", "ImageJ-linux64")
