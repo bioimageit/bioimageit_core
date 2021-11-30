@@ -12,14 +12,17 @@ MetadataServiceProvider
 
 """
 
+import platform
 import os
 import os.path
 from pathlib import Path
 import json
 import re
 from shutil import copyfile
+import subprocess
 
 from bioimageit_formats import FormatsAccess, formatsServices
+from bioimageit_core.config import ConfigAccess
 from bioimageit_core.metadata.exceptions import MetadataServiceError
 from bioimageit_core.metadata.containers import (METADATA_TYPE_RAW,
                                                  METADATA_TYPE_PROCESSED,
@@ -683,7 +686,6 @@ class LocalMetadataService:
         data_path: str,
         rawdataset_uri: str,
         metadata: RawDataContainer,
-        copy: bool,
     ):
         """Import a data to a raw dataset
 
@@ -695,10 +697,6 @@ class LocalMetadataService:
             URI of the raw dataset where the data will be imported
         metadata
             Metadata of the data to import
-        copy
-            True if the data is copied to the Experiment database
-            False otherwise
-
         """
 
         rawdataset_uri = os.path.abspath(rawdataset_uri)
@@ -711,26 +709,91 @@ class LocalMetadataService:
         md_uri = os.path.join(data_dir_path, filtered_name + '.md.json')
 
         # import data
-        if copy:
-            print('import data with format:', metadata.format)
+        print('import data with format:', metadata.format)
+        if metadata.format == 'bioformat':
+            self._import_file_bioformat(rawdataset_uri, data_path, data_dir_path, metadata.name, metadata.author, metadata.date)
+        else:
             format_service = formatsServices.get(metadata.format)
             files_to_copy = format_service.files(data_path)
             for file_ in files_to_copy:
                 origin_base_name = os.path.basename(file_)
                 destination_path = os.path.join(data_dir_path, origin_base_name)
                 copyfile(file_, destination_path)
-            metadata.uri = os.path.join(data_dir_path, data_base_name) # URI is main file    
+            metadata.uri = os.path.join(data_dir_path, data_base_name) # URI is main file  
+            self.write_rawdata(metadata, md_uri)
+
+            # add data to experiment RawDataSet
+            rawdataset_container = self.read_rawdataset(rawdataset_uri)
+            rawdataset_container.uris.append(md_uri)
+            self.write_rawdataset(rawdataset_container, rawdataset_uri)
+
+        return ""
+
+    def _import_file_bioformat(self, raw_dataset_uri, file_path, destination_dir, data_name, author, date):
+        fiji_exe = ConfigAccess.instance().get('fiji')
+        cmd = f'{fiji_exe} --headless -macro bioimageit_convert.ijm "file,{file_path},{destination_dir},{data_name},{author},{date}"'
+        print("import bioformat cmd:", cmd)
+        if platform.system() == 'Windows':
+            subprocess.run(cmd, check=True)
         else:
-            metadata.uri = data_path
-        self.write_rawdata(metadata, md_uri)
+            subprocess.run(cmd, shell=True, executable='/bin/bash',
+                           check=True)    
 
-        # add data to experiment RawDataSet
-        rawdataset_container = self.read_rawdataset(rawdataset_uri)
-        rawdataset_container.uris.append(md_uri)
-        self.write_rawdataset(rawdataset_container, rawdataset_uri)
+        # add data to rawdataset
+        self._add_to_rawdataset_biobormat(destination_dir, raw_dataset_uri)
 
-        return md_uri
+    def import_dir(self, raw_dataset_uri, dir_uri, filter_, author, format_, date, directory_tag_key):
+        files = os.listdir(dir_uri)
+        count = 0
+        key_value_pairs = {}
+        if directory_tag_key != '':
+            key_value_pairs[directory_tag_key] = os.path.dirname(dir_uri)    
+        
+        if format_ == 'bioformat':
+            self._import_dir_bioformat(raw_dataset_uri, dir_uri, filter_, author, format_, date, directory_tag_key)
+        else:
+            for file in files:
+                count += 1
+                r1 = re.compile(filter_)
+                if r1.search(file):
+                    self.notify_observers(int(100 * count / len(files)), file)
+                    data_url = os.path.join(dir_uri, file)
+                    metadata = RawDataContainer()
+                    metadata.name = Path(file).stem
+                    metadata.author = author
+                    metadata.format = format_
+                    metadata.date = date
+                    metadata.tags = key_value_pairs
+                    self.import_data(data_url, raw_dataset_uri, metadata)
+                            
+    def _import_dir_bioformat(self, raw_dataset_uri, dir_uri, filter_, author, format_, date, directory_tag_key):
+        fiji_exe = ConfigAccess.instance().get('fiji')
 
+        rawdataset_uri = os.path.abspath(raw_dataset_uri)
+        data_dir_path = os.path.dirname(rawdataset_uri)
+
+        cmd = f'{fiji_exe} --headless -macro bioimageit_convert.ijm "folder,{dir_uri},{data_dir_path},false,{filter_},{author},{date},{directory_tag_key}"'
+        print("import bioformat cmd:", cmd)
+        if platform.system() == 'Windows':
+            subprocess.run(cmd, check=True)
+        else:
+            subprocess.run(cmd, shell=True, executable='/bin/bash', check=True)   
+
+        self._add_to_rawdataset_biobormat(data_dir_path, raw_dataset_uri)
+
+    def _add_to_rawdataset_biobormat(self, data_dir_path, raw_dataset_uri):
+        # add the data to the dataset
+        tmp_file = os.path.join(data_dir_path, 'tmp.txt')
+        if os.path.isfile(tmp_file):
+            raw_dataset = self.read_rawdataset(raw_dataset_uri)
+            with open(tmp_file) as file:
+                lines = file.readlines()
+                for line in lines:
+                    line = line.rstrip('\n')
+                    raw_dataset.uris.append(os.path.join(data_dir_path, line))
+                self.write_rawdataset(raw_dataset, raw_dataset_uri)
+            os.remove(tmp_file)        
+ 
     def read_run(self, md_uri: str) -> RunContainer:
         """Read a run metadata from the data base
 

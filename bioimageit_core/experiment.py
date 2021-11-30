@@ -153,7 +153,6 @@ class Experiment(Observable):
         format_: str,
         date: str = 'now',
         tags: dict = dict,
-        copy: bool = True,
     ):
         """import one data to the experiment
 
@@ -189,7 +188,7 @@ class Experiment(Observable):
         metadata.date = format_date(date)
         metadata.tags = tags
         data_uri = self.service.import_data(
-            data_path, self.metadata.rawdataset, metadata, copy
+            data_path, self.metadata.rawdataset, metadata
         )
         return RawData(data_uri)
 
@@ -200,7 +199,7 @@ class Experiment(Observable):
         author: str,
         format_: str,
         date: str,
-        copy_data: bool,
+        directory_tag_key: str,
     ):
         """Import data from a directory to the experiment
 
@@ -221,23 +220,12 @@ class Experiment(Observable):
             Format of the image (ex: tif)
         date
             Date when the data where created
-        copy_data
-            True to copy the data to the experiment, false otherwise. If the
-            data are not copied, an absolute link to dir_uri is kept in the
-            experiment metadata. The original data directory must then not be
-            changed for the experiment to find the data.
+        directory_tag_key
+            If the string directory_tag_key is not empty, a new tag key entry with the
+            key={directory_tag_key} and the value={the directory name}.
 
         """
-        files = os.listdir(dir_uri)
-        count = 0
-        for file in files:
-            count += 1
-            r1 = re.compile(filter_)  # re.compile(r'\.tif$')
-            if r1.search(file):
-                self.notify_observers(int(100 * count / len(files)), file)
-                data_url = os.path.join(dir_uri, file)
-                self.import_data(data_url, file, author, format_, date, {},
-                                 copy_data)
+        self.service.import_dir(self.metadata.rawdataset, dir_uri, filter_, author, format_, format_date(date), directory_tag_key)
 
     def display(self, dataset: str = 'data'):
         """Display a dataset content as a table in the console
