@@ -72,6 +72,7 @@ class RawDataContainer(DataContainer):
     def __init__(self):
         DataContainer.__init__(self)
         self.tags = dict()
+        self.metadata = dict()
 
     def serialize(self):
         content = 'RawData:\n'

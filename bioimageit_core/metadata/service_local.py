@@ -241,6 +241,10 @@ class LocalMetadataService:
             for key in experiment.tags:
                 if key not in metadata['tags']:
                     container.tags[key] = ''
+
+            # get the metadata
+            if 'metadata' in metadata:
+                container.metadata = metadata['metadata']        
             return container
         raise MetadataServiceError('Metadata file format not supported')
 
@@ -272,6 +276,8 @@ class LocalMetadataService:
         metadata['tags'] = dict()
         for key in container.tags:
             metadata['tags'][key] = container.tags[key]
+
+        metadata['metadata'] = container.metadata
 
         self._write_json(metadata, md_uri)
 
