@@ -234,14 +234,12 @@ class LocalMetadataService:
             if 'tags' in metadata:
                 for key in metadata['tags']:
                     container.tags[key] = metadata['tags'][key]
-            # get the tags from the experiment
-            experiment_uri = os.path.join(Path(Path(md_uri).parent).parent, 'experiment.md.json')
-            print('experiment path=', experiment_uri)  
-            experiment = self.read_experiment(experiment_uri) 
-            for key in experiment.tags:
-                if key not in metadata['tags']:
-                    container.tags[key] = ''
-
+                # get the tags from the experiment
+                experiment_uri = os.path.join(Path(Path(md_uri).parent).parent, 'experiment.md.json') 
+                experiment = self.read_experiment(experiment_uri) 
+                for key in experiment.tags:
+                    if key not in metadata['tags']:
+                        container.tags[key] = ''
             # get the metadata
             if 'metadata' in metadata:
                 container.metadata = metadata['metadata']        
@@ -715,7 +713,7 @@ class LocalMetadataService:
         md_uri = os.path.join(data_dir_path, filtered_name + '.md.json')
 
         # import data
-        print('import data with format:', metadata.format)
+        #print('import data with format:', metadata.format)
         if metadata.format == 'bioformat':
             self._import_file_bioformat(rawdataset_uri, data_path, data_dir_path, metadata.name, metadata.author, metadata.date)
         else:
@@ -762,7 +760,7 @@ class LocalMetadataService:
                 count += 1
                 r1 = re.compile(filter_)
                 if r1.search(file):
-                    self.notify_observers(int(100 * count / len(files)), file)
+                    #self.notify_observers(int(100 * count / len(files)), file)
                     data_url = os.path.join(dir_uri, file)
                     metadata = RawDataContainer()
                     metadata.name = Path(file).stem

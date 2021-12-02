@@ -16,14 +16,13 @@ Example
         >>>                          author='Sylvain Prigent',
         >>>                          format_='tif',
         >>>                          date='now',
-        >>>                          tags={},
-        >>>                          copy=True))
+        >>>                          tags={}))
         >>> myexperiment.import_dir(dir_uri='./my/local/dir/',
-        >>>                         filter_='\.tif$',
+        >>>                         filter_='.*\.tif$',
         >>>                         author='Sylvain Prigent',
-        >>>                         format='tif',
+        >>>                         format_='bioformat',
         >>>                         date='now',
-        >>>                         copy_data=True)
+        >>>                         directory_tag_key='')
         >>> myexperiment.tag_from_name(tag='population',
         >>>                            ['population1', 'population2'])
         >>> myexperiment.tag_using_seperator(tag='ID', separator='_',
