@@ -353,8 +353,7 @@ class PipelineRunner(Observable):
             for i in range(data_count):
                 data_info = RawData(input_data[n][i])
                 if (
-                    data_info.metadata.format == "csv"
-                    or data_info.metadata.format == "txt"
+                    data_info.metadata.format == "numbercsv"
                 ):
                     with open(data_info.metadata.uri, 'r') as file:
                         value = file.read().replace('\n', '').replace(' ', '')
@@ -404,7 +403,7 @@ class PipelineRunner(Observable):
 
         # 4.3- outputs
         for output in self.process.metadata.outputs:
-            extension = '.' + output.type  # type=format for process parameters
+            extension = '.' + FormatsAccess.instance().get(output.type).extension
 
             # args
             args.append(output.name)
