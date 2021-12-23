@@ -7,14 +7,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Install &mdash; BioImageIT_core 0.0.1 documentation</title>
+  <title>Install &mdash; BioImageIT developers documentation 0.0.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +29,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -56,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> BioImageIT_core
+            <a href="index.html" class="icon icon-home"> BioImageIT developers documentation
           
 
           
@@ -92,9 +90,9 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#install-bioimageit-core">Install BioImageIT_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-bioimageit-core">Install bioimageit_core</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-toolboxes">Install toolboxes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configure-bioimageit-core">Configure BioImageIT_core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configure-bioimageit-core">Configure bioimageit_core</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#process">Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#runner">Runner</a></li>
@@ -123,7 +121,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">BioImageIT_core</a>
+          <a href="index.html">BioImageIT developers documentation</a>
         
       </nav>
 
@@ -179,55 +177,60 @@
 <h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
 <p>This section contains the instruction to install <code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code> and the toolboxes configuration files
 to have a local working instance of <code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code> for development.</p>
+<p>The easiest method to install BioImageIT is to use installation scripts available in the main website: <a class="reference external" href="https://bioimageit.github.io/#/install">here</a>
+Bellow are the instructions to manually install BioImageIT_core.</p>
 <div class="section" id="install-bioimageit-core">
-<h2>Install BioImageIT_core<a class="headerlink" href="#install-bioimageit-core" title="Permalink to this headline">¶</a></h2>
-<p>To install <code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code> you need to have <a class="reference external" href="https://pipenv.pypa.io/en/latest/#install-pipenv-today">Pipenv</a> installed, as this is used to manage the dependencies.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir bioimageit
-git clone https://gitlab.inria.fr/bioimage-it/BioImageIT_core.git
-<span class="nb">cd</span> BioImageIT_core
-pipenv sync
-</pre></div>
-</div>
-<p>Alternatively, it is possible to install the dependencies with pip, but this is not recommended as they might clash with other projects on your computer:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install --user -r requirements.txt
-</pre></div>
-</div>
+<h2>Install bioimageit_core<a class="headerlink" href="#install-bioimageit-core" title="Permalink to this headline">¶</a></h2>
+<p>BioImageIT core depends on <em>bioimageit_formats</em> the library that manage the data formats.
+You first needs to install <em>bioimageit_formats</em> and then <em>bioimageit_core</em>:</p>
 </div>
 <div class="section" id="install-toolboxes">
 <h2>Install toolboxes<a class="headerlink" href="#install-toolboxes" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code> uses a toolboxes index of remotely packaged tools. The toolboxes index is not installed by default. To install the
 toolboxes run the following commands:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> bioimageit
-git clone https://gitlab.inria.fr/bioimage-it/toolboxes.git
-<span class="nb">cd</span> BioImageIT_core
-python3 install.py
+git clone https://github.com/bioimageit/bioimageiit-toolboxes.git
+
+<span class="c1"># create toolboxes database</span>
+mkdir toolboxes
+mkdir toolboxes/thumbs/
+cp -r bioimageit-toolboxes/thumbs toolboxes/
+cp bioimageit-toolboxes/toolboxes.json toolboxes/toolboxes.json
+cp bioimageit-toolboxes/tools.json toolboxes/tools.json
+cp bioimageit-toolboxes/formats.json ./formats.json
 </pre></div>
 </div>
-<p>The install script unpack the toolboxes, and create a configuration file. The install script ask your user name. This is the username
-that will appear in the metadata files generated by <code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code></p>
+<p>The install script unpack the toolboxes in a folder that is the default folder.</p>
 </div>
 <div class="section" id="configure-bioimageit-core">
-<h2>Configure BioImageIT_core<a class="headerlink" href="#configure-bioimageit-core" title="Permalink to this headline">¶</a></h2>
-<p>If you need to manually configure <code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code> you need to edit the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file. You copy &amp; paste
-the <code class="docutils literal notranslate"><span class="pre">config.sample.json</span></code> available in the <code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code> root directory, or you can use the <code class="docutils literal notranslate"><span class="pre">config.json</span></code>
+<h2>Configure bioimageit_core<a class="headerlink" href="#configure-bioimageit-core" title="Permalink to this headline">¶</a></h2>
+<p>If you need to manually configure <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> you need to edit the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file. You copy &amp; paste
+the <code class="docutils literal notranslate"><span class="pre">config.sample.json</span></code> available in the <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> root directory, or you can use the <code class="docutils literal notranslate"><span class="pre">config.json</span></code>
 file generated by the install script. The configuration file looks like this:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;user&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;sprigent&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;workspace&quot;</span><span class="o">:</span> <span class="s2">&quot;/Path/To/bioimageit/workspace&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;install_dir&quot;</span><span class="o">:</span> <span class="s2">&quot;/Path/To/bioimageit&quot;</span><span class="p">,</span>
     <span class="s2">&quot;metadata&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;service&quot;</span><span class="o">:</span> <span class="s2">&quot;LOCAL&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;formats&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;file&quot;</span><span class="o">:</span> <span class="s2">&quot;/Path/To/bioimageit/formats.json&quot;</span>
     <span class="p">},</span>
     <span class="s2">&quot;process&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;service&quot;</span><span class="o">:</span> <span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span>
         <span class="s2">&quot;xml_dirs&quot;</span><span class="o">:</span> <span class="p">[</span>
-            <span class="s2">&quot;/use/absolute/path/to/bioimageit/toolboxes/tools&quot;</span>
+            <span class="s2">&quot;/Path/To/bioimageit/toolboxes/tools&quot;</span>
         <span class="p">],</span>
-        <span class="s2">&quot;categories&quot;</span><span class="o">:</span> <span class="s2">&quot;/use/absolute/path/to/bioimageit/toolboxes/toolboxes.json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;tools&quot;</span><span class="o">:</span> <span class="s2">&quot;/use/absolute/path/to/bioimageit/toolboxes/tools.json&quot;</span>
+        <span class="s2">&quot;categories&quot;</span><span class="o">:</span> <span class="s2">&quot;/Path/To/bioimageit/toolboxes/toolboxes.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tools&quot;</span><span class="o">:</span> <span class="s2">&quot;/Path/To/bioimageit/toolboxes/tools.json&quot;</span>
     <span class="p">},</span>
+    <span class="s2">&quot;fiji&quot;</span><span class="o">:</span> <span class="s2">&quot;/Path/To/bioimageit/Fiji.app/Contents/MacOS/ImageJ-macosx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;runner&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;service&quot;</span><span class="o">:</span> <span class="s2">&quot;SINGULARITY&quot;</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;user&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;your user name&quot;</span>
+        <span class="s2">&quot;service&quot;</span><span class="o">:</span> <span class="s2">&quot;CONDA&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;conda_dir&quot;</span><span class="o">:</span> <span class="s2">&quot;/Path/To/bioimageit/miniconda3&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -253,6 +256,14 @@ The possible runners are:</p>
 </ul>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span> <span class="p">{</span>
     <span class="s2">&quot;service&quot;</span><span class="o">:</span> <span class="s2">&quot;LOCAL&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>CONDA: runs the tools installed locally on the workstation with conda:</p></li>
+</ul>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;service&quot;</span><span class="o">:</span> <span class="s2">&quot;CONDA&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -286,7 +297,7 @@ The possible runners are:</p>
 <div class="section" id="user">
 <h3>User<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h3>
 <p>Finally, the <code class="docutils literal notranslate"><span class="pre">user</span></code> section contains the user name that will be printed in the metadata every time a data is imported or
-processed by this instance of <code class="docutils literal notranslate"><span class="pre">BioImageIT_core</span></code>. This allows traceability.</p>
+processed by this instance of <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code>. This allows traceability.</p>
 </div>
 </div>
 </div>

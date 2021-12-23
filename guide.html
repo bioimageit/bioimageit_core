@@ -7,14 +7,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Guide &mdash; BioImageIT_core 0.0.1 documentation</title>
+  <title>Guide &mdash; BioImageIT developers documentation 0.0.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,10 +29,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -56,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> BioImageIT_core
+            <a href="index.html" class="icon icon-home"> BioImageIT developers documentation
           
 
           
@@ -117,7 +115,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">BioImageIT_core</a>
+          <a href="index.html">BioImageIT developers documentation</a>
         
       </nav>
 
@@ -171,29 +169,29 @@
             
   <div class="section" id="guide">
 <span id="id1"></span><h1>Guide<a class="headerlink" href="#guide" title="Permalink to this headline">¶</a></h1>
-<p>BioImageIT-core is a python3 library. It implements the concepts described in the BioImageIT recommendations.
+<p>BioImageIT-core is a python3 library. It implements the main API for BioImageIT middleware.
 In the scheme below we can see the position of BioImageIT-core in the BioImageIT ecosystem. In fact, BioImageIT-core is the
 API that connects low level image processing and data management to high level end users applications.</p>
 <div class="figure align-center">
 <img alt="_images/apps_layers.png" src="_images/apps_layers.png" />
 </div>
-<p>For data management, BioImageIT-core implements a set of functions to manage and annotate data at the Experiment
+<p>For data management, BioImageIT-core implements a set of functions to manage and annotate data at the Experiment (ie project)
 level. For image processing tools, BioImageIT-core implements a set of functions to query a tool database and
 to run tools on data.</p>
-<p>For Data management and process management, BioImageIT-core defines an API that can be implemented with plugins. For data
-management by default, data is managed in a JSON file system. If we want to use the BioImageIT-core API to manage data on
+<p>For Data management and process management, BioImageIT-core defines an API that can be implemented with plugins. By
+default, data is managed in a JSON file system. If we want to use the BioImageIT-core API to manage data on
 a SQL database for example, we can implement a data management plugin that links the BioImageIT-core API with the SQL database.
-For process run, BioImageIT-core by defaut runs tools using Docker containers in the local machine. If we want to run a processing
+For process run, BioImageIT-core by defaut runs tools using Conda packages of Docker containers in the local machine. If we want to run a processing
 tool with a job scheduler for example, we can write a process runner plugin that links the BioImageIT-core API to the job scheduler.</p>
 <p>The advantage of this BioImageIT-core architecture is to enable writing high level python code to manage and annotate data and deploy it
-in different hardware or network architecture without the need to update the high level code, only the configuration file.</p>
+in different hardware or network architecture without the need to update the high level code. Only plugins have to be added.</p>
 <div class="section" id="data-management">
 <h2>Data Management<a class="headerlink" href="#data-management" title="Permalink to this headline">¶</a></h2>
-<p>In the BioImageIT recommendations, we propose to manage data using a three layer representation:</p>
+<p>In the BioImageIT project, we propose to manage data using a 3 layers representation:</p>
 <ul class="simple">
-<li><p><strong>Experiment</strong>: an experiment contains one dataset of raw data named “data” and a list of processed datasets. Each processed dataset corresponds to a run of a tool.</p></li>
+<li><p><strong>Experiment</strong>: an experiment is a project that contains one dataset of raw data named “data” and a list of processed datasets. Each processed dataset contains the outputs of a processing tool.</p></li>
 <li><p><strong>DataSet</strong>: a dataset contains a list of data that can be raw or processed</p></li>
-<li><p><strong>Data</strong>: a data contains a single data and the associated metadata. For a <code class="docutils literal notranslate"><span class="pre">RawData</span></code> metadata are a set of <em>key:values</em> tags specific to the experiment, and for <code class="docutils literal notranslate"><span class="pre">ProcessedData</span></code>, metadata are the origin data and the process run information.</p></li>
+<li><p><strong>Data</strong>: a data contains a single data and the associated metadata. For a <code class="docutils literal notranslate"><span class="pre">RawData</span></code> metadata are a set of <em>key:values</em> pairs information to identify data and a generic dictionnary for any specific metadata (like image resolution…). For <code class="docutils literal notranslate"><span class="pre">ProcessedData</span></code>, metadata are a link to the origin data and the process run information.</p></li>
 </ul>
 <p>In this section we show the main functions implemented in the BioImageIT-core library to handle <code class="docutils literal notranslate"><span class="pre">Data</span></code>, <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>. Please
 refer to the docstring documentation to get more advanced features.
@@ -203,28 +201,28 @@ To create an experiment, <em>BioImageIT-core</em> has a dedicated function with 
 </pre></div>
 </div>
 <p>This creates an empty repository with the basic metadata of the experiment. Then we can import a single data:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="s1">&#39;data_uri&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mydata&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span> <span class="n">dataformat</span><span class="o">=</span><span class="s1">&#39;tif&#39;</span><span class="p">,</span> <span class="n">createddata</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">copy_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;data_uri&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mydata&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="s1">&#39;tif&#39;</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>or a multiple data from a directory:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">import_dir</span><span class="p">(</span><span class="n">dir_uri</span><span class="o">=</span><span class="s1">&#39;./my/local/dir/&#39;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;\.tif$&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;tif&#39;</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">copy_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">import_dir</span><span class="p">(</span><span class="n">dir_uri</span><span class="o">=</span><span class="s1">&#39;./my/local/dir/&#39;</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="s1">&#39;\.tif$&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="s1">&#39;tif&#39;</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">directory_tag_key</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Then the next step is to tag the data. It can be done in batch with functions like:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">tag_from_name</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;population&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;population1&#39;</span><span class="p">,</span> <span class="s1">&#39;population2&#39;</span><span class="p">])</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">tag_from_name</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;population&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;population1&#39;</span><span class="p">,</span> <span class="s1">&#39;population2&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>or:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">tag_using_seperator</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">value_position</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>that will create tags and tag the data by extracting information from the data file names.
+<p>that will create key-value pairs for each data by extracting information from the data file names.
 The first case will search the words <em>population1</em> and <em>population2</em> in the data file name and
-associate it to the tag <em>population</em> if on the the word <em>population1</em> or <em>population2</em> is found.
+associate it to the key <em>population</em> if one of the the words <em>population1</em> or <em>population2</em> is found.
 The second case shows how to extract information from the data file name using separators. Here we
 extract the sub-string in the file name that is located between two <em>_</em> and after the first <em>_</em>,
-and associate the extracted value to the tag <em>ID</em>.
-We can also manually tag one data by extracting it and manually adding a tag:</p>
+and associate the extracted value to the key <em>ID</em>.
+We can also manually annotate one data by extracting it and manually adding a key-value pair:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">myexperiment</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="s1">&#39;name=population1_001.tif&#39;</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="s2">&quot;Population1&quot;</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;001&quot;</span><span class="p">)</span>
@@ -242,8 +240,8 @@ We can also manually tag one data by extracting it and manually adding a tag:</p
 </div>
 <div class="section" id="process-running">
 <h2>Process Running<a class="headerlink" href="#process-running" title="Permalink to this headline">¶</a></h2>
-<p>The BioImageIT recommendation descibe a packaging method to package data processing tools using an XML file and a docker image.
-The <em>BioImageIT-core</em> library, implement functionalities to manipulate and run packaged tools using three level: Process, Runner and Pipeline.</p>
+<p>In the BioImageIT project manage processing tools as external packages (like Conda packages or Docker containers) and uses XML wrappers similarly to the Galaxy Project in order to wrap tools to the BioImageIT Runner.
+The <em>BioImageIT-core</em> library, implements functionalities to manipulate and run packaged tools using three level: Process, Runner and Pipeline.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">Process</span></code> is a python class in <em>BioImageIT-core</em> that allows to identify a processing tool. It load the tool XML file and allows to print and access the process information.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myprocess</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">url</span><span class="o">/</span><span class="n">of</span><span class="o">/</span><span class="n">the</span><span class="o">/</span><span class="n">process</span><span class="o">/</span><span class="n">wrapper</span><span class="o">.</span><span class="n">xml</span><span class="p">)</span>
 <span class="n">myprocess</span><span class="o">.</span><span class="n">man</span><span class="p">()</span>
@@ -264,7 +262,7 @@ functionality of <em>BioImageIT-core</em>. Running a process can be done as foll
               <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;denoised.tif&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Finally the <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> class is a convenient class that allows to run a sequence of processes in data stored in an <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>:</p>
+<p>Finally the <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> class is a convenient class that allows to run a sequence of processes for data stored in an <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">mypipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">Experiment</span><span class="p">(</span><span class="s1">&#39;my/experiment/uri&#39;</span><span class="p">))</span>
 
 <span class="n">p1</span> <span class="o">=</span> <span class="n">mypipeline</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span><span class="s1">&#39;spartion2d_v1.0.0&#39;</span><span class="p">)</span>
