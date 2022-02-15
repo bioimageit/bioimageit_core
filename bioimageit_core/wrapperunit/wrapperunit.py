@@ -1,7 +1,7 @@
 import os
 
 from bioimageit_core.core.utils import Observable
-from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.process import Process
 from bioimageit_core.runner import Runner
 from bioimageit_core.core.utils import ProgressObserver

@@ -4,7 +4,7 @@ import platform
 import json
 from pathlib import Path
 from bioimageit_core.toolboxes import Toolboxes
-from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.config import ConfigAccess
 
 
 def read_json(md_uri: str):

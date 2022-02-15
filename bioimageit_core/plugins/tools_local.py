@@ -14,23 +14,23 @@ import xml.etree.ElementTree as ET
 import json
 import yaml
 
-from bioimageit_core.processes.containers import (ProcessContainer,
-                                                  ProcessIndexContainer,
-                                                  ProcessParameterContainer,
-                                                  CmdSelectContainer,
-                                                  ProcessTestParameterContainer,
-                                                  ProcessCategoryContainer,
-                                                  IO_INPUT,
-                                                  IO_OUTPUT,
-                                                  IO_PARAM,
-                                                  PARAM_NUMBER,
-                                                  PARAM_FLOAT,
-                                                  PARAM_INTEGER,
-                                                  PARAM_SELECT,
-                                                  PARAM_BOOLEAN,
-                                                  PARAM_STRING
-                                                  )
-from bioimageit_core.processes.exceptions import ProcessServiceError
+from bioimageit_core.core.tools_containers import (ProcessContainer,
+                                                   ProcessIndexContainer,
+                                                   ProcessParameterContainer,
+                                                   CmdSelectContainer,
+                                                   ProcessTestParameterContainer,
+                                                   ProcessCategoryContainer,
+                                                   IO_INPUT,
+                                                   IO_OUTPUT,
+                                                   IO_PARAM,
+                                                   PARAM_NUMBER,
+                                                   PARAM_FLOAT,
+                                                   PARAM_INTEGER,
+                                                   PARAM_SELECT,
+                                                   PARAM_BOOLEAN,
+                                                   PARAM_STRING
+                                                   )
+from bioimageit_core.core.exceptions import ToolsServiceError
 
 
 class LocalProcessServiceBuilder:
@@ -306,7 +306,7 @@ class ProcessParser:
         self._root = tree.getroot()
 
         if self._root.tag != 'tool':
-            raise ProcessServiceError(
+            raise ToolsServiceError(
                 'The process xml file must contains a <tool> root tag'
             )
 
@@ -453,7 +453,7 @@ class ProcessParser:
                                         option_node.attrib['value']
                                     )
                         else:
-                            raise ProcessServiceError(
+                            raise ToolsServiceError(
                                 "The format of the input param "
                                 + input_parameter.name
                                 + " is not supported"

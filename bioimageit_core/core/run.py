@@ -10,7 +10,7 @@ Run
 
 """
 
-from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.metadata.factory import metadataServices
 
 

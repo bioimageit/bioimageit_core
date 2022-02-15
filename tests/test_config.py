@@ -1,6 +1,6 @@
 import unittest
 import os
-from bioimageit_core.config import Config, ConfigAccess
+from bioimageit_core.core.config import Config, ConfigAccess
 
 
 def _check_content(config):

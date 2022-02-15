@@ -11,7 +11,9 @@
         "tools": "../toolboxes/tools.json"
     },
     "runner": {
-        "service": "SINGULARITY"
+        "service": "CONDA",
+        "conda_dir": "/Users/sprigent/BioimageIT/miniconda3"
+
     },
     "formats": {
         "file": "formats.json"

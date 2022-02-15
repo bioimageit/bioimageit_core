@@ -10,7 +10,7 @@ MetadataServiceProvider
 """
 
 from bioimageit_core.core.factory import ObjectFactory
-from bioimageit_core.metadata.service_local import LocalMetadataServiceBuilder
+from bioimageit_core.plugins.data_local import LocalMetadataServiceBuilder
 
 
 class MetadataServiceProvider(ObjectFactory):

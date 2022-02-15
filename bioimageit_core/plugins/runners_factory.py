@@ -10,13 +10,14 @@ RunnerServiceProvider
 """
 
 from bioimageit_core.core.factory import ObjectFactory
-from bioimageit_core.runners.service_local import LocalRunnerServiceBuilder
-from bioimageit_core.runners.service_conda import CondaRunnerServiceBuilder
+from bioimageit_core.plugins.runner_local import LocalRunnerServiceBuilder
+from bioimageit_core.plugins.runner_conda import CondaRunnerServiceBuilder
 #from bioimageit_core.runners.service_singularity import \
 #    SingularityRunnerServiceBuilder
 #from bioimageit_core.runners.service_allgo import AllgoRunnerServiceBuilder
-from bioimageit_core.runners.service_docker import DockerRunnerServiceBuilder
-import bioimageit_core.runners.service_condadocker
+from bioimageit_core.plugins.runner_docker import DockerRunnerServiceBuilder
+from bioimageit_core.plugins.runner_condadocker import CondaDockerRunnerServiceBuilder
+
 
 class RunnerServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):
@@ -30,6 +31,4 @@ runnerServices.register_builder('CONDA', CondaRunnerServiceBuilder())
 #                                SingularityRunnerServiceBuilder())
 #runnerServices.register_builder('ALLGO', AllgoRunnerServiceBuilder())
 runnerServices.register_builder('DOCKER', DockerRunnerServiceBuilder())
-runnerServices.register_builder('CONDA_DOCKER',
-                                bioimageit_core.runners.service_condadocker.
-                                CondaDockerRunnerServiceBuilder())
+runnerServices.register_builder('CONDA_DOCKER', CondaDockerRunnerServiceBuilder())

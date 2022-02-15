@@ -9,14 +9,11 @@ Classes
 ProcessServiceProvider
 
 """
+from bioimageit_core.core.observer import Observable
+from bioimageit_core.core.tools_containers import ProcessContainer
 
-import subprocess
-
-from bioimageit_core.core.utils import Observable
-from bioimageit_core.processes.containers import ProcessContainer
-
-from bioimageit_core.runners.service_conda import CondaRunnerService
-from bioimageit_core.runners.service_docker import DockerRunnerService
+from bioimageit_core.plugins.runner_conda import CondaRunnerService
+from bioimageit_core.plugins.runner_docker import DockerRunnerService
 
 
 class CondaDockerRunnerServiceBuilder:
@@ -43,7 +40,8 @@ class CondaDockerRunnerService(Observable):
         super().__init__()
         self.service_name = 'LocalRunnerService'
 
-    def set_up(self, process: ProcessContainer):
+    @staticmethod
+    def set_up(process: ProcessContainer):
         """setup the runner
 
         Add here the code to initialize the runner
@@ -69,7 +67,8 @@ class CondaDockerRunnerService(Observable):
         else:
             print('CondaDockerRunnerService: cannot find the runner')
 
-    def exec(self, process: ProcessContainer, args):
+    @staticmethod
+    def exec(process: ProcessContainer, args):
         """Execute a process
 
         Parameters
@@ -90,7 +89,8 @@ class CondaDockerRunnerService(Observable):
             service = DockerRunnerService()
             service.exec(process, args)
 
-    def tear_down(self, process: ProcessContainer):
+    @staticmethod
+    def tear_down(process: ProcessContainer):
         """tear down the runner
 
         Add here the code to down/clean the runner

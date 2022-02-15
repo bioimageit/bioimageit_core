@@ -15,7 +15,7 @@ import ntpath
 
 import allgo as ag
 
-from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import Observable
 from bioimageit_core.processes.containers import ProcessContainer
 

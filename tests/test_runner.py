@@ -2,7 +2,7 @@ import unittest
 import os
 import os.path
 
-from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.process import Process
 from bioimageit_core.runner import Runner
 

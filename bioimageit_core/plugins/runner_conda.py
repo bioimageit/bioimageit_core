@@ -13,9 +13,10 @@ import os
 import platform
 import subprocess
 
-from bioimageit_core.core.utils import Observable
-from bioimageit_core.config import ConfigAccess
-from bioimageit_core.processes.containers import ProcessContainer
+from bioimageit_core.core.observer import Observable
+from bioimageit_core.core.config import ConfigAccess
+from bioimageit_core.core.exceptions import ConfigError
+from bioimageit_core.core.tools_containers import ProcessContainer
 
 
 class CondaRunnerServiceBuilder:
@@ -41,8 +42,11 @@ class CondaRunnerService(Observable):
     def __init__(self):
         super().__init__()
         self.service_name = 'LocalRunnerService'
-        self.conda_dir = ConfigAccess.instance().get('runner')['conda_dir']
-        print(self.conda_dir)
+        conf_runner = ConfigAccess.instance().get('runner')
+        if 'conda_dir' in conf_runner:
+            self.conda_dir = ConfigAccess.instance().get('runner')['conda_dir']
+        else:
+            raise ConfigError('conda_dir is not set in the configuration file in runner section')
 
     def set_up(self, process: ProcessContainer):
         """setup the runner

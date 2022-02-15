@@ -12,8 +12,8 @@ ProcessServiceProvider
 
 import subprocess
 
-from bioimageit_core.core.utils import Observable
-from bioimageit_core.processes.containers import ProcessContainer
+from bioimageit_core.core.observer import Observable
+from bioimageit_core.core.tools_containers import ProcessContainer
 
 
 class LocalRunnerServiceBuilder:

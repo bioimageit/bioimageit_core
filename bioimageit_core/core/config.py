@@ -27,6 +27,7 @@ ConfigManager
 
 import os
 import json
+from .exceptions import ConfigError
 
 
 class ConfigKeyNotFoundError(Exception):
@@ -55,10 +56,12 @@ class Config:
     def __init__(self, config_file: str = ''):
         self.config_file = config_file
         self.config = {}
-        if config_file != '':
+        if os.path.exists(config_file):
             self.load(config_file)
+        else:
+            raise ConfigError(f'Cannot load the configuration file')
             
-    def save(self, config_file = ''):
+    def save(self, config_file=''):
         file = config_file
         if config_file == '':
             file = self.config_file
@@ -147,11 +150,10 @@ class ConfigAccess:
 
     def __init__(self, config_file: str):
         """ Virtually private constructor. """
-        # if ConfigAccess.__instance != None:
-        #    raise Exception("ConfigManager can be initialized only once!")
-        # else:
-        #    ConfigAccess.__instance = Config(config_file)
-        ConfigAccess.__instance = Config(config_file)
+        if ConfigAccess.__instance is not None:
+            raise Exception("ConfigManager can be initialized only once!")
+        else:
+            ConfigAccess.__instance = Config(config_file)
 
     @staticmethod
     def instance():

@@ -13,10 +13,10 @@ ProcessServiceProvider
 import os
 import subprocess
 
-from bioimageit_core.config import ConfigAccess
-from bioimageit_core.core.utils import Observable
-from bioimageit_core.processes.containers import ProcessContainer
-from bioimageit_core.runners.exceptions import RunnerExecError
+from bioimageit_core.core.config import ConfigAccess
+from bioimageit_core.core.observer import Observable
+from bioimageit_core.core.tools_containers import ProcessContainer
+from bioimageit_core.core.exceptions import RunnerExecError
 
 
 class DockerRunnerServiceBuilder:

@@ -3,7 +3,7 @@ import os
 import os.path
 import filecmp
 
-from bioimageit_core.metadata.run import Run
+from bioimageit_core.core.run import Run
 from tests.test_run_local import create_run_metadata
 
 
