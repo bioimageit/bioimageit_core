@@ -554,6 +554,12 @@ class LocalMetadataService:
             container.uri = LocalMetadataService.absolute_path(
                 LocalMetadataService.normalize_path_sep(
                     metadata['common']['url']), md_uri)
+
+            # metadata
+            if 'metadata' in metadata:
+                container.metadata = metadata['metadata']
+
+            # key_value_pairs
             if 'key_value_pairs' in metadata:
                 for key in metadata['key_value_pairs']:
                     container.key_value_pairs[key] = metadata['key_value_pairs'][key]
@@ -582,6 +588,8 @@ class LocalMetadataService:
         metadata['common']['format'] = raw_data.format
         metadata['common']['url'] = LocalMetadataService.to_unix_path(
             LocalMetadataService.relative_path(raw_data.uri, md_uri))
+
+        metadata['metadata'] = raw_data.metadata
 
         metadata['key_value_pairs'] = dict()
         for key in raw_data.key_value_pairs:
