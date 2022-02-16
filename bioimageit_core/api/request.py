@@ -18,6 +18,7 @@ from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import format_date
 from bioimageit_core.core.data_containers import METADATA_TYPE_RAW
 from bioimageit_core.core.tools_containers import Tool
+from bioimageit_core.core.runners_containers import Job
 from bioimageit_core.core.query import SearchContainer, query_list_single
 
 from bioimageit_core.plugins.data_factory import metadataServices
@@ -770,3 +771,37 @@ class Request(Observable):
             d_dict[elem] = database[elem].to_dict()
         with open(destination, 'w') as outfile:
             json.dump(d_dict, outfile, indent=4)
+
+    def exec(self, tool, **kwargs):
+        """Process one data from it uri
+
+        This method will process a data from the file directly and no metadata will be managed.
+        This method is provided only for developers who needs to manage manually the metadata, or
+        for people who only want to try a process without tracking the results and metadata.
+
+        Parameters
+        ----------
+        tool: Tool
+            Container of the tool information
+        kwargs: dict
+            Dictionary of the tool inputs, outputs and parameters.
+            Ex: {"i": "image.tif", "o": result.tif, "threshold": 128}
+
+        """
+        pass
+
+    def run(self, job):
+        """Run a BioImageIT job
+
+        A BioImageIT job is a run of a processing tool in a database. The data to process are
+        selected in the database using a specified request, and the results are automatically
+        saved in a new dataset of the database. All the metadata of the job (tool, request,
+        parameters) are also saved in the database.
+
+        Parameters
+        ----------
+        job: Job
+            Container of the job information
+
+        """
+        pass
