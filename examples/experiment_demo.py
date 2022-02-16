@@ -14,9 +14,8 @@ req.import_dir(experiment=experiment,
                dir_uri='./tests/test_images/data',
                filter_=r'\.tif$',
                author='sprigent',
-               format_='tif',
-               date='now',
-               copy_data=True)
+               format_='imagetiff',
+               date='now')
 
 # Tag the images using the information in the file names
 req.annotate_from_name(experiment, 'Population', ['population1', 'population2'])

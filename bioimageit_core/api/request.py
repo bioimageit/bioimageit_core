@@ -180,7 +180,7 @@ class Request(Observable):
             self.notify_error(str(err))
 
     def import_data(self, experiment, data_path, name, author, format_,
-                    date='now', key_value_pairs=dict, copy=True):
+                    date='now', key_value_pairs=dict):
         """import one data to the experiment
 
         The data is imported to the raw dataset
@@ -201,9 +201,6 @@ class Request(Observable):
             Date when the data where created
         key_value_pairs: dict
             Dictionary {key:value, key:value} of key-value pairs
-        copy: bool
-            True to copy the data to the Experiment database
-            False otherwise
         Returns
         -------
         class RawData containing the metadata
@@ -211,12 +208,14 @@ class Request(Observable):
         """
         try:
             return self.data_service.import_data(experiment, data_path, name, author,
-                                                 format_, format_date(date), key_value_pairs, copy)
+                                                 format_, format_date(date), key_value_pairs)
         except DataServiceError as err:
             self.notify_error(str(err))
+        except ValueError as err:
+            self.notify_error(f"The format {str(err)} is not recognised")
 
     def import_dir(self, experiment, dir_uri, filter_, author, format_, date,
-                   copy_data):
+                   directory_tag_key=''):
         """Import data from a directory to the experiment
 
         This method import with or without copy data contained
@@ -238,27 +237,18 @@ class Request(Observable):
             Format of the image (ex: tif)
         date: str
             Date when the data where created
-        copy_data: bool
-            True to copy the data to the experiment, false otherwise. If the
-            data are not copied, an absolute link to dir_uri is kept in the
-            experiment metadata. The original data directory must then not be
-            changed for the experiment to find the data.
+        directory_tag_key
+            If the string directory_tag_key is not empty, a new tag key entry with the
+            key={directory_tag_key} and the value={the directory name}.
 
         """
-        files = os.listdir(dir_uri)
-        count = 0
-        r1 = re.compile(filter_)  # re.compile(r'\.tif$')
-        for file in files:
-            count += 1
-            if r1.search(file):
-                self.notify_progress(int(100 * count / len(files)), file)
-                data_url = os.path.join(dir_uri, file)
-                try:
-                    self.data_service.import_data(experiment, data_url, file, author,
-                                                  format_, format_date(date), {}, copy_data)
-                except DataServiceError as err:
-                    self.notify_error(str(err))
-                    break
+        try:
+            return self.data_service.import_dir(experiment, dir_uri, filter_, author,
+                                                format_, format_date(date), directory_tag_key)
+        except DataServiceError as err:
+            self.notify_error(str(err))
+        except ValueError as err:
+            self.notify_error(f"The format {str(err)} is not recognised")
 
     def annotate_from_name(self, experiment, key, values):
         """Annotate an experiment raw data using raw data file names
