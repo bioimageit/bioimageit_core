@@ -15,7 +15,7 @@ import subprocess
 
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.observer import Observable
-from bioimageit_core.core.tools_containers import ProcessContainer
+from bioimageit_core.core.tools_containers import Tool
 from bioimageit_core.core.exceptions import RunnerExecError
 
 
@@ -31,7 +31,7 @@ class DockerRunnerServiceBuilder:
         return self._instance
 
 
-def extract_image_name(process: ProcessContainer):
+def extract_image_name(process: Tool):
     image_uri = process.container()['uri']
     image_name = ''
     image_split = image_uri.split(':')
@@ -68,7 +68,7 @@ class DockerRunnerService(Observable):
         super().__init__()
         self.service_name = 'LocalRunnerService'
 
-    def set_up(self, process: ProcessContainer):
+    def set_up(self, process: Tool):
         """setup the runner
 
         Add here the code to initialize the runner
@@ -115,7 +115,7 @@ class DockerRunnerService(Observable):
         print()
         subprocess.run(run_args)
 
-    def exec(self, process: ProcessContainer, args):
+    def exec(self, process: Tool, args):
         """Execute a process
 
         Parameters
@@ -165,7 +165,7 @@ class DockerRunnerService(Observable):
         subprocess.run(exec_args)
         # subprocess.run(['docker', 'stop', image_name])
 
-    def tear_down(self, process: ProcessContainer):
+    def tear_down(self, process: Tool):
         """tear down the runner
 
         Add here the code to down/clean the runner
@@ -190,8 +190,9 @@ class DockerRunnerService(Observable):
         print()
         subprocess.run(rm_args)
 
+    @staticmethod
     def modify_io_path(
-        self, arg: str, data_value: str, working_dir: str, docker_data_dir: str
+        arg: str, data_value: str, working_dir: str, docker_data_dir: str
     ):
         modified_arg = ''
         if arg == data_value or arg == data_value.replace('\\\\', '/').replace('\\', '/'):
@@ -210,7 +211,8 @@ class DockerRunnerService(Observable):
                 )
         return modified_arg
 
-    def relative_path(self, file: str, reference_file: str):
+    @staticmethod
+    def relative_path(file: str, reference_file: str):
         """convert file absolute path to a relative path wrt reference_file
 
         Parameters
@@ -230,6 +232,7 @@ class DockerRunnerService(Observable):
         reference_file = reference_file.replace(separator + separator,
                                                 separator)
 
+        common_part = ''
         for i in range(len(file)):
             common_part = reference_file[0:i]
             if common_part not in file:
@@ -237,11 +240,11 @@ class DockerRunnerService(Observable):
 
         last_separator = common_part.rfind(separator)
 
-        shortreference_file = reference_file[last_separator + 1:]
+        short_reference_file = reference_file[last_separator + 1:]
 
-        numberOfSubFolder = shortreference_file.count(separator)
-        shortfile = file[last_separator + 1:]
-        for i in range(numberOfSubFolder):
-            shortfile = '..' + separator + shortfile
+        number_of_sub_folder = short_reference_file.count(separator)
+        short_file = file[last_separator + 1:]
+        for i in range(number_of_sub_folder):
+            short_file = '..' + separator + short_file
 
-        return shortfile
+        return short_file

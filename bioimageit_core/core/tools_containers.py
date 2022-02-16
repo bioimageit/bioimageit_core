@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""BioImagePy process containers.
+"""BioIMageIT tool containers.
 
-This module contains containers for Process info
-and process database
+This module contains containers for Tool info
+and tool database
 
 Methods
 -------
@@ -16,80 +16,34 @@ IO_INPUT
 IO_OUTPUT
 
 Classes
-------- 
-ProcessIndexContainer
-ProcessContainer
-ProcessParameterContainer
-ProcessDatabaseContainer
+-------
+ToolsCategoryContainer
+ToolIndexContainer
+ToolContainer
+ToolParameterContainer
+ToolDatabaseContainer
 CmdSelectContainer
 
 """
 
 
-def PARAM_NUMBER():
-    """Type for parameter number"""
-
-    return "number"
-
-    
-def PARAM_FLOAT():
-    """Type for parameter float"""
-
-    return "float"
-
-def PARAM_INTEGER():
-    """Type for parameter int"""
-
-    return "integer"    
+PARAM_NUMBER = "number"
+PARAM_FLOAT = "float"
+PARAM_INTEGER = "integer"
+PARAM_STRING = "string"
+PARAM_SELECT = "select"
+PARAM_BOOLEAN = "boolean"
+PARAM_FILE = "file"
+IO_PARAM = "param"
+IO_INPUT = "input"
+IO_OUTPUT = "output"
 
 
-def PARAM_STRING():
-    """Type for parameter string"""
+class ToolsCategoryContainer:
+    """Container for a category of tools
 
-    return "string"
-
-
-def PARAM_SELECT():
-    """Type for parameter select"""
-
-    return "select"
-
-
-def PARAM_BOOLEAN():
-    """Type for parameter boolean"""
-
-    return "boolean"
-
-
-def PARAM_FILE():
-    """Type for parameter hidden"""
-
-    return "file"
-
-
-def IO_PARAM():
-    """I/O for parameter"""
-
-    return "param"
-
-
-def IO_INPUT():
-    """I/O for data input"""
-
-    return "input"
-
-
-def IO_OUTPUT():
-    """I/O for data output"""
-
-    return "output"
-
-
-class ProcessCategoryContainer:
-    """Container for a category of process
-
-    These are the metadata of a process category for the
-    toolshed structure
+    These are the metadata of a tools category for the
+    tool-shed structure
 
     id:
         ID of the category. It must be a unique name
@@ -102,7 +56,6 @@ class ProcessCategoryContainer:
         top level category
 
     """
-
     def __init__(self):
         self.id = ''
         self.name = ''
@@ -111,24 +64,23 @@ class ProcessCategoryContainer:
         self.parent = 'root'
 
 
-class ProcessIndexContainer:
-    """Container for a process main information
+class ToolIndexContainer:
+    """Container for a tool main information
 
     uri
         URI of the XML file
     id: str
-        Id of the process
+        Id of the tool
     name: str
-        Process name
+        Tool name
     version: str
-        Process version (ex 1.0.0)
+        Tool version (ex 1.0.0)
     type
-        Process type ('sequential', 'merge')
+        Tool type ('sequential', 'merge')
     categories
-        List of the process categories
+        List of the tool categories
 
     """
-
     def __init__(self):
         self.uri = ''
         self.id = ''
@@ -149,24 +101,30 @@ class ProcessIndexContainer:
         out['help'] = self.help
         return out
 
-    def serialize(self, direction: str = 'h'):
-        """Serialize the process main info
+    def serialize(self, direction: str = 'h', show_uri=False):
+        """Serialize the tool main info
 
         Parameters
         ----------
-        direction
+        direction: str
             h for horizontal, and v for vertical
+        show_uri: bool
+            True to show the tool URI
 
         """
-
         type_ = 'sequential'
         if self.type != '':
             type_ = self.type
 
-        if direction == 'h':
+        if direction == 'h' and show_uri:
             return '{:>15}\t{:>15}\t{:>15}\t{:>15}\t{:>15}'.format(
                 self.id + '_v' + self.version, self.name, self.version,
                 type_, self.uri
+            )
+        elif direction == 'h' and not show_uri:
+            return '{:>15}\t{:>15}\t{:>15}\t{:>15}'.format(
+                self.id + '_v' + self.version, self.name, self.version,
+                type_
             )
 
         sep = '\n'
@@ -243,8 +201,8 @@ class CmdSelectContainer:
         self.values.append(value)
 
 
-class ProcessTestParameterContainer:
-    """Container for a process test information
+class ToolTestParameterContainer:
+    """Container for a tool test information
 
     Attributes
     ----------
@@ -279,8 +237,8 @@ class ProcessTestParameterContainer:
         print("\t------------")
 
 
-class ProcessParameterContainer:
-    """Container for a process parameter information
+class ToolParameterContainer:
+    """Container for a tool parameter information
 
     Attributes
     ---------
@@ -321,7 +279,7 @@ class ProcessParameterContainer:
         self.help = ''  # str: help text
 
     def display(self):
-        """Display the process parameter information to console"""
+        """Display the tool parameter information to console"""
 
         print("\tname:", self.name)
         print("\tdescription:", self.description)
@@ -333,25 +291,25 @@ class ProcessParameterContainer:
         print("\t------------")
 
 
-class ProcessContainer:
-    """Container for a process parameter information
+class Tool:
+    """Container for a tool parameter information
 
     Attributes
     ---------
     id: str
-        Id of the process
+        Id of the tool
     name: str
-        Process name
+        Tool name
     version: str
-        Process version (ex 1.0.0)
+        Tool version (ex 1.0.0)
     description: str
-        Process short description (used for the man page)
+        Tool short description (used for the man page)
     command: str
-        Command executed when process is ran
+        Command executed when tool is ran
     inputs: list
-        Process inputs stored in a list of ProcessParameter
+        Tool inputs stored in a list of ToolParameter
     outputs: list
-        Process outputs stored in a list of ProcessParameter
+        Tool outputs stored in a list of ToolParameter
     tests: list
         List of unit tests
     help: str
@@ -366,11 +324,10 @@ class ProcessContainer:
     outputs_size
         Returns the number of outputs
     display
-        Display the process information to console
+        Display the tool information to console
+
     """
-
     def __init__(self):
-
         self.uri = ''
         self.id = ''
         self.name = ''
@@ -386,7 +343,7 @@ class ProcessContainer:
         self.type = 'sequential'
 
     def fullname(self):
-        """fullname of the process
+        """fullname of the tool
 
         the full name is "{name}_v{version}"
 
@@ -439,10 +396,9 @@ class ProcessContainer:
             Number of inputs
 
         """
-
         count = 0
         for param in self.inputs:
-            if param.io == IO_PARAM():
+            if param.io == IO_PARAM:
                 count += 1
         return count
 
@@ -455,7 +411,6 @@ class ProcessContainer:
             Number of inputs
 
         """
-
         return len(self.inputs)
 
     def outputs_size(self):
@@ -467,13 +422,12 @@ class ProcessContainer:
             Number of outputs
 
         """
-
         return len(self.outputs)
 
     def display(self):
-        """Print the process information to console."""
+        """Print the tool information to console."""
 
-        print('ProcessInfo')
+        print('ToolInfo')
         print('-------------')
         print('xml file:', self.uri)
         print('id:', self.id)
@@ -495,3 +449,19 @@ class ProcessContainer:
         for req in self.requirements:
             print("origin:", req['origin'], "type", req['type'], "uri:",
                   req['uri'])
+
+    def man(self):
+        """Display the tool man page"""
+        # 1. program name
+        print(self.name, ':', self.description)
+        # 2. list of args key, default, description
+        for param in self.inputs:
+            line_new = '\t{:>15}\t{:>15}\t{:>15}'.format(
+                param.name, param.default_value, param.description
+            )
+            print(line_new)
+        for param in self.outputs:
+            line_new = '\t{:>15}\t{:>15}\t{:>15}'.format(
+                param.name, param.default_value, param.description
+            )
+            print(line_new)

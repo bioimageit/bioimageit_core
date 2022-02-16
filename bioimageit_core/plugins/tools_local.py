@@ -10,16 +10,16 @@ ProcessServiceProvider
 
 """
 import os
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ETree
 import json
 import yaml
 
-from bioimageit_core.core.tools_containers import (ProcessContainer,
-                                                   ProcessIndexContainer,
-                                                   ProcessParameterContainer,
+from bioimageit_core.core.tools_containers import (Tool,
+                                                   ToolIndexContainer,
+                                                   ToolParameterContainer,
                                                    CmdSelectContainer,
-                                                   ProcessTestParameterContainer,
-                                                   ProcessCategoryContainer,
+                                                   ToolTestParameterContainer,
+                                                   ToolsCategoryContainer,
                                                    IO_INPUT,
                                                    IO_OUTPUT,
                                                    IO_PARAM,
@@ -30,10 +30,10 @@ from bioimageit_core.core.tools_containers import (ProcessContainer,
                                                    PARAM_BOOLEAN,
                                                    PARAM_STRING
                                                    )
-from bioimageit_core.core.exceptions import ToolsServiceError
+from bioimageit_core.core.exceptions import ToolsServiceError, ToolNotFoundError
 
 
-class LocalProcessServiceBuilder:
+class LocalToolsServiceBuilder:
     """Service builder for the process service"""
 
     def __init__(self):
@@ -41,14 +41,14 @@ class LocalProcessServiceBuilder:
 
     def __call__(self, xml_dirs, categories, **_ignored):
         if not self._instance:
-            self._instance = LocalProcessService()
+            self._instance = LocalToolsService()
             self._instance.xml_dirs = xml_dirs
             self._instance.categories_json = categories
-            self._instance._load()
+            self._instance.load()
         return self._instance
 
 
-class LocalProcessService:
+class LocalToolsService:
     """Service for local process
 
     To initialize the database, you need to set the xml_dirs from
@@ -76,20 +76,20 @@ class LocalProcessService:
             with open(self.categories_json) as json_file:
                 categories_dict = json.load(json_file)
 
-        categories_json_dirname = os.path.dirname(self.categories_json)
+        categories_json_dir_name = os.path.dirname(self.categories_json)
         for categories in categories_dict['categories']:
-            container = ProcessCategoryContainer()
+            container = ToolsCategoryContainer()
             container.id = categories['id']
             container.name = categories['name']
             if 'doc' in categories:
                 container.doc = categories['doc']
             container.thumbnail = os.path.join(
-                categories_json_dirname, categories['thumbnail']
+                categories_json_dir_name, categories['thumbnail']
             )
             container.parent = categories['parent']
             self.categories.append(container)
 
-    def _load(self):
+    def load(self):
         """Build the process and categories database"""
         self._load_database()
         self._load_categories()
@@ -105,41 +105,43 @@ class LocalProcessService:
             # print("process database parse dir abs ", os.path.abspath(dir_))
             self._parse_dir(os.path.abspath(dir_))
 
-    def _parse_dir(self, rootdir: str):
+    def _parse_dir(self, root_dir: str):
         """Load process info XMLs
 
         Parameters
         ----------
-        rootdir
+        root_dir
             Directory to parse
 
         """
-        for current_path, subs, files in os.walk(rootdir):
+        for current_path, subs, files in os.walk(root_dir):
             for file in files:
                 if file.endswith('.xml'):
                     process_path = os.path.join(current_path, file)
-                    parser = ProcessParser(process_path)
+                    parser = ToolParser(process_path)
                     info = parser.parse_main_info()
                     if info:
                         self.database[info.id + '_v' + info.version] = info
 
-    def read_process(self, uri: str) -> ProcessContainer:
-        """Read a process from its URI
+    @staticmethod
+    def read_tool(uri: str) -> Tool:
+        """Read a tool from its URI
 
         Parameters
         ----------
         uri
-            URI of the process
+            URI of the tool
 
         Returns
         -------
-        A container of the process metadata
+        A container of the tool metadata
 
         """
-        parser = ProcessParser(uri)
+        parser = ToolParser(uri)
         return parser.parse()
 
-    def read_process_index(self, uri: str) -> ProcessIndexContainer:
+    @staticmethod
+    def read_process_index(uri: str) -> ToolIndexContainer:
         """Read the basic indexation information of a Process
 
         Parameters
@@ -152,7 +154,7 @@ class LocalProcessService:
         process index information
 
         """
-        parser = ProcessParser(uri)
+        parser = ToolParser(uri)
         return parser.parse_main_info()
 
     def search(self, keyword: str):
@@ -180,7 +182,7 @@ class LocalProcessService:
                     list_.append(self.database[name])
         return list_
 
-    def get_process(self, fullname: str):
+    def get_tool(self, fullname: str):
         """Get a process by name
 
         Parameters
@@ -194,8 +196,10 @@ class LocalProcessService:
 
         """
         if fullname in self.database:
-            return self.database[fullname].uri
-        return None
+            parser = ToolParser(self.database[fullname].uri)
+            return parser.parse()
+        else:
+            raise ToolNotFoundError(f'The tool {fullname} cannot be found in the database')
 
     def get_categories(self, parent: str) -> list:
         """Get a list of categories for a given parent
@@ -204,11 +208,11 @@ class LocalProcessService:
             ID of the parent category
 
         """
-        outlist = []
+        out_list = []
         for category in self.categories:
             if category.parent == parent:
-                outlist.append(category)
-        return outlist
+                out_list.append(category)
+        return out_list
 
     def get_category_processes(self, category: str) -> list:
         """Get the list of processes with the given category
@@ -217,19 +221,19 @@ class LocalProcessService:
             ID of the category
 
         """
-        outlist = []
+        out_list = []
         for name in self.database:
             process_container = self.database[name]
             if category in process_container.categories:
-                outlist.append(process_container)
-        return outlist
+                out_list.append(process_container)
+        return out_list
 
     def get_processes_database(self):
         """Get the dictionary of processed"""
         return self.database
 
 
-class ProcessParser:
+class ToolParser:
     """Parse a process XML file
 
     The process information are parsed from the XML file and stored into
@@ -253,7 +257,7 @@ class ProcessParser:
     """
 
     def __init__(self, xml_file_url: str):
-        self.info = ProcessContainer()
+        self.info = Tool()
         self.xml_file_url = xml_file_url
         self.info.uri = xml_file_url
         self._root = None
@@ -267,13 +271,13 @@ class ProcessParser:
 
         """
         # print('parse xml file:', self.xml_file_url)
-        tree = ET.parse(self.xml_file_url)
+        tree = ETree.parse(self.xml_file_url)
         self._root = tree.getroot()
 
         if self._root.tag != 'tool':
             return None
 
-        info = ProcessIndexContainer()
+        info = ToolIndexContainer()
         info.uri = self.xml_file_url
         if 'id' in self._root.attrib:
             info.id = self._root.attrib['id']
@@ -294,7 +298,7 @@ class ProcessParser:
         info.categories = self._parse_categories()
         return info
 
-    def parse(self) -> ProcessContainer:
+    def parse(self) -> Tool:
         """Parse the XML file
 
         Returns
@@ -302,7 +306,7 @@ class ProcessParser:
         The process information extracted from the XML file
 
         """
-        tree = ET.parse(self.xml_file_url)
+        tree = ETree.parse(self.xml_file_url)
         self._root = tree.getroot()
 
         if self._root.tag != 'tool':
@@ -377,7 +381,8 @@ class ProcessParser:
         command = node.text
         command = command.replace('\t', '')
         command = command.replace('\n', '')
-        command = command.replace('$__tool_directory__', os.path.dirname(self.xml_file_url) + os.sep)
+        command = command.replace('$__tool_directory__',
+                                  os.path.dirname(self.xml_file_url) + os.sep)
         self.info.command = command
 
     def _parse_help(self, node):
@@ -393,7 +398,7 @@ class ProcessParser:
 
         for child in node:
             if child.tag == 'param':
-                input_parameter = ProcessParameterContainer()
+                input_parameter = ToolParameterContainer()
 
                 if 'name' in child.attrib:
                     input_parameter.name = child.attrib['name']
@@ -423,27 +428,27 @@ class ProcessParser:
 
                 if 'type' in child.attrib:
                     if child.attrib['type'] == 'data':
-                        input_parameter.io = IO_INPUT()
+                        input_parameter.io = IO_INPUT
                         input_parameter.is_data = True
 
                         if 'format' in child.attrib:
                             input_parameter.type = child.attrib['format']
                     else:
-                        input_parameter.io = IO_PARAM()
+                        input_parameter.io = IO_PARAM
                         input_parameter.is_data = False
 
                         if child.attrib['type'] == 'number':
-                            input_parameter.type = PARAM_NUMBER()
+                            input_parameter.type = PARAM_NUMBER
                         elif child.attrib['type'] == 'float':
-                            input_parameter.type = PARAM_FLOAT()    
+                            input_parameter.type = PARAM_FLOAT
                         elif child.attrib['type'] == 'integer':
-                            input_parameter.type = PARAM_INTEGER()         
+                            input_parameter.type = PARAM_INTEGER
                         elif child.attrib['type'] == 'string' or child.attrib['type'] == 'text':
-                            input_parameter.type = PARAM_STRING()
+                            input_parameter.type = PARAM_STRING
                         elif child.attrib['type'] == 'bool' or child.attrib['type'] == 'boolean':
-                            input_parameter.type = PARAM_BOOLEAN()
-                        elif child.attrib['type'] == PARAM_SELECT():
-                            input_parameter.type = PARAM_SELECT()
+                            input_parameter.type = PARAM_BOOLEAN
+                        elif child.attrib['type'] == PARAM_SELECT:
+                            input_parameter.type = PARAM_SELECT
                             input_parameter.select_info = CmdSelectContainer()
                             # print("select parse option:")
                             for option_node in child:
@@ -458,7 +463,6 @@ class ProcessParser:
                                 + input_parameter.name
                                 + " is not supported"
                             )
-
                 self.info.inputs.append(input_parameter)
 
     def _parse_outputs(self, node):
@@ -466,8 +470,8 @@ class ProcessParser:
 
         for child in node:
             if child.tag == 'data':
-                output_parameter = ProcessParameterContainer()
-                output_parameter.io = IO_OUTPUT()
+                output_parameter = ToolParameterContainer()
+                output_parameter.io = IO_OUTPUT
                 output_parameter.is_data = True
 
                 if 'name' in child.attrib:
@@ -486,22 +490,22 @@ class ProcessParser:
         for child in node:
             if child.tag == 'test':
                 info_test = []
-                for subchild in child:
-                    param_info = ProcessTestParameterContainer()
-                    if subchild.tag == 'param':
+                for sub_child in child:
+                    param_info = ToolTestParameterContainer()
+                    if sub_child.tag == 'param':
                         param_info.type = 'param'
-                        if 'name' in subchild.attrib:
-                            param_info.name = subchild.attrib['name']
-                        if 'value' in subchild.attrib:
-                            param_info.value = subchild.attrib['value']
-                    if subchild.tag == 'output':
+                        if 'name' in sub_child.attrib:
+                            param_info.name = sub_child.attrib['name']
+                        if 'value' in sub_child.attrib:
+                            param_info.value = sub_child.attrib['value']
+                    if sub_child.tag == 'output':
                         param_info.type = 'output'
-                        if 'name' in subchild.attrib:
-                            param_info.name = subchild.attrib['name']
-                        if 'file' in subchild.attrib:
-                            param_info.file = subchild.attrib['file']
-                        if 'compare' in subchild.attrib:
-                            param_info.compare = subchild.attrib['compare']
+                        if 'name' in sub_child.attrib:
+                            param_info.name = sub_child.attrib['name']
+                        if 'file' in sub_child.attrib:
+                            param_info.file = sub_child.attrib['file']
+                        if 'compare' in sub_child.attrib:
+                            param_info.compare = sub_child.attrib['compare']
                     info_test.append(param_info)
                 self.info.tests.append(info_test)
 

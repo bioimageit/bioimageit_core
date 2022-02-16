@@ -10,20 +10,22 @@ Request
 
 import os
 import re
-
+import json
 from prettytable import PrettyTable
 
 from bioimageit_core.core.observer import Observable, Observer
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import format_date
 from bioimageit_core.core.data_containers import METADATA_TYPE_RAW
+from bioimageit_core.core.tools_containers import Tool
 from bioimageit_core.core.query import SearchContainer, query_list_single
 
 from bioimageit_core.plugins.data_factory import metadataServices
 from bioimageit_core.core.data_containers import Experiment
 from bioimageit_core.plugins.tools_factory import toolsServices
 from bioimageit_core.plugins.runners_factory import runnerServices
-from bioimageit_core.core.exceptions import ConfigError, DataServiceError, DataQueryError
+from bioimageit_core.core.exceptions import (ConfigError, DataServiceError, DataQueryError,
+                                             ToolsServiceError, ToolNotFoundError)
 
 
 class Request(Observable):
@@ -58,7 +60,7 @@ class Request(Observable):
         if 'process' in config and 'service' in config['process']:
             conf = config['process']
             try:
-                self.process_service = toolsServices.get(config['process']["service"], **conf)
+                self.tools_service = toolsServices.get(config['process']["service"], **conf)
             except ConfigError as err:
                 self.notify_error(str(err))
                 return
@@ -673,3 +675,98 @@ class Request(Observable):
             # TODO implement display processed dataset
             print('Display processed dataset not yet implemented')
         print(t)
+
+    def search_tool(self, keyword: str = ''):
+        """Search a tool using a keyword in the database
+
+        This method print the list of funded processed
+
+        Parameters
+        ----------
+        keyword
+            Keyword to search in the database
+
+        """
+        try:
+            plist = self.tools_service.search(keyword)
+
+            x = PrettyTable()
+            x.field_names = ["UUID", "Name", "Version", "Type"]
+            for tool in plist:
+                type_ = 'sequential'
+                if tool.type != '':
+                    type_ = tool.type
+                x.add_row([tool.id, tool.name, tool.version, type_])
+            print(x)
+        except ToolsServiceError as err:
+            self.notify_error(str(err))
+        except ToolNotFoundError as err:
+            self.notify_error(str(err))
+
+    def get_tool(self, name: str) -> Tool:
+        """get a process by name
+
+        Parameters
+        ----------
+        name
+            Fullname of the tool ({name}_v{version})
+
+        Returns
+        -------
+        An instance of the process
+
+        """
+        try:
+            return self.tools_service.get_tool(name)
+        except ToolsServiceError as err:
+            self.notify_error(str(err))
+        except ToolNotFoundError as err:
+            self.notify_error(str(err))
+
+    def get_categories(self, parent: str) -> list:
+        """Get a list of categories for a given parent category
+
+        Parameters
+        ----------
+        parent
+            ID of the parent category
+
+        """
+        try:
+            return self.tools_service.get_categories(parent)
+        except ToolsServiceError as err:
+            self.notify_error(str(err))
+        except ToolNotFoundError as err:
+            self.notify_error(str(err))
+
+    def get_category_tools(self, category: str) -> list:
+        """Get the list of tools with the given category
+
+        Parameters
+        ----------
+        category
+            ID of the category
+
+        """
+        try:
+            return self.tools_service.get_category_tools(category)
+        except ToolsServiceError as err:
+            self.notify_error(str(err))
+        except ToolNotFoundError as err:
+            self.notify_error(str(err))
+
+    def export_tools_to_json(self, destination: str):
+        """Export the database into a JSON file
+
+        Parameters
+        ----------
+        destination
+            URI of the json file where the database is saved
+
+        """
+        database = self.tools_service.get_tools_database()
+        d_dict = dict()
+        for elem in database:
+            d_dict[elem] = database[elem].to_dict()
+        with open(destination, 'w') as outfile:
+            json.dump(d_dict, outfile, indent=4)

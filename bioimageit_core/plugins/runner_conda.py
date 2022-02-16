@@ -16,7 +16,7 @@ import subprocess
 from bioimageit_core.core.observer import Observable
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.exceptions import ConfigError
-from bioimageit_core.core.tools_containers import ProcessContainer
+from bioimageit_core.core.tools_containers import Tool
 
 
 class CondaRunnerServiceBuilder:
@@ -48,7 +48,7 @@ class CondaRunnerService(Observable):
         else:
             raise ConfigError('conda_dir is not set in the configuration file in runner section')
 
-    def set_up(self, process: ProcessContainer):
+    def set_up(self, process: Tool):
         """setup the runner
 
         Add here the code to initialize the runner
@@ -100,7 +100,7 @@ class CondaRunnerService(Observable):
         else:
             print('Error: service conda cannot run this process')
 
-    def exec(self, process: ProcessContainer, args):
+    def exec(self, process: Tool, args):
         """Execute a process
 
         Parameters
@@ -133,7 +133,7 @@ class CondaRunnerService(Observable):
             subprocess.run(args_str, shell=True, executable='/bin/bash',
                            check=True)
 
-    def tear_down(self, process: ProcessContainer):
+    def tear_down(self, process: Tool):
         """tear down the runner
 
         Add here the code to down/clean the runner
