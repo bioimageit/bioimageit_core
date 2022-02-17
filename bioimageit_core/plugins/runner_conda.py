@@ -12,10 +12,11 @@ ProcessServiceProvider
 import os
 import platform
 import subprocess
+from subprocess import Popen, PIPE, CalledProcessError
 
 from bioimageit_core.core.observer import Observable
 from bioimageit_core.core.config import ConfigAccess
-from bioimageit_core.core.exceptions import ConfigError
+from bioimageit_core.core.exceptions import ConfigError, RunnerExecError
 from bioimageit_core.core.tools_containers import Tool
 
 
@@ -66,19 +67,6 @@ class CondaRunnerService(Observable):
             env_name = process.id
             if 'env' in requirements:
                 env_name = requirements['env']
-            #init_cmd = requirements['init']
-
-            # install env if not exists
-            #if platform.system() == 'Windows':
-            #    args_exists = f"{self.condash} env list"
-            #    print("exists env cmd:", args_exists)
-            #    proc = subprocess.run(args_exists, check=True, stdout=subprocess.PIPE)
-            #else:    
-            #    args_exists = f". {self.condash} && conda env list"
-            #    print("exists env cmd:", args_exists)
-            #    proc = subprocess.run(args_exists, shell=True, executable='/bin/bash',
-            #                          check=True, stdout=subprocess.PIPE)
-
             # get the list of envs
             envs_list = os.listdir(os.path.join(self.conda_dir, 'envs'))
 
@@ -96,9 +84,9 @@ class CondaRunnerService(Observable):
                     subprocess.run(args_install, shell=True, executable='/bin/bash',
                                    check=True)
             else:
-                print(env_name + ' env already exists')
+                self.notify(f'{env_name} env already exists')
         else:
-            print('Error: service conda cannot run this process')
+            raise RunnerExecError(f'Error: service conda cannot run the tool {process.fullname()}')
 
     def exec(self, process: Tool, args):
         """Execute a process
@@ -116,22 +104,29 @@ class CondaRunnerService(Observable):
         if 'env' in requirements:
             env_name = requirements['env']
 
-        #args_list = [self.condash, 'activate', env_name, '&&'] + args
         if platform.system() == 'Windows':
             condaexe = os.path.join(self.conda_dir, 'condabin', 'conda.bat')
             args_str = '"' + condaexe + '"' + ' activate '+env_name+' &&'
             for arg in args:
                 args_str += ' ' + '"' + arg + '"'
-            print("final exec cmd:", args_str)
-            subprocess.run(args_str, check=True)
+            self.notify(f"Conda exec cmd: {args_str}")
+            with Popen(args_str, stdout=PIPE, bufsize=1, universal_newlines=True) as p:
+                for b in p.stdout:
+                    self.notify(b.strip())
+            if p.returncode != 0:
+                raise RunnerExecError(f'return code: {p.returncode}, for command: {p.args}')
         else:    
             condash = os.path.join(self.conda_dir, 'etc', 'profile.d', 'conda.sh')
             args_str = '. "' + condash + '"' + ' && conda activate '+env_name+' &&'
             for arg in args:
                 args_str += ' ' + '"' + arg + '"'
-            print("final exec cmd:", args_str)
-            subprocess.run(args_str, shell=True, executable='/bin/bash',
-                           check=True)
+            self.notify(f"Conda exec cmd: {args_str}")
+            with Popen(args_str, shell=True, executable='/bin/bash', stdout=PIPE, bufsize=1,
+                       universal_newlines=True) as p:
+                for b in p.stdout:
+                    self.notify(b.strip())
+            if p.returncode != 0:
+                raise RunnerExecError(f'return code: {p.returncode}, for command: {p.args}')
 
     def tear_down(self, process: Tool):
         """tear down the runner

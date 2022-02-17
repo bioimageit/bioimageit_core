@@ -82,10 +82,13 @@ class Job:
         Set of parameters that setup the tool.
     inputs: JobInputs
         Description of the job inputs in the database
+    output_dataset_name: str
+        Unique name of the output dataset
 
     """
-    def __init__(self, experiment, tool, parameters, inputs):
-        self.experiment = experiment
-        self.tool = tool
-        self.parameters = parameters
-        self.inputs = inputs
+    def __init__(self):
+        self.experiment = None
+        self.tool = None
+        self.parameters = None
+        self.inputs = None
+        self.output_dataset_name = ''

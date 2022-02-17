@@ -11,12 +11,13 @@ Request
 import os
 import re
 import json
+import shlex
 from prettytable import PrettyTable
 
 from bioimageit_core.core.observer import Observable, Observer
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import format_date
-from bioimageit_core.core.data_containers import METADATA_TYPE_RAW
+from bioimageit_core.core.data_containers import METADATA_TYPE_RAW, ProcessedData, Dataset, Run
 from bioimageit_core.core.tools_containers import Tool
 from bioimageit_core.core.runners_containers import Job
 from bioimageit_core.core.query import SearchContainer, query_list_single
@@ -26,7 +27,7 @@ from bioimageit_core.core.data_containers import Experiment
 from bioimageit_core.plugins.tools_factory import toolsServices
 from bioimageit_core.plugins.runners_factory import runnerServices
 from bioimageit_core.core.exceptions import (ConfigError, DataServiceError, DataQueryError,
-                                             ToolsServiceError, ToolNotFoundError)
+                                             ToolsServiceError, ToolNotFoundError, RunnerExecError)
 
 
 class Request(Observable):
@@ -34,6 +35,11 @@ class Request(Observable):
         super().__init__()
 
         self.add_observer(Observer())
+
+        # Declare services
+        self.data_service = None
+        self.tools_service = None
+        self.runner_service = None
 
         # load configuration
         self.config_file = config_file
@@ -43,6 +49,7 @@ class Request(Observable):
             self.notify_error(f'Cannot load the configuration from file: {config_file}')
             return
 
+    def connect(self):
         # init services
         config = ConfigAccess.instance().config
         # metadata
@@ -74,6 +81,8 @@ class Request(Observable):
             conf = config['runner']
             try:
                 self.runner_service = runnerServices.get(conf["service"], **conf)
+                for obs in self._observers:
+                    self.runner_service.add_observer(obs)
             except ConfigError as err:
                 self.notify_error(str(err))
                 return
@@ -577,6 +586,24 @@ class Request(Observable):
         except DataServiceError as err:
             self.notify_error(str(err))
 
+    def create_run(self, dataset, run_info):
+        """Create a new run metadata
+
+        Parameters
+        ----------
+        dataset: Dataset
+            Object of the dataset metadata
+        run_info: Run
+            Object containing the metadata of the run. md_uri is ignored and
+            created automatically by this method
+
+        Returns
+        -------
+        Run object with the metadata and the new created md_uri
+
+        """
+        return self.data_service.create_run(dataset, run_info)
+
     def get_run(self, uri):
         """Read a run metadata from the data base
 
@@ -677,6 +704,26 @@ class Request(Observable):
             print('Display processed dataset not yet implemented')
         print(t)
 
+    def create_data(self, dataset, run, processed_data):
+        """Create a new processed data for a given dataset
+
+        Parameters
+        ----------
+        dataset: Dataset
+            Object of the dataset metadata
+        run: Run
+            Metadata of the run
+        processed_data: ProcessedData
+            Object containing the new processed data. md_uri is ignored and
+            created automatically by this method
+
+        Returns
+        -------
+        ProcessedData object with the metadata and the new created md_uri
+
+        """
+        return self.data_service.create_data(dataset, run, processed_data)
+
     def search_tool(self, keyword: str = ''):
         """Search a tool using a keyword in the database
 
@@ -772,6 +819,59 @@ class Request(Observable):
         with open(destination, 'w') as outfile:
             json.dump(d_dict, outfile, indent=4)
 
+    def _prepare_command(self, tool, parameters):
+        """prepare a command line from user inputs
+
+        Parameters
+        ----------
+        tool: Tool
+            Information of the tool to run
+        parameters: dict
+            Dictionary of i/o and parameters key-values
+
+        """
+        # 1. check inputs
+        for input_arg in tool.inputs:
+            if input_arg.name not in parameters and input_arg.type:
+                self.notify_warning(
+                    f'Warning (Runner): cannot find the input: {input_arg.name} will use the '
+                    f'default value: {input_arg.default_value} '
+                )
+                input_arg.value = input_arg.default_value
+        for output_arg in tool.outputs:
+            if output_arg.name not in parameters:
+                self.notify_warning(
+                    'Warning (Runner): cannot find the output: {output_arg.name} '
+                    'will use the default value: {output_arg.default_value}'
+                )
+                output_arg.value = output_arg.default_value
+        # 2. exec
+        # 2.1- get the parameters values
+        for key in parameters:
+            for input_arg in tool.inputs:
+                if input_arg.name == key and input_arg.type:
+                    input_arg.value = parameters[key]
+            for output_arg in tool.outputs:
+                if output_arg.name == key:
+                    output_arg.value = parameters[key]
+        # 2.2.1. build the command line
+        cmd = tool.command
+        for input_arg in tool.inputs:
+            cmd = cmd.replace("${" + input_arg.name + "}",
+                              "'" + str(input_arg.value) + "'")
+            input_arg_name_simple = input_arg.name.replace("-", "")
+            cmd = cmd.replace("${" + input_arg_name_simple + "}",
+                              "'" + str(input_arg.value) + "'")
+        for output_arg in tool.outputs:
+            cmd = cmd.replace("${" + output_arg.name + "}",
+                              "'" + str(output_arg.value) + "'")
+        # 2.2.2. replace the command variables
+        cmd = self._replace_env_variables(tool, cmd)
+        cmd = cmd.replace('/', os.sep)
+        # 2.3. exec
+        args = shlex.split(cmd)
+        return args
+
     def exec(self, tool, **kwargs):
         """Process one data from it uri
 
@@ -783,12 +883,32 @@ class Request(Observable):
         ----------
         tool: Tool
             Container of the tool information
-        kwargs: dict
+        kwargs:
             Dictionary of the tool inputs, outputs and parameters.
             Ex: {"i": "image.tif", "o": result.tif, "threshold": 128}
 
         """
-        pass
+        args = self._prepare_command(tool, kwargs)
+        try:
+            self.runner_service.set_up(tool)
+            self.runner_service.exec(tool, args)
+            self.runner_service.tear_down(tool)
+        except RunnerExecError as err:
+            self.notify_error(str(err))
+
+    @staticmethod
+    def _replace_env_variables(tool, cmd) -> str:
+        xml_root_path = os.path.dirname(os.path.abspath(tool.uri))
+        cmd_out = cmd.replace("$__tool_directory__", xml_root_path)
+        if 'fiji' in ConfigAccess.instance().config:
+            cmd_out = cmd_out.replace("$__fiji__", ConfigAccess.instance().config['fiji'])
+        config = ConfigAccess.instance()
+        if config.is_key('env'):
+            for element in config.get('env'):
+                cmd_out = cmd_out.replace(
+                    "${" + element["name"] + "}", element["value"]
+                )
+        return cmd_out
 
     def run(self, job):
         """Run a BioImageIT job
@@ -804,4 +924,108 @@ class Request(Observable):
             Container of the job information
 
         """
+        if job.tool.type == "merge":
+            self._run_job_merged(job)
+        else:
+            self._run_job_sequence(job)
+
+    def _query_inputs(self, job):
+        if len(job.inputs.inputs) == 0:
+            raise RunnerExecError('No input data specified')
+
+        input_data = dict()
+        data_count = 0
+        for i, job_input in enumerate(job.inputs.inputs):
+
+            input_data[i] = self.get_data(
+                job_input.dataset,
+                job_input.query,
+                job_input.origin_output_name
+            )
+            if i == 0:
+                data_count = len(input_data[i])
+            else:
+                if len(input_data[i]) != data_count:
+                    raise RunnerExecError(
+                        "Input dataset queries does not "
+                        "have the same number of data"
+                    )
+        return [input_data, data_count]
+
+    def _run_job_sequence(self, job):
+        """Run the process in a sequence
+
+        This is the main function that run the process on the experiment data. The sequence means
+        that all the queried data are processed independently with the same tool and the same
+        parameters.
+
+        Parameters
+        ----------
+        job: Job
+            Container of the job information
+        """
+        # 1- Query all the input data and verify that the size are equal, if not return an error
+        input_data, data_count = self._query_inputs(job)
+
+        # 2- Create the ProcessedDataSet
+        processed_dataset = self.create_dataset(job.experiment, job.output_dataset_name)
+
+        # 3- Create run metadata
+        run = Run()
+        run.process_name = job.tool.fullname()
+        run.process_uri = job.tool.uri
+        for t, input_ in enumerate(job.inputs.inputs):
+            run.add_input(input_.name, input_.dataset,
+                          input_.query, input_.inputs_origin_output_name)
+        for key, value in job.parameters.items():
+            run.add_parameter(key, value)
+        run = self.create_run(processed_dataset, run)  # save to database
+
+        # 4- loop over the input data to run processing
+        for i in range(data_count):
+            data_info_zero = self.get_raw_data(input_data[0][i].uri())
+            # 4.0- notify observers
+            self.notify_progress(int(100 * i / data_count), f"Process {data_info_zero.name}")
+            # 4.1- Parse IO
+            args = []
+            # get the input arguments
+            inputs_metadata = {}
+            for n, input_ in enumerate(job.inputs.inputs):
+                args.append(input_.name)
+                # input data can be a processedData but we only read the common metadata
+                data_info = self.get_raw_data(input_data[n][i].uri())
+                args.append(data_info.uri)
+                inputs_metadata[input_.name] = data_info
+            # get the params arguments
+            for key, value in job.parameters:
+                args.append(key)
+                args.append(value)
+            # setup outputs
+            for output in job.tool.outputs:
+                # output metadata
+                processed_data = ProcessedData()
+                processed_data.set_info(name=data_info_zero.metadata.name + "_" + output.name,
+                                        author=ConfigAccess.instance().get('user')['name'],
+                                        date='now', format_=output.type, url="")
+                for id_, data_ in inputs_metadata.items():
+                    processed_data.add_input(id_=id_, data=data_)
+                processed_data.set_output(id_=output.name, label=output.description)
+                # save the metadata and create its md_uri and uri
+                processed_data = self.create_data(processed_dataset, run, processed_data)
+                # args
+                args.append(output.name)
+                args.append(processed_data.metadata.uri)
+            # 4.2- exec
+            try:
+                # TODO: move setup and tear down to top and bottom with a clean teardown when error
+                self.runner_service.set_up(job.tool)
+                self.runner_service.exec(job.tool, args)
+                self.runner_service.tear_down(job.tool)
+            except RunnerExecError as err:
+                self.notify_error(str(err))
+
+        # 4.0- notify observers
+        self.notify_progress(100, 'done')
+
+    def _run_job_merged(self, job):
         pass

@@ -29,7 +29,7 @@ class Observer:
             Information message
 
         """
-        print(f'WARNING: {self.COL_W} {message} {self.COL_W}')
+        print(f'{self.COL_G} {message} {self.COL_W}')
 
     def notify_warning(self, message: str):
         """Function called by the observable to warn
@@ -40,7 +40,7 @@ class Observer:
             Warning message
 
         """
-        print(f'WARNING: {self.COL_O} {message} {self.COL_W}')
+        print(f'{self.COL_O} WARNING: {message} {self.COL_W}')
 
     def notify_error(self, message: str):
         """Function called by the observable to warn
@@ -51,7 +51,7 @@ class Observer:
             Warning message
 
         """
-        print(f'ERROR: {self.COL_R} {message} {self.COL_W}')
+        print(f'{self.COL_R} ERROR: {message} {self.COL_W}')
         sys.exit()
 
     def notify_progress(self, progress: int, message: int = ''):
