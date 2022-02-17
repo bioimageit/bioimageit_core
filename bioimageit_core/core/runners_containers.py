@@ -89,6 +89,21 @@ class Job:
     def __init__(self):
         self.experiment = None
         self.tool = None
-        self.parameters = None
-        self.inputs = None
+        self.parameters = {}
+        self.inputs = JobInputs()
         self.output_dataset_name = ''
+
+    def set_experiment(self, experiment):
+        self.experiment = experiment
+
+    def set_tool(self, tool):
+        self.tool = tool
+
+    def set_output_dataset_name(self, name):
+        self.output_dataset_name = name
+
+    def set_param(self, key, value):
+        self.parameters[key] = value
+
+    def set_input(self, name, dataset, query, origin_output_name=''):
+        self.inputs.add_input(name, dataset, query, origin_output_name)

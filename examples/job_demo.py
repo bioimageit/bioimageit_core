@@ -1,33 +1,36 @@
 import bioimageit_core.api as iit
+from bioimageit_core.core.runners_containers import Job
 
 # First we connect to the database (here it is a local database)
 req = iit.Request('./config_sample.json')
 req.connect()
 
-# Create an experiment
+# then we need an annotated experiment
 experiment = req.create_experiment(name='myexperiment',
                                    author='sprigent',
                                    date='now',
                                    destination="./")
-
-# Import a directory of data to the experiment
 req.import_dir(experiment=experiment,
                dir_uri='./tests/test_images/data',
                filter_=r'\.tif$',
                author='sprigent',
                format_='imagetiff',
                date='now')
-
-# Tag the images using the information in the file names
 req.annotate_from_name(experiment, 'Population', ['population1', 'population2'])
 req.annotate_using_separator(experiment, 'ID', '_', 1)
-
-# display the dataset
 req.display_experiment(experiment)
 
-# Request a data using tags
-raw_dataset = req.get_dataset(experiment, name="data")
-raw_data_list = req.get_data(raw_dataset, "Population=population1 AND ID=001")
-print("query result:")
-for raw_data in raw_data_list:
-    print('\t'+raw_data.name)
+# we create the job
+job = Job()
+job.set_experiment(experiment)
+job.set_tool(req.get_tool('spitfiredeconv2d_v0.1.2'))
+job.set_input(name='i', dataset='data', query='')
+job.set_param('sigma', '4')
+job.set_param('regularization', '12')
+job.set_param('weighting', '0.1')
+job.set_param('method', 'SV')
+job.set_param('padding', 'True')
+job.set_output_dataset_name('deconv')
+
+# run the job
+req.run(job)

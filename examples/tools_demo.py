@@ -2,6 +2,7 @@ import bioimageit_core.api as iit
 
 # First we connect to the database (here it is a local database)
 req = iit.Request('./config_sample.json')
+req.connect()
 
 print('- Get the list of all available tools')
 req.search_tool()
