@@ -14,6 +14,8 @@ import json
 import shlex
 from prettytable import PrettyTable
 
+from bioimageit_formats import FormatsAccess, FormatKeyNotFoundError, FormatDatabaseError
+
 from bioimageit_core.core.observer import Observable, Observer
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import format_date
@@ -21,6 +23,7 @@ from bioimageit_core.core.data_containers import METADATA_TYPE_RAW, ProcessedDat
 from bioimageit_core.core.tools_containers import Tool
 from bioimageit_core.core.runners_containers import Job
 from bioimageit_core.core.query import SearchContainer, query_list_single
+from bioimageit_core.core.log_observer import LogObserver
 
 from bioimageit_core.plugins.data_factory import metadataServices
 from bioimageit_core.core.data_containers import Experiment
@@ -34,6 +37,7 @@ class Request(Observable):
     def __init__(self, config_file=''):
         super().__init__()
 
+        # cmd observers
         self.add_observer(Observer())
 
         # Declare services
@@ -49,9 +53,20 @@ class Request(Observable):
             self.notify_error(f'Cannot load the configuration from file: {config_file}')
             return
 
+        # log observer
+        config = ConfigAccess.instance().config
+        if 'log_dir' in config and os.path.exists(config['log_dir']):
+            self.add_observer(LogObserver(config['log_dir']))
+
     def connect(self):
         # init services
         config = ConfigAccess.instance().config
+        # formats
+        if 'formats' in config and 'file' in config['formats']:
+            try:
+                FormatsAccess(config['formats']['file'])
+            except FormatDatabaseError as err:
+                self.notify_error(str(err))
         # metadata
         if 'metadata' in config and 'service' in config['metadata']:
             conf = config['metadata']
@@ -889,12 +904,13 @@ class Request(Observable):
 
         """
         args = self._prepare_command(tool, kwargs)
+        job_id = self.new_job()
         try:
-            self.runner_service.set_up(tool)
-            self.runner_service.exec(tool, args)
-            self.runner_service.tear_down(tool)
+            self.runner_service.set_up(tool, job_id)
+            self.runner_service.exec(tool, args, job_id)
+            self.runner_service.tear_down(tool, job_id)
         except RunnerExecError as err:
-            self.notify_error(str(err))
+            self.notify_error(str(err), job_id)
 
     @staticmethod
     def _replace_env_variables(tool, cmd) -> str:
@@ -936,9 +952,8 @@ class Request(Observable):
         input_data = dict()
         data_count = 0
         for i, job_input in enumerate(job.inputs.inputs):
-
             input_data[i] = self.get_data(
-                job_input.dataset,
+                self.get_dataset(job.experiment, job_input.dataset),
                 job_input.query,
                 job_input.origin_output_name
             )
@@ -976,56 +991,60 @@ class Request(Observable):
         run.process_uri = job.tool.uri
         for t, input_ in enumerate(job.inputs.inputs):
             run.add_input(input_.name, input_.dataset,
-                          input_.query, input_.inputs_origin_output_name)
+                          input_.query, input_.origin_output_name)
         for key, value in job.parameters.items():
             run.add_parameter(key, value)
         run = self.create_run(processed_dataset, run)  # save to database
 
         # 4- loop over the input data to run processing
+        job_id = self.new_job()
+        self.notify(f'Start job{job_id}')
+        self.runner_service.set_up(job.tool, job_id)
         for i in range(data_count):
-            data_info_zero = self.get_raw_data(input_data[0][i].uri())
+            cmd = job.tool.command
+            data_info_zero = self.get_raw_data(input_data[0][i].md_uri)
             # 4.0- notify observers
-            self.notify_progress(int(100 * i / data_count), f"Process {data_info_zero.name}")
+            self.notify_progress(int(100 * i / data_count),
+                                 f"Process {data_info_zero.name}", job_id)
             # 4.1- Parse IO
-            args = []
             # get the input arguments
             inputs_metadata = {}
             for n, input_ in enumerate(job.inputs.inputs):
-                args.append(input_.name)
                 # input data can be a processedData but we only read the common metadata
-                data_info = self.get_raw_data(input_data[n][i].uri())
-                args.append(data_info.uri)
+                data_info = self.get_raw_data(input_data[n][i].md_uri)
+                cmd = cmd.replace("${" + input_.name + "}", data_info.uri)
                 inputs_metadata[input_.name] = data_info
             # get the params arguments
-            for key, value in job.parameters:
-                args.append(key)
-                args.append(value)
+            for key, value in job.parameters.items():
+                cmd = cmd.replace("${" + key + "}", value)
             # setup outputs
             for output in job.tool.outputs:
                 # output metadata
                 processed_data = ProcessedData()
-                processed_data.set_info(name=data_info_zero.metadata.name + "_" + output.name,
+                processed_data.set_info(name=data_info_zero.name + "_" + output.name,
                                         author=ConfigAccess.instance().get('user')['name'],
                                         date='now', format_=output.type, url="")
                 for id_, data_ in inputs_metadata.items():
                     processed_data.add_input(id_=id_, data=data_)
                 processed_data.set_output(id_=output.name, label=output.description)
                 # save the metadata and create its md_uri and uri
-                processed_data = self.create_data(processed_dataset, run, processed_data)
+                try:
+                    processed_data = self.create_data(processed_dataset, run, processed_data)
+                except FormatKeyNotFoundError as err:
+                    self.notify_error(str(err), job_id)
+                    return
                 # args
-                args.append(output.name)
-                args.append(processed_data.metadata.uri)
+                cmd = cmd.replace("${" + output.name + "}", processed_data.uri)
             # 4.2- exec
             try:
-                # TODO: move setup and tear down to top and bottom with a clean teardown when error
-                self.runner_service.set_up(job.tool)
-                self.runner_service.exec(job.tool, args)
-                self.runner_service.tear_down(job.tool)
+                self.runner_service.exec(job.tool, shlex.split(cmd), job_id)
             except RunnerExecError as err:
-                self.notify_error(str(err))
+                self.runner_service.tear_down(job.tool, job_id)
+                self.notify_error(str(err), job_id)
 
         # 4.0- notify observers
-        self.notify_progress(100, 'done')
+        self.notify_progress(100, 'done', job_id)
+        self.notify(f'Finished job{job_id}')
 
     def _run_job_merged(self, job):
         pass

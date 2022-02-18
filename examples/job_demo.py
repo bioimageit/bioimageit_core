@@ -5,20 +5,21 @@ from bioimageit_core.core.runners_containers import Job
 req = iit.Request('./config_sample.json')
 req.connect()
 
-# then we need an annotated experiment
-experiment = req.create_experiment(name='myexperiment',
-                                   author='sprigent',
-                                   date='now',
-                                   destination="./")
-req.import_dir(experiment=experiment,
-               dir_uri='./tests/test_images/data',
-               filter_=r'\.tif$',
-               author='sprigent',
-               format_='imagetiff',
-               date='now')
-req.annotate_from_name(experiment, 'Population', ['population1', 'population2'])
-req.annotate_using_separator(experiment, 'ID', '_', 1)
-req.display_experiment(experiment)
+experiment = req.get_experiment('myexperiment/experiment.md.json')
+## then we need an annotated experiment
+#experiment = req.create_experiment(name='myexperiment',
+#                                   author='sprigent',
+#                                   date='now',
+#                                   destination="./")
+#req.import_dir(experiment=experiment,
+#               dir_uri='./tests/test_images/data',
+#               filter_=r'\.tif$',
+#               author='sprigent',
+#               format_='imagetiff',
+#               date='now')
+#req.annotate_from_name(experiment, 'Population', ['population1', 'population2'])
+#req.annotate_using_separator(experiment, 'ID', '_', 1)
+#req.display_experiment(experiment)
 
 # we create the job
 job = Job()

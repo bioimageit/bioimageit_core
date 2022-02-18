@@ -413,8 +413,7 @@ class LocalMetadataService:
             self._import_file_bioformat(raw_dataset_uri, data_path, data_dir_path, metadata.name,
                                         metadata.author, metadata.date)
         else:
-            format_service = formatsServices.get(metadata.format)
-            files_to_copy = format_service.files(data_path)
+            files_to_copy = FormatsAccess.instance().get(metadata.format).files(data_path)
             for file_ in files_to_copy:
                 origin_base_name = os.path.basename(file_)
                 destination_path = os.path.join(data_dir_path, origin_base_name)
@@ -461,7 +460,7 @@ class LocalMetadataService:
             subprocess.run(cmd, check=True)
         else:
             subprocess.run(cmd, shell=True, executable='/bin/bash', check=True)
-        self._add_to_raw_dataset_bio_format(data_dir_path, raw_dataset_uri_)
+        self._add_to_raw_dataset_bioformat(data_dir_path, raw_dataset_uri_)
 
     def _add_to_raw_dataset_bioformat(self, data_dir_path, raw_dataset_uri):
         # add the data to the dataset
@@ -564,7 +563,7 @@ class LocalMetadataService:
                 for key in metadata['key_value_pairs']:
                     container.key_value_pairs[key] = metadata['key_value_pairs'][key]
             return container
-        raise DataServiceError('Metadata file format not supported')
+        raise DataServiceError(f'Metadata file format not supported: {md_uri}')
 
     def update_raw_data(self, raw_data):
         """Read a raw data from the database
@@ -648,7 +647,7 @@ class LocalMetadataService:
                     metadata['origin']['output']['label']
 
             return container
-        raise DataServiceError('Metadata file format not supported')
+        raise DataServiceError(f'Metadata file format not supported {md_uri}')
 
     def update_processed_data(self, processed_data):
         """Read a processed data from the database
@@ -926,10 +925,11 @@ class LocalMetadataService:
         dataset_dir = LocalMetadataService.md_file_path(md_uri)
 
         # create the data metadata
-        data_md_file = os.path.join(dataset_dir, processed_data.name
-                                    + '.md.json')
+        data_md_file = os.path.join(dataset_dir, processed_data.name + '.md.json')
         processed_data.uuid = generate_uuid()
         processed_data.md_uri = data_md_file
+        extension = FormatsAccess.instance().get(processed_data.format).extension
+        processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
 
         processed_data.run = run
 

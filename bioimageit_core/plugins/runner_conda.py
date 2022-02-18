@@ -49,7 +49,7 @@ class CondaRunnerService(Observable):
         else:
             raise ConfigError('conda_dir is not set in the configuration file in runner section')
 
-    def set_up(self, process: Tool):
+    def set_up(self, process: Tool, job_id: int):
         """setup the runner
 
         Add here the code to initialize the runner
@@ -58,6 +58,8 @@ class CondaRunnerService(Observable):
         ----------
         process
             Metadata of the process
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
         requirements = process.requirements[0]
@@ -84,11 +86,11 @@ class CondaRunnerService(Observable):
                     subprocess.run(args_install, shell=True, executable='/bin/bash',
                                    check=True)
             else:
-                self.notify(f'{env_name} env already exists')
+                self.notify(f'{env_name} env already exists', job_id)
         else:
             raise RunnerExecError(f'Error: service conda cannot run the tool {process.fullname()}')
 
-    def exec(self, process: Tool, args):
+    def exec(self, process: Tool, args, job_id: int):
         """Execute a process
 
         Parameters
@@ -97,6 +99,8 @@ class CondaRunnerService(Observable):
             Metadata of the process
         args
             list of arguments
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
         requirements = process.requirements[0]
@@ -109,10 +113,10 @@ class CondaRunnerService(Observable):
             args_str = '"' + condaexe + '"' + ' activate '+env_name+' &&'
             for arg in args:
                 args_str += ' ' + '"' + arg + '"'
-            self.notify(f"Conda exec cmd: {args_str}")
+            self.notify(f"Conda exec cmd: {args_str}", job_id)
             with Popen(args_str, stdout=PIPE, bufsize=1, universal_newlines=True) as p:
                 for b in p.stdout:
-                    self.notify(b.strip())
+                    self.notify(b.strip(), job_id)
             if p.returncode != 0:
                 raise RunnerExecError(f'return code: {p.returncode}, for command: {p.args}')
         else:    
@@ -120,15 +124,15 @@ class CondaRunnerService(Observable):
             args_str = '. "' + condash + '"' + ' && conda activate '+env_name+' &&'
             for arg in args:
                 args_str += ' ' + '"' + arg + '"'
-            self.notify(f"Conda exec cmd: {args_str}")
+            self.notify(f"Conda exec cmd: {args_str}", job_id)
             with Popen(args_str, shell=True, executable='/bin/bash', stdout=PIPE, bufsize=1,
                        universal_newlines=True) as p:
                 for b in p.stdout:
-                    self.notify(b.strip())
+                    self.notify(b.strip(), job_id)
             if p.returncode != 0:
                 raise RunnerExecError(f'return code: {p.returncode}, for command: {p.args}')
 
-    def tear_down(self, process: Tool):
+    def tear_down(self, process: Tool, job_id: int):
         """tear down the runner
 
         Add here the code to down/clean the runner
@@ -137,6 +141,8 @@ class CondaRunnerService(Observable):
         ----------
         process
             Metadata of the process
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
         pass

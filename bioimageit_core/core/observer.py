@@ -18,43 +18,70 @@ class Observer:
     """
 
     def __init__(self):
-        super().__init__()
+        self.jobs_id = []
 
-    def notify(self, message: str):
+    def new_job(self, job_id: int):
+        """Add a new job id
+
+        Parameters
+        ----------
+        job_id: int
+            unique ID of the new job
+
+        """
+        self.jobs_id.append(job_id)
+
+    def notify(self, message: str, job_id: int = 0):
         """Function called by the observable to notify or log any information
 
         Parameters
         ----------
-        message
+        message: str
             Information message
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
-        print(f'{self.COL_G} {message} {self.COL_W}')
+        prefix = ''
+        if job_id > 0:
+            prefix = f'job {job_id}:'
+        print(f'{prefix} {self.COL_G} {message} {self.COL_W}')
 
-    def notify_warning(self, message: str):
+    def notify_warning(self, message: str, job_id: int = 0):
         """Function called by the observable to warn
 
         Parameters
         ----------
         message
             Warning message
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
-        print(f'{self.COL_O} WARNING: {message} {self.COL_W}')
+        prefix = ''
+        if job_id > 0:
+            prefix = f'job {job_id}:'
+        print(f'{prefix} {self.COL_O} WARNING: {message} {self.COL_W}')
 
-    def notify_error(self, message: str):
+    def notify_error(self, message: str, job_id: int = 0):
         """Function called by the observable to warn
 
         Parameters
         ----------
         message
             Warning message
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
-        print(f'{self.COL_R} ERROR: {message} {self.COL_W}')
-        sys.exit()
+        prefix = ''
+        if job_id > 0:
+            prefix = f'job {job_id}:'
+        print(f'{prefix} {self.COL_R} ERROR: {message} {self.COL_W}')
+        if job_id == 0:  # TODO remove this (only for debugging)
+            sys.exit()
 
-    def notify_progress(self, progress: int, message: int = ''):
+    def notify_progress(self, progress: int, message: int = '', job_id: int = 0):
         """Function called by the observable to notify progress
 
         Parameters
@@ -63,9 +90,14 @@ class Observer:
             Data describing the progress
         message
             Message to describe the progress step
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
-        print(f'progress: {self.COL_W} {progress} {self.COL_W}')
+        prefix = ''
+        if job_id > 0:
+            prefix = f'job {job_id}:'
+        print(f'{prefix} {self.COL_B} {message}, progress: {progress} {self.COL_W}')
 
 
 class Observable:
@@ -75,10 +107,21 @@ class Observable:
     by an Observer
 
     """
-
     def __init__(self):
         self._observers = []
         self._progress_message = ''
+        self.job_count = 0
+
+    def new_job(self):
+        """Create a new job
+
+        Generate a new job ID and notify all the observers of this new job
+
+        """
+        self.job_count += 1
+        for observer in self._observers:
+            observer.new_job(self.job_count)
+        return self.job_count
 
     def observers_count(self):
         """Get the number of observers"""
@@ -95,43 +138,49 @@ class Observable:
         """
         self._observers.append(observer)
 
-    def notify(self, message: str):
+    def notify(self, message: str, job_id: int = 0):
         """Notify observers any information
 
         Parameters
         ----------
         message
             Information message
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
         for observer in self._observers:
-            observer.notify(message)
+            observer.notify(message, job_id)
 
-    def notify_warning(self, message: str):
+    def notify_warning(self, message: str, job_id: int = 0):
         """Notify observers any warning
 
         Parameters
         ----------
         message
             Warning message
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
         for observer in self._observers:
-            observer.notify_warning(message)
+            observer.notify_warning(message, job_id)
 
-    def notify_error(self, message: str):
+    def notify_error(self, message: str, job_id: int = 0):
         """Notify observers any error
 
         Parameters
         ----------
         message
             Error message
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
         for observer in self._observers:
-            observer.notify_error(message)
+            observer.notify_error(message, job_id)
 
-    def notify_progress(self, progress: int, message: str = ''):
+    def notify_progress(self, progress: int, message: str = '', job_id: int = 0):
         """Notify observers computing progress
 
         Parameters
@@ -140,7 +189,9 @@ class Observable:
             Percentage of progress
         message
             Message to describe the progress step
+        job_id: int
+            unique ID of the job. 0 is main app, and positive is a subprocess
 
         """
         for observer in self._observers:
-            observer.notify_progress(progress, message)
+            observer.notify_progress(progress, message, job_id)
