@@ -905,12 +905,14 @@ class Request(Observable):
         """
         args = self._prepare_command(tool, kwargs)
         job_id = self.new_job()
+        self.notify(f'Start job{job_id}')
         try:
             self.runner_service.set_up(tool, job_id)
             self.runner_service.exec(tool, args, job_id)
             self.runner_service.tear_down(tool, job_id)
         except RunnerExecError as err:
             self.notify_error(str(err), job_id)
+        self.notify(f'Finished job{job_id}')
 
     @staticmethod
     def _replace_env_variables(tool, cmd) -> str:
