@@ -10,7 +10,7 @@ ProcessServiceProvider
 
 """
 from bioimageit_core.core.observer import Observable
-from bioimageit_core.core.tools_containers import Tool
+from bioimageit_core.containers.tools_containers import Tool
 
 from bioimageit_core.plugins.runner_conda import CondaRunnerService
 from bioimageit_core.plugins.runner_docker import DockerRunnerService

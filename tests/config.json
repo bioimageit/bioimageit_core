@@ -1,0 +1,25 @@
+{
+    "metadata": {
+        "service": "LOCAL"
+    },
+    "process": {
+        "service": "LOCAL",
+        "xml_dirs": [
+            "../toolboxes/tools/"
+        ],
+        "categories": "../toolboxes/toolboxes.json",
+        "tools": "../toolboxes/tools.json"
+    },
+    "runner": {
+        "service": "CONDA",
+        "conda_dir": "/Users/sprigent/BioimageIT/miniconda3"
+
+    },
+    "formats": {
+        "file": "../formats.json"
+    },
+    "user":{
+        "name": "Sylvain Prigent"
+    },
+    "log_dir": "../workspace/logs/"
+}

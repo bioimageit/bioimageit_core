@@ -15,7 +15,7 @@ import subprocess
 
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.observer import Observable
-from bioimageit_core.core.tools_containers import Tool
+from bioimageit_core.containers.tools_containers import Tool
 from bioimageit_core.core.exceptions import RunnerExecError
 
 

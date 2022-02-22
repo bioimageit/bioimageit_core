@@ -19,14 +19,14 @@ from bioimageit_formats import FormatsAccess, FormatKeyNotFoundError, FormatData
 from bioimageit_core.core.observer import Observable, Observer
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import format_date
-from bioimageit_core.core.data_containers import METADATA_TYPE_RAW, ProcessedData, Dataset, Run
-from bioimageit_core.core.tools_containers import Tool
-from bioimageit_core.core.runners_containers import Job
+from bioimageit_core.containers.data_containers import METADATA_TYPE_RAW, ProcessedData, Dataset, Run
+from bioimageit_core.containers.tools_containers import Tool
+from bioimageit_core.containers.runners_containers import Job
 from bioimageit_core.core.query import SearchContainer, query_list_single
 from bioimageit_core.core.log_observer import LogObserver
 
 from bioimageit_core.plugins.data_factory import metadataServices
-from bioimageit_core.core.data_containers import Experiment
+from bioimageit_core.containers.data_containers import Experiment
 from bioimageit_core.plugins.tools_factory import toolsServices
 from bioimageit_core.plugins.runners_factory import runnerServices
 from bioimageit_core.core.exceptions import (ConfigError, DataServiceError, DataQueryError,
@@ -48,7 +48,7 @@ class Request(Observable):
         # load configuration
         self.config_file = config_file
         try:
-            ConfigAccess(config_file)
+            ConfigAccess.instance(config_file)
         except ConfigError:
             self.notify_error(f'Cannot load the configuration from file: {config_file}')
             return
@@ -460,7 +460,7 @@ class Request(Observable):
 
         """
         if len(processed_data.inputs) > 0:
-            if processed_data.inputs[0].type == METADATA_TYPE_RAW():
+            if processed_data.inputs[0].type == METADATA_TYPE_RAW:
                 return self.get_raw_data(processed_data.inputs[0].uri)
             else:
                 return self.get_processed_data(processed_data.inputs[0].uri)
@@ -483,7 +483,7 @@ class Request(Observable):
 
         """
         if len(processed_data.inputs) > 0:
-            if processed_data.inputs[0].type == METADATA_TYPE_RAW():
+            if processed_data.inputs[0].type == METADATA_TYPE_RAW:
                 return self.get_raw_data(processed_data.inputs[0].uri)
             else:
                 return self.get_origin(

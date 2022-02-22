@@ -12,12 +12,12 @@ ProcessServiceProvider
 import os
 import platform
 import subprocess
-from subprocess import Popen, PIPE, CalledProcessError
+from subprocess import Popen, PIPE
 
 from bioimageit_core.core.observer import Observable
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.exceptions import ConfigError, RunnerExecError
-from bioimageit_core.core.tools_containers import Tool
+from bioimageit_core.containers.tools_containers import Tool
 
 
 class CondaRunnerServiceBuilder:

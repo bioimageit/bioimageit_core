@@ -156,8 +156,8 @@ class ConfigAccess:
             ConfigAccess.__instance = Config(config_file)
 
     @staticmethod
-    def instance():
+    def instance(config_file=''):
         """ Static access method to the Config. """
         if ConfigAccess.__instance is None:
-            ConfigAccess.__instance = Config()
+            ConfigAccess.__instance = Config(config_file)
         return ConfigAccess.__instance

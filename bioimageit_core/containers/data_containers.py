@@ -14,7 +14,7 @@ Experiment
 Run
 """
 
-from .utils import format_date
+from bioimageit_core.core.utils import format_date
 
 
 METADATA_TYPE_RAW = "raw"

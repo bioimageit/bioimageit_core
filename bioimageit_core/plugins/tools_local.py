@@ -14,22 +14,22 @@ import xml.etree.ElementTree as ETree
 import json
 import yaml
 
-from bioimageit_core.core.tools_containers import (Tool,
-                                                   ToolIndexContainer,
-                                                   ToolParameterContainer,
-                                                   CmdSelectContainer,
-                                                   ToolTestParameterContainer,
-                                                   ToolsCategoryContainer,
-                                                   IO_INPUT,
-                                                   IO_OUTPUT,
-                                                   IO_PARAM,
-                                                   PARAM_NUMBER,
-                                                   PARAM_FLOAT,
-                                                   PARAM_INTEGER,
-                                                   PARAM_SELECT,
-                                                   PARAM_BOOLEAN,
-                                                   PARAM_STRING
-                                                   )
+from bioimageit_core.containers.tools_containers import (Tool,
+                                                         ToolIndexContainer,
+                                                         ToolParameterContainer,
+                                                         CmdSelectContainer,
+                                                         ToolTestParameterContainer,
+                                                         ToolsCategoryContainer,
+                                                         IO_INPUT,
+                                                         IO_OUTPUT,
+                                                         IO_PARAM,
+                                                         PARAM_NUMBER,
+                                                         PARAM_FLOAT,
+                                                         PARAM_INTEGER,
+                                                         PARAM_SELECT,
+                                                         PARAM_BOOLEAN,
+                                                         PARAM_STRING
+                                                         )
 from bioimageit_core.core.exceptions import ToolsServiceError, ToolNotFoundError
 
 

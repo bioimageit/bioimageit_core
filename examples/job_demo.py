@@ -1,5 +1,5 @@
 import bioimageit_core.api as iit
-from bioimageit_core.core.runners_containers import Job
+from bioimageit_core.containers.runners_containers import Job
 
 # First we connect to the database (here it is a local database)
 req = iit.Request('./config_sample.json')

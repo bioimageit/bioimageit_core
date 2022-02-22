@@ -11,7 +11,7 @@ serialize_run
 
 """
 
-from .data_containers import RawData, ProcessedData, Dataset, Run, Experiment
+from bioimageit_core.containers.data_containers import RawData, ProcessedData, Dataset, Run, Experiment
 
 
 def serialize_data(data):
@@ -47,8 +47,8 @@ def serialize_raw_data(raw_data):
     content = 'RawData:\n'
     content += serialize_data(raw_data)
     content += 'tags = {'
-    for tag in raw_data.tags:
-        content += raw_data.tags[tag] + ':' + raw_data.tags[tag] + ','
+    for key, value in raw_data.key_value_pairs.items():
+        content += key + ':' + value + ','
     content = content[:-1] + '}'
     return content
 
@@ -139,7 +139,7 @@ def serialize_experiment(experiment):
         content += '\t}\n'
     content += '] \n'
     content += 'tags = [ \n'
-    for tag in experiment.tag_keys:
+    for tag in experiment.keys:
         content += '\t' + tag + '\n'
     content += ']'
     return content

@@ -16,7 +16,6 @@ import os
 import os.path
 import json
 import re
-from pathlib import Path
 from shutil import copyfile
 import subprocess
 
@@ -25,19 +24,19 @@ from bioimageit_formats import FormatsAccess, formatsServices
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import generate_uuid
 from bioimageit_core.core.exceptions import DataServiceError
-from bioimageit_core.core.data_containers import (METADATA_TYPE_RAW,
-                                                  METADATA_TYPE_PROCESSED,
-                                                  Container,
-                                                  RawData,
-                                                  ProcessedData,
-                                                  ProcessedDataInputContainer,
-                                                  Dataset,
-                                                  Experiment,
-                                                  Run,
-                                                  RunInputContainer,
-                                                  RunParameterContainer,
-                                                  DatasetInfo,
-                                                  )
+from bioimageit_core.containers.data_containers import (METADATA_TYPE_RAW,
+                                                        METADATA_TYPE_PROCESSED,
+                                                        Container,
+                                                        RawData,
+                                                        ProcessedData,
+                                                        ProcessedDataInputContainer,
+                                                        Dataset,
+                                                        Experiment,
+                                                        Run,
+                                                        RunInputContainer,
+                                                        RunParameterContainer,
+                                                        DatasetInfo,
+                                                        )
 
 
 class LocalMetadataServiceBuilder:
@@ -413,7 +412,8 @@ class LocalMetadataService:
             self._import_file_bioformat(raw_dataset_uri, data_path, data_dir_path, metadata.name,
                                         metadata.author, metadata.date)
         else:
-            files_to_copy = FormatsAccess.instance().get(metadata.format).files(data_path)
+            format_service = formatsServices.get(metadata.format)
+            files_to_copy = format_service.files(data_path)
             for file_ in files_to_copy:
                 origin_base_name = os.path.basename(file_)
                 destination_path = os.path.join(data_dir_path, origin_base_name)
