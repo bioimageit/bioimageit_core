@@ -1,0 +1,29 @@
+{
+    "uuid": "fake_uuid",
+    "information": {
+        "name": "myexperiment",
+        "author": "Sylvain Prigent",
+        "date": "2020-03-04"
+    },
+    "raw_dataset": {
+        "name": "data",
+        "url": "data/rawdataset.md.json",
+        "uuid": "fake_uuid"
+    },
+    "processed_datasets": [
+        {
+            "name": "process1",
+            "url": "process1/processeddataset.md.json",
+            "uuid": "fake_uuid"
+        },
+        {
+            "name": "process2",
+            "url": "process2/processeddataset.md.json",
+            "uuid": "fake_uuid"
+        }
+    ],
+    "keys": [
+        "Population",
+        "number"
+    ]
+}

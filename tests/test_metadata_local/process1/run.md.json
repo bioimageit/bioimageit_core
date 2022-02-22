@@ -1,0 +1,37 @@
+{
+    "uuid": "fake_uuid",
+    "process": {
+        "name": "SPARTION 2D",
+        "url": "../galaxytools/tools/svdeconv/svdeconv2d.xml"
+    },
+    "processed_dataset": {
+        "uuid": "fake_uuid",
+        "url": "processed_dataset.md.json"
+    },
+    "inputs": [
+        {
+            "name": "i",
+            "dataset": "data",
+            "query": "",
+            "origin_output_name": ""
+        }
+    ],
+    "parameters": [
+        {
+            "name": "sigma",
+            "value": "3"
+        },
+        {
+            "name": "weighting",
+            "value": "0.1"
+        },
+        {
+            "name": "regularization",
+            "value": "2"
+        },
+        {
+            "name": "method",
+            "value": "SV"
+        }
+    ]
+}

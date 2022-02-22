@@ -1,0 +1,18 @@
+{
+    "uuid": "fake_uuid",
+    "origin": {
+        "type": "raw"
+    },
+    "common": {
+        "name": "population1_001.tif",
+        "author": "Sylvain Prigent",
+        "date": "2019-03-17",
+        "format": "tif",
+        "url": "population1_001.tif"
+    },
+    "metadata": {},
+    "key_value_pairs": {
+        "Population": "population1",
+        "number": "001"
+    }
+}
