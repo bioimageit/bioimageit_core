@@ -66,6 +66,10 @@ class JobInputs:
         """
         self.inputs.append(job_input)
 
+    def count(self):
+        """get the number of input"""
+        return len(self.inputs)
+
 
 class Job:
     """Container for a job information

@@ -26,8 +26,9 @@ req.annotate_using_separator(experiment, 'ID', '_', 1)
 req.display_experiment(experiment)
 
 # Request a data using tags
-raw_dataset = req.get_dataset(experiment, name="data")
-raw_data_list = req.get_data(raw_dataset, "Population=population1 AND ID=001")
+#raw_dataset = req.get_dataset(experiment, name="data")
+#raw_data_list = req.get_data(raw_dataset, "Population=population1 AND ID=001")
+raw_data_list = req.query(experiment, 'data', "Population=population1 AND ID=001")
 print("query result:")
 for raw_data in raw_data_list:
     print('\t'+raw_data.name)

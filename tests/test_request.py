@@ -7,8 +7,8 @@ import shutil
 from bioimageit_core.api import Request
 from bioimageit_core.containers import Run, ProcessedData
 from bioimageit_core.core.serialize import (serialize_experiment, serialize_raw_data,
-                                            serialize_processed_data, serialize_dataset,
-                                            serialize_run)
+                                            serialize_processed_data, serialize_dataset
+                                            )
 from tests.metadata import (create_experiment, create_raw_data,
                             create_processed_data, create_dataset)
 

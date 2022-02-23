@@ -19,7 +19,8 @@ from bioimageit_formats import FormatsAccess, FormatKeyNotFoundError, FormatData
 from bioimageit_core.core.observer import Observable, Observer
 from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.core.utils import format_date
-from bioimageit_core.containers.data_containers import METADATA_TYPE_RAW, ProcessedData, Dataset, Run
+from bioimageit_core.containers.data_containers import (METADATA_TYPE_RAW, ProcessedData,
+                                                        Dataset, Run, ProcessedDataInputContainer)
 from bioimageit_core.containers.tools_containers import Tool
 from bioimageit_core.containers.runners_containers import Job
 from bioimageit_core.core.query import SearchContainer, query_list_single
@@ -514,6 +515,30 @@ class Request(Observable):
                     return p_dataset
         return None
 
+    def query(self, experiment, dataset_name, query='', origin_output_name=''):
+        """Query data from a dataset
+
+        Parameters
+        ----------
+        experiment: Experiment
+            Experiment to query on
+        dataset_name: str
+            unique name of the dataset to query
+        query
+            String query with the key=value format.
+        origin_output_name
+            Name of the output origin (ex: -o) in the case of Processed Dataset
+            search
+
+        Returns
+        -------
+        list
+            List of selected data (list of RawData or Processed Data objects)
+
+        """
+        dataset = self.get_dataset(experiment, name=dataset_name)
+        return self.get_data(dataset, query, origin_output_name)
+
     def get_data(self, dataset, query='', origin_output_name=''):
         """Query data from a dataset
 
@@ -554,6 +579,7 @@ class Request(Observable):
             for data_info in dataset.uris:
                 p_con = self.get_processed_data(data_info.md_uri)
                 pre_list.append(self._processed_data_to_search_container(p_con))
+
             # remove the data where output origin is not the asked one
             if origin_output_name != '':
                 for p_data in pre_list:
@@ -946,6 +972,7 @@ class Request(Observable):
             self._run_job_merged(job)
         else:
             self._run_job_sequence(job)
+        return self.get_experiment(job.experiment.md_uri)
 
     def _query_inputs(self, job):
         if len(job.inputs.inputs) == 0:
@@ -959,6 +986,8 @@ class Request(Observable):
                 job_input.query,
                 job_input.origin_output_name
             )
+            #print([d.name for d in input_data[i]])
+            #print('')
             if i == 0:
                 data_count = len(input_data[i])
             else:
@@ -1039,14 +1068,128 @@ class Request(Observable):
                 cmd = cmd.replace("${" + output.name + "}", processed_data.uri)
             # 4.2- exec
             try:
+                cmd = self._replace_env_variables(job.tool, cmd)
+                cmd = cmd.replace('/', os.sep)
                 self.runner_service.exec(job.tool, shlex.split(cmd), job_id)
             except RunnerExecError as err:
                 self.runner_service.tear_down(job.tool, job_id)
                 self.notify_error(str(err), job_id)
 
         # 4.0- notify observers
+        self.runner_service.tear_down(job.tool, job_id)
         self.notify_progress(100, 'done', job_id)
         self.notify(f'Finished job{job_id}')
 
     def _run_job_merged(self, job):
-        pass
+        """Run the process that merge txt number inputs
+
+         This is the main function that run the process on the experiment data
+
+         """
+        self.notify_progress(0, 'start')
+
+        # 1- Query all the input data and verify that the size
+        # are equal, if not raise an exception
+        input_data, data_count = self._query_inputs(job)
+
+        # 2- Create the ProcessedDataSet
+        processed_dataset = self.create_dataset(job.experiment, job.output_dataset_name)
+
+        # 3- Create run
+        run = Run()
+        run.process_name = job.tool.fullname()
+        run.process_uri = job.tool.uri
+        for input_ in job.inputs.inputs:
+            run.add_input(input_.name, input_.dataset, input_.query,
+                          input_.origin_output_name)
+        for key, value in job.parameters.items():
+            run.add_parameter(key, value)
+        run = self.create_run(processed_dataset, run)  # save to database
+
+        # 4- merge Inputs
+        inputs_values = [0.0 for i in range(job.inputs.count())]
+        for n, input_ in enumerate(job.inputs.inputs):
+            inputs_values[n] = list()
+            for i in range(data_count):
+                data_info = self.get_raw_data(input_data[n][i].md_uri)
+                if data_info.format == "numbercsv":
+                    with open(data_info.uri, 'r') as file:
+                        value = file.read().replace('\n', '').replace(' ', '')
+                        inputs_values[n].append(float(value))
+                else:
+                    self.notify_error('run merge can use only number datatype')
+
+        # 5- save data in tmp files in the processed dataset dir
+        tmp_inputs_files = [0 for i in range(job.inputs.count())]
+        processed_data_dir = processed_dataset.md_uri.replace(
+            "processed_dataset.md.json", ""
+        )
+        for n, input_ in enumerate(job.inputs.inputs):
+            tmp_inputs_files[n] = os.path.join(
+                processed_data_dir, input_.name + '.csv'
+            )
+            f = open(tmp_inputs_files[n], 'w')
+            for i in range(len(inputs_values[n])):
+                value = str(inputs_values[n][i])
+                if i < len(inputs_values[n]) - 1:
+                    f.write(value + ",")
+                else:
+                    f.write(value)
+            f.close()
+
+        # 6- create input metadata for output .md.json
+        inputs_metadata = []
+        for n in range(len(tmp_inputs_files)):
+            inp_metadata = ProcessedDataInputContainer()
+            inp_metadata.name = job.inputs.inputs[n].name
+            inp_metadata.uri = tmp_inputs_files[n]
+            inp_metadata.type = 'txt'
+            inputs_metadata.append(inp_metadata)
+
+        # 7- run process on generated files
+        cmd = job.tool.command
+
+        # 7.1- inputs
+        for n, input_ in enumerate(job.inputs.inputs):
+            cmd = cmd.replace("${" + input_.name + "}", tmp_inputs_files[n])
+
+        # 7.2- params
+        for key, value in job.parameters.items():
+            cmd = cmd.replace("${" + key + "}", value)
+
+        # 4.3- outputs
+        for output in job.tool.outputs:
+            extension = '.' + FormatsAccess.instance().get(output.type).extension
+
+            # cmd
+            output_file_name = output.name
+            value = os.path.join(processed_data_dir, output_file_name + extension)
+            cmd = cmd.replace("${" + output.name + "}", value)
+
+            # output metadata
+            processed_data = ProcessedData()
+            processed_data.name = output.name
+            processed_data.author = ConfigAccess.instance().get('user')['name']
+            processed_data.date = format_date('now')
+            processed_data.format = output.type
+
+            processed_data.run_uri = run.md_uri
+            processed_data.inputs = inputs_metadata
+
+            processed_data.output = {
+                'name': output.name,
+                'label': output.description,
+            }
+            # save the metadata and create its md_uri and uri
+            self.create_data(processed_dataset, run, processed_data)
+
+        # 8- exec
+        cmd = self._replace_env_variables(job.tool, cmd)
+        cmd = cmd.replace('/', os.sep)
+        job_id = self.new_job()
+        self.notify(f'Start job{job_id}')
+        self.runner_service.set_up(job.tool, job_id)
+        self.runner_service.exec(job.tool, shlex.split(cmd), job_id)
+        self.runner_service.tear_down(job.tool, job_id)
+        self.notify_progress(100, 'done', job_id)
+        self.notify(f'Finished job{job_id}')
