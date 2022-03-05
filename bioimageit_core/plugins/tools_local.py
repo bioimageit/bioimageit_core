@@ -195,6 +195,7 @@ class LocalToolsService:
         The URI of the process or None
 
         """
+        print('get tool:', fullname)
         if fullname in self.database:
             parser = ToolParser(self.database[fullname].uri)
             return parser.parse()
@@ -214,8 +215,8 @@ class LocalToolsService:
                 out_list.append(category)
         return out_list
 
-    def get_category_processes(self, category: str) -> list:
-        """Get the list of processes with the given category
+    def get_category_tools(self, category: str) -> list:
+        """Get the list of tools with the given category
 
         category
             ID of the category

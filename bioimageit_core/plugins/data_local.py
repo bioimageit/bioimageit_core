@@ -14,6 +14,7 @@ MetadataServiceProvider
 import platform
 import os
 import os.path
+from pathlib import Path
 import json
 import re
 from shutil import copyfile
@@ -279,6 +280,30 @@ class LocalMetadataService:
         self.update_experiment(container)
         return container
 
+    def get_workspace_experiments(self, workspace_uri):
+        """Read the experiments in the user workspace
+
+        Parameters
+        ----------
+        workspace_uri: str
+            URI of the workspace
+
+        Returns
+        -------
+        list of experiment containers  
+          
+        """
+        if os.path.exists(workspace_uri):
+            dirs = os.listdir(workspace_uri)
+            experiments = []
+            for dir in dirs:
+                exp_path = os.path.join(workspace_uri, dir, 'experiment.md.json')
+                if os.path.exists(exp_path):
+                    experiments.append({'md_uri': exp_path, 'info': self.get_experiment(exp_path)})
+            return experiments
+        else:
+            return []  
+
     def get_experiment(self, md_uri):
         """Read an experiment from the database
 
@@ -298,7 +323,10 @@ class LocalMetadataService:
         if os.path.isfile(md_uri):
             metadata = self._read_json(md_uri)
             container = Experiment()
-            container.uuid = metadata['uuid']
+            if 'uuid' in metadata:
+                container.uuid = metadata['uuid']
+            else:
+                container.uuid = generate_uuid()       
             container.md_uri = md_uri
             container.name = metadata['information']['name']
             container.author = metadata['information']['author']
@@ -525,8 +553,7 @@ class LocalMetadataService:
                     self.import_data(experiment, os.path.join(dir_uri, file), file, author,
                                      format_, date, key_value_pairs)
 
-    @staticmethod
-    def get_raw_data(md_uri):
+    def get_raw_data(self, md_uri):
         """Read a raw data from the database
 
         Parameters
@@ -562,8 +589,15 @@ class LocalMetadataService:
             if 'key_value_pairs' in metadata:
                 for key in metadata['key_value_pairs']:
                     container.key_value_pairs[key] = metadata['key_value_pairs'][key]
+            # read keys from the experiment
+            experiment_uri = os.path.join(Path(Path(md_uri).parent).parent, 'experiment.md.json') 
+            experiment = self.get_experiment(experiment_uri) 
+            for key in experiment.keys:
+                if key not in metadata['key_value_pairs']:
+                    container.key_value_pairs[key] = ''
             return container
-        raise DataServiceError(f'Metadata file format not supported: {md_uri}')
+        #raise DataServiceError(f'Metadata file format not supported: {md_uri}')
+        return None
 
     def update_raw_data(self, raw_data):
         """Read a raw data from the database
@@ -647,7 +681,8 @@ class LocalMetadataService:
                     metadata['origin']['output']['label']
 
             return container
-        raise DataServiceError(f'Metadata file format not supported {md_uri}')
+        #raise DataServiceError(f'Metadata file format not supported {md_uri}')
+        return None
 
     def update_processed_data(self, processed_data):
         """Read a processed data from the database

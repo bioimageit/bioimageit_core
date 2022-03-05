@@ -22,7 +22,6 @@ from bioimageit_core.core.utils import format_date
 from bioimageit_core.containers.data_containers import (METADATA_TYPE_RAW, ProcessedData,
                                                         Dataset, Run, ProcessedDataInputContainer)
 from bioimageit_core.containers.tools_containers import Tool
-from bioimageit_core.containers.runners_containers import Job
 from bioimageit_core.core.query import SearchContainer, query_list_single
 from bioimageit_core.core.log_observer import LogObserver
 
@@ -32,6 +31,37 @@ from bioimageit_core.plugins.tools_factory import toolsServices
 from bioimageit_core.plugins.runners_factory import runnerServices
 from bioimageit_core.core.exceptions import (ConfigError, DataServiceError, DataQueryError,
                                              ToolsServiceError, ToolNotFoundError, RunnerExecError)
+
+
+class APIAccess:
+    """Singleton to access the BioImageIT API (Request)
+
+    Parameters
+    ----------
+    config_file
+        JSON file where the config is stored
+
+    Raises
+    ------
+    Exception: if multiple instantiation of the Config is tried
+
+    """
+
+    __instance = None
+
+    def __init__(self, config_file: str):
+        """ Virtually private constructor. """
+        if APIAccess.__instance is not None:
+            raise Exception("ConfigManager can be initialized only once!")
+        else:
+            APIAccess.__instance = Request(config_file)
+
+    @staticmethod
+    def instance(config_file=''):
+        """ Static access method to the Config. """
+        if APIAccess.__instance is None:
+            APIAccess.__instance = Request(config_file)
+        return APIAccess.__instance
 
 
 class Request(Observable):
@@ -132,6 +162,21 @@ class Request(Observable):
         try:
             return self.data_service.create_experiment(name, author, format_date(date),
                                                        keys, destination)
+        except DataServiceError as err:
+            self.notify_error(str(err))
+
+    def get_workspace_experiments(self):
+        """Get the list of experiment in the use workspace """
+
+        config = ConfigAccess.instance().config
+        wrokspace_dir = ''
+        if 'workspace' in config:
+            wrokspace_dir = config['workspace']      
+        else:
+            self.notify_error('No workspace specified in the configuration file')         
+
+        try:
+            return self.data_service.get_workspace_experiments(wrokspace_dir)
         except DataServiceError as err:
             self.notify_error(str(err))
 
@@ -483,7 +528,7 @@ class Request(Observable):
         the origin data in a RawData object
 
         """
-        if len(processed_data.inputs) > 0:
+        if processed_data is not None and len(processed_data.inputs) > 0:
             if processed_data.inputs[0].type == METADATA_TYPE_RAW:
                 return self.get_raw_data(processed_data.inputs[0].uri)
             else:
@@ -792,6 +837,27 @@ class Request(Observable):
         except ToolNotFoundError as err:
             self.notify_error(str(err))
 
+    def get_tool_from_uri(self, uri: str) -> Tool:
+        """Read a tool in the database form it URI
+        
+        Parameters
+        ----------
+        uri
+            URI of the tool (address of the XML file)
+
+        Returns
+        -------
+        An instance of Tool
+
+        
+        """
+        try:
+            return self.tools_service.read_tool(uri)
+        except ToolsServiceError as err:
+            self.notify_error(str(err))
+        except ToolNotFoundError as err:
+            self.notify_error(str(err))
+
     def get_tool(self, name: str) -> Tool:
         """get a process by name
 
@@ -802,7 +868,7 @@ class Request(Observable):
 
         Returns
         -------
-        An instance of the process
+        An instance of Tool
 
         """
         try:

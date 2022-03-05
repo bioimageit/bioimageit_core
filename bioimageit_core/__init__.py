@@ -1,1 +1,4 @@
-__all__ = ['data', 'dataset', 'experiment', 'formats', 'pipeline', 'process']
+from .core.config import Config, ConfigAccess
+
+__all__ = ['ConfigAccess', 
+           'Config']

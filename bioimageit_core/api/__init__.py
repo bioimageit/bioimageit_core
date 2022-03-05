@@ -1,3 +1,3 @@
-from .request import Request
+from .request import APIAccess, Request
 
-__all__ = ['Request']
+__all__ = ['APIAccess', 'Request']

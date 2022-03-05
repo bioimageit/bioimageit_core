@@ -60,18 +60,26 @@ req.connect()
 
 #experiment = req.run(job2)
 
+
+#processed_data = req.query(experiment, 'particles', 'Population=population1 AND ID=001', 'draw')
+#print(processed_data[0].uri)
+
+#wilcoxon_tool = req.get_tool('Wilcoxon_v1.0.0')
+#wilcoxon_tool.man()
+
+#job3 = Job()
+#job3.set_experiment(experiment)
+#job3.set_tool(wilcoxon_tool)
+#job3.set_input(name='x', dataset='particles', query='Population=population1', origin_output_name='count')
+#job3.set_input(name='y', dataset='particles', query='Population=population2', origin_output_name='count')
+#job3.set_output_dataset_name('wilcoxon')
+
+#experiment = req.run(job3)
+
 experiment = req.get_experiment('./myexperiment/experiment.md.json')
-processed_data = req.query(experiment, 'particles', 'Population=population1 AND ID=001', 'draw')
-print(processed_data[0].uri)
+wilcoxon_data = req.query(experiment, 'wilcoxon', 'name=p')[0]
+print('processed data = ', wilcoxon_data.name )
 
-wilcoxon_tool = req.get_tool('Wilcoxon_v1.0.0')
-wilcoxon_tool.man()
-
-job3 = Job()
-job3.set_experiment(experiment)
-job3.set_tool(wilcoxon_tool)
-job3.set_input(name='x', dataset='particles', query='Population=population1', origin_output_name='count')
-job3.set_input(name='y', dataset='particles', query='Population=population2', origin_output_name='count')
-job3.set_output_dataset_name('wilcoxon')
-
-experiment = req.run(job3)
+with open(wilcoxon_data.uri, 'r') as content_file:
+    p = content_file.read()
+print('p-value=', p)
