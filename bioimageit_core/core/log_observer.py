@@ -16,16 +16,19 @@ class LogObserver(Observer):
         Path of the directory where the log are saved
 
     """
-
-    def __init__(self, log_dir):
+    def __init__(self, log_dir, log_file_id=None):
         super().__init__()
         self.job_files = {}
         self.log_dir = log_dir
         # create the main txt file
-        self.log_file_id = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        self.log_file = os.path.join(self.log_dir, f'log{self.log_file_id}.txt')
-        with open(self.log_file, 'a') as f:
-            f.write('BioImageIT log\n')
+        if log_file_id is None:
+            self.log_file_id = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            self.log_file = os.path.join(self.log_dir, f'log{self.log_file_id}.txt')
+            with open(self.log_file, 'a') as f:
+                f.write('BioImageIT log\n')
+        else:
+            self.log_file_id = log_file_id
+            self.log_file = os.path.join(self.log_dir, f'log{self.log_file_id}.txt')
 
     def new_job(self, job_id: int):
         """Add a new job id
@@ -57,8 +60,9 @@ class LogObserver(Observer):
             with open(self.log_file, 'a') as f:
                 f.write(f'{message}\n')
         else:
-            with open(self.job_files[job_id], 'a') as f:
-                f.write(f'{message}\n')
+            if job_id in self.job_files:
+                with open(self.job_files[job_id], 'a') as f:
+                    f.write(f'{message}\n')
 
     def notify_warning(self, message: str, job_id: int = 0):
         """Function called by the observable to warn
@@ -75,8 +79,9 @@ class LogObserver(Observer):
             with open(self.log_file, 'a') as f:
                 f.write(f'WARNING: {message}\n')
         else:
-            with open(self.job_files[job_id], 'a') as f:
-                f.write(f'WARNING: {message}\n')
+            if job_id in self.job_files:
+                with open(self.job_files[job_id], 'a') as f:
+                    f.write(f'WARNING: {message}\n')
 
     def notify_error(self, message: str, job_id: int = 0):
         """Function called by the observable to warn
@@ -93,8 +98,9 @@ class LogObserver(Observer):
             with open(self.log_file, 'a') as f:
                 f.write(f'ERROR: {message}\n')
         else:
-            with open(self.job_files[job_id], 'a') as f:
-                f.write(f'ERROR: {message}\n')
+            if job_id in self.job_files:
+                with open(self.job_files[job_id], 'a') as f:
+                    f.write(f'ERROR: {message}\n')
 
     def notify_progress(self, progress: int, message: int = '', job_id: int = 0):
         """Function called by the observable to notify progress
@@ -113,5 +119,6 @@ class LogObserver(Observer):
             with open(self.log_file, 'a') as f:
                 f.write(f'{message}, progress: {progress}\n')
         else:
-            with open(self.job_files[job_id], 'a') as f:
-                f.write(f'{message}, progress: {progress}\n')
+            if job_id in self.job_files:
+                with open(self.job_files[job_id], 'a') as f:
+                    f.write(f'{message}, progress: {progress}\n')

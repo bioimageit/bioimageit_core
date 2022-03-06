@@ -17,8 +17,9 @@ class Observer:
 
     """
 
-    def __init__(self):
+    def __init__(self, debug=True):
         self.jobs_id = []
+        self.debug = debug
 
     def new_job(self, job_id: int):
         """Add a new job id
@@ -78,7 +79,7 @@ class Observer:
         if job_id > 0:
             prefix = f'job {job_id}:'
         print(f'{prefix} {self.COL_R} ERROR: {message} {self.COL_W}')
-        if job_id == 0:  # TODO remove this (only for debugging)
+        if job_id == 0 and self.debug:  # TODO remove this (only for debugging)
             sys.exit()
 
     def notify_progress(self, progress: int, message: int = '', job_id: int = 0):
@@ -126,6 +127,9 @@ class Observable:
     def observers_count(self):
         """Get the number of observers"""
         return len(self._observers)
+
+    def remove_observers(self):
+        self._observers.clear()
 
     def add_observer(self, observer: Observer):
         """Add an observer

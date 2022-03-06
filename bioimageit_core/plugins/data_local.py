@@ -593,8 +593,9 @@ class LocalMetadataService:
             experiment_uri = os.path.join(Path(Path(md_uri).parent).parent, 'experiment.md.json') 
             experiment = self.get_experiment(experiment_uri) 
             for key in experiment.keys:
-                if key not in metadata['key_value_pairs']:
-                    container.key_value_pairs[key] = ''
+                if 'key_value_pairs' in metadata:
+                    if key not in metadata['key_value_pairs']:
+                        container.key_value_pairs[key] = ''
             return container
         #raise DataServiceError(f'Metadata file format not supported: {md_uri}')
         return None

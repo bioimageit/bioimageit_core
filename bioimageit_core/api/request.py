@@ -57,19 +57,19 @@ class APIAccess:
             APIAccess.__instance = Request(config_file)
 
     @staticmethod
-    def instance(config_file=''):
+    def instance(config_file='', debug=True):
         """ Static access method to the Config. """
         if APIAccess.__instance is None:
-            APIAccess.__instance = Request(config_file)
+            APIAccess.__instance = Request(config_file, debug)
         return APIAccess.__instance
 
 
 class Request(Observable):
-    def __init__(self, config_file=''):
+    def __init__(self, config_file='', debug=True, log=True):
         super().__init__()
 
         # cmd observers
-        self.add_observer(Observer())
+        self.add_observer(Observer(debug))
 
         # Declare services
         self.data_service = None
@@ -85,9 +85,16 @@ class Request(Observable):
             return
 
         # log observer
-        config = ConfigAccess.instance().config
-        if 'log_dir' in config and os.path.exists(config['log_dir']):
-            self.add_observer(LogObserver(config['log_dir']))
+        self.log_observer = None
+        if log:
+            config = ConfigAccess.instance().config
+            if 'log_dir' in config and os.path.exists(config['log_dir']):
+                self.log_observer = LogObserver(config['log_dir'])
+                self.add_observer(self.log_observer)
+
+    def add_log_observer(self, log_dir, log_file_id):
+        self.log_observer = LogObserver(log_dir, log_file_id)
+        self.add_observer(self.log_observer)           
 
     def connect(self):
         # init services

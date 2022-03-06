@@ -147,6 +147,7 @@ class ConfigAccess:
     """
 
     __instance = None
+    __file = None
 
     def __init__(self, config_file: str):
         """ Virtually private constructor. """
@@ -154,6 +155,7 @@ class ConfigAccess:
             raise Exception("ConfigManager can be initialized only once!")
         else:
             ConfigAccess.__instance = Config(config_file)
+            ConfigAccess.__file = config_file
 
     @staticmethod
     def instance(config_file=''):
@@ -161,3 +163,8 @@ class ConfigAccess:
         if ConfigAccess.__instance is None:
             ConfigAccess.__instance = Config(config_file)
         return ConfigAccess.__instance
+
+    @staticmethod
+    def file():
+        return ConfigAccess.__file
+
