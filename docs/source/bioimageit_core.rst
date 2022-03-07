@@ -6,10 +6,10 @@ Subpackages
 
 .. toctree::
 
+   bioimageit_core.api
+   bioimageit_core.containers
    bioimageit_core.core
-   bioimageit_core.metadata
-   bioimageit_core.processes
-   bioimageit_core.runners
+   bioimageit_core.plugins
 
 Submodules
 ----------

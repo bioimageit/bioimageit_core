@@ -1,6 +1,10 @@
 Tutorial: Omero
 ===============
 
+.. warning::
+    This tutorial is not yet up to date with the last version
+      
+
 In this tutorial, we show how to import images from Omero 
 
 `Omero <https://www.openmicroscopy.org/>`_ is an image database dedicated to biological images. This database can only handle biological
