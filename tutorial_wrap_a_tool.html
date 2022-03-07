@@ -1,71 +1,34 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Tutorial: wrap a tool &mdash; BioImageIT developers documentation 0.0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Tutorial: write a metadata plugin" href="tutorial_write_a_metadata_plugin.html" />
     <link rel="prev" title="Tutorial: Omero" href="tutorial_omero.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> BioImageIT developers documentation
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -73,29 +36,17 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_omero.html">Tutorial: Omero</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: wrap a tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#shed-file">Shed file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wrapper">Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#container">Container</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gitlab-ci">Gitlab-ci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#packaging-and-dependencies">Packaging and dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
@@ -104,339 +55,177 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">bioimageit_core</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">BioImageIT developers documentation</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Tutorial: wrap a tool</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/tutorial_wrap_a_tool.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="tutorial-wrap-a-tool">
-<h1>Tutorial: wrap a tool<a class="headerlink" href="#tutorial-wrap-a-tool" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial, we details the recommend standardized architecture for a tool package. This architecture facilitate
+             
+  <section id="tutorial-wrap-a-tool">
+<h1>Tutorial: wrap a tool<a class="headerlink" href="#tutorial-wrap-a-tool" title="Permalink to this headline"></a></h1>
+<p>In this tutorial, we details the standardized architecture for a tool package. This architecture facilitate
 tools access and sharing.</p>
-<div class="figure align-center" id="id1">
-<a class="reference internal image-reference" href="_images/package_dir.png"><img alt="_images/package_dir.png" src="_images/package_dir.png" style="width: 320.5px; height: 343.5px;" /></a>
-<p class="caption"><span class="caption-text">Figure 1: Recommended content for a tool package.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-<p>The package architecture is shown in Figure 1. It is organized as follows:</p>
+<p>A package can contain one or several wrappers. The package architecture is as follows:</p>
 <ul class="simple">
-<li><p>The main directory is called with the same name as the package (<code class="docutils literal notranslate"><span class="pre">sampletool</span></code> in the example) and contains the source code of the tool. The developer of the tool can use any organization of the code inside this directory.</p></li>
-<li><p>The directory <code class="docutils literal notranslate"><span class="pre">docs</span></code> contains the user documentation of the tool. We recommend to add here the source code of the documentation that can be build with the continuous integration, and to use a web format like <em>Jekyll</em>. Nevertheless, one can use any other web format or build a PDF file.</p></li>
-<li><p>The directory <code class="docutils literal notranslate"><span class="pre">tools</span></code> contains the wrappers (XML description files) of each tool that is contained in the source code.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> is the file containing the license. It is very important to have a license file before sharing a tool.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">README.md</span></code> file is the classical entry point of the repository where to write minimal description of the repository.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">.gitlab-ci.yml</span></code> file is the recipe file that <em>GitLab</em> uses to automatically build the code, the container and the documentation each time the repository is updated. The GitHub equivalent is the GitHub workflows.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.shed.yml</span></code>: a file describing the tools (authors, toolboxes names…)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test-data</span></code>: a directory containing data for demo and functional testing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wrapper.xml</span></code>: One or several wrapper file. One wrapper per tool</p></li>
 </ul>
-<p>In the following, we present in more details the tool wrapping, packaging, and the automatic building with <em>gitlab-ci</em>.</p>
-<div class="section" id="wrapper">
-<h2>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">tools</span></code> directory is the same as the one used in the Galaxy Project toolshed repositories. It contains one XML file per
-tool and one file called <code class="docutils literal notranslate"><span class="pre">.shed.yml</span></code> that associate the tools to toolboxes. The content of the <code class="docutils literal notranslate"><span class="pre">.shed.yml</span></code> for the
-<em>sampletool</em> is shown below. As we can see it contains the list of toolbox names, and short description of the tool and
-it origin.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">categories</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Denoising</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Filtering</span>
-<span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span>
-<span class="nt">homepage_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://gitlab.inria.fr/bioimage-it/sampletool/</span>
-<span class="nt">long_description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span>
-<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">SampleTool</span>
-<span class="nt">owner</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sprigent</span>
+<p>This organisation is the same as the one used in the Galaxy Project for BioImageIT to be fully compatible with Galaxy Project</p>
+<section id="shed-file">
+<h2>Shed file<a class="headerlink" href="#shed-file" title="Permalink to this headline"></a></h2>
+<p>The shed file descibe the tool origin and how BioImageIT will classify it in the toolboxes tree. Bellow an example file
+gives the <code class="docutils literal notranslate"><span class="pre">.shed.yml</span></code> file content:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">categories</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Denoising</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Filtering</span><span class="w"></span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span><span class="w"></span>
+<span class="nt">homepage_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://gitlab.inria.fr/bioimage-it/sampletool/</span><span class="w"></span>
+<span class="nt">long_description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span><span class="w"></span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SampleTool</span><span class="w"></span>
+<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sylvainprigent</span><span class="w"></span>
 </pre></div>
 </div>
-<p>The tool wrapper is in the file called <code class="docutils literal notranslate"><span class="pre">sampletool.xml</span></code>. Its content is shown bellow. It is a classical Galaxy Project wrapper.
-The command is <code class="docutils literal notranslate"><span class="pre">meanfilter</span></code> and take three arguments, the input image <code class="docutils literal notranslate"><span class="pre">-i</span></code>, the output image <code class="docutils literal notranslate"><span class="pre">-o</span></code> and one parameter <code class="docutils literal notranslate"><span class="pre">-r</span></code>
-the radius of the filter. The two important information in this wrapper are the <code class="docutils literal notranslate"><span class="pre">&lt;requirements&gt;</span></code> section that contains the
-address of the <em>Docker</em> image container that we will be generated with the <em>gitlab-ci</em>, and the address of the documentation
-in <code class="docutils literal notranslate"><span class="pre">&lt;help&gt;</span></code> that will be generated by the <em>gitlab-ci</em> pages.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;tool</span> <span class="na">id=</span><span class="s">&quot;sampletool&quot;</span> <span class="na">name=</span><span class="s">&quot;SampleTool&quot;</span> <span class="na">version=</span><span class="s">&quot;0.1.0&quot;</span> <span class="na">python_template_version=</span><span class="s">&quot;3.5&quot;</span><span class="nt">&gt;</span>
+<p>The <cite>categories</cite> entry is a list of the toolboxes where the tool(s) will appear.
+The <cite>description</cite> and <cite>long_description</cite> are short and long description to identify what is the tool(s) purpose. These descriptions are
+displayed to the user when browsing the toolboxes.
+The <cite>homepage_url</cite> is a web URL of the original tool. Idealy this should be a GitHub or GitLab public page.
+Finally <cite>name</cite> and <cite>owner</cite> are the names of the tool and the author(s) to identify them.</p>
+</section>
+<section id="wrapper">
+<h2>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this headline"></a></h2>
+<p>The tool wrapper is an <cite>XML</cite> file describing how to run the tool. An example is shown bellow for a 2D image Wiener deconvolution. It is a classical Galaxy Project wrapper.
+The command is <code class="docutils literal notranslate"><span class="pre">simgwiener2d</span></code> and take 5 arguments, the input image <code class="docutils literal notranslate"><span class="pre">-i</span></code>, the output image <code class="docutils literal notranslate"><span class="pre">-o</span></code>, and 3 parameters <code class="docutils literal notranslate"><span class="pre">-sigma</span></code>, <code class="docutils literal notranslate"><span class="pre">-lambda</span></code>
+and <code class="docutils literal notranslate"><span class="pre">-padding</span></code>.
+The first section is the <cite>&lt;requirements&gt;</cite>. It contains the description of the method to install the tool and its dependencies.
+The section <cite>&lt;command&gt;</cite> gives the command line that is executed when the tool is ran. Note that all the values are replaced
+with variables like <code class="docutils literal notranslate"><span class="pre">${sigma}</span></code> for the input <code class="docutils literal notranslate"><span class="pre">-sigma</span></code>. These variables will be replaced with the user inputs at run time.
+In order to describe the tool inputs and outputs, the wrapper presents two specefic section: <cite>&lt;inputs&gt;</cite> and <cite>&lt;outputs&gt;</cite>.
+Each input of the tool must be descibed in a <cite>&lt;param&gt;</cite> subsection and each output in a <cite>&lt;data&gt;</cite> subsection.</p>
+<p>The <cite>&lt;test&gt;</cite> section is important to automatically test that the wrapper and the tools are working correctly. This section
+can contains several tests and each test is the list of the input and output parameters and data values.</p>
+<p>The <cite>&lt;help&gt;</cite> section should contains the link to a html or web documentation. The documentation can be stored locally in the
+wrapper directory in a <em>doc</em> folder. This section can be completed with the <cite>&lt;citations&gt;</cite> one with references.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;tool</span> <span class="na">id=</span><span class="s">&quot;wienerdeconv2d&quot;</span> <span class="na">name=</span><span class="s">&quot;Wiener 2D&quot;</span> <span class="na">version=</span><span class="s">&quot;0.1.2&quot;</span> <span class="na">python_template_version=</span><span class="s">&quot;3.5&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;requirements&gt;</span>
-        <span class="nt">&lt;container</span> <span class="na">type=</span><span class="s">&quot;docker&quot;</span><span class="nt">&gt;</span>registry.gitlab.inria.fr/
-        bioimage-it/sampletool:766efe8b8397fef0115e20f...
-        <span class="nt">&lt;/container&gt;</span>
+        <span class="nt">&lt;package</span> <span class="na">type=</span><span class="s">&quot;conda&quot;</span> <span class="na">env=</span><span class="s">&quot;simglib&quot;</span><span class="nt">&gt;</span>-c sylvainprigent simglib=0.1.2 python=3.9<span class="nt">&lt;/package&gt;</span>
     <span class="nt">&lt;/requirements&gt;</span>
     <span class="nt">&lt;command</span> <span class="na">detect_errors=</span><span class="s">&quot;exit_code&quot;</span><span class="nt">&gt;</span><span class="cp">&lt;![CDATA[</span>
-<span class="cp">        meanfilter -i ${i} -o ${o} -r ${r}</span>
+<span class="cp">        simgwiener2d -i ${i} -o ${o} -sigma ${sigma} -lambda ${lambda} -padding ${padding}</span>
 <span class="cp">    ]]&gt;</span><span class="nt">&lt;/command&gt;</span>
     <span class="nt">&lt;inputs&gt;</span>
-        <span class="nt">&lt;param</span> <span class="na">type=</span><span class="s">&quot;data&quot;</span> <span class="na">name=</span><span class="s">&quot;i&quot;</span> <span class="na">format=</span><span class="s">&quot;tiff&quot;</span> <span class="na">label=</span><span class="s">&quot;Input Image&quot;</span> <span class="na">help=</span><span class="s">&quot;2D image&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;param</span> <span class="na">argument=</span><span class="s">&quot;-r&quot;</span> <span class="na">type=</span><span class="s">&quot;integer&quot;</span> <span class="na">value=</span><span class="s">&quot;3&quot;</span> <span class="na">label=</span><span class="s">&quot;Radius&quot;</span> <span class="na">help=</span><span class="s">&quot;Filter radius (in pixels)&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;param</span> <span class="na">type=</span><span class="s">&quot;data&quot;</span> <span class="na">name=</span><span class="s">&quot;i&quot;</span> <span class="na">format=</span><span class="s">&quot;imagetiff&quot;</span> <span class="na">label=</span><span class="s">&quot;Input Image&quot;</span> <span class="na">help=</span><span class="s">&quot;2D image&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;param</span> <span class="na">argument=</span><span class="s">&quot;-sigma&quot;</span> <span class="na">type=</span><span class="s">&quot;float&quot;</span> <span class="na">value=</span><span class="s">&quot;1.5&quot;</span> <span class="na">label=</span><span class="s">&quot;Sigma&quot;</span> <span class="na">help=</span><span class="s">&quot;Gaussian PSF width&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;param</span> <span class="na">argument=</span><span class="s">&quot;-lambda&quot;</span> <span class="na">type=</span><span class="s">&quot;float&quot;</span> <span class="na">value=</span><span class="s">&quot;0.01&quot;</span> <span class="na">label=</span><span class="s">&quot;Lambda&quot;</span> <span class="na">help=</span><span class="s">&quot;Regularization parameter&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;param</span> <span class="na">argument=</span><span class="s">&quot;-padding&quot;</span> <span class="na">type=</span><span class="s">&quot;select&quot;</span> <span class="na">label=</span><span class="s">&quot;Padding&quot;</span> <span class="na">help=</span><span class="s">&quot;Add a padding to process pixels in borders&quot;</span> <span class="na">optional=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>False<span class="nt">&lt;/option&gt;</span>
+            <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>True<span class="nt">&lt;/option&gt;</span>
+        <span class="nt">&lt;/param&gt;</span>
     <span class="nt">&lt;/inputs&gt;</span>
     <span class="nt">&lt;outputs&gt;</span>
-        <span class="nt">&lt;data</span> <span class="na">name=</span><span class="s">&quot;o&quot;</span> <span class="na">format=</span><span class="s">&quot;tiff&quot;</span> <span class="na">label=</span><span class="s">&quot;Output image&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;data</span> <span class="na">name=</span><span class="s">&quot;o&quot;</span> <span class="na">format=</span><span class="s">&quot;imagetiff&quot;</span> <span class="na">label=</span><span class="s">&quot;Denoised image&quot;</span> <span class="nt">/&gt;</span>
     <span class="nt">&lt;/outputs&gt;</span>
     <span class="nt">&lt;tests&gt;</span>
         <span class="nt">&lt;test&gt;</span>
-            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;i&quot;</span> <span class="na">value=</span><span class="s">&quot;celegans.tif&quot;</span> <span class="nt">/&gt;</span>
-            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;r&quot;</span> <span class="na">value=</span><span class="s">&quot;3&quot;</span> <span class="nt">/&gt;</span>
-            <span class="nt">&lt;output</span> <span class="na">name=</span><span class="s">&quot;o&quot;</span> <span class="na">file=</span><span class="s">&quot;celegans_result.tif&quot;</span>
-            <span class="na">compare=</span><span class="s">&quot;sim_size&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;i&quot;</span> <span class="na">value=</span><span class="s">&quot;image.tif&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;sigma&quot;</span> <span class="na">value=</span><span class="s">&quot;1.5&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;lambda&quot;</span> <span class="na">value=</span><span class="s">&quot;0.001&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;padding&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;output</span> <span class="na">name=</span><span class="s">&quot;o&quot;</span> <span class="na">file=</span><span class="s">&quot;image_o.tif&quot;</span> <span class="na">compare=</span><span class="s">&quot;sim_size&quot;</span> <span class="nt">/&gt;</span>
         <span class="nt">&lt;/test&gt;</span>
     <span class="nt">&lt;/tests&gt;</span>
     <span class="nt">&lt;help&gt;</span><span class="cp">&lt;![CDATA[</span>
-<span class="cp">        https://bioimage-it.gitlabpages.inria.fr/sampletool/</span>
+<span class="cp">        https://github.com/sylvainprigent/simglib</span>
 <span class="cp">    ]]&gt;</span><span class="nt">&lt;/help&gt;</span>
     <span class="nt">&lt;citations&gt;</span>
     <span class="nt">&lt;/citations&gt;</span>
 <span class="nt">&lt;/tool&gt;</span>
 </pre></div>
 </div>
-<p>In this example, we have only one <em>XML</em> wrapper and one <em>.shed.yml</em> file. In the case we wrap a library with many tools
-that does not belong to the same toolbox, we can then create one sub-folder per toolbox in the <code class="docutils literal notranslate"><span class="pre">tools</span></code> directory where
-each sub-folder contains one <em>.shed.yml</em> and one or many <em>XML</em> wrappers.</p>
-</div>
-<div class="section" id="container">
-<h2>Container<a class="headerlink" href="#container" title="Permalink to this headline">¶</a></h2>
-<p>The goal of this section is not to write a tutorial about <em>Docker</em> but to explain how we use <em>Docker</em> for packaging and
-deploying image processing tools. A full tutorial of Docker can be found at <a class="reference external" href="https://docs.docker.com/get-started/">https://docs.docker.com/get-started/</a>.</p>
-<p>For image processing packaging, the idea is to install the tool in a <em>Docker</em> container using the <em>unix</em> install standard and
-then make this container available using a public registry.</p>
-<p>To create a Docker container, we need to write a <strong>Dockerfile</strong>, that will allows the Docker image creation. Then the docker
-image can be built using the command <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span></code>. In our case we will run the build command within the continuous
-integration tools of <em>GitLab</em>. In this section we will only create the <em>Dockerfile</em>, and we show in the next section how to
-build it with continuous integration.</p>
-<p>Let’s take the example of the <code class="docutils literal notranslate"><span class="pre">sampletool</span></code> program. It is a c++ program depending on linux libraries: libpng, libtiff. The
-goal of the <em>Docker</em> container is to install these libraries and the program itself completely isolated from the host system.
-The <em>Dockerfile</em> of the <code class="docutils literal notranslate"><span class="pre">sampletool</span></code> is shown bellow.</p>
-<div class="highlight-docker notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span> <span class="s">ubuntu:20.04</span>
-<span class="k">WORKDIR</span><span class="s"> /app</span>
-<span class="k">COPY</span> . /app
-<span class="k">RUN</span> apt-get update  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    apt-get -y upgrade  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    apt-get -y install cmake  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    apt-get -y install g++  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    apt-get -y install libpng-dev  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    apt-get -y install libtiff-dev  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    <span class="nb">cd</span> sampletool  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    mkdir build  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    <span class="nb">cd</span> build  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    cmake ..  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    make  <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    <span class="nb">cd</span> ..
-
-<span class="k">ENV</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/app/sampletool/sampletool/build/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
-
-<span class="k">CMD</span> <span class="p">[</span><span class="s2">&quot;bash&quot;</span><span class="p">]</span>
+</section>
+<section id="packaging-and-dependencies">
+<h2>Packaging and dependencies<a class="headerlink" href="#packaging-and-dependencies" title="Permalink to this headline"></a></h2>
+<p>BioImageIT is able to run tool that are packaged either using <strong>Conda</strong> or <strong>Docker</strong>.</p>
+<p>When using conda, the authors need to create a conda package and store it in anaconda.org. Then, the <cite>&lt;requirements&gt;</cite> section looks like the folowing:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;requirements&gt;</span>
+    <span class="nt">&lt;package</span> <span class="na">type=</span><span class="s">&quot;conda&quot;</span> <span class="na">env=</span><span class="s">&quot;simglib&quot;</span><span class="nt">&gt;</span>-c sylvainprigent simglib=0.1.2 python=3.9<span class="nt">&lt;/package&gt;</span>
+<span class="nt">&lt;/requirements&gt;</span>
 </pre></div>
 </div>
-<p>This <em>Dockerfile</em> contains 6 instructions. The <code class="docutils literal notranslate"><span class="pre">FROM</span></code> instruction specify the parent <em>Docker</em> image. We choose here an Ubuntu
-image since it is the operating system where the c++ code have been tested. Of course one can choose any parent image that fit
-the best the program needs. The <code class="docutils literal notranslate"><span class="pre">WORKDIR</span></code> specify the directory where the program will be installed on the Docker container.
-The <code class="docutils literal notranslate"><span class="pre">COPY</span></code> instruction is used to copy the sources of <em>sampletool</em> to the <em>Docker</em> image during the image build. <code class="docutils literal notranslate"><span class="pre">RUN</span></code>
-instruction is executed during the container build. Here we added all the Ubuntu commands we need to install the c++ code
-dependence and build the code. In this example the <code class="docutils literal notranslate"><span class="pre">ENV</span></code> command allow us to update the PATH variable to declare our
-code in the linux <em>PATH</em> so that the command line tool <em>meanfilter</em> is accessible. Finally <code class="docutils literal notranslate"><span class="pre">CMD</span></code> is the command executed
-when the container starts.</p>
-</div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">docs</span></code> folder of the repository contains the user documentation. This documentation should be a tutorial or a step by step
-explanation of how to use the tool on real data. For the documentation we recommend two things: using a web format and write
-it base one use cases.</p>
-<p>The web format is very important to ease the tool access. With a web format, the documentation can be read as stand alone in a
-web browser, integrated in data processing application and easy linked. In this example we use the <strong>Jekyll</strong> page generator
-since it is a convenient tool supported by <em>GitLab</em> to write and generate static web pages. Pages can be very simple or more
-sophisticated depending on the need.</p>
-<p>A documentation based on application use cases is very important to transfer image processing tools from the applied
-mathematics community to the Bio-imaging community. In this <em>sampletool</em> we recommend organizing the document in 4 sections:</p>
-<ul class="simple">
-<li><p><strong>Examples</strong>: this section should contain a gallery of images showing the type of data that the tool has been created for, and show examples of obtained results. This allows a visual way to quickly see if a tool can be adapted or not for an application.</p></li>
-<li><p><strong>Method</strong>: this section should explain with easy words the underlying mathematical model and explain why it is adapted for some type of data and not adapted for other type of data. For example a denoising method with a Gaussian model will be adapted for Gaussian noise but not for Poisson noise.</p></li>
-<li><p><strong>Parameters</strong>: this section should explain the role of each parameter and how to tune them depending on the data. Again, using real data examples are the best way to show the influence of each parameter.</p></li>
-<li><p><strong>References</strong>: this section should list the bibliography references where the original tool have been published and the references to cite when we publish results using the tool.</p></li>
-</ul>
-</div>
-<div class="section" id="gitlab-ci">
-<h2>Gitlab-ci<a class="headerlink" href="#gitlab-ci" title="Permalink to this headline">¶</a></h2>
-<p>The <em>GitLab</em> continuous integration tools allows to test the code, build the docker container image and the documentation. The
-container is then accessible through a <em>Docker</em> registry and the documentation through a web page. Of course the continuous
-integration contains many other features but in the context of <em>BioImageIT</em> we focus on the code testing, docker container and
-documentation.</p>
-<p>A tutorial on how to use continuous integration with <em>GitLab</em> is available
-<a class="reference external" href="https://gitlab.inria.fr/sed-rennes/formations/formation-gitlab-ci-slides/-/blob/master/tutorial.pdf">here</a>.</p>
-<p>The continuous integration instruction for each project have to be written in a file called <code class="docutils literal notranslate"><span class="pre">.gitlab-ci.yml</span></code>. Then, each time
-the code is updated (with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code>), the commands in the <code class="docutils literal notranslate"><span class="pre">.gitlab-ci.yml</span></code> file are executed in a runner.
-The Figure bellow shows the <code class="docutils literal notranslate"><span class="pre">.gitlab-ci.yml</span></code> file for the sample project. As we can see it has 7 sections. First
-<strong>image</strong> specify the base docker image where the continuous integration will be ran. In our case since the c++ code runs on
-Ubuntu we choose an Ubuntu image. Then <strong>variables</strong> allows to declare environment variables, and <strong>before_script</strong> contains
-the commands to initialize the build environment. We added here the commands to install the c++ code dependencies and the <em>jekyll</em>
-framework to build the documentation. Finally the four last sections are the code testing and the Docker container image
-and documentation generation:</p>
-<ul class="simple">
-<li><p><strong>job_compilation</strong>: This is a build stage, where we build the c++ code. If the job succeed it means that the compilation went correctly.</p></li>
-<li><p><strong>job_unit_tests</strong>: This is a test stage to run unit tests for the c++ program. If this test pass, it means that the c++ code runs correctly.</p></li>
-<li><p><strong>pages</strong>: This stage build the documentation from the sources documentation of the <code class="docutils literal notranslate"><span class="pre">docs/</span></code> folder. The documentation is built in the <code class="docutils literal notranslate"><span class="pre">public/</span></code> folder of the <em>GitLab</em> repository accessible at the URL <em>https://bioimage-it.gitlabpages.inria.fr/sampletool/</em>.</p></li>
-<li><p><strong>build_docker</strong>: This is a build step that build the Docker container image from the textit{Dockerfile} in the repository. The Docker textit{push} command add the image to the GitLab Docker registry available at <em>https://gitlab.inria.fr/bioimage-it/sampletool/container_registry</em>.</p></li>
-</ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ubuntu:20.04</span>
-
-<span class="nt">variables</span><span class="p">:</span>
-<span class="nt">JEKYLL_ENV</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">production</span>
-<span class="nt">DEBIAN_FRONTEND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">noninteractive</span>
-
-<span class="nt">before_script</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get update</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get -y install cmake</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gem install jekyll bundler</span>
-
-<span class="nt">job_compilation</span><span class="p">:</span>
-<span class="nt">stage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">build</span>
-<span class="nt">script</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cd sampletool</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">mkdir build</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cd build</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cmake ..</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">make</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cd ..</span>
-<span class="nt">job_unit_tests</span><span class="p">:</span>
-<span class="nt">stage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-<span class="nt">script</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cd tests</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ctest</span>
-
-<span class="nt">pages</span><span class="p">:</span>
-<span class="nt">script</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cd docs</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bundle install</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bundle exec jekyll build -d ../public/</span>
-<span class="nt">artifacts</span><span class="p">:</span>
-    <span class="nt">paths</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">public/</span>
-<span class="nt">only</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">master</span>
-
-<span class="nt">build_docker</span><span class="p">:</span>
-<span class="nt">stage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">build</span>
-<span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker:latest</span>
-<span class="nt">before_script</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">env</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker --version</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY</span>
-<span class="nt">script</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA</span>
+<p>The package needs 2 arguments: type and env. For a <strong>Conda</strong> package the type is <em>conda</em> and the environement is the name
+of the environement that will be created to install the tool. In the example above we named it <cite>simglib</cite> since it is the
+name of the library that we install for the tool. Finally, the main body of <cite>&lt;package&gt;</cite> is the <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span></code> arguments.
+In the example we wrote <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">sylvainprigent</span> <span class="pre">simglib=0.1.2</span> <span class="pre">python=3.9</span></code> to create an environement with python 3.9 and install
+the version 0.1.2 of simglib from the <em>sylvainprigent</em> conda channel.</p>
+<p>When using Docker, the author needs to build a docker image and store it in Docker hub or a Gitlab register. Then,
+the requirement <cite>&lt;requirements&gt;</cite> section is:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;requirements&gt;</span>
+    <span class="nt">&lt;container</span> <span class="na">type=</span><span class="s">&quot;docker&quot;</span><span class="nt">&gt;</span>registry.gitlab.inria.fr/bioimage-it/sampletool:766efe8b8397fef0115e20f8e7cd2853a0e0e0d5<span class="nt">&lt;/container&gt;</span>
+<span class="nt">&lt;/requirements&gt;</span>
 </pre></div>
 </div>
+<p>where the container type is docker and the container body is the adress of the docker image.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is no special section in the wrapper to specify a repository of the source code, but for transparency, it is
+recommended to add is in the tool documentation.</p>
 </div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>In this tutorial, we show with an example how to create a tool package compatible with <em>BioImageIT</em> recommendations. This has
-the advantages of not changing anything in the original source code, but just adding <em>wrapper</em> and <em>Docker</em> recipe. Using
-<em>GitLab</em> allows an easy and powerful way to automate the build steps and public sharing.
-In the example we use, everything is in a single git repository since the source code is open and can be publicly available.
-In the case where the source code is not open but we want to make the tool available through a <em>Docker</em> image, we can create
-two repositories. One private repository with the source code that generate a public <em>Docker</em> container image, and a public
-repository with the <em>wrappers</em> and the <em>documentation</em>.</p>
-</div>
-</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<p>In this tutorial, we show with an example how to create a tool package compatible with <em>BioImageIT</em> and Galaxy Project. This has
+the advantages of using the original source code without changing it, but just packaging it with <em>Docker</em> or <em>Conda</em> and discribing it with a <em>wrapper</em> XML file.
+To make a tool available, please send a push request <a class="reference external" href="https://github.com/bioimageit/bioimageit-tools">here</a>.</p>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="tutorial_write_a_metadata_plugin.html" class="btn btn-neutral float-right" title="Tutorial: write a metadata plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="tutorial_omero.html" class="btn btn-neutral float-left" title="Tutorial: Omero" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_write_a_metadata_plugin.html" class="btn btn-neutral float-right" title="Tutorial: write a metadata plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Sylvain Prigent.
-
-    </p>
+    <p>&#169; Copyright 2020, Sylvain Prigent.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,71 +1,34 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Tutorial: write a runner plugin &mdash; BioImageIT developers documentation 0.0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="bioimageit_core" href="modules.html" />
     <link rel="prev" title="Tutorial: write a metadata plugin" href="tutorial_write_a_metadata_plugin.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> BioImageIT developers documentation
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -73,19 +36,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
@@ -103,73 +55,32 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">bioimageit_core</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">BioImageIT developers documentation</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Tutorial: write a runner plugin</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/tutorial_write_a_runner_plugin.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="tutorial-write-a-runner-plugin">
-<h1>Tutorial: write a runner plugin<a class="headerlink" href="#tutorial-write-a-runner-plugin" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="tutorial-write-a-runner-plugin">
+<h1>Tutorial: write a runner plugin<a class="headerlink" href="#tutorial-write-a-runner-plugin" title="Permalink to this headline"></a></h1>
 <p>In this tutorial we describe step by step how to implement a process <code class="docutils literal notranslate"><span class="pre">Runner</span></code> for <strong>bioimageit_core</strong>. By default
 the <strong>bioimageit_core</strong> library has two runners:</p>
 <ul class="simple">
@@ -183,8 +94,8 @@ Thus, to create a new <code class="docutils literal notranslate"><span class="pr
 <p>Then, all the code will be in this single file. A runner service plugin file contains two classes: the
 <code class="docutils literal notranslate"><span class="pre">ServiceBuilder</span></code> and
 the <code class="docutils literal notranslate"><span class="pre">RunnerService</span></code></p>
-<div class="section" id="runner-service-builder">
-<h2>Runner service builder<a class="headerlink" href="#runner-service-builder" title="Permalink to this headline">¶</a></h2>
+<section id="runner-service-builder">
+<h2>Runner service builder<a class="headerlink" href="#runner-service-builder" title="Permalink to this headline"></a></h2>
 <p>The service builder is a class that allows to instantiate and initialize a single RunnerService. The code bellow shows
 an example of runner service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalRunnerServiceBuilder</span><span class="p">:</span>
@@ -201,9 +112,9 @@ an example of runner service for the <code class="docutils literal notranslate">
 <p>The constructor initialize a null instance of the <code class="docutils literal notranslate"><span class="pre">LocalRunnerService</span></code>, and the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method instante a new
 <code class="docutils literal notranslate"><span class="pre">LocalRunnerService</span></code>. Thus, when the <code class="docutils literal notranslate"><span class="pre">LocalRunnerServiceBuilder</span></code> is called it is always the same instance of the
 <code class="docutils literal notranslate"><span class="pre">RunnerService</span></code> that is used.</p>
-</div>
-<div class="section" id="runner-service">
-<h2>Runner service<a class="headerlink" href="#runner-service" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="runner-service">
+<h2>Runner service<a class="headerlink" href="#runner-service" title="Permalink to this headline"></a></h2>
 <p>The runner service is the class that implements the runner functionalities. The code bellow shows the implementation of
 the <code class="docutils literal notranslate"><span class="pre">LocalRunnerService</span></code>. As we can see, a runner service has a 3 methodd called <code class="docutils literal notranslate"><span class="pre">set_up</span></code>, <code class="docutils literal notranslate"><span class="pre">exec</span></code> and
 <code class="docutils literal notranslate"><span class="pre">tear_down</span></code>. These methods have one common input: the <code class="docutils literal notranslate"><span class="pre">ProcessContainer</span></code> which is a class that contains all the
@@ -264,9 +175,9 @@ Docker container, and the <code class="docutils literal notranslate"><span class
         <span class="k">pass</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="register-the-runner">
-<h2>Register the runner<a class="headerlink" href="#register-the-runner" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="register-the-runner">
+<h2>Register the runner<a class="headerlink" href="#register-the-runner" title="Permalink to this headline"></a></h2>
 <p>The last step is to register the runner to the <strong>bioimageit_core</strong> runner factory. Open the file
 <code class="docutils literal notranslate"><span class="pre">bioimageit_core/runners/factory.py</span></code>, and add a line at the end to register the runner:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">runnerServices</span><span class="o">.</span><span class="n">register_builder</span><span class="p">(</span><span class="s1">&#39;LOCAL&#39;</span><span class="p">,</span> <span class="n">LocalRunnerServiceBuilder</span><span class="p">())</span>
@@ -280,9 +191,9 @@ specify it in the config file:</p>
 <span class="p">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
 <p>To summarize, in order to create a new <code class="docutils literal notranslate"><span class="pre">Runner</span></code> we need to follow these steps:</p>
 <ul class="simple">
 <li><p>create a python file in <code class="docutils literal notranslate"><span class="pre">bioimageit_core/runner/</span></code></p></li>
@@ -291,55 +202,38 @@ specify it in the config file:</p>
 <li><p>register the runner at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/runners/factory.py</span></code></p></li>
 <li><p>setup the config.json file with the new builder to be able to use it</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="modules.html" class="btn btn-neutral float-right" title="bioimageit_core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="tutorial_write_a_metadata_plugin.html" class="btn btn-neutral float-left" title="Tutorial: write a metadata plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="bioimageit_core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Sylvain Prigent.
-
-    </p>
+    <p>&#169; Copyright 2020, Sylvain Prigent.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

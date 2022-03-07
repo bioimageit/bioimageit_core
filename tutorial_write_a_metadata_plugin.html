@@ -1,71 +1,34 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Tutorial: write a metadata plugin &mdash; BioImageIT developers documentation 0.0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Tutorial: write a runner plugin" href="tutorial_write_a_runner_plugin.html" />
     <link rel="prev" title="Tutorial: wrap a tool" href="tutorial_wrap_a_tool.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> BioImageIT developers documentation
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -73,19 +36,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
@@ -103,73 +55,32 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">bioimageit_core</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">BioImageIT developers documentation</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Tutorial: write a metadata plugin</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/tutorial_write_a_metadata_plugin.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="tutorial-write-a-metadata-plugin">
-<h1>Tutorial: write a metadata plugin<a class="headerlink" href="#tutorial-write-a-metadata-plugin" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="tutorial-write-a-metadata-plugin">
+<h1>Tutorial: write a metadata plugin<a class="headerlink" href="#tutorial-write-a-metadata-plugin" title="Permalink to this headline"></a></h1>
 <p>In this tutorial we describe step by step how to implement a plugin to manage metadata for <strong>bioimageit_core</strong>. By default
 the <strong>bioimageit_core</strong> library has one metadata plugin:</p>
 <ul class="simple">
@@ -180,8 +91,8 @@ python code repository we prefix the python plugin file with <code class="docuti
 Thus, to create a new metadata plugin you need to create a python file at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/metadata/service_yourservicename.py</span></code></p>
 <p>Then, all the code will be in this single file. A metadata service plugin file contains two classes: the <code class="docutils literal notranslate"><span class="pre">ServiceBuilder</span></code> and
 the <code class="docutils literal notranslate"><span class="pre">MetadataService</span></code></p>
-<div class="section" id="metadata-service-builder">
-<h2>Metadata service builder<a class="headerlink" href="#metadata-service-builder" title="Permalink to this headline">¶</a></h2>
+<section id="metadata-service-builder">
+<h2>Metadata service builder<a class="headerlink" href="#metadata-service-builder" title="Permalink to this headline"></a></h2>
 <p>The service builder is a class that allows to instantiate and initialize a single MetadataService. The code bellow shows an
 example of metadata service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalMetadataServiceBuilder</span><span class="p">:</span>
@@ -198,9 +109,9 @@ example of metadata service for the <code class="docutils literal notranslate"><
 <p>The constructor initialize a null instance of the <code class="docutils literal notranslate"><span class="pre">LocalMetadataService</span></code>, and the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method instante a new
 <code class="docutils literal notranslate"><span class="pre">LocalMetadataService</span></code>. Thus, when the <code class="docutils literal notranslate"><span class="pre">LocalMetadataServiceBuilder</span></code> is called it is always the same instance of the
 <code class="docutils literal notranslate"><span class="pre">MetadataService</span></code> that is used.</p>
-</div>
-<div class="section" id="metadata-service">
-<h2>Metadata service<a class="headerlink" href="#metadata-service" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="metadata-service">
+<h2>Metadata service<a class="headerlink" href="#metadata-service" title="Permalink to this headline"></a></h2>
 <p>The metadata service is the class that implements the metadata management functionalities. Each method of the metadata service
 class is dedicated to a single metadata manipulation. The code below shows the list of the methods to implement where the
 comments indicate the inputs and outputs of the method.</p>
@@ -486,9 +397,9 @@ comments indicate the inputs and outputs of the method.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="register-the-service">
-<h2>Register the service<a class="headerlink" href="#register-the-service" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="register-the-service">
+<h2>Register the service<a class="headerlink" href="#register-the-service" title="Permalink to this headline"></a></h2>
 <p>The last step is to register the metadata service to the <strong>bioimageit_core</strong> metadata services factory. Open the file
 <code class="docutils literal notranslate"><span class="pre">bioimageit_core/metadata/factory.py</span></code>, and add
 a line at the end to register the service:</p>
@@ -503,9 +414,9 @@ in the config file:</p>
 <span class="p">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
 <p>To summarize, in order to create a new metadata plugin we need to follow these steps:</p>
 <ul class="simple">
 <li><p>create a python file in <code class="docutils literal notranslate"><span class="pre">bioimageit_core/metadata/</span></code></p></li>
@@ -514,55 +425,38 @@ in the config file:</p>
 <li><p>register the runner at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/metadata/factory.py</span></code></p></li>
 <li><p>setup the config.json file with the new builder to be able to use it</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="tutorial_write_a_runner_plugin.html" class="btn btn-neutral float-right" title="Tutorial: write a runner plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="tutorial_wrap_a_tool.html" class="btn btn-neutral float-left" title="Tutorial: wrap a tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_write_a_runner_plugin.html" class="btn btn-neutral float-right" title="Tutorial: write a runner plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Sylvain Prigent.
-
-    </p>
+    <p>&#169; Copyright 2020, Sylvain Prigent.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
