@@ -31,6 +31,17 @@ def PARAM_NUMBER():
 
     return "number"
 
+    
+def PARAM_FLOAT():
+    """Type for parameter float"""
+
+    return "float"
+
+def PARAM_INTEGER():
+    """Type for parameter int"""
+
+    return "integer"    
+
 
 def PARAM_STRING():
     """Type for parameter string"""
@@ -96,6 +107,7 @@ class ProcessCategoryContainer:
         self.id = ''
         self.name = ''
         self.thumbnail = ''
+        self.doc = ''
         self.parent = 'root'
 
 

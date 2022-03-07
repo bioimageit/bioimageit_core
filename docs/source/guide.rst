@@ -3,7 +3,7 @@
 Guide
 =====
 
-BioImageIT-core is a python3 library. It implements the concepts described in the BioImageIT recommendations. 
+BioImageIT-core is a python3 library. It implements the main API for BioImageIT middleware. 
 In the scheme below we can see the position of BioImageIT-core in the BioImageIT ecosystem. In fact, BioImageIT-core is the 
 API that connects low level image processing and data management to high level end users applications.
 
@@ -11,28 +11,28 @@ API that connects low level image processing and data management to high level e
    :align:   center
 
 
-For data management, BioImageIT-core implements a set of functions to manage and annotate data at the Experiment 
+For data management, BioImageIT-core implements a set of functions to manage and annotate data at the Experiment (ie project)
 level. For image processing tools, BioImageIT-core implements a set of functions to query a tool database and 
 to run tools on data.
 
-For Data management and process management, BioImageIT-core defines an API that can be implemented with plugins. For data 
-management by default, data is managed in a JSON file system. If we want to use the BioImageIT-core API to manage data on 
+For Data management and process management, BioImageIT-core defines an API that can be implemented with plugins. By 
+default, data is managed in a JSON file system. If we want to use the BioImageIT-core API to manage data on 
 a SQL database for example, we can implement a data management plugin that links the BioImageIT-core API with the SQL database. 
-For process run, BioImageIT-core by defaut runs tools using Docker containers in the local machine. If we want to run a processing
+For process run, BioImageIT-core by defaut runs tools using Conda packages of Docker containers in the local machine. If we want to run a processing
 tool with a job scheduler for example, we can write a process runner plugin that links the BioImageIT-core API to the job scheduler.
 
 The advantage of this BioImageIT-core architecture is to enable writing high level python code to manage and annotate data and deploy it 
-in different hardware or network architecture without the need to update the high level code, only the configuration file.
+in different hardware or network architecture without the need to update the high level code. Only plugins have to be added.
 
 
 Data Management
 ---------------
 
-In the BioImageIT recommendations, we propose to manage data using a three layer representation:
+In the BioImageIT project, we propose to manage data using a 3 layers representation:
 
-* **Experiment**: an experiment contains one dataset of raw data named "data" and a list of processed datasets. Each processed dataset corresponds to a run of a tool.
+* **Experiment**: an experiment is a project that contains one dataset of raw data named "data" and a list of processed datasets. Each processed dataset contains the outputs of a processing tool.
 * **DataSet**: a dataset contains a list of data that can be raw or processed
-* **Data**: a data contains a single data and the associated metadata. For a ``RawData`` metadata are a set of *key:values* tags specific to the experiment, and for ``ProcessedData``, metadata are the origin data and the process run information. 
+* **Data**: a data contains a single data and the associated metadata. For a ``RawData`` metadata are a set of *key:values* pairs information to identify data and a generic dictionnary for any specific metadata (like image resolution...). For ``ProcessedData``, metadata are a link to the origin data and the process run information. 
 
 In this section we show the main functions implemented in the BioImageIT-core library to handle ``Data``, ``Dataset`` and ``Experiment``. Please
 refer to the docstring documentation to get more advanced features.
@@ -47,19 +47,19 @@ This creates an empty repository with the basic metadata of the experiment. Then
 
 .. code-block:: python3
 
-    myexperiment.import_data(uri='data_uri', name='mydata', author='Sylvain Prigent', dataformat='tif', createddata='now', copy_data=True)
+    myexperiment.import_data(data_path='data_uri', name='mydata', author='Sylvain Prigent', format_='tif', date='now', tags={"key": value})
 
 or a multiple data from a directory:
 
 .. code-block:: python3
 
-    myexperiment.import_dir(dir_uri='./my/local/dir/', filter='\.tif$', author='Sylvain Prigent', format='tif', date='now', copy_data=True)
+    myexperiment.import_dir(dir_uri='./my/local/dir/', filter_='\.tif$', author='Sylvain Prigent', format_='tif', date='now', directory_tag_key="session")
 
 Then the next step is to tag the data. It can be done in batch with functions like:
 
 .. code-block:: python3
 
-    myexperiment.tag_from_name(tag='population', ['population1', 'population2'])
+    myexperiment.tag_from_name(tag='population', values=['population1', 'population2'])
 
 or:
 
@@ -67,13 +67,13 @@ or:
 
     myexperiment.tag_using_seperator(tag='ID', separator='_', value_position=1)
 
-that will create tags and tag the data by extracting information from the data file names. 
+that will create key-value pairs for each data by extracting information from the data file names. 
 The first case will search the words *population1* and *population2* in the data file name and 
-associate it to the tag *population* if on the the word *population1* or *population2* is found. 
+associate it to the key *population* if one of the the words *population1* or *population2* is found. 
 The second case shows how to extract information from the data file name using separators. Here we 
 extract the sub-string in the file name that is located between two *_* and after the first *_*, 
-and associate the extracted value to the tag *ID*.
-We can also manually tag one data by extracting it and manually adding a tag:
+and associate the extracted value to the key *ID*.
+We can also manually annotate one data by extracting it and manually adding a key-value pair:
 
 .. code-block:: python3
 
@@ -97,8 +97,8 @@ and interact with the data in the ``DataSet``:
 Process Running
 ---------------
 
-The BioImageIT recommendation descibe a packaging method to package data processing tools using an XML file and a docker image. 
-The *BioImageIT-core* library, implement functionalities to manipulate and run packaged tools using three level: Process, Runner and Pipeline.
+In the BioImageIT project manage processing tools as external packages (like Conda packages or Docker containers) and uses XML wrappers similarly to the Galaxy Project in order to wrap tools to the BioImageIT Runner.
+The *BioImageIT-core* library, implements functionalities to manipulate and run packaged tools using three level: Process, Runner and Pipeline.
 
 A ``Process`` is a python class in *BioImageIT-core* that allows to identify a processing tool. It load the tool XML file and allows to print and access the process information. 
 
@@ -127,7 +127,7 @@ functionality of *BioImageIT-core*. Running a process can be done as follows:
                   'o', 'denoised.tif') 
 
 
-Finally the ``Pipeline`` class is a convenient class that allows to run a sequence of processes in data stored in an ``Experiment``:
+Finally the ``Pipeline`` class is a convenient class that allows to run a sequence of processes for data stored in an ``Experiment``:
 
 .. code-block:: python3 
 

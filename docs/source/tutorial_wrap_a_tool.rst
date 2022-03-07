@@ -17,7 +17,7 @@ The package architecture is shown in Figure 1. It is organized as follows:
 * The directory ``tools`` contains the wrappers (XML description files) of each tool that is contained in the source code.
 * ``LICENSE`` is the file containing the license. It is very important to have a license file before sharing a tool. 
 * ``README.md`` file is the classical entry point of the repository where to write minimal description of the repository.
-* The ``.gitlab-ci.yml`` file is the recipe file that *GitLab* uses to automatically build the code, the container and the documentation each time the repository is updated.
+* The ``.gitlab-ci.yml`` file is the recipe file that *GitLab* uses to automatically build the code, the container and the documentation each time the repository is updated. The GitHub equivalent is the GitHub workflows.
 
 In the following, we present in more details the tool wrapping, packaging, and the automatic building with *gitlab-ci*.
 

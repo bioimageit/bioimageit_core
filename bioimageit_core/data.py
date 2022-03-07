@@ -118,6 +118,10 @@ class RawData:
             return self.metadata.tags[tag_key]
         return ''
 
+    def delete(self):
+        """delete the data and remove is from the dataset""" 
+        self.service.delete_rawdata(self.md_uri)   
+
     def display(self):
         """Display metadata in console"""
         print(self.metadata.serialize())

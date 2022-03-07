@@ -13,6 +13,9 @@
     "runner": {
         "service": "SINGULARITY"
     },
+    "formats": {
+        "file": "formats.json"
+    },
     "user":{
         "name": "Sylvain Prigent"
     }

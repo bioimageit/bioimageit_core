@@ -24,6 +24,8 @@ from bioimageit_core.processes.containers import (ProcessContainer,
                                                   IO_OUTPUT,
                                                   IO_PARAM,
                                                   PARAM_NUMBER,
+                                                  PARAM_FLOAT,
+                                                  PARAM_INTEGER,
                                                   PARAM_SELECT,
                                                   PARAM_BOOLEAN,
                                                   PARAM_STRING
@@ -79,6 +81,8 @@ class LocalProcessService:
             container = ProcessCategoryContainer()
             container.id = categories['id']
             container.name = categories['name']
+            if 'doc' in categories:
+                container.doc = categories['doc']
             container.thumbnail = os.path.join(
                 categories_json_dirname, categories['thumbnail']
             )
@@ -337,6 +341,21 @@ class ProcessParser:
                 if 'type' in child.attrib:
                     requirement['type'] = child.attrib['type']
                 requirement['uri'] = child.text
+            elif child.tag == 'package':
+                requirement['origin'] = 'package'
+                if 'type' in child.attrib:
+                    requirement['type'] = child.attrib['type']
+                else:
+                    requirement['type'] = ''
+                if 'env' in child.attrib:
+                    requirement['env'] = child.attrib['env']
+                else:
+                    requirement['env'] = ''    
+                if 'init' in child.attrib:
+                    requirement['init'] = child.attrib['init']
+                else:
+                    requirement['init'] = ''
+                requirement['package'] = child.text
 
             self.info.requirements.append(requirement)
 
@@ -358,6 +377,7 @@ class ProcessParser:
         command = node.text
         command = command.replace('\t', '')
         command = command.replace('\n', '')
+        command = command.replace('$__tool_directory__', os.path.dirname(self.xml_file_url) + os.sep)
         self.info.command = command
 
     def _parse_help(self, node):
@@ -412,21 +432,15 @@ class ProcessParser:
                         input_parameter.io = IO_PARAM()
                         input_parameter.is_data = False
 
-                        if (
-                            child.attrib['type'] == 'number'
-                            or child.attrib['type'] == 'float'
-                            or child.attrib['type'] == 'integer'
-                        ):
+                        if child.attrib['type'] == 'number':
                             input_parameter.type = PARAM_NUMBER()
-                        elif (
-                            child.attrib['type'] == 'string'
-                            or child.attrib['type'] == 'text'
-                        ):
+                        elif child.attrib['type'] == 'float':
+                            input_parameter.type = PARAM_FLOAT()    
+                        elif child.attrib['type'] == 'integer':
+                            input_parameter.type = PARAM_INTEGER()         
+                        elif child.attrib['type'] == 'string' or child.attrib['type'] == 'text':
                             input_parameter.type = PARAM_STRING()
-                        elif (
-                            child.attrib['type'] == 'bool'
-                            or child.attrib['type'] == 'boolean'
-                        ):
+                        elif child.attrib['type'] == 'bool' or child.attrib['type'] == 'boolean':
                             input_parameter.type = PARAM_BOOLEAN()
                         elif child.attrib['type'] == PARAM_SELECT():
                             input_parameter.type = PARAM_SELECT()

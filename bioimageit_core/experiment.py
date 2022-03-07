@@ -16,14 +16,13 @@ Example
         >>>                          author='Sylvain Prigent',
         >>>                          format_='tif',
         >>>                          date='now',
-        >>>                          tags={},
-        >>>                          copy=True))
+        >>>                          tags={}))
         >>> myexperiment.import_dir(dir_uri='./my/local/dir/',
-        >>>                         filter_='\.tif$',
+        >>>                         filter_='.*\.tif$',
         >>>                         author='Sylvain Prigent',
-        >>>                         format='tif',
+        >>>                         format_='bioformat',
         >>>                         date='now',
-        >>>                         copy_data=True)
+        >>>                         directory_tag_key='')
         >>> myexperiment.tag_from_name(tag='population',
         >>>                            ['population1', 'population2'])
         >>> myexperiment.tag_using_seperator(tag='ID', separator='_',
@@ -49,6 +48,18 @@ from bioimageit_core.metadata.factory import metadataServices
 from bioimageit_core.metadata.exceptions import MetadataQueryError
 from bioimageit_core.metadata.containers import (RawDataContainer,
                                                  ExperimentContainer)
+
+
+class Workspace(Observable):
+    """Allows to interact with a database of Experiments"""
+    def __init__(self):
+        self.workspace_dir = ConfigAccess.instance().config['workspace']
+        config = ConfigAccess.instance().config['metadata']
+        self.service = metadataServices.get(config["service"], **config)
+
+    def experiments(self):
+        """Get the list of experiments"""
+        return self.service.workspace_experiments(self.workspace_dir)
 
 
 class Experiment(Observable):
@@ -141,7 +152,6 @@ class Experiment(Observable):
         format_: str,
         date: str = 'now',
         tags: dict = dict,
-        copy: bool = True,
     ):
         """import one data to the experiment
 
@@ -177,7 +187,7 @@ class Experiment(Observable):
         metadata.date = format_date(date)
         metadata.tags = tags
         data_uri = self.service.import_data(
-            data_path, self.metadata.rawdataset, metadata, copy
+            data_path, self.metadata.rawdataset, metadata
         )
         return RawData(data_uri)
 
@@ -188,7 +198,7 @@ class Experiment(Observable):
         author: str,
         format_: str,
         date: str,
-        copy_data: bool,
+        directory_tag_key: str,
     ):
         """Import data from a directory to the experiment
 
@@ -209,23 +219,12 @@ class Experiment(Observable):
             Format of the image (ex: tif)
         date
             Date when the data where created
-        copy_data
-            True to copy the data to the experiment, false otherwise. If the
-            data are not copied, an absolute link to dir_uri is kept in the
-            experiment metadata. The original data directory must then not be
-            changed for the experiment to find the data.
+        directory_tag_key
+            If the string directory_tag_key is not empty, a new tag key entry with the
+            key={directory_tag_key} and the value={the directory name}.
 
         """
-        files = os.listdir(dir_uri)
-        count = 0
-        for file in files:
-            count += 1
-            r1 = re.compile(filter_)  # re.compile(r'\.tif$')
-            if r1.search(file):
-                self.notify_observers(int(100 * count / len(files)), file)
-                data_url = os.path.join(dir_uri, file)
-                self.import_data(data_url, file, author, format_, date, {},
-                                 copy_data)
+        self.service.import_dir(self.metadata.rawdataset, dir_uri, filter_, author, format_, format_date(date), directory_tag_key)
 
     def display(self, dataset: str = 'data'):
         """Display a dataset content as a table in the console
@@ -266,6 +265,20 @@ class Experiment(Observable):
             print('Display processed dataset not yet implemented')
         print(t)
 
+    def set_tags(self, tags: list):
+        """Set all the tags to the experiements
+        
+        Previous existing tags are removed
+
+        Parameters
+        ----------
+        tags: list
+            List of tags (str)
+
+        """
+        self.metadata.tags = tags
+        self.write()
+
     def set_tag(self, tag: str, add_to_data: bool = True):
         """Add a tag key to the experiment
 
@@ -288,7 +301,7 @@ class Experiment(Observable):
             self.write()
         if add_to_data:
             raw_dataset = RawDataSet(self.metadata.rawdataset)
-            for i in range(int(raw_dataset.size)):
+            for i in range(int(raw_dataset.size())):
                 raw_data = raw_dataset.get(i)
                 if tag not in raw_data.metadata.tags:
                     raw_data.set_tag(tag, '')

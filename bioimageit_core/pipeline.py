@@ -34,6 +34,7 @@ Pipeline
 
 import os
 
+from bioimageit_formats import FormatsAccess
 from bioimageit_core.core.utils import Observable, format_date
 from bioimageit_core.metadata.run import Run
 from bioimageit_core.metadata.containers import (RunParameterContainer,
@@ -68,7 +69,7 @@ class PipelineRunner(Observable):
         # data for runner
         self._output_dataset = ''
         self._process_params = []
-        self._inputs_names = []
+        self._inputs_names = [] 
         self._inputs_datasets = []
         self._inputs_query = []
         self._inputs_origin_output_name = []
@@ -352,8 +353,7 @@ class PipelineRunner(Observable):
             for i in range(data_count):
                 data_info = RawData(input_data[n][i])
                 if (
-                    data_info.metadata.format == "csv"
-                    or data_info.metadata.format == "txt"
+                    data_info.metadata.format == "numbercsv"
                 ):
                     with open(data_info.metadata.uri, 'r') as file:
                         value = file.read().replace('\n', '').replace(' ', '')
@@ -403,7 +403,7 @@ class PipelineRunner(Observable):
 
         # 4.3- outputs
         for output in self.process.metadata.outputs:
-            extension = '.' + output.type  # type=format for process parameters
+            extension = '.' + FormatsAccess.instance().get(output.type).extension
 
             # args
             args.append(output.name)

@@ -57,6 +57,13 @@ class Config:
         self.config = {}
         if config_file != '':
             self.load(config_file)
+            
+    def save(self, config_file = ''):
+        file = config_file
+        if config_file == '':
+            file = self.config_file
+        with open(file, 'w') as outfile:
+            json.dump(self.config, outfile, indent=4)    
 
     def load(self, config_file: str):
         """Read the metadata from the a json file"""

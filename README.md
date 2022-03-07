@@ -5,7 +5,7 @@ BioImageIT core is a python library to write biological data analysis pipelines.
 
 # Documentation
 
-The documentation is available [here](https://bioimage-it.gitlabpages.inria.fr/bioimagepy/).
+The documentation is available [here](https://bioimageit.github.io/bioimageit_core/).
 
 # Development
 
