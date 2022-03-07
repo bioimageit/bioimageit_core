@@ -1,7 +1,7 @@
 import os
 import sys
 
-from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.process import ProcessAccess
 
 if __name__ == '__main__':

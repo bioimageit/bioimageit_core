@@ -1,9 +1,13 @@
 {
+    "uuid": "fake_uuid",
     "process": {
         "name": "SPARTION 2D",
         "url": "../galaxytools/tools/svdeconv/svdeconv2d.xml"
     },
-    "processeddataset": "processeddataset.md.json",
+    "processed_dataset": {
+        "uuid": "fake_uuid",
+        "url": "processed_dataset.md.json"
+    },
     "inputs": [
         {
             "name": "i",

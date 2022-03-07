@@ -2,7 +2,7 @@ import sys
 import os
 from pathlib import Path
 
-from bioimageit_core.config import ConfigAccess
+from bioimageit_core.core.config import ConfigAccess
 from bioimageit_core.wrapperunit.wrapperunit import WrapperUnit
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 {
+    "uuid": "fake_uuid",
     "origin": {
         "type": "raw"
     },
@@ -9,7 +10,8 @@
         "format": "tif",
         "url": "population1_001.tif"
     },
-    "tags": {
+    "metadata": {},
+    "key_value_pairs": {
         "Population": "population1",
         "number": "001"
     }

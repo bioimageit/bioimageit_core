@@ -1,4 +1,5 @@
 {
+    "uuid": "fake_uuid",
     "common": {
         "name": "population1_001_o_o",
         "url": "population1_001_o_o.tif",
@@ -8,10 +9,14 @@
     },
     "origin": {
         "type": "processed",
-        "runurl": "run.md.json",
+        "run": {
+            "uuid": "fake_uuid",
+            "url": "run.md.json"
+        },
         "inputs": [
             {
                 "name": "i",
+                "uuid": "fake_uuid",
                 "url": "../process1/population1_001_o.md.json",
                 "type": "processed"
             }

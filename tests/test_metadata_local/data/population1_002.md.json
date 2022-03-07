@@ -1,4 +1,5 @@
 {
+    "uuid": "fake_uuid",
     "common": {
         "name": "population1_002.tif",
         "author": "Sylvain Prigent",
@@ -9,7 +10,8 @@
     "origin": {
         "type": "raw"
     },
-    "tags": {
+    "metadata": {},
+    "key_value_pairs": {
         "Population": "population1",
         "number": "002"
     }

@@ -1,8 +1,18 @@
 {
+    "uuid": "fake_uuid",
     "name": "process1",
     "urls": [
-        "population1_001_o.md.json",
-        "population1_002_o.md.json",
-        "population1_003_o.md.json"
+        {
+            "url": "population1_001_o.md.json",
+            "uuid": "fake_uuid"
+        },
+        {
+            "url": "population1_002_o.md.json",
+            "uuid": "fake_uuid"
+        },
+        {
+            "url": "population1_003_o.md.json",
+            "uuid": "fake_uuid"
+        }
     ]
 }
