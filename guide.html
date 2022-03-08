@@ -49,7 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_omero.html">Tutorial: Omero</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_wrap_a_tool.html">Tutorial: wrap a tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_metadata_plugin.html">Tutorial: write a metadata plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_data_plugin.html">Tutorial: write a data plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_runner_plugin.html">Tutorial: write a runner plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">bioimageit_core</a></li>
 </ul>
@@ -80,21 +80,21 @@
              
   <section id="guide">
 <span id="id1"></span><h1>Guide<a class="headerlink" href="#guide" title="Permalink to this headline"></a></h1>
-<p>BioImageIT-core is a python3 library. It implements the main API for BioImageIT middleware.
-In the scheme below we can see the position of BioImageIT-core in the BioImageIT ecosystem. In fact, BioImageIT-core is the
+<p><code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> is a python3 library. It implements the main API for BioImageIT middleware.
+In the scheme below we can see the position of <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> in the BioImageIT ecosystem. In fact, <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> is the
 API that connects low level image processing and data management to high level end users applications.</p>
 <figure class="align-center">
 <img alt="_images/apps_layers.png" src="_images/apps_layers.png" />
 </figure>
-<p>For data management, BioImageIT-core implements a set of functions to manage and annotate data at the Experiment (ie project)
-level. For image processing tools, BioImageIT-core implements a set of functions to query a tool database and
+<p>For data management, <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> implements a set of functions to manage and annotate data at the Experiment (ie project)
+level. For image processing tools, <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> implements a set of functions to query a tool database and
 to run tools on data.</p>
-<p>For Data management and process management, BioImageIT-core defines an API that can be implemented with plugins. By
-default, data is managed in a JSON file system. If we want to use the BioImageIT-core API to manage data on
-a SQL database for example, we can implement a data management plugin that links the BioImageIT-core API with the SQL database.
-For process run, BioImageIT-core by defaut runs tools using Conda packages of Docker containers in the local machine. If we want to run a processing
-tool with a job scheduler for example, we can write a process runner plugin that links the BioImageIT-core API to the job scheduler.</p>
-<p>The advantage of this BioImageIT-core architecture is to enable writing high level python code to manage and annotate data and deploy it
+<p>For Data management and tools management, <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> defines an API that can be implemented with plugins. By
+default, data is managed using JSON files locally. If we want to use the <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> API to manage data on
+a SQL database for example, we can implement a data management plugin that links the <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> API with the SQL database.
+For tools execution, <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> by default runs tools using Conda packages in the local machine. If we want to run a processing
+tool with a job scheduler for example, we can write a tool runner plugin that links the <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> API to the job scheduler.</p>
+<p>The advantage of this <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> architecture is to enable writing high level python code to manage and annotate data and deploy it
 in different hardware or network architecture without the need to update the high level code. Only plugins have to be added.</p>
 <section id="data-management">
 <h2>Data Management<a class="headerlink" href="#data-management" title="Permalink to this headline"></a></h2>
@@ -102,29 +102,48 @@ in different hardware or network architecture without the need to update the hig
 <ul class="simple">
 <li><p><strong>Experiment</strong>: an experiment is a project that contains one dataset of raw data named “data” and a list of processed datasets. Each processed dataset contains the outputs of a processing tool.</p></li>
 <li><p><strong>DataSet</strong>: a dataset contains a list of data that can be raw or processed</p></li>
-<li><p><strong>Data</strong>: a data contains a single data and the associated metadata. For a <code class="docutils literal notranslate"><span class="pre">RawData</span></code> metadata are a set of <em>key:values</em> pairs information to identify data and a generic dictionnary for any specific metadata (like image resolution…). For <code class="docutils literal notranslate"><span class="pre">ProcessedData</span></code>, metadata are a link to the origin data and the process run information.</p></li>
+<li><p><strong>Data</strong>: a data contains a single data and the associated metadata. For a <code class="docutils literal notranslate"><span class="pre">RawData</span></code> metadata are a set of <em>key:values</em> pairs information to identify data and a generic dictionary for any specific metadata (like image resolution…). For <code class="docutils literal notranslate"><span class="pre">ProcessedData</span></code>, metadata are a link to the origin data and the run information.</p></li>
 </ul>
-<p>In this section we show the main functions implemented in the BioImageIT-core library to handle <code class="docutils literal notranslate"><span class="pre">Data</span></code>, <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>. Please
-refer to the docstring documentation to get more advanced features.
-To create an experiment, <em>BioImageIT-core</em> has a dedicated function with the following syntax:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">()</span>
-<span class="n">myexperiment</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;myexperiment&#39;</span><span class="p">,</span> <span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span> <span class="s1">&#39;./&#39;</span><span class="p">)</span>
+<p>In this section we show the main functions implemented in the <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> library to handle <code class="docutils literal notranslate"><span class="pre">Data</span></code>, <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>. Please
+refer to the docstring documentation to get more advanced features.</p>
+<p>The BioImageIT API is accessible through a single class named <code class="docutils literal notranslate"><span class="pre">Request</span></code>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">bioimageit_core.api</span> <span class="k">as</span> <span class="nn">iit</span>
+<span class="n">req</span> <span class="o">=</span> <span class="n">iit</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="s1">&#39;./config_sample.json&#39;</span><span class="p">)</span>
+<span class="n">req</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This creates an empty repository with the basic metadata of the experiment. Then we can import a single data:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;data_uri&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mydata&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="s1">&#39;tif&#39;</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+<p>To create an experiment, <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> has a dedicated function with the following syntax:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">experiment</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">create_experiment</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;myexperiment&#39;</span><span class="p">,</span>
+                                   <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span>
+                                   <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span>
+                                   <span class="n">destination</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This creates an empty project with the basic metadata of the experiment. Then we can import a single data:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span>
+                <span class="n">data_path</span><span class="o">=</span><span class="s1">&#39;data_uri&#39;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mydata&#39;</span><span class="p">,</span>
+                <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span>
+                <span class="n">format_</span><span class="o">=</span><span class="s1">&#39;imagetiff&#39;</span><span class="p">,</span>
+                <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span>
+                <span class="n">key_value_pairs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>or a multiple data from a directory:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">import_dir</span><span class="p">(</span><span class="n">dir_uri</span><span class="o">=</span><span class="s1">&#39;./my/local/dir/&#39;</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="s1">&#39;\.tif$&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="s1">&#39;tif&#39;</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">directory_tag_key</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">import_dir</span><span class="p">(</span><span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+               <span class="n">dir_uri</span><span class="o">=</span><span class="s1">&#39;./tests/test_images/data&#39;</span><span class="p">,</span>
+               <span class="n">filter_</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\.tif$&#39;</span><span class="p">,</span>
+               <span class="n">author</span><span class="o">=</span><span class="s1">&#39;Sylvain Prigent&#39;</span><span class="p">,</span>
+               <span class="n">format_</span><span class="o">=</span><span class="s1">&#39;imagetiff&#39;</span><span class="p">,</span>
+               <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then the next step is to tag the data. It can be done in batch with functions like:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">tag_from_name</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;population&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;population1&#39;</span><span class="p">,</span> <span class="s1">&#39;population2&#39;</span><span class="p">])</span>
+<p>Then the next step is to annotate the data. It can be done in batch with functions like:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">annotate_from_name</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;population1&#39;</span><span class="p">,</span> <span class="s1">&#39;population2&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>or:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myexperiment</span><span class="o">.</span><span class="n">tag_using_seperator</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">value_position</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">annotate_using_separator</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>that will create key-value pairs for each data by extracting information from the data file names.
@@ -134,68 +153,68 @@ The second case shows how to extract information from the data file name using s
 extract the sub-string in the file name that is located between two <em>_</em> and after the first <em>_</em>,
 and associate the extracted value to the key <em>ID</em>.
 We can also manually annotate one data by extracting it and manually adding a key-value pair:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">myexperiment</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="s1">&#39;name=population1_001.tif&#39;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="s2">&quot;Population1&quot;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;001&quot;</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="s1">&#39;name=population1_001.tif&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">set_key_value_pair</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="s2">&quot;Population1&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">set_key_value_pair</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;001&quot;</span><span class="p">)</span>
+<span class="n">req</span><span class="o">.</span><span class="n">update_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <em>BioImageIT-core</em> library also allows to access directly a <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_dataset</span> <span class="o">=</span> <span class="n">myexperiment</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> library also allows to access directly a <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_dataset</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>and interact with the data in the <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">raw_dataset</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="n">raw_dataset</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">raw_dataset</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s1">&#39;Population=population1&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="process-running">
 <h2>Process Running<a class="headerlink" href="#process-running" title="Permalink to this headline"></a></h2>
-<p>In the BioImageIT project manage processing tools as external packages (like Conda packages or Docker containers) and uses XML wrappers similarly to the Galaxy Project in order to wrap tools to the BioImageIT Runner.
-The <em>BioImageIT-core</em> library, implements functionalities to manipulate and run packaged tools using three level: Process, Runner and Pipeline.</p>
-<p>A <code class="docutils literal notranslate"><span class="pre">Process</span></code> is a python class in <em>BioImageIT-core</em> that allows to identify a processing tool. It load the tool XML file and allows to print and access the process information.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myprocess</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">url</span><span class="o">/</span><span class="n">of</span><span class="o">/</span><span class="n">the</span><span class="o">/</span><span class="n">process</span><span class="o">/</span><span class="n">wrapper</span><span class="o">.</span><span class="n">xml</span><span class="p">)</span>
-<span class="n">myprocess</span><span class="o">.</span><span class="n">man</span><span class="p">()</span>
+<p>In the BioImageIT project processing tools are external packages (like Conda packages or Docker containers) and represented with XML wrappers similarly to the Galaxy Project.
+The <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> library, implements functionalities to manipulate and run packaged tools.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Tool</span></code> is a python class in <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> that allows to identify a processing tool. It load the tool XML file and allows to print and access the process information.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">tool</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_tool</span><span class="p">(</span><span class="s1">&#39;spitfiredeconv2d_v0.1.2&#39;</span><span class="p">)</span>
+<span class="n">tool</span><span class="o">.</span><span class="n">man</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>In practice, we do not need to instantiate directly a <code class="docutils literal notranslate"><span class="pre">Process</span></code> since <em>BioImageIT-core</em> provides a <code class="docutils literal notranslate"><span class="pre">ProcessAccess</span></code>
-class that manage a process database. We can then access a <code class="docutils literal notranslate"><span class="pre">Process</span></code> simply using the tool name and version:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myprocess</span> <span class="o">=</span> <span class="n">ProcessAccess</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sampletool_v0.0.1&#39;</span><span class="p">)</span>
-<span class="n">myprocess</span><span class="o">.</span><span class="n">man</span><span class="p">()</span>
+<p>We can see that we do not need to instantiate directly a <code class="docutils literal notranslate"><span class="pre">Tool</span></code> since <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> manage a
+process database. We can then access a <code class="docutils literal notranslate"><span class="pre">Tool</span></code> simply using the tool name and version:</p>
+<p>A tool can be ran in data file directly with the <code class="docutils literal notranslate"><span class="pre">exec</span></code> command:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">req</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">tool</span><span class="p">,</span>
+         <span class="n">i</span><span class="o">=</span><span class="s1">&#39;tests/test_images/data/population1_001.tif&#39;</span><span class="p">,</span>
+         <span class="n">o</span><span class="o">=</span><span class="s1">&#39;population1_001_deconv.tif&#39;</span><span class="p">,</span>
+         <span class="n">sigma</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+         <span class="n">regularization</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+         <span class="n">weighting</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+         <span class="n">method</span><span class="o">=</span><span class="s1">&#39;SV&#39;</span><span class="p">,</span>
+         <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">Runner</span></code> class allows to run a process on data. This is the core class of the processing
-functionality of <em>BioImageIT-core</em>. Running a process can be done as follows:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myrunner</span> <span class="o">=</span> <span class="n">Runner</span><span class="p">(</span><span class="n">ProcessAccess</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ndsafir_v1.0.0&#39;</span><span class="p">)</span>
-<span class="n">myrunner</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;myimage.tif&#39;</span><span class="p">,</span>
-              <span class="s1">&#39;patch&#39;</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span>
-              <span class="s1">&#39;iter&#39;</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span>
-              <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;denoised.tif&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Finally the <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> class is a convenient class that allows to run a sequence of processes for data stored in an <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">mypipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">Experiment</span><span class="p">(</span><span class="s1">&#39;my/experiment/uri&#39;</span><span class="p">))</span>
+<p>Nevertheless, it is not the recommended methods since <code class="docutils literal notranslate"><span class="pre">exec</span></code> does not generate any metadata. We prefer
+using the run method which runs a <code class="docutils literal notranslate"><span class="pre">Job</span></code> on an Experiment and keep track of all the job history (inputs data, outputs data, parameters)</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bioimageit_core.containers.runners_containers</span> <span class="kn">import</span> <span class="n">Job</span>
 
-<span class="n">p1</span> <span class="o">=</span> <span class="n">mypipeline</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span><span class="s1">&#39;spartion2d_v1.0.0&#39;</span><span class="p">)</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;weighting&#39;</span><span class="p">,</span> <span class="s1">&#39;0.1&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;regularization&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">)</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">p1</span><span class="o">.</span><span class="n">set_dataset_name</span><span class="p">(</span><span class="s1">&#39;deconv2d&#39;</span><span class="p">)</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">()</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_tool</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">get_tool</span><span class="p">(</span><span class="s1">&#39;spitfiredeconv2d_v0.1.2&#39;</span><span class="p">))</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="s1">&#39;regularization&#39;</span><span class="p">,</span> <span class="s1">&#39;12&#39;</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="s1">&#39;weighting&#39;</span><span class="p">,</span> <span class="s1">&#39;0.1&#39;</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;SV&#39;</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="s1">&#39;padding&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">set_output_dataset_name</span><span class="p">(</span><span class="s1">&#39;deconv&#39;</span><span class="p">)</span>
 
-<span class="n">p2</span> <span class="o">=</span> <span class="n">mypipeline</span><span class="o">.</span><span class="n">add_process</span><span class="p">(</span><span class="s1">&#39;particleanalyzer_v1.0.0&#39;</span><span class="p">)</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="s1">&#39;threshold&#39;</span><span class="p">,</span> <span class="s1">&#39;Default dark&#39;</span><span class="p">)</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;deconv&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">set_dataset_name</span><span class="p">(</span><span class="s1">&#39;particles&#39;</span><span class="p">)</span>
-
-<span class="n">mypipeline</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Then, all the output data and the run metadata are stored in a new dataset of the Experiment. In the
+example above the new dataset is called <em>deconv</em></p>
 </section>
 <section id="further-reading">
 <h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline"></a></h2>
-<p>In this short introduction guide we show the basic informations we need to use <em>BioImageIT-core</em>. For a more advanced use, we recommend
-reading the following tutorials.</p>
+<p>In this short introduction guide we show the basic information we need to use <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> library.
+For a more advanced use, we recommend reading the following tutorials.</p>
 </section>
 </section>
 

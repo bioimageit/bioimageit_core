@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial: write a data plugin &mdash; BioImageIT developers documentation 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial: write a runner plugin" href="tutorial_write_a_runner_plugin.html" />
+    <link rel="prev" title="Tutorial: wrap a tool" href="tutorial_wrap_a_tool.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> BioImageIT developers documentation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_omero.html">Tutorial: Omero</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_wrap_a_tool.html">Tutorial: wrap a tool</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: write a data plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-service-builder">Data service builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-service">Data service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#register-the-service">Register the service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_runner_plugin.html">Tutorial: write a runner plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">bioimageit_core</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BioImageIT developers documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Tutorial: write a data plugin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_write_a_data_plugin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-write-a-data-plugin">
+<h1>Tutorial: write a data plugin<a class="headerlink" href="#tutorial-write-a-data-plugin" title="Permalink to this headline"></a></h1>
+<p>In this tutorial we describe step by step how to implement a plugin to manage data with <strong>bioimageit_core</strong>. By default
+the <strong>bioimageit_core</strong> library has one data plugin:</p>
+<ul class="simple">
+<li><p>LOCAL: a data manager based on local file system. Each experiment is a local directory and each data metadata are stored using <em>JSON</em> files.</p></li>
+</ul>
+<p>Data plugins are implemented using the service design pattern. To make it easier to identify the services plugins in the
+python code repository we prefix the python plugin file with <code class="docutils literal notranslate"><span class="pre">data_</span></code>.
+Thus, to create a new metadata plugin you need to create a python file at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/data_yourservicename.py</span></code></p>
+<p>Then, the main class of your plugin will be in this single file. A data service plugin file contains two classes: the <code class="docutils literal notranslate"><span class="pre">ServiceBuilder</span></code> and
+the <code class="docutils literal notranslate"><span class="pre">DataService</span></code></p>
+<section id="data-service-builder">
+<h2>Data service builder<a class="headerlink" href="#data-service-builder" title="Permalink to this headline"></a></h2>
+<p>The service builder is a class that allows to instantiate and initialize a single data service. The code bellow shows an
+example of data service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalMetadataServiceBuilder</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Service builder for the metadata service&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">_ignored</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">LocalMetadataService</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span>
+</pre></div>
+</div>
+<p>The constructor initialize a null instance of the <code class="docutils literal notranslate"><span class="pre">LocalMetadataService</span></code>, and the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method instante a new
+<code class="docutils literal notranslate"><span class="pre">LocalMetadataService</span></code>. Thus, when the <code class="docutils literal notranslate"><span class="pre">LocalMetadataServiceBuilder</span></code> is called it is always the same instance of the
+<code class="docutils literal notranslate"><span class="pre">LocalMetadataService</span></code> that is used.</p>
+</section>
+<section id="data-service">
+<h2>Data service<a class="headerlink" href="#data-service" title="Permalink to this headline"></a></h2>
+<p>The data service is the class that implements the data management functionalities. Each method of the data service
+class is dedicated to a single data manipulation. The code below shows the list of the methods to implement where the
+comments indicate the inputs and outputs of the method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">destination</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a new experiment</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name: str</span>
+<span class="sd">        Name of the experiment</span>
+<span class="sd">    author: str</span>
+<span class="sd">        username of the experiment author</span>
+<span class="sd">    date: str</span>
+<span class="sd">        Creation date of the experiment</span>
+<span class="sd">    keys: list</span>
+<span class="sd">        List of keys used for the experiment vocabulary</span>
+<span class="sd">    destination: str</span>
+<span class="sd">        Destination where the experiment is created. It is a the path of the</span>
+<span class="sd">        directory where the experiment will be created for local use case</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Experiment container with the experiment metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_workspace_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace_uri</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read the experiments in the user workspace</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    workspace_uri: str</span>
+<span class="sd">        URI of the workspace</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of experiment containers</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read an experiment from the database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    md_uri: str</span>
+<span class="sd">        URI of the experiment. For local use case, the URI is either the</span>
+<span class="sd">        path of the experiment directory, or the path of the</span>
+<span class="sd">        experiment.md.json file</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Experiment container with the experiment metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write an experiment to the database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    experiment: Experiment</span>
+<span class="sd">        Container of the experiment metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">format_</span><span class="p">,</span>
+                <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">key_value_pairs</span><span class="o">=</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;import one data to the experiment</span>
+
+<span class="sd">    The data is imported to the raw dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    experiment: Experiment</span>
+<span class="sd">        Container of the experiment metadata</span>
+<span class="sd">    data_path: str</span>
+<span class="sd">        Path of the accessible data on your local computer</span>
+<span class="sd">    name: str</span>
+<span class="sd">        Name of the data</span>
+<span class="sd">    author: str</span>
+<span class="sd">        Person who created the data</span>
+<span class="sd">    format_: str</span>
+<span class="sd">        Format of the data (ex: tif)</span>
+<span class="sd">    date: str</span>
+<span class="sd">        Date when the data where created</span>
+<span class="sd">    key_value_pairs: dict</span>
+<span class="sd">        Dictionary {key:value, key:value} to annotate files</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    class RawData containing the metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">import_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">dir_uri</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">format_</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span>
+               <span class="n">directory_tag_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">observers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Import data from a directory to the experiment</span>
+
+<span class="sd">    This method import with or without copy data contained</span>
+<span class="sd">    in a local folder into an experiment. Imported data are</span>
+<span class="sd">    considered as RawData for the experiment</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    experiment: Experiment</span>
+<span class="sd">        Container of the experiment metadata</span>
+<span class="sd">    dir_uri: str</span>
+<span class="sd">        URI of the directory containing the data to be imported</span>
+<span class="sd">    filter_: str</span>
+<span class="sd">        Regular expression to filter which files in the folder</span>
+<span class="sd">        to import</span>
+<span class="sd">    author: str</span>
+<span class="sd">        Name of the person who created the data</span>
+<span class="sd">    format_: str</span>
+<span class="sd">        Format of the image (ex: tif)</span>
+<span class="sd">    date: str</span>
+<span class="sd">        Date when the data where created</span>
+<span class="sd">    directory_tag_key</span>
+<span class="sd">        If the string directory_tag_key is not empty, a new tag key entry with the</span>
+<span class="sd">        key={directory_tag_key} and the value={the directory name}.</span>
+<span class="sd">    observers: list</span>
+<span class="sd">        List of observers to notify the progress</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a raw data from the database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    md_uri: str</span>
+<span class="sd">        URI if the raw data</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    RawData object containing the raw data metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a raw data from the database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    raw_data: RawData</span>
+<span class="sd">        Container with the raw data metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_processed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    md_uri: str</span>
+<span class="sd">        URI if the processed data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ProcessedData object containing the raw data metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_processed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    processed_data: ProcessedData</span>
+<span class="sd">        Container with the processed data metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a dataset from the database using it URI</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    md_uri: str</span>
+<span class="sd">        URI if the dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dataset object containing the dataset metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset: Dataset</span>
+<span class="sd">        Container with the dataset metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a processed dataset in an experiment</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    experiment: Experiment</span>
+<span class="sd">        Object containing the experiment metadata</span>
+<span class="sd">    dataset_name: str</span>
+<span class="sd">        Name of the dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dataset object containing the new dataset metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">run_info</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a new run metadata</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset: Dataset</span>
+<span class="sd">        Object of the dataset metadata</span>
+<span class="sd">    run_info: Run</span>
+<span class="sd">        Object containing the metadata of the run. md_uri is ignored and</span>
+<span class="sd">        created automatically by this method</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Run object with the metadata and the new created md_uri</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a run metadata from the data base</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    md_uri</span>
+<span class="sd">        URI of the run entry in the database</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Run: object containing the run metadata</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a new processed data for a given dataset</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset: Dataset</span>
+<span class="sd">        Object of the dataset metadata</span>
+<span class="sd">    run: Run</span>
+<span class="sd">        Metadata of the run</span>
+<span class="sd">    processed_data: ProcessedData</span>
+<span class="sd">        Object containing the new processed data. md_uri is ignored and</span>
+<span class="sd">        created automatically by this method</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ProcessedData object with the metadata and the new created md_uri</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="register-the-service">
+<h2>Register the service<a class="headerlink" href="#register-the-service" title="Permalink to this headline"></a></h2>
+<p>The last step is to register the metadata service to the <strong>bioimageit_core</strong> data services factory. Open the file
+<code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/data_factory.py</span></code>, and add a line at the end to register the service:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metadataServices</span><span class="o">.</span><span class="n">register_builder</span><span class="p">(</span><span class="s1">&#39;LOCAL&#39;</span><span class="p">,</span> <span class="n">LocalMetadataServiceBuilder</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In the example above, the string <code class="docutils literal notranslate"><span class="pre">'LOCAL'</span></code> is the name of the metadata service. Then, if we want to use this service, we need to specify it
+in the config file:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="s2">&quot;metadata&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;service&quot;</span><span class="o">:</span> <span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<p>To summarize, in order to create a new metadata plugin we need to follow these steps:</p>
+<ul class="simple">
+<li><p>create a python file in <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/</span></code></p></li>
+<li><p>implement a <code class="docutils literal notranslate"><span class="pre">DataServiceBuilder</span></code> class.</p></li>
+<li><p>implement a <code class="docutils literal notranslate"><span class="pre">MetadataService</span></code> class.</p></li>
+<li><p>register the service at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/data_factory.py</span></code></p></li>
+<li><p>setup the config.json file with the new plugin to be able to use it</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_wrap_a_tool.html" class="btn btn-neutral float-left" title="Tutorial: wrap a tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_write_a_runner_plugin.html" class="btn btn-neutral float-right" title="Tutorial: write a runner plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Sylvain Prigent.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

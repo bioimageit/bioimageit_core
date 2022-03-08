@@ -5,7 +5,7 @@ This section contains the instruction to install ``bioimageit_core`` and the too
 to have a local working instance of ``bioimageit_core`` for development.
 
 .. warning::
-    This installation instructions are for developers who needs a custom BioImageIT install. If you plan to only 
+    These installation instructions are for developers who needs a custom BioImageIT install. If you plan to only
     use BioImageIT we recommand using the installer from `here <https://bioimageit.github.io/#/install>`_ 
 
 Install bioimageit_core

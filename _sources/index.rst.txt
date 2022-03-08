@@ -15,7 +15,7 @@ Welcome to BioImageIT Core's documentation!
    install
    tutorial_omero
    tutorial_wrap_a_tool
-   tutorial_write_a_metadata_plugin
+   tutorial_write_a_data_plugin
    tutorial_write_a_runner_plugin
    modules
 

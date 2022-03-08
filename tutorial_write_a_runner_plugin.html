@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="bioimageit_core" href="modules.html" />
-    <link rel="prev" title="Tutorial: write a metadata plugin" href="tutorial_write_a_metadata_plugin.html" /> 
+    <link rel="prev" title="Tutorial: write a data plugin" href="tutorial_write_a_data_plugin.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,7 +44,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_omero.html">Tutorial: Omero</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_wrap_a_tool.html">Tutorial: wrap a tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_metadata_plugin.html">Tutorial: write a metadata plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_data_plugin.html">Tutorial: write a data plugin</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: write a runner plugin</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#runner-service-builder">Runner service builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#runner-service">Runner service</a></li>
@@ -81,22 +81,22 @@
              
   <section id="tutorial-write-a-runner-plugin">
 <h1>Tutorial: write a runner plugin<a class="headerlink" href="#tutorial-write-a-runner-plugin" title="Permalink to this headline"></a></h1>
-<p>In this tutorial we describe step by step how to implement a process <code class="docutils literal notranslate"><span class="pre">Runner</span></code> for <strong>bioimageit_core</strong>. By default
+<p>In this tutorial we describe step by step how to implement a tool <code class="docutils literal notranslate"><span class="pre">Runner</span></code> for <strong>bioimageit_core</strong>. By default
 the <strong>bioimageit_core</strong> library has two runners:</p>
 <ul class="simple">
-<li><p>LOCAL: a runner that execute process localy. This means that the binaries of the process have to be installed locally.</p></li>
-<li><p>SINGULARITY: a runner that execute a process from a Docker image using the Singularity software.</p></li>
+<li><p>CONDA: a runner that execute process localy from conda environements. This means that the binaries of the process have to be installed locally with Conda.</p></li>
+<li><p>DOCKER: a runner that execute a process from a Docker image. It needs Docker client to be installed.</p></li>
 </ul>
 <p>Runners are implemented using the service design pattern. To make it easier to identify the services plugins in the
-python code repository we prefix the python plugin file with <code class="docutils literal notranslate"><span class="pre">service_</span></code>.
+python code repository we prefix the python plugin file with <code class="docutils literal notranslate"><span class="pre">runner_</span></code>.
 Thus, to create a new <code class="docutils literal notranslate"><span class="pre">Runner</span></code> you need to create a python file at
-<code class="docutils literal notranslate"><span class="pre">bioimageit_core/runners/service_yourservicename.py</span></code></p>
-<p>Then, all the code will be in this single file. A runner service plugin file contains two classes: the
+<code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/runner_yourservicename.py</span></code></p>
+<p>Then, the main class of the runner is in this single file. A runner service plugin file contains two classes: the
 <code class="docutils literal notranslate"><span class="pre">ServiceBuilder</span></code> and
 the <code class="docutils literal notranslate"><span class="pre">RunnerService</span></code></p>
 <section id="runner-service-builder">
 <h2>Runner service builder<a class="headerlink" href="#runner-service-builder" title="Permalink to this headline"></a></h2>
-<p>The service builder is a class that allows to instantiate and initialize a single RunnerService. The code bellow shows
+<p>The service builder is a class that allows to instantiate and initialize a single runner service. The code bellow shows
 an example of runner service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalRunnerServiceBuilder</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Service builder for the runner service&quot;&quot;&quot;</span>
@@ -117,11 +117,11 @@ an example of runner service for the <code class="docutils literal notranslate">
 <h2>Runner service<a class="headerlink" href="#runner-service" title="Permalink to this headline"></a></h2>
 <p>The runner service is the class that implements the runner functionalities. The code bellow shows the implementation of
 the <code class="docutils literal notranslate"><span class="pre">LocalRunnerService</span></code>. As we can see, a runner service has a 3 methodd called <code class="docutils literal notranslate"><span class="pre">set_up</span></code>, <code class="docutils literal notranslate"><span class="pre">exec</span></code> and
-<code class="docutils literal notranslate"><span class="pre">tear_down</span></code>. These methods have one common input: the <code class="docutils literal notranslate"><span class="pre">ProcessContainer</span></code> which is a class that contains all the
-metadata of the <code class="docutils literal notranslate"><span class="pre">Process</span></code>. The exec method has one extra argument called <code class="docutils literal notranslate"><span class="pre">args</span></code> that is the list of the command line
+<code class="docutils literal notranslate"><span class="pre">tear_down</span></code>. These methods have one common input: the <code class="docutils literal notranslate"><span class="pre">Tool</span></code> which is a class that contains all the
+metadata of the tool. The exec method has one extra argument called <code class="docutils literal notranslate"><span class="pre">args</span></code> that is the list of the command line
 arguments. For the example of local runner, we just call the command line arguments with subprocess. We do not need the
 <code class="docutils literal notranslate"><span class="pre">set_up</span></code> and the <code class="docutils literal notranslate"><span class="pre">tear_down</span></code> methods to initialize and clean the run environement. Another more
-complex example of runner service implementation can be found at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/runners/service_dockery.py</span></code>. For the
+complex example of runner service implementation can be found at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/runner_docker.py</span></code>. For the
 Docker case, the <code class="docutils literal notranslate"><span class="pre">set_up</span></code> method pull and run the Docker image, the <code class="docutils literal notranslate"><span class="pre">exec</span></code> method execute the command line in the
 Docker container, and the <code class="docutils literal notranslate"><span class="pre">tear_down</span></code> method stops and removes the container.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalRunnerService</span><span class="p">:</span>
@@ -135,7 +135,7 @@ Docker container, and the <code class="docutils literal notranslate"><span class
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">service_name</span> <span class="o">=</span> <span class="s1">&#39;LocalRunnerService&#39;</span>
 
-    <span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span> <span class="n">ProcessContainer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span> <span class="n">Tool</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;setup the runner</span>
 
 <span class="sd">        Add here the code to initialize the runner</span>
@@ -148,7 +148,7 @@ Docker container, and the <code class="docutils literal notranslate"><span class
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">exec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span><span class="n">ProcessContainer</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">exec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span><span class="n">Tool</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute a process</span>
 
 <span class="sd">        Parameters</span>
@@ -161,7 +161,7 @@ Docker container, and the <code class="docutils literal notranslate"><span class
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">tear_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span> <span class="n">ProcessContainer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">tear_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span> <span class="n">Tool</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;tear down the runner</span>
 
 <span class="sd">        Add here the code to down/clean the runner</span>
@@ -179,7 +179,7 @@ Docker container, and the <code class="docutils literal notranslate"><span class
 <section id="register-the-runner">
 <h2>Register the runner<a class="headerlink" href="#register-the-runner" title="Permalink to this headline"></a></h2>
 <p>The last step is to register the runner to the <strong>bioimageit_core</strong> runner factory. Open the file
-<code class="docutils literal notranslate"><span class="pre">bioimageit_core/runners/factory.py</span></code>, and add a line at the end to register the runner:</p>
+<code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/runners_factory.py</span></code>, and add a line at the end to register the runner:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">runnerServices</span><span class="o">.</span><span class="n">register_builder</span><span class="p">(</span><span class="s1">&#39;LOCAL&#39;</span><span class="p">,</span> <span class="n">LocalRunnerServiceBuilder</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -196,10 +196,10 @@ specify it in the config file:</p>
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
 <p>To summarize, in order to create a new <code class="docutils literal notranslate"><span class="pre">Runner</span></code> we need to follow these steps:</p>
 <ul class="simple">
-<li><p>create a python file in <code class="docutils literal notranslate"><span class="pre">bioimageit_core/runner/</span></code></p></li>
+<li><p>create a python file in <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/runner_name.py</span></code></p></li>
 <li><p>implement a <code class="docutils literal notranslate"><span class="pre">RunnerServiceBuilder</span></code> class.</p></li>
 <li><p>implement a <code class="docutils literal notranslate"><span class="pre">RunnerService</span></code> class.</p></li>
-<li><p>register the runner at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/runners/factory.py</span></code></p></li>
+<li><p>register the runner at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/runners_factory.py</span></code></p></li>
 <li><p>setup the config.json file with the new builder to be able to use it</p></li>
 </ul>
 </section>
@@ -209,7 +209,7 @@ specify it in the config file:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tutorial_write_a_metadata_plugin.html" class="btn btn-neutral float-left" title="Tutorial: write a metadata plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_write_a_data_plugin.html" class="btn btn-neutral float-left" title="Tutorial: write a data plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="modules.html" class="btn btn-neutral float-right" title="bioimageit_core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

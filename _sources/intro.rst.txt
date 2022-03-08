@@ -8,10 +8,10 @@ Wrapped image processing tools are called either locally (Conda) or using contai
 
 Context
 -------
-`bioimageit_core`` has been developped by **Sylvain Prigent** in a project funded by `France-BioImaging <https://france-bioimaging.org/>`_.
-`bioimageit_core is just the python API of the project. Please find all the other developped tools `here <https://github.com/bioimageit/>`_.
+``bioimageit_core`` has been developed by **Sylvain Prigent** in a project funded by `France-BioImaging <https://france-bioimaging.org/>`_.
+``bioimageit_core`` is just the python API of the project. Please find all the other developed tools `here <https://github.com/bioimageit/>`_.
 
-What bioImageit_core is
+What bioimageit_core is
 -----------------------
 `bioimageit_core` is a python3 library the provide a python API to facilitate writing data processing scripts, wrapping data 
-analysis tools from any language and ease comunication with an experiment database.
+analysis tools from any language and ease communication with an experiment database.
