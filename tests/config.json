@@ -16,7 +16,7 @@
 
     },
     "formats": {
-        "file": "./formats.json"
+        "file": "tests/formats.json"
     },
     "user":{
         "name": "Sylvain Prigent"
