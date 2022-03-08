@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="bioimageit_core",
-    version="0.0.1",
+    version="0.1.0",
     author="Sylvain Prigent",
     author_email="sylvain.prigent@inria.fr",
     description="write biological data processing pipelines",

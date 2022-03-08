@@ -976,27 +976,3 @@ class LocalMetadataService:
         self.update_dataset(dataset)
 
         return processed_data
-
-    def workspace_experiments(self, workspace_uri: str):
-        """Read the experiments in the user workspace
-
-        Parameters
-        ----------
-        workspace_uri: str
-            URI of the workspace
-
-        Returns
-        -------
-        list of experiment containers
-
-        """
-        if os.path.exists(workspace_uri):
-            dirs = os.listdir(workspace_uri)
-            experiments = []
-            for dir_ in dirs:
-                exp_path = os.path.join(workspace_uri, dir_, 'experiment.md.json')
-                if os.path.exists(exp_path):
-                    experiments.append({'md_uri': exp_path, 'info': self.get_experiment(exp_path)})
-            return experiments
-        else:
-            return []
