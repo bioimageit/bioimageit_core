@@ -1,0 +1,46 @@
+{
+    "categories": [
+        {
+            "id": "Image stacks manipulation",
+            "name": "Image & stacks manipulation",
+            "thumbnail": "thumbs/manipulate.png",
+            "doc": "",
+            "parent": "root"
+        },
+        {
+            "id": "Denoising",
+            "name": "Denoising",
+            "thumbnail": "thumbs/denoising.png",
+            "doc": "https://sylvainprigent.github.io/tutorial-denoising/denoising.html",
+            "parent": "root"
+        },
+        {
+            "id": "Deconvolution",
+            "name": "Deconvolution",
+            "thumbnail": "thumbs/deconvolution.png",
+            "doc": "https://sylvainprigent.github.io/napari-sdeconv/guide.html",
+            "parent": "root"
+        },
+        {
+            "id": "Image reconstruction",
+            "name": "Image reconstruction",
+            "thumbnail": "thumbs/image_reconstruction.png",
+            "doc": "",
+            "parent": "root"
+        },
+        {
+            "id": "Spots detection",
+            "name": "Spots detection",
+            "thumbnail": "thumbs/spots_detection.png",
+            "doc": "",
+            "parent": "root"
+        },
+        {
+            "id": "Tracking",
+            "name": "Tracking",
+            "thumbnail": "thumbs/tracking.png",
+            "doc": "",
+            "parent": "root"
+        }
+    ]
+}

@@ -7,7 +7,7 @@
         "xml_dirs": [
             "../toolboxes/tools/"
         ],
-        "categories": "../toolboxes/toolboxes.json",
+        "categories": "tests/toolboxes.json",
         "tools": "../toolboxes/tools.json"
     },
     "runner": {
