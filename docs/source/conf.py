@@ -17,12 +17,12 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'BioImageIT developers documentation'
+project = 'bioimageit_core developers documentation'
 copyright = '2020, Sylvain Prigent'
 author = 'S. Prigent, C. Valades Cruz, L.Leconte, L. Maury, \\ J. Salamero, C. Kervrann'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '0.1.0'
 
 
 # -- General configuration ---------------------------------------------------
