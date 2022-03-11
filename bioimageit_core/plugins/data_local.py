@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""BioImagePy local metadata service.
+"""bioimageit_core local metadata service.
 
 This module implements the local service for metadata
 (Data, DataSet and Experiment) management.
@@ -8,7 +8,8 @@ made od JSON file in the file system
 
 Classes
 ------- 
-MetadataServiceProvider
+LocalMetadataServiceBuilder
+LocalMetadataService
 
 """
 import platform
