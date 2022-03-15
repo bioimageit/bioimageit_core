@@ -11,6 +11,7 @@ MetadataServiceProvider
 
 from bioimageit_core.core.factory import ObjectFactory
 from bioimageit_core.plugins.data_local import LocalMetadataServiceBuilder
+from bioimageit_core.plugins.data_omero import OmeroMetadataServiceBuilder
 
 
 class MetadataServiceProvider(ObjectFactory):
@@ -20,4 +21,4 @@ class MetadataServiceProvider(ObjectFactory):
 
 metadataServices = MetadataServiceProvider()
 metadataServices.register_builder('LOCAL', LocalMetadataServiceBuilder())
-# metadataServices.register_builder('OMERO', OmeroMetadataServiceBuilder())
+metadataServices.register_builder('OMERO', OmeroMetadataServiceBuilder())

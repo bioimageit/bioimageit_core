@@ -237,6 +237,8 @@ class LocalMetadataService:
         container.keys = keys
 
         # check the destination dir
+        if destination == '':
+            destination = ConfigAccess.instance().config['workspace']
         uri = os.path.abspath(destination)
         if not os.path.exists(uri):
             raise DataServiceError(
@@ -940,6 +942,35 @@ class LocalMetadataService:
 
         self._write_json(metadata, run.md_uri)
 
+    def get_data_uri(self, data_container):
+        return data_container.uri
+
+    def create_data_uri(self, dataset, run, processed_data):
+        """Create the URI of the new data
+
+        Parameters
+        ----------
+        dataset: Dataset
+            Object of the dataset metadata
+        run: Run
+            Metadata of the run
+        processed_data: ProcessedData
+            Object containing the new processed data. md_uri is ignored and
+            created automatically by this method
+
+        Returns
+        -------
+        ProcessedData object with the metadata and the new created md_uri
+
+        """
+        md_uri = os.path.abspath(dataset.md_uri)
+        dataset_dir = LocalMetadataService.md_file_path(md_uri)
+
+        extension = FormatsAccess.instance().get(processed_data.format).extension
+        processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
+        return processed_data
+
+
     def create_data(self, dataset, run, processed_data):
         """Create a new processed data for a given dataset
 
@@ -977,3 +1008,6 @@ class LocalMetadataService:
         self.update_dataset(dataset)
 
         return processed_data
+
+    def download_data(self, md_uri, destination_file_uri):
+        pass

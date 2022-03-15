@@ -107,9 +107,11 @@ class Request(Observable):
                 self.notify_error(str(err))
         # metadata
         if 'metadata' in config and 'service' in config['metadata']:
-            conf = config['metadata']
+            conf = config['metadata'].copy()
+            service_name = conf["service"]
+            conf.pop("service")
             try:
-                self.data_service = metadataServices.get(conf["service"], **conf)
+                self.data_service = metadataServices.get(service_name, **conf)
             except ConfigError as err:
                 self.notify_error(str(err))
                 return
@@ -119,9 +121,11 @@ class Request(Observable):
 
         # processes
         if 'process' in config and 'service' in config['process']:
-            conf = config['process']
+            conf = config['process'].copy()
+            service_name = conf["service"]
+            conf.pop("service")
             try:
-                self.tools_service = toolsServices.get(config['process']["service"], **conf)
+                self.tools_service = toolsServices.get(service_name, **conf)
             except ConfigError as err:
                 self.notify_error(str(err))
                 return
@@ -131,9 +135,11 @@ class Request(Observable):
 
         # runner
         if 'runner' in config and 'service' in config['runner']:
-            conf = config['runner']
+            conf = config['runner'].copy()
+            service_name = conf["service"]
+            conf.pop("service")
             try:
-                self.runner_service = runnerServices.get(conf["service"], **conf)
+                self.runner_service = runnerServices.get(service_name, **conf)
                 for obs in self._observers:
                     self.runner_service.add_observer(obs)
             except ConfigError as err:
@@ -143,7 +149,7 @@ class Request(Observable):
             self.notify_error('The runner service is not set in the configuration file')
             return
 
-    def create_experiment(self, name, author, date='now', keys=None, destination=''):
+    def create_experiment(self, name, author='', date='now', keys=None, destination=''):
         """Create a new experiment
 
         Parameters
@@ -167,6 +173,8 @@ class Request(Observable):
         if keys is None:
             keys = []
         try:
+            if author == '':
+                author = ConfigAccess.instance().config['user']
             return self.data_service.create_experiment(name, author, format_date(date),
                                                        keys, destination)
         except DataServiceError as err:
@@ -294,7 +302,7 @@ class Request(Observable):
         except ValueError as err:
             self.notify_error(f"The format {str(err)} is not recognised")
 
-    def import_dir(self, experiment, dir_uri, filter_, author, format_, date,
+    def import_dir(self, experiment, dir_uri, filter_, author, format_, date='now',
                    directory_tag_key=''):
         """Import data from a directory to the experiment
 
@@ -374,7 +382,7 @@ class Request(Observable):
         _raw_dataset = self.get_raw_dataset(experiment)
         for uri in _raw_dataset.uris:
             _raw_data = self.get_raw_data(uri.md_uri)
-            basename = os.path.splitext(os.path.basename(_raw_data.uri))[0]
+            basename = os.path.splitext(_raw_data.name)[0] #os.path.splitext(os.path.basename(_raw_data.uri))[0]
             split_name = basename.split(separator)
             value = ''
             if len(split_name) > value_position:
@@ -1116,7 +1124,10 @@ class Request(Observable):
             for n, input_ in enumerate(job.inputs.inputs):
                 # input data can be a processedData but we only read the common metadata
                 data_info = self.get_raw_data(input_data[n][i].md_uri)
-                cmd = cmd.replace("${" + input_.name + "}", data_info.uri)
+                data_uri = self.data_service.get_data_uri(data_info)
+                # data_info.uri
+                self.data_service.download_data(data_info.md_uri, data_uri)
+                cmd = cmd.replace("${" + input_.name + "}", data_uri)
                 inputs_metadata[input_.name] = data_info
             # get the params arguments
             for key, value in job.parameters.items():
@@ -1125,18 +1136,13 @@ class Request(Observable):
             for output in job.tool.outputs:
                 # output metadata
                 processed_data = ProcessedData()
-                processed_data.set_info(name=data_info_zero.name + "_" + output.name,
+                processed_data.set_info(name=output.name + "_" + os.path.splitext(data_info_zero.name)[0],
                                         author=ConfigAccess.instance().get('user')['name'],
                                         date='now', format_=output.type, url="")
                 for id_, data_ in inputs_metadata.items():
                     processed_data.add_input(id_=id_, data=data_)
                 processed_data.set_output(id_=output.name, label=output.description)
-                # save the metadata and create its md_uri and uri
-                try:
-                    processed_data = self.create_data(processed_dataset, run, processed_data)
-                except FormatKeyNotFoundError as err:
-                    self.notify_error(str(err), job_id)
-                    return
+                processed_data = self.data_service.create_data_uri(processed_dataset, run, processed_data)
                 # args
                 cmd = cmd.replace("${" + output.name + "}", processed_data.uri)
             # 4.2- exec
@@ -1147,6 +1153,14 @@ class Request(Observable):
             except RunnerExecError as err:
                 self.runner_service.tear_down(job.tool, job_id)
                 self.notify_error(str(err), job_id)
+            # 4.3- create the output data
+            for output in job.tool.outputs:
+                # save the metadata and create its md_uri and uri
+                try:
+                    processed_data = self.create_data(processed_dataset, run, processed_data)
+                except FormatKeyNotFoundError as err:
+                    self.notify_error(str(err), job_id)
+                    return
 
         # 4.0- notify observers
         self.runner_service.tear_down(job.tool, job_id)

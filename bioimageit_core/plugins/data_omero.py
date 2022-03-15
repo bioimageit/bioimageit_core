@@ -17,14 +17,13 @@ import os.path
 import json
 import re
 
-from skimage.io import imread
+from skimage.io import imread, imsave
 from omero.gateway import BlitzGateway, DatasetWrapper, ProjectWrapper
 import omero
 
 from bioimageit_formats import FormatsAccess, formatsServices
 
 from bioimageit_core.core.config import ConfigAccess
-from bioimageit_core.core.utils import generate_uuid
 from bioimageit_core.core.exceptions import DataServiceError
 from bioimageit_core.containers.data_containers import (METADATA_TYPE_RAW,
                                                         METADATA_TYPE_PROCESSED,
@@ -47,9 +46,9 @@ class OmeroMetadataServiceBuilder:
     def __init__(self):
         self._instance = None
 
-    def __call__(self, **_ignored):
+    def __call__(self, host, port, username, password):
         if not self._instance:
-            self._instance = OmeroMetadataService()
+            self._instance = OmeroMetadataService(host, port, username, password)
         return self._instance
 
 
@@ -65,6 +64,11 @@ class OmeroMetadataService:
         self._conn = BlitzGateway(self._username, self._password,
                                  host=self._host, port=self._port,
                                  secure=True)
+        self._omero_connect()                         
+
+    def __del__(self):
+        if self._conn is not None:
+            self._conn.close()             
 
     @staticmethod
     def _read_json(md_uri: str):
@@ -80,6 +84,7 @@ class OmeroMetadataService:
             json.dump(metadata, outfile, indent=4)
 
     def _omero_connect(self):
+        print('Omero connect')
         rv = self._conn.connect()
         if not rv:
             raise DataServiceError(
@@ -87,7 +92,9 @@ class OmeroMetadataService:
             )
 
     def _omero_close(self):
+        print('Omero close')
         self._conn.close()
+        print('Omero close done')
 
     def _omero_is_project(self, name):
         """Check is a project 
@@ -103,14 +110,14 @@ class OmeroMetadataService:
 
         """
         value = False
-        self._omero_connect()
+        #self._omero_connect()
         try:
             projects = self._conn.getObjects("Project")
             for project in projects:
                 if project.name == name:
                     value = True
         finally: 
-            self._omero_close()
+            #self._omero_close()
             return value     
 
     def _omero_write_tiff_image(self, data_path, image_name, parent_dataset):
@@ -125,7 +132,7 @@ class OmeroMetadataService:
             for p in numpy_image:
                 yield p
 
-        i = self.conn.createImageFromNumpySeq(plane_gen(), image_name, 
+        i = self._conn.createImageFromNumpySeq(plane_gen(), image_name, 
                                               size_z, size_c, size_t, 
                                               description='',
                                               dataset=parent_dataset)  
@@ -162,7 +169,7 @@ class OmeroMetadataService:
         container.date = date
         container.keys = keys
 
-        self._omero_connect()
+        #self._omero_connect()
         try:
             # check if the experiment already exists
             projects = self._conn.getObjects("Project")
@@ -178,17 +185,19 @@ class OmeroMetadataService:
             new_project.save()
             project_obj = new_project._obj  
             container.uuid = project_obj.id
+            container.md_uri = project_obj.id
 
             # create an empty raw dataset
             new_dataset = DatasetWrapper(self._conn, omero.model.DatasetI())
             new_dataset.setName('data')
             new_dataset.save()
             dataset_obj = new_dataset._obj
+            container.raw_dataset = DatasetInfo('data', dataset_obj.id.val, dataset_obj.id.val)
         
             # link dataset to project
             link = omero.model.ProjectDatasetLinkI()
             link.setChild(omero.model.DatasetI(dataset_obj.id.val, False))
-            link.setParent(omero.model.ProjectI(project_obj, False))
+            link.setParent(omero.model.ProjectI(project_obj.id.val, False))
             self._conn.getUpdateService().saveObject(link)                        
 
             # add keys as Omero tags
@@ -198,7 +207,8 @@ class OmeroMetadataService:
                 tag_ann.save()
                 project_obj.linkAnnotation(tag_ann)
         finally: 
-            self._omero_close()      
+            #self._omero_close() 
+            pass     
         return container
 
     def get_workspace_experiments(self, workspace_uri = ''):
@@ -214,7 +224,7 @@ class OmeroMetadataService:
         list of experiment containers  
           
         """
-        self._omero_connect()
+        #self._omero_connect()
         experiments = []
         try:
             projects = self._conn.getObjects("Project")
@@ -222,12 +232,13 @@ class OmeroMetadataService:
                 container = Experiment()
                 container.uuid = project.id
                 container.name = project.name
-                container.author = project.owner
-                container.date = project.date
+                container.author = project.getDetails().getOwner().getOmeName()
+                container.date = project.getDate()
                 container.keys = {}
                 experiments.append({'md_uri': project.id, 'info': container})
         finally: 
-            self._omero_close() 
+            #self._omero_close() 
+            pass
         return experiments    
 
     def get_experiment(self, md_uri):
@@ -245,7 +256,7 @@ class OmeroMetadataService:
         Experiment container with the experiment metadata
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         container = Experiment()
         try:
             project = self._conn.getObject("Project", md_uri)
@@ -254,8 +265,8 @@ class OmeroMetadataService:
             container.uuid = project.id    
             container.md_uri = project.id
             container.name = project.name
-            container.author = project.owner
-            container.date = project.date
+            container.author = project.getDetails().getOwner().getOmeName()
+            container.date = project.getDetails().getCreationEvent().getTime()
             # get the tags
             for ann in project.listAnnotations():
                 if ann.OMERO_TYPE == omero.model.TagAnnotationI:
@@ -273,7 +284,8 @@ class OmeroMetadataService:
                                                                     dataset.id)
                                                         )
         finally: 
-            self._omero_close() 
+            #self._omero_close() 
+            pass
         return container  
 
     def update_experiment(self, experiment):
@@ -285,13 +297,13 @@ class OmeroMetadataService:
             Container of the experiment metadata
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         try:
             # set the main info
             project = self._conn.getObject("Project", experiment.md_uri)
             project.name = experiment.name
-            project.owner = experiment.owner
-            project.data = experiment.date
+            #project.owner = experiment.author
+            #project.date = experiment.date
             project.save()
             # set the tags
             # delete tags in the OMERO database and not in the keys list
@@ -302,7 +314,8 @@ class OmeroMetadataService:
                     to_delete.append(ann.id)
                 else:
                     existing_tags.append(ann.getValue())    
-            self._conn.deleteObjects('Annotation', to_delete, wait=True)
+            if len(to_delete) > 0:        
+                self._conn.deleteObjects('Annotation', to_delete, wait=True)
             # add not existing tags
             for key in experiment.keys:
                 if key not in existing_tags:
@@ -311,7 +324,8 @@ class OmeroMetadataService:
                     tag_ann.save()
                     project.linkAnnotation(tag_ann)
         finally:
-            self._omero_close()
+            #self._omero_close()
+            pass
 
     def import_data(self, experiment, data_path, name, author, format_,
                     date='now', key_value_pairs=dict):
@@ -341,10 +355,10 @@ class OmeroMetadataService:
         class RawData containing the metadata
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         try:
             # get the raw dataset
-            raw_dataset_id = os.path.abspath(experiment.raw_dataset.url)
+            raw_dataset_id = experiment.raw_dataset.url
             dataset = self._conn.getObject("Dataset", raw_dataset_id)
 
             # copy the image to omero
@@ -367,7 +381,8 @@ class OmeroMetadataService:
                 image = self._conn.getObject("Image", image_id)
                 image.linkAnnotation(map_ann)      
         finally:
-            self._omero_close()    
+            #self._omero_close()
+            pass    
 
         # create the container
         metadata = RawData()
@@ -443,7 +458,7 @@ class OmeroMetadataService:
 
         """
         container = RawData()
-        self._omero_connect()
+        #self._omero_connect()
         try:
             # read base info
             image = self._conn.getObject("Image", md_uri)
@@ -453,7 +468,7 @@ class OmeroMetadataService:
             container.type = 'raw'
             container.name = image.name
             container.author = image.getDetails().getOwner().getOmeName()
-            container.date = image.date
+            container.date = image.getDetails().getCreationEvent().getTime()
             container.format = 'imagetiff'
 
             # read metadata
@@ -466,13 +481,14 @@ class OmeroMetadataService:
                     for value in values:
                         container.key_value_pairs[value[0]] = value[1] 
             # read experiment tags if not in key_value_pairs
-            project = self.conn.getObject('Project', image.getParent().getParent())
+            project = self._conn.getObject('Project', image.getParent().getParent().id)
             for ann in project.listAnnotations():
                 if ann.OMERO_TYPE == omero.model.TagAnnotationI:
                     if ann.getValue() not in container.key_value_pairs.keys():
                         container.key_value_pairs[ann.getValue()] = ''           
         finally:
-            self._omero_close()
+            #self._omero_close()
+            pass
         return container
 
     def update_raw_data(self, raw_data):
@@ -485,7 +501,7 @@ class OmeroMetadataService:
 
         """
 
-        self._omero_connect()
+        #self._omero_connect()
         try:
             image = self._conn.getObject("Image", raw_data.md_uri)     
             image.name = raw_data.name 
@@ -504,18 +520,20 @@ class OmeroMetadataService:
                     to_delete.append(ann.id)
                 else:
                     key_ = ann.getValue()[0]
-                    ann.setValue([key_, raw_data.key_value_pairs[key_]])
-                    existing_tags.append(ann.getValue()[0])    
-            self._conn.deleteObjects('Annotation', to_delete, wait=True)
+                    ann.setValue([[key_, raw_data.key_value_pairs[key_]]])
+                    existing_tags.append(ann.getValue()[0])   
+            if len(to_delete) > 0:         
+                self._conn.deleteObjects('Annotation', to_delete, wait=True)
             # add not existing tags
             for key in keys:
                 if key not in existing_tags:
                     map_ann = omero.gateway.MapAnnotationWrapper(self._conn)
-                    map_ann.setValue([key, raw_data.key_value_pairs[key]])
+                    map_ann.setValue([[key, raw_data.key_value_pairs[key]]])
                     map_ann.save()
                     image.linkAnnotation(map_ann)
         finally:
-            self._omero_close()
+            #self._omero_close()
+            pass
 
     def _omero_download_image_md_attachments(self, image, destination_path):
         """Set an attachment file to an image
@@ -558,7 +576,7 @@ class OmeroMetadataService:
 
         """
         # read the data info
-        self._omero_connect()
+        #self._omero_connect()
         try:
             image = self._conn.getObject("Image", md_uri) 
             if image is not None:
@@ -598,7 +616,8 @@ class OmeroMetadataService:
                 return None   
 
         finally:
-            self._omero_close()
+            #self._omero_close()
+            pass
 
     def update_processed_data(self, processed_data):
         """Read a processed data from the database
@@ -609,7 +628,7 @@ class OmeroMetadataService:
             Container with the processed data metadata
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         try:
             image = self._conn.getObject("Image", processed_data.md_uri)     
             image.name = processed_data.name 
@@ -652,12 +671,14 @@ class OmeroMetadataService:
             for ann in image.listAnnotations():
                 if isinstance(ann, omero.gateway.FileAnnotationWrapper) and ann.getFile().getName() == 'processed_data.md.json':
                     to_delete.append(ann.id)
-            self._conn.deleteObjects('Annotation', to_delete, wait=True)
-            file_ann = self.conn.createFileAnnfromLocalFile(md_json_file, mimetype="text/plain", ns='', desc=None)
+            if len(to_delete) > 0:        
+                self._conn.deleteObjects('Annotation', to_delete, wait=True)
+            file_ann = self._conn.createFileAnnfromLocalFile(md_json_file, mimetype="text/plain", ns='', desc=None)
             image.linkAnnotation(file_ann)
 
         finally:
-            self._omero_close()
+            #self._omero_close()
+            pass
 
     def get_dataset(self, md_uri):
         """Read a dataset from the database using it URI
@@ -673,11 +694,11 @@ class OmeroMetadataService:
 
         """
 
-        self._omero_connect()
+        #self._omero_connect()
+        container = Dataset()
         try:
-            dataset = self.conn.getObject('Dataset', md_uri)
+            dataset = self._conn.getObject('Dataset', md_uri)
             if dataset is not None:
-                container = Dataset()
                 container.uuid = dataset.id
                 container.md_uri = dataset.id
                 container.name = dataset.name
@@ -686,7 +707,9 @@ class OmeroMetadataService:
             else:
                 raise DataServiceError('Dataset not found')
         finally:
-            self._omero_close()        
+            pass
+            #self._omero_close()   
+        return container      
 
     def update_dataset(self, dataset):
         """Read a processed data from the database
@@ -697,13 +720,14 @@ class OmeroMetadataService:
             Container with the dataset metadata
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         try:
             dataset = self._conn.getObject('Dataset', dataset.md_uri)
             dataset.name = dataset.name
             dataset.save()
         finally:
-            self._omero_close()
+            #self._omero_close()
+            pass
 
     def create_dataset(self, experiment, dataset_name):
         """Create a processed dataset in an experiment
@@ -720,10 +744,10 @@ class OmeroMetadataService:
         Dataset object containing the new dataset metadata
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         try:
             # create dataset
-            new_dataset = DatasetWrapper(self.conn, omero.model.DatasetI())
+            new_dataset = DatasetWrapper(self._conn, omero.model.DatasetI())
             new_dataset.setName(dataset_name)
             new_dataset.save()
             dataset_obj = new_dataset._obj
@@ -740,7 +764,8 @@ class OmeroMetadataService:
             container.name = new_dataset.name
             return container
         finally:
-            self._omero_close()
+            pass
+            #self._omero_close()
 
     def create_run(self, dataset, run_info):
         """Create a new run metadata
@@ -758,7 +783,7 @@ class OmeroMetadataService:
         Run object with the metadata and the new created md_uri
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         try:
             omero_dataset = self._conn.getObject('Dataset', dataset.md_uri)
 
@@ -777,8 +802,8 @@ class OmeroMetadataService:
             file_path = os.path.join(ConfigAccess.instance().config['workspace'], run_md_file_name)
             run_info.processed_dataset = dataset
             run_info.uuid = ''
-            run_info.md_uri = ''
-            self._write_run(run_info, file_path)
+            run_info.md_uri = file_path
+            self._write_run(run_info)
 
             # upload the annotation file to the dataset
             file_ann = self._conn.createFileAnnfromLocalFile(file_path, mimetype="text/plain", ns='', desc=None)
@@ -789,7 +814,8 @@ class OmeroMetadataService:
             return run_info
 
         finally:
-            self._omero_close()
+            #self._omero_close()
+            pass
 
     def get_run(self, md_uri):
         """Read a run metadata from the data base
@@ -804,7 +830,7 @@ class OmeroMetadataService:
         Run: object containing the run metadata
 
         """
-        self._omero_connect()
+        #self._omero_connect()
         try:
             # copy the file from OMERO
             ann = self._conn.getObject('FileAnnotation', md_uri)
@@ -845,7 +871,8 @@ class OmeroMetadataService:
                 )
             return container
         finally:
-            self._omero_close()
+            pass
+            #self._omero_close()
 
     def _write_run(self, run):
         """Write a run metadata to the data base
@@ -882,6 +909,19 @@ class OmeroMetadataService:
 
         self._write_json(metadata, run.md_uri)
 
+    def get_data_uri(self, data_container):
+        workspace = ConfigAccess.instance().config['workspace']
+        extension = FormatsAccess.instance().get(data_container.format).extension
+        destination_input = os.path.join(workspace,f"{data_container.name}.{extension}")
+        return destination_input
+
+    def create_data_uri(self, dataset, run, processed_data):
+        workspace = ConfigAccess.instance().config['workspace']
+
+        extension = FormatsAccess.instance().get(processed_data.format).extension
+        processed_data.uri = os.path.join(workspace, f"{processed_data.name}.{extension}")
+        return processed_data
+
     def create_data(self, dataset, run, processed_data):
         """Create a new processed data for a given dataset
 
@@ -900,24 +940,20 @@ class OmeroMetadataService:
         ProcessedData object with the metadata and the new created md_uri
 
         """
-        self._omero_connect()
-        try:
-            # get the parent dataset 
-            omero_dataset = self._conn.getObject('Dataset', dataset.id)
 
-            # create an empty image
+        # get the parent dataset 
+        omero_dataset = self._conn.getObject('Dataset', dataset.md_uri)
+
+        if processed_data.format == 'imagetiff':
+            omero_image = self._create_image_data(processed_data.uri, processed_data.name, omero_dataset) 
+        else:
             numpy_image = [np.zeros((1,1))]
             def plane_gen():
                 for p in numpy_image:
                     yield p
-
             omero_image = self.conn.createImageFromNumpySeq(plane_gen(), processed_data.name, 
-                                                            1, 1, 1, 
-                                                            description='',
-                                                            dataset=omero_dataset) 
-        finally:
-            self._omero_close() 
-
+                                                            1, 1, 1, description='',
+                                                            dataset=omero_dataset)     
         # set the attachment file
         processed_data.uuid = omero_image.id
         processed_data.md_uri = omero_image.id
@@ -926,3 +962,57 @@ class OmeroMetadataService:
         self.update_processed_data(processed_data)
 
         return processed_data    
+
+    def download_data(self, md_uri, destination_file_uri):
+        # TODO: Manage other image and file formats
+        omero_image = self._conn.getObject("Image", md_uri)    
+        channel = 0
+        time_point = 0
+        image_data = self._download_data(omero_image, channel, time_point)
+        imsave(destination_file_uri, image_data)
+
+    def _download_data(self, img, c=0, t=0):
+        """Get one channel and one time point of a data
+        
+        Parameters
+        ----------
+        img: omero.gateway.ImageWrapper
+            Omero image wrapper
+        c: int
+            Channel index
+        t: int
+            Time point index    
+
+        """
+        size_z = img.getSizeZ()
+        # get all planes we need in a single generator
+        zct_list = [(z, c, t) for z in range(size_z)]
+        pixels = img.getPrimaryPixels()
+        plane_gen = pixels.getPlanes(zct_list)
+
+        if size_z == 1:
+            return np.array(next(plane_gen))
+        else:
+            z_stack = []
+            for z in range(size_z):
+                # print("plane c:%s, t:%s, z:%s" % (c, t, z))
+                z_stack.append(next(plane_gen))
+            return np.array(z_stack)
+
+    def _create_image_data(self, source_file_uri, image_name, parent_dataset):
+
+        numpy_image = [imread(source_file_uri)]
+        size_z = 1
+        size_c = 1
+        size_t = 1
+
+        def plane_gen():
+            """generator will yield planes"""
+            for p in numpy_image:
+                yield p
+
+        i = self._conn.createImageFromNumpySeq(plane_gen(), image_name, 
+                                              size_z, size_c, size_t, 
+                                              description='',
+                                              dataset=parent_dataset) 
+        return i                                      
