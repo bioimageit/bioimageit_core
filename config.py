@@ -3,7 +3,7 @@ import os
 import platform
 import json
 from pathlib import Path
-from bioimageit_core.toolboxes import Toolboxes
+from bioimageit_core.core.toolboxes import Toolboxes
 from bioimageit_core.core.config import ConfigAccess
 
 
