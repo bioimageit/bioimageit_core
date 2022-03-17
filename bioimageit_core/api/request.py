@@ -302,7 +302,7 @@ class Request(Observable):
         except ValueError as err:
             self.notify_error(f"The format {str(err)} is not recognised")
 
-    def import_dir(self, experiment, dir_uri, filter_, author, format_, date='now',
+    def import_dir(self, experiment, dir_uri, filter_, author='', format_='imagetiff', date='now',
                    directory_tag_key=''):
         """Import data from a directory to the experiment
 
@@ -331,6 +331,8 @@ class Request(Observable):
 
         """
         try:
+            if author == '':
+                author = ConfigAccess.instance().config['user']['name']
             return self.data_service.import_dir(experiment, dir_uri, filter_, author,
                                                 format_, format_date(date), directory_tag_key)
         except DataServiceError as err:
