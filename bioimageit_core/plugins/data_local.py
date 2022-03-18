@@ -858,6 +858,22 @@ class LocalMetadataService:
         self._write_run(run_info)
         return run_info
 
+    def get_dataset_runs(self, dataset):
+        """Read the run metadata from a dataset
+
+        Parameters
+        ----------
+        dataset: Dataset
+
+        Returns
+        -------
+        List of Runs
+
+        """
+        run_uri = os.path.join(os.path.dirname(dataset.md_uri), 'run.md.json')
+        return [self.get_run(run_uri)]
+
+
     def get_run(self, md_uri):
         """Read a run metadata from the data base
 

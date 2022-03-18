@@ -233,7 +233,7 @@ class OmeroMetadataService:
                 container.uuid = project.id
                 container.name = project.name
                 container.author = project.getDetails().getOwner().getOmeName()
-                container.date = project.getDate()
+                container.date = str(project.getDate())
                 container.keys = {}
                 experiments.append({'md_uri': project.id, 'info': container})
         finally: 
@@ -817,6 +817,58 @@ class OmeroMetadataService:
             #self._omero_close()
             pass
 
+    def get_dataset_runs(self, dataset):
+        """Read the run metadata from a dataset
+
+        Parameters
+        ----------
+        dataset: Dataset
+
+        Returns
+        -------
+        List of Runs
+
+        """
+        omero_dataset = dataset = self._conn.getObject('Dataset', dataset.md_uri)
+        runs = []
+        for ann in omero_dataset.listAnnotations():
+            if isinstance(ann, omero.gateway.FileAnnotationWrapper):
+                if ann.getFile().getName().endswith('md.json'):
+                    destination_path = ConfigAccess.instance().config['workspace']       
+                    file_path = os.path.join(destination_path, ann.getFile().getName())
+                    with open(str(file_path), 'wb') as f:
+                        for chunk in ann.getFileInChunks():
+                            f.write(chunk)
+                    runs.append(self._parse_run(file_path))  
+        return runs            
+
+    def _parse_run(self, md_uri):
+        # read the file content 
+        metadata = self._read_json(md_uri)
+        container = Run()
+        container.uuid = metadata['uuid']
+        container.md_uri = md_uri
+        container.process_name = metadata['process']['name']
+        container.process_uri =  metadata['process']['url']
+        container.processed_dataset = Container(
+            metadata['processed_dataset']['url'],
+            metadata['processed_dataset']['uuid']
+        )
+        for input_ in metadata['inputs']:
+            container.inputs.append(
+                RunInputContainer(
+                    input_['name'],
+                    input_['dataset'],
+                    input_['query'],
+                    input_['origin_output_name'],
+                )
+            )
+        for parameter in metadata['parameters']:
+            container.parameters.append(
+                RunParameterContainer(parameter['name'], parameter['value'])
+            )
+        return container
+
     def get_run(self, md_uri):
         """Read a run metadata from the data base
 
@@ -833,9 +885,9 @@ class OmeroMetadataService:
         #self._omero_connect()
         try:
             # copy the file from OMERO
-            ann = self._conn.getObject('FileAnnotation', md_uri)
-            print("File ID:", ann.getFile().getId(), ann.getFile().getName(), \
-                    "Size:", ann.getFile().getSize())
+            print('get file of id=', int(md_uri))
+            ann = self._conn.getObject('FileAnnotation', int(md_uri))
+            print("File ID:", ann.getFile().getId(), ann.getFile().getName(), "Size:", ann.getFile().getSize())
 
             destination_path = os.path.join(ConfigAccess.instance().config('workspace'), 'run.md.json')        
             file_path = os.path.join(destination_path, ann.getFile().getName())
@@ -846,29 +898,7 @@ class OmeroMetadataService:
             print("File downloaded!")
 
             # read the file content 
-            metadata = self._read_json(md_uri)
-            container = Run()
-            container.uuid = metadata['uuid']
-            container.md_uri = md_uri
-            container.process_name = metadata['process']['name']
-            container.process_uri =  metadata['process']['url']
-            container.processed_dataset = Container(
-                metadata['processed_dataset']['url'],
-                metadata['processed_dataset']['uuid']
-            )
-            for input_ in metadata['inputs']:
-                container.inputs.append(
-                    RunInputContainer(
-                        input_['name'],
-                        input_['dataset'],
-                        input_['query'],
-                        input_['origin_output_name'],
-                    )
-                )
-            for parameter in metadata['parameters']:
-                container.parameters.append(
-                    RunParameterContainer(parameter['name'], parameter['value'])
-                )
+            container = self._parse_run(md_uri)
             return container
         finally:
             pass

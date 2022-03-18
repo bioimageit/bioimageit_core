@@ -707,6 +707,23 @@ class Request(Observable):
         """
         return self.data_service.create_run(dataset, run_info)
 
+    def get_dataset_runs(self, dataset):
+        """Read the run metadata from a dataset
+
+        Parameters
+        ----------
+        dataset: Dataset
+
+        Returns
+        -------
+        List of Runs
+
+        """
+        try:
+            return self.data_service.get_dataset_runs(dataset)
+        except DataQueryError as err:
+            self.notify_error(str(err))
+
     def get_run(self, uri):
         """Read a run metadata from the data base
 
