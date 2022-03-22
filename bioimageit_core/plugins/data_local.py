@@ -1026,4 +1026,7 @@ class LocalMetadataService:
         return processed_data
 
     def download_data(self, md_uri, destination_file_uri):
-        pass
+        if destination_file_uri == '':
+            raw_data = self.get_raw_data(md_uri)
+            return raw_data.uri
+        return destination_file_uri        

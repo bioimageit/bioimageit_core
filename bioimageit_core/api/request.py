@@ -1054,6 +1054,24 @@ class Request(Observable):
                 )
         return cmd_out
 
+    def download_data(self, md_uri):
+        """Download the data in a tmp file if remote database
+
+        Parameters
+        ----------
+        md_uri: str
+            Unique uri of the image
+
+        Returns
+        -------
+        The local path of the image    
+
+        """
+        try:
+            return self.data_service.download_data(md_uri, '')
+        except DataServiceError as err:
+            self.notify_error(str(err))    
+
     def run(self, job):
         """Run a BioImageIT job
 

@@ -16,6 +16,7 @@ import os
 import os.path
 import json
 import re
+from datetime import datetime
 
 from skimage.io import imread, imsave
 from omero.gateway import BlitzGateway, DatasetWrapper, ProjectWrapper
@@ -468,7 +469,8 @@ class OmeroMetadataService:
             container.type = 'raw'
             container.name = image.name
             container.author = image.getDetails().getOwner().getOmeName()
-            container.date = image.getDetails().getCreationEvent().getTime()
+            time_stamp = image.getDetails().getCreationEvent().getTime()
+            container.date = datetime.fromtimestamp(time_stamp/1000).strftime('%Y-%m-%d')
             container.format = 'imagetiff'
 
             # read metadata
@@ -585,12 +587,13 @@ class OmeroMetadataService:
                 container.md_uri = image.id
                 container.name = image.name
                 container.author = image.getDetails().getOwner().getOmeName()
-                container.date = image.date
+                time_stamp = image.getDetails().getCreationEvent().getTime()
+                container.date = datetime.fromtimestamp(time_stamp/1000).strftime('%Y-%m-%d')
                 container.format = 'imagetiff' # only image tif 2D gray works now
                 container.uri = image.id
 
                 md_json_file = os.path.join(ConfigAccess.instance().config['workspace'], 'processed_data.md.json')    
-                self._omero_download_image_md_attachments(image, md_json_file)
+                self._omero_download_image_md_attachments(image, ConfigAccess.instance().config['workspace'])
 
                 metadata = self._read_json(md_json_file)
                 container.run = Container(metadata['origin']['run']["url"], metadata['origin']['run']["uuid"])
@@ -994,12 +997,17 @@ class OmeroMetadataService:
         return processed_data    
 
     def download_data(self, md_uri, destination_file_uri):
-        # TODO: Manage other image and file formats
+        # TODO: Manage other image and file formats    
+        if destination_file_uri == '':
+            workspace = ConfigAccess.instance().config['workspace'] 
+            destination_file_uri = os.path.join(workspace, 'tmp.tif')   
+
         omero_image = self._conn.getObject("Image", md_uri)    
         channel = 0
         time_point = 0
         image_data = self._download_data(omero_image, channel, time_point)
         imsave(destination_file_uri, image_data)
+        return destination_file_uri
 
     def _download_data(self, img, c=0, t=0):
         """Get one channel and one time point of a data
