@@ -138,6 +138,9 @@ class OmeroMetadataService:
                                               description='',
                                               dataset=parent_dataset)  
 
+    def needs_cleanning(self):
+        return True
+
     def create_experiment(self, name, author, date='now', keys=None,
                           destination=''):
         """Create a new experiment
@@ -614,6 +617,8 @@ class OmeroMetadataService:
                     container.output['label'] = \
                         metadata['origin']['output']['label']
 
+                if os.path.exists(md_json_file):
+                    os.remove(md_json_file)
                 return container
             else:
                 return None   
@@ -678,6 +683,9 @@ class OmeroMetadataService:
                 self._conn.deleteObjects('Annotation', to_delete, wait=True)
             file_ann = self._conn.createFileAnnfromLocalFile(md_json_file, mimetype="text/plain", ns='', desc=None)
             image.linkAnnotation(file_ann)
+
+            if os.path.exists(md_json_file):
+                os.remove(md_json_file)
 
         finally:
             #self._omero_close()
@@ -814,6 +822,9 @@ class OmeroMetadataService:
 
             run_info.uuid = file_ann.id
             run_info.md_uri = file_ann.id
+
+            if os.path.exists(file_path):
+                os.remove(file_path)
             return run_info
 
         finally:
@@ -892,16 +903,19 @@ class OmeroMetadataService:
             ann = self._conn.getObject('FileAnnotation', int(md_uri))
             print("File ID:", ann.getFile().getId(), ann.getFile().getName(), "Size:", ann.getFile().getSize())
 
-            destination_path = os.path.join(ConfigAccess.instance().config('workspace'), 'run.md.json')        
-            file_path = os.path.join(destination_path, ann.getFile().getName())
-            with open(str(file_path), 'wb') as f:
-                print("\nDownloading file to", file_path, "...")
+            destination_path = os.path.join(ConfigAccess.instance().config['workspace'], 'run.md.json')        
+            with open(str(destination_path), 'wb') as f:
+                print("\nDownloading file to", destination_path, "...")
                 for chunk in ann.getFileInChunks():
                     f.write(chunk)
             print("File downloaded!")
 
             # read the file content 
-            container = self._parse_run(md_uri)
+            container = self._parse_run(destination_path)
+
+            if os.path.exists(destination_path):
+                os.remove(destination_path)
+
             return container
         finally:
             pass

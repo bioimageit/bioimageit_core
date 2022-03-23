@@ -204,6 +204,9 @@ class LocalMetadataService:
         """
         return path.replace('\\\\', '/').replace('\\', '/')
 
+    def needs_cleanning(self):
+        return False
+
     def create_experiment(self, name, author, date='now', keys=None,
                           destination=''):
         """Create a new experiment

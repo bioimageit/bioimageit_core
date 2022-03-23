@@ -1158,12 +1158,14 @@ class Request(Observable):
             # 4.1- Parse IO
             # get the input arguments
             inputs_metadata = {}
+            local_files = []
             for n, input_ in enumerate(job.inputs.inputs):
                 # input data can be a processedData but we only read the common metadata
                 data_info = self.get_raw_data(input_data[n][i].md_uri)
                 data_uri = self.data_service.get_data_uri(data_info)
                 # data_info.uri
                 self.data_service.download_data(data_info.md_uri, data_uri)
+                local_files.append(data_uri)
                 cmd = cmd.replace("${" + input_.name + "}", data_uri)
                 inputs_metadata[input_.name] = data_info
             # get the params arguments
@@ -1181,6 +1183,7 @@ class Request(Observable):
                 processed_data.set_output(id_=output.name, label=output.description)
                 processed_data = self.data_service.create_data_uri(processed_dataset, run, processed_data)
                 # args
+                local_files.append(processed_data.uri)
                 cmd = cmd.replace("${" + output.name + "}", processed_data.uri)
             # 4.2- exec
             try:
@@ -1198,6 +1201,11 @@ class Request(Observable):
                 except FormatKeyNotFoundError as err:
                     self.notify_error(str(err), job_id)
                     return
+
+            if self.data_service.needs_cleanning():
+                for file in local_files:
+                    if os.path.exists(file):
+                        os.remove(file)            
 
         # 4.0- notify observers
         self.runner_service.tear_down(job.tool, job_id)
