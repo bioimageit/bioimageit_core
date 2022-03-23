@@ -959,7 +959,7 @@ class LocalMetadataService:
         self._write_json(metadata, run.md_uri)
 
     def get_data_uri(self, data_container):
-        return data_container.uri
+        return data_container.uri.replace('\\', '\\\\')
 
     def create_data_uri(self, dataset, run, processed_data):
         """Create the URI of the new data
@@ -983,7 +983,7 @@ class LocalMetadataService:
         dataset_dir = LocalMetadataService.md_file_path(md_uri)
 
         extension = FormatsAccess.instance().get(processed_data.format).extension
-        processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
+        processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}").replace('\\', '\\\\')
         return processed_data
 
 

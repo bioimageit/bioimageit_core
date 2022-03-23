@@ -1181,6 +1181,7 @@ class Request(Observable):
                 processed_data.set_output(id_=output.name, label=output.description)
                 processed_data = self.data_service.create_data_uri(processed_dataset, run, processed_data)
                 # args
+                
                 cmd = cmd.replace("${" + output.name + "}", processed_data.uri)
             # 4.2- exec
             try:
