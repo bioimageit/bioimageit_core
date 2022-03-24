@@ -67,24 +67,41 @@ class CondaRunnerService(Observable):
                 and requirements['type'] == 'conda':
             package = requirements['package']
             env_name = process.id
+            init = ''
             if 'env' in requirements:
                 env_name = requirements['env']
+            if 'init' in requirements:
+                init = requirements['init']    
+
             # get the list of envs
             envs_list = os.listdir(os.path.join(self.conda_dir, 'envs'))
 
             if env_name not in envs_list:
                 # install: create env
                 if platform.system() == 'Windows':
+                    # create env
                     condaexe = os.path.join(self.conda_dir, 'condabin', 'conda.bat')
                     args_install = f"{condaexe} create -y -n {env_name} {package}"
                     print("install env cmd:", args_install)
                     subprocess.run(args_install, check=True)
+                    # init run commmand
+                    if init != '':
+                        args_init = f"{condaexe} activate {env_name} && {init}"
+                        print("init env cmd:", args_init)
+                        subprocess.run(args_init, check=True)
+
                 else:    
                     condash = os.path.join(self.conda_dir, 'etc', 'profile.d', 'conda.sh')
                     args_install = f". {condash} && conda create -y -n {env_name} {package}"
                     print("install env cmd:", args_install)
                     subprocess.run(args_install, shell=True, executable='/bin/bash',
                                    check=True)
+                    # init run commmand
+                    if init != '':
+                        args_init = f". {condash} && conda activate {env_name} && {init}"    
+                        print("init env cmd:", args_init)
+                        subprocess.run(args_init, shell=True, executable='/bin/bash',
+                                       check=True)               
             else:
                 self.notify(f'{env_name} env already exists', job_id)
         else:

@@ -54,6 +54,7 @@ if __name__ == '__main__':
     config_json["install_dir"] = str(package_dir)
     config_json["runner"]["working_dir"] = os.path.join(package_dir, "userdata")
     config_json["workspace"] = os.path.join(package_dir, "workspace")
+    config_json["log_dir"] = os.path.join(package_dir, "workspace", 'logs')
     if os.name == 'nt' :
         config_json["runner"]["conda_dir"] = os.path.join(package_dir, "Miniconda3")
         config_json["fiji"] = os.path.join(package_dir, "Fiji.app", "ImageJ-win64.exe")

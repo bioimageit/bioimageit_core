@@ -96,58 +96,65 @@ class Request(Observable):
         self.log_observer = LogObserver(log_dir, log_file_id)
         self.add_observer(self.log_observer)           
 
-    def connect(self):
+    def connect(self, init_format=True, init_metadata=True, init_process=True, init_runner=True):
         # init services
         config = ConfigAccess.instance().config
         # formats
-        if 'formats' in config and 'file' in config['formats']:
-            try:
-                FormatsAccess(config['formats']['file'])
-            except FormatDatabaseError as err:
-                self.notify_error(str(err))
+        if init_format:
+            if 'formats' in config and 'file' in config['formats']:
+                try:
+                    FormatsAccess(config['formats']['file'])
+                except FormatDatabaseError as err:
+                    self.notify_error(str(err))
         # metadata
-        if 'metadata' in config and 'service' in config['metadata']:
-            conf = config['metadata'].copy()
-            service_name = conf["service"]
-            conf.pop("service")
-            try:
-                self.data_service = metadataServices.get(service_name, **conf)
-            except ConfigError as err:
-                self.notify_error(str(err))
+        if init_metadata:
+            if 'metadata' in config and 'service' in config['metadata']:
+                conf = config['metadata'].copy()
+                service_name = conf["service"]
+                conf.pop("service")
+                try:
+                    self.data_service = metadataServices.get(service_name, **conf)
+                except ConfigError as err:
+                    self.notify_error(str(err))
+                    return
+            else:
+                self.notify_error('The metadata service is not set in the configuration file')
                 return
-        else:
-            self.notify_error('The metadata service is not set in the configuration file')
-            return
 
         # processes
-        if 'process' in config and 'service' in config['process']:
-            conf = config['process'].copy()
-            service_name = conf["service"]
-            conf.pop("service")
-            try:
-                self.tools_service = toolsServices.get(service_name, **conf)
-            except ConfigError as err:
-                self.notify_error(str(err))
+        if init_process:
+            if 'process' in config and 'service' in config['process']:
+                conf = config['process'].copy()
+                service_name = conf["service"]
+                conf.pop("service")
+                try:
+                    self.tools_service = toolsServices.get(service_name, **conf)
+                except ConfigError as err:
+                    self.notify_error(str(err))
+                    return
+                except ToolsServiceError as err:   
+                    self.notify_error(str(err)) 
+                    return
+            else:
+                self.notify_error('The process service is not set in the configuration file')
                 return
-        else:
-            self.notify_error('The process service is not set in the configuration file')
-            return
 
         # runner
-        if 'runner' in config and 'service' in config['runner']:
-            conf = config['runner'].copy()
-            service_name = conf["service"]
-            conf.pop("service")
-            try:
-                self.runner_service = runnerServices.get(service_name, **conf)
-                for obs in self._observers:
-                    self.runner_service.add_observer(obs)
-            except ConfigError as err:
-                self.notify_error(str(err))
+        if init_runner:
+            if 'runner' in config and 'service' in config['runner']:
+                conf = config['runner'].copy()
+                service_name = conf["service"]
+                conf.pop("service")
+                try:
+                    self.runner_service = runnerServices.get(service_name, **conf)
+                    for obs in self._observers:
+                        self.runner_service.add_observer(obs)
+                except ConfigError as err:
+                    self.notify_error(str(err))
+                    return
+            else:
+                self.notify_error('The runner service is not set in the configuration file')
                 return
-        else:
-            self.notify_error('The runner service is not set in the configuration file')
-            return
 
     def create_experiment(self, name, author='', date='now', keys=None, destination=''):
         """Create a new experiment
@@ -888,9 +895,9 @@ class Request(Observable):
         try:
             return self.tools_service.read_tool(uri)
         except ToolsServiceError as err:
-            self.notify_error(str(err))
+            self.notify_error(f'{uri}: str(err)')
         except ToolNotFoundError as err:
-            self.notify_error(str(err))
+            self.notify_error(f'{uri}: str(err)')
 
     def get_tool(self, name: str) -> Tool:
         """get a process by name

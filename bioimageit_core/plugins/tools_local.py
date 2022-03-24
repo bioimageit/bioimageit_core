@@ -272,7 +272,11 @@ class ToolParser:
 
         """
         # print('parse xml file:', self.xml_file_url)
-        tree = ETree.parse(self.xml_file_url)
+        try:
+            tree = ETree.parse(self.xml_file_url)
+        except ETree.ParseError as e:
+            raise ToolsServiceError(str(e))
+
         self._root = tree.getroot()
 
         if self._root.tag != 'tool':
@@ -307,7 +311,11 @@ class ToolParser:
         The process information extracted from the XML file
 
         """
-        tree = ETree.parse(self.xml_file_url)
+        try:
+            tree = ETree.parse(self.xml_file_url)
+        except ETree.ParseError as e:
+            raise ToolsServiceError(str(e))   
+            
         self._root = tree.getroot()
 
         if self._root.tag != 'tool':
