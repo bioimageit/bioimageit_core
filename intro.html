@@ -46,7 +46,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_omero.html">Tutorial: Omero</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_wrap_a_tool.html">Tutorial: wrap a tool</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_data_plugin.html">Tutorial: write a data plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_write_a_runner_plugin.html">Tutorial: write a runner plugin</a></li>
@@ -79,9 +78,10 @@
              
   <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h1>
-<p><cite>bioimageit_core`</cite> is a tool to facilitate interoperability between image processing software and datasets.
-Datasets can be stored as json files or on an Omero database for example.
-Wrapped image processing tools are called either locally (Conda) or using containers
+<p><code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> is the main library of the BioImageIT project. It implements all the functions needed by scientists to
+facilitate data management and analysis.
+<code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> can interact with datasets stored in file systems or with a database like Omero for example.
+<code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> is able to run data processing tools using wrappers and packaging systems (Conda) or using containers
 (Docker, Singularity).</p>
 <section id="context">
 <h2>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h2>
