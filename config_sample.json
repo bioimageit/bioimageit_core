@@ -21,5 +21,7 @@
     "user":{
         "name": "Sylvain Prigent"
     },
-    "log_dir": "../workspace/logs/"
+    "install_dir": "../",
+    "log_dir": "../workspace/logs/",
+    "workspace": "../workspace/"
 }

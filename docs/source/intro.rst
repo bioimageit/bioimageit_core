@@ -1,9 +1,10 @@
 Introduction
 ============
 
-`bioimageit_core`` is a tool to facilitate interoperability between image processing software and datasets.
-Datasets can be stored as json files or on an Omero database for example.
-Wrapped image processing tools are called either locally (Conda) or using containers
+``bioimageit_core`` is the main library of the BioImageIT project. It implements all the functions needed by scientists to 
+facilitate data management and analysis.
+``bioimageit_core`` can interact with datasets stored in file systems or with a database like Omero for example.
+``bioimageit_core`` is able to run data processing tools using wrappers and packaging systems (Conda) or using containers
 (Docker, Singularity).
 
 Context
