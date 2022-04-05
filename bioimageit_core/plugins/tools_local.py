@@ -14,6 +14,9 @@ import xml.etree.ElementTree as ETree
 import json
 import yaml
 
+from bioimageit_core.containers.pipeline_containers import (Pipeline, PipelineParameter, 
+                                                            PipelineStep, PipelineInput, 
+                                                            PipelineOutput)
 from bioimageit_core.containers.tools_containers import (Tool,
                                                          ToolIndexContainer,
                                                          ToolParameterContainer,
@@ -232,6 +235,62 @@ class LocalToolsService:
     def get_processes_database(self):
         """Get the dictionary of processed"""
         return self.database
+
+    def get_pipeline(self, md_uri):
+        """Read a pipeline from storage
+
+        Parameters
+        ----------
+        md_uri: str
+            URI of the pipeline file
+
+        Returns
+        -------
+        instance of Pipeline     
+        """
+        parser = PipelineParser(md_uri)
+        return parser.parse()
+
+
+class PipelineParser:
+    def __init__(self, pipeline_file):
+        self.pipeline_file = pipeline_file
+        self.pipeline = None
+
+    def parse(self):
+        self.pipeline = Pipeline()
+
+        json_data = None 
+        if os.path.getsize(self.pipeline_file) > 0:
+            with open(self.pipeline_file) as json_file:
+                json_data = json.load(json_file)
+
+        self.pipeline.name = json_data['name']
+        self.pipeline.description = json_data['description']
+        self.pipeline.user = json_data['user']
+        self.pipeline.date = json_data['date']
+        self.pipeline.uuid = json_data['uuid']
+        self.pipeline.bioimageit_version = json_data['bioimageit_version']
+        for step in json_data['steps']:
+            step_container = PipelineStep()
+            step_container.name = step['name']
+            step_container.tool = step['tool']
+            step_container.output_dataset_name = step['output_dataset_name']
+            for input in step['inputs']:
+                input_container = PipelineInput()
+                input_container.name = input['name']
+                input_container.dataset = input['dataset']
+                input_container.query = input['query']
+                input_container.origin_output_name = input['origin_output_name']
+                step_container.inputs.append(input_container)
+            for parameter in step['parameters']:   
+                prameter_container = PipelineParameter(parameter['name'], parameter['value'])
+                step_container.parameters.append(prameter_container)
+            for output in step['outputs']:
+                output_container = PipelineOutput(output['name'], output['save'])    
+                step_container.outputs.append(output_container)
+            self.pipeline.steps.append(step_container)   
+        return self.pipeline    
 
 
 class ToolParser:

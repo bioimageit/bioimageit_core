@@ -1,18 +1,23 @@
 
 
 class PipelineInput:
-    def __init__(self):
-        pass
+    def __init__(self, name='', dataset='', query='', origin_output_name=''):
+        self.name = name 
+        self.dataset = dataset
+        self.query = query
+        self.origin_output_name = origin_output_name
 
 
 class PipelineOutput:
-    def __init__(self):
-        pass
+    def __init__(self, name='', save=True ):
+        self.name = name
+        self.save = save
     
 
 class PipelineParameter:
-    def __init__(self):
-        pass       
+    def __init__(self, name='', value=''):
+        self.name = name
+        self.value = value       
 
 
 class PipelineStep:
@@ -23,6 +28,7 @@ class PipelineStep:
         self.parameters = [] # PipelineParameter
         self.outputs = [] # PipelineOuputs
         self.output_dataset_name = ''
+        self.already_ran = False
 
     def add_input(self, input: PipelineInput):
         self.inputs.append(input)

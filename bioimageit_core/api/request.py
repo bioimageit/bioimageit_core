@@ -12,6 +12,7 @@ import os
 import re
 import json
 import shlex
+from bioimageit_core.containers.pipeline_containers import Pipeline
 from prettytable import PrettyTable
 
 from bioimageit_formats import FormatsAccess, FormatKeyNotFoundError, FormatDatabaseError
@@ -31,6 +32,7 @@ from bioimageit_core.plugins.tools_factory import toolsServices
 from bioimageit_core.plugins.runners_factory import runnerServices
 from bioimageit_core.core.exceptions import (ConfigError, DataServiceError, DataQueryError,
                                              ToolsServiceError, ToolNotFoundError, RunnerExecError)
+from bioimageit_core.containers.runners_containers import Job                                             
 
 
 class APIAccess:
@@ -559,6 +561,29 @@ class Request(Observable):
                 return self.get_origin(
                            self.get_processed_data(processed_data.inputs[0].uri))
 
+    def is_dataset(self, experiment, name):
+        """Check if a dataset exists
+        
+        Parameters
+        ----------
+        experiment: Experiment
+            Object containing the experiment metadata
+        name: str
+            Name of the dataset to query
+
+        Returns
+        -------
+        True if exists, false otherwise
+        
+        """
+        if name == 'data':
+            return True
+        else:
+            for dataset in experiment.processed_datasets:
+                if dataset.name == name:
+                    return True    
+        return False            
+
     def get_dataset(self, experiment, name):
         """Query a dataset from it name
 
@@ -878,6 +903,26 @@ class Request(Observable):
         except ToolNotFoundError as err:
             self.notify_error(str(err))
 
+    def get_pipeline(self, uri: str) -> Pipeline:
+        """Read a pipeline
+
+        Parameters
+        ----------
+        uri: str
+            URI of the pipeline 
+
+        Returns
+        -------
+        Instance of Pipeline
+
+        """
+        try:
+            return self.tools_service.get_pipeline(uri)
+        except ToolsServiceError as err:
+            self.notify_error(f'{uri}: str(err)')
+        except ToolNotFoundError as err:
+            self.notify_error(f'{uri}: str(err)')
+
     def get_tool_from_uri(self, uri: str) -> Tool:
         """Read a tool in the database form it URI
         
@@ -1179,6 +1224,7 @@ class Request(Observable):
             for key, value in job.parameters.items():
                 cmd = cmd.replace("${" + key + "}", value)
             # setup outputs
+            processed_data_list = []
             for output in job.tool.outputs:
                 # output metadata
                 processed_data = ProcessedData()
@@ -1192,6 +1238,7 @@ class Request(Observable):
                 # args
                 local_files.append(processed_data.uri)
                 cmd = cmd.replace("${" + output.name + "}", processed_data.uri)
+                processed_data_list.append(processed_data)
             # 4.2- exec
             try:
                 cmd = self._replace_env_variables(job.tool, cmd)
@@ -1201,7 +1248,7 @@ class Request(Observable):
                 self.runner_service.tear_down(job.tool, job_id)
                 self.notify_error(str(err), job_id)
             # 4.3- create the output data
-            for output in job.tool.outputs:
+            for processed_data in processed_data_list:
                 # save the metadata and create its md_uri and uri
                 try:
                     processed_data = self.create_data(processed_dataset, run, processed_data)
@@ -1332,3 +1379,38 @@ class Request(Observable):
         self.runner_service.tear_down(job.tool, job_id)
         self.notify_progress(100, 'done', job_id)
         self.notify(f'Finished job{job_id}')
+
+    def run_pipeline(self, experiment: Experiment, pipeline: Pipeline):
+        print('Start Pipeline')
+        all_step_ran = False
+        while not all_step_ran:
+            loop_check = 0
+            for step in pipeline.steps:
+                if not step.already_ran:
+                    job = Job()
+                    job.set_experiment(experiment)
+                    job.set_tool(self.get_tool(step.tool))
+                    missing_inputs = False 
+                    for input in step.inputs:
+                        # Check that the input exists
+                        if not self.is_dataset(experiment, input.dataset):
+                            missing_inputs = True    
+                        # continue if the inputs does not exists
+                        job.set_input(name=input.name, dataset=input.dataset, 
+                                      query=input.query, 
+                                      origin_output_name=input.origin_output_name)
+                    if not missing_inputs:                  
+                        # set each parameters
+                        for parameter in step.parameters:
+                            print('job set param:', parameter.name, "=", parameter.value)
+                            job.set_param(parameter.name, parameter.value)
+                        # choose a name for the output dataset
+                        job.set_output_dataset_name(step.output_dataset_name)
+                        self.run(job) 
+                        step.already_ran = True   
+                else:
+                    loop_check += 1
+            if loop_check == len(pipeline.steps):
+                all_step_ran = True 
+        print('Start Pipeline')  
+     
