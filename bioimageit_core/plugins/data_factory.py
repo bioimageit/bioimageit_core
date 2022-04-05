@@ -11,7 +11,15 @@ MetadataServiceProvider
 
 from bioimageit_core.core.factory import ObjectFactory
 from bioimageit_core.plugins.data_local import LocalMetadataServiceBuilder
-from bioimageit_core.plugins.data_omero import OmeroMetadataServiceBuilder
+
+use_omero = False
+try:
+    from bioimageit_core.plugins.data_omero import OmeroMetadataServiceBuilder
+    use_omero = True
+except ImportError as e:
+    print('Warning: cannot find the Omero toolbox')
+
+
 
 
 class MetadataServiceProvider(ObjectFactory):
@@ -21,4 +29,5 @@ class MetadataServiceProvider(ObjectFactory):
 
 metadataServices = MetadataServiceProvider()
 metadataServices.register_builder('LOCAL', LocalMetadataServiceBuilder())
-metadataServices.register_builder('OMERO', OmeroMetadataServiceBuilder())
+if use_omero:
+    metadataServices.register_builder('OMERO', OmeroMetadataServiceBuilder())
