@@ -20,8 +20,6 @@ except ImportError as e:
     print('Warning: cannot find the Omero toolbox')
 
 
-
-
 class MetadataServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):
         return self.create(service_id, **kwargs)
