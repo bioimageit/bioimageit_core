@@ -44,6 +44,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_wrap_a_tool.html">Tutorial: wrap a tool</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial: write a data plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plugin-info">Plugin info</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-service-builder">Data service builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-service">Data service</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#register-the-service">Register the service</a></li>
@@ -85,14 +86,29 @@ the <strong>bioimageit_core</strong> library has one data plugin:</p>
 <ul class="simple">
 <li><p>LOCAL: a data manager based on local file system. Each experiment is a local directory and each data metadata are stored using <em>JSON</em> files.</p></li>
 </ul>
-<p>Data plugins are implemented using the service design pattern. To make it easier to identify the services plugins in the
-python code repository we prefix the python plugin file with <code class="docutils literal notranslate"><span class="pre">data_</span></code>.
-Thus, to create a new metadata plugin you need to create a python file at <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/data_yourservicename.py</span></code></p>
-<p>Then, the main class of your plugin will be in this single file. A data service plugin file contains two classes: the <code class="docutils literal notranslate"><span class="pre">ServiceBuilder</span></code> and
-the <code class="docutils literal notranslate"><span class="pre">DataService</span></code></p>
+<p>Data plugins must contains 3 things:
+1. <code class="docutils literal notranslate"><span class="pre">plugin_info</span></code>: a dictionnary that contains the metadata of the plugin
+2. <code class="docutils literal notranslate"><span class="pre">ServiceBuilder</span></code>: a class that allows to instantiate the plugin service
+3. <code class="docutils literal notranslate"><span class="pre">DataService</span></code>: a class that implement the plugin service interface</p>
+<p>A plugin should be stored in an independent Git reposotory with a name starting with <code class="docutils literal notranslate"><span class="pre">bioimageit_</span></code> to be findable by the BioImageIT plugin engine. As a example, we can refer
+to the repository of the <a class="reference external" href="https://github.com/bioimageit/bioimageit-omero">bioimageit-omero</a> plugin</p>
+<section id="plugin-info">
+<h2>Plugin info<a class="headerlink" href="#plugin-info" title="Permalink to this headline"></a></h2>
+<p>A BioImageIT data plugin must contain a dictonnary called <code class="docutils literal notranslate"><span class="pre">plugin_info</span></code> with the plugin metadata. A BioImageIT plugin has 3 metadata:
+1. The plugin name
+2. The plugin type. The type shoud be <cite>data</cite> for a data plugin, <cite>runner</cite> for a runner plugin or <cite>tools</cite> for a tools manager plugin.
+3. The name of the plugin service builder</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plugin_info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;OMERO&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;builder&#39;</span><span class="p">:</span> <span class="s1">&#39;OmeroMetadataServiceBuilder&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 <section id="data-service-builder">
 <h2>Data service builder<a class="headerlink" href="#data-service-builder" title="Permalink to this headline"></a></h2>
-<p>The service builder is a class that allows to instantiate and initialize a single data service. The code bellow shows an
+<p>The service builder is a class that allows to instantiate and initialize a single instance of the data plugin. The code bellow shows an
 example of data service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalMetadataServiceBuilder</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Service builder for the metadata service&quot;&quot;&quot;</span>
