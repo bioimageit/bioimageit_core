@@ -6,17 +6,36 @@ the **bioimageit_core** library has one data plugin:
 
 * LOCAL: a data manager based on local file system. Each experiment is a local directory and each data metadata are stored using *JSON* files.
 
-Data plugins are implemented using the service design pattern. To make it easier to identify the services plugins in the 
-python code repository we prefix the python plugin file with ``data_``. 
-Thus, to create a new metadata plugin you need to create a python file at ``bioimageit_core/plugins/data_yourservicename.py``
+Data plugins must contains 3 things:
+1. ``plugin_info``: a dictionnary that contains the metadata of the plugin
+2. ``ServiceBuilder``: a class that allows to instantiate the plugin service
+3. ``DataService``: a class that implement the plugin service interface
 
-Then, the main class of your plugin will be in this single file. A data service plugin file contains two classes: the ``ServiceBuilder`` and 
-the ``DataService``
+A plugin should be stored in an independent Git reposotory with a name starting with ``bioimageit_`` to be findable by the BioImageIT plugin engine. As a example, we can refer 
+to the repository of the `bioimageit-omero <https://github.com/bioimageit/bioimageit-omero>`_ plugin
+
+
+Plugin info
+-----------
+
+A BioImageIT data plugin must contain a dictonnary called ``plugin_info`` with the plugin metadata. A BioImageIT plugin has 3 metadata:
+1. The plugin name
+2. The plugin type. The type shoud be `data` for a data plugin, `runner` for a runner plugin or `tools` for a tools manager plugin. 
+3. The name of the plugin service builder
+
+.. code-block:: python
+
+    plugin_info = {
+        'name': 'OMERO',
+        'type': 'data',
+        'builder': 'OmeroMetadataServiceBuilder'
+    }
+
 
 Data service builder
 --------------------
 
-The service builder is a class that allows to instantiate and initialize a single data service. The code bellow shows an
+The service builder is a class that allows to instantiate and initialize a single instance of the data plugin. The code bellow shows an
 example of data service for the ``LocalServiceBuilder``
 
 .. code-block:: python
