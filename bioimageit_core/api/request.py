@@ -119,6 +119,9 @@ class Request(Observable):
                 except ConfigError as err:
                     self.notify_error(str(err))
                     return
+                except DataServiceError as err:
+                    self.notify_error(str(err))
+                    return    
             else:
                 self.notify_error('The metadata service is not set in the configuration file')
                 return
