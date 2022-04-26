@@ -16,6 +16,7 @@ from bioimageit_core.plugins.data_local import LocalMetadataServiceBuilder
 
 class MetadataServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):
+        print('get service:', service_id)
         return self.create(service_id, **kwargs)
 
 
@@ -31,8 +32,6 @@ metadataServices = MetadataServiceProvider()
 metadataServices.register_builder('LOCAL', LocalMetadataServiceBuilder())
 
 for name, module in discovered_plugins.items():
-    mod = __import__(name) 
-    #print('plugin info = ', mod.plugin_info)
+    mod = __import__(name)
     if mod.plugin_info['type'] == 'data':
-        metadataServices.register_builder(mod.plugin_info['name'], getattr(mod, mod.plugin_info['builder']))
-
+        metadataServices.register_builder(mod.plugin_info['name'], getattr(mod, mod.plugin_info['builder'])())
