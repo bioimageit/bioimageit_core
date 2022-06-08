@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -80,7 +81,7 @@
            <div itemprop="articleBody">
              
   <section id="tutorial-write-a-data-plugin">
-<h1>Tutorial: write a data plugin<a class="headerlink" href="#tutorial-write-a-data-plugin" title="Permalink to this headline"></a></h1>
+<h1>Tutorial: write a data plugin<a class="headerlink" href="#tutorial-write-a-data-plugin" title="Permalink to this heading"></a></h1>
 <p>In this tutorial we describe step by step how to implement a plugin to manage data with <strong>bioimageit_core</strong>. By default
 the <strong>bioimageit_core</strong> library has one data plugin:</p>
 <ul class="simple">
@@ -93,7 +94,7 @@ the <strong>bioimageit_core</strong> library has one data plugin:</p>
 <p>A plugin should be stored in an independent Git reposotory with a name starting with <code class="docutils literal notranslate"><span class="pre">bioimageit_</span></code> to be findable by the BioImageIT plugin engine. As a example, we can refer
 to the repository of the <a class="reference external" href="https://github.com/bioimageit/bioimageit-omero">bioimageit-omero</a> plugin</p>
 <section id="plugin-info">
-<h2>Plugin info<a class="headerlink" href="#plugin-info" title="Permalink to this headline"></a></h2>
+<h2>Plugin info<a class="headerlink" href="#plugin-info" title="Permalink to this heading"></a></h2>
 <p>A BioImageIT data plugin must contain a dictonnary called <code class="docutils literal notranslate"><span class="pre">plugin_info</span></code> with the plugin metadata. A BioImageIT plugin has 3 metadata:
 1. The plugin name
 2. The plugin type. The type shoud be <cite>data</cite> for a data plugin, <cite>runner</cite> for a runner plugin or <cite>tools</cite> for a tools manager plugin.
@@ -107,7 +108,7 @@ to the repository of the <a class="reference external" href="https://github.com/
 </div>
 </section>
 <section id="data-service-builder">
-<h2>Data service builder<a class="headerlink" href="#data-service-builder" title="Permalink to this headline"></a></h2>
+<h2>Data service builder<a class="headerlink" href="#data-service-builder" title="Permalink to this heading"></a></h2>
 <p>The service builder is a class that allows to instantiate and initialize a single instance of the data plugin. The code bellow shows an
 example of data service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalMetadataServiceBuilder</span><span class="p">:</span>
@@ -127,7 +128,7 @@ example of data service for the <code class="docutils literal notranslate"><span
 <code class="docutils literal notranslate"><span class="pre">LocalMetadataService</span></code> that is used.</p>
 </section>
 <section id="data-service">
-<h2>Data service<a class="headerlink" href="#data-service" title="Permalink to this headline"></a></h2>
+<h2>Data service<a class="headerlink" href="#data-service" title="Permalink to this heading"></a></h2>
 <p>The data service is the class that implements the data management functionalities. Each method of the data service
 class is dedicated to a single data manipulation. The code below shows the list of the methods to implement where the
 comments indicate the inputs and outputs of the method.</p>
@@ -410,7 +411,7 @@ comments indicate the inputs and outputs of the method.</p>
 </div>
 </section>
 <section id="register-the-service">
-<h2>Register the service<a class="headerlink" href="#register-the-service" title="Permalink to this headline"></a></h2>
+<h2>Register the service<a class="headerlink" href="#register-the-service" title="Permalink to this heading"></a></h2>
 <p>The last step is to register the metadata service to the <strong>bioimageit_core</strong> data services factory. Open the file
 <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/data_factory.py</span></code>, and add a line at the end to register the service:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metadataServices</span><span class="o">.</span><span class="n">register_builder</span><span class="p">(</span><span class="s1">&#39;LOCAL&#39;</span><span class="p">,</span> <span class="n">LocalMetadataServiceBuilder</span><span class="p">())</span>
@@ -426,7 +427,7 @@ in the config file:</p>
 </div>
 </section>
 <section id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
 <p>To summarize, in order to create a new metadata plugin we need to follow these steps:</p>
 <ul class="simple">
 <li><p>create a python file in <code class="docutils literal notranslate"><span class="pre">bioimageit_core/plugins/</span></code></p></li>

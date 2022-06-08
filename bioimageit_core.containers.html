@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -87,16 +88,16 @@
            <div itemprop="articleBody">
              
   <section id="bioimageit-core-containers-package">
-<h1>bioimageit_core.containers package<a class="headerlink" href="#bioimageit-core-containers-package" title="Permalink to this headline"></a></h1>
+<h1>bioimageit_core.containers package<a class="headerlink" href="#bioimageit-core-containers-package" title="Permalink to this heading"></a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-bioimageit_core.containers.data_containers">
-<span id="bioimageit-core-containers-data-containers-module"></span><h2>bioimageit_core.containers.data_containers module<a class="headerlink" href="#module-bioimageit_core.containers.data_containers" title="Permalink to this headline"></a></h2>
+<span id="bioimageit-core-containers-data-containers-module"></span><h2>bioimageit_core.containers.data_containers module<a class="headerlink" href="#module-bioimageit_core.containers.data_containers" title="Permalink to this heading"></a></h2>
 <p>BioImageIT data containers.</p>
 <p>Implements data containers defined in SciXTracer</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
 <p>Container
 Data
 RawData
@@ -138,7 +139,7 @@ types of metadata</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.Data">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.data_containers.</span></span><span class="sig-name descname"><span class="pre">Data</span></span><a class="headerlink" href="#bioimageit_core.containers.data_containers.Data" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Interface for data container</p>
 <p>Data container aims at manipulating the metadata of a single data</p>
 <dl class="py attribute">
@@ -176,7 +177,7 @@ types of metadata</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.Dataset">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.data_containers.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><a class="headerlink" href="#bioimageit_core.containers.data_containers.Dataset" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Container for a dataset metadata</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.Dataset.name">
@@ -240,7 +241,7 @@ types of metadata</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.Experiment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.data_containers.</span></span><span class="sig-name descname"><span class="pre">Experiment</span></span><a class="headerlink" href="#bioimageit_core.containers.data_containers.Experiment" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Container for an experiment
 .. attribute:: name</p>
 <blockquote>
@@ -286,7 +287,7 @@ types of metadata</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.ProcessedData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.data_containers.</span></span><span class="sig-name descname"><span class="pre">ProcessedData</span></span><a class="headerlink" href="#bioimageit_core.containers.data_containers.ProcessedData" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Data</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Container for processed data</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.ProcessedData.run">
@@ -311,7 +312,7 @@ ex: {“name”: “o”, “label”: “Processed image”}</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.ProcessedData.add_input">
-<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><span class="pre">bioimageit_core.containers.data_containers.Data</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.containers.data_containers.ProcessedData.add_input" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><span class="pre">Data</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.containers.data_containers.ProcessedData.add_input" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -353,7 +354,7 @@ ex: {“name”: “o”, “label”: “Processed image”}</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.RawData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.data_containers.</span></span><span class="sig-name descname"><span class="pre">RawData</span></span><a class="headerlink" href="#bioimageit_core.containers.data_containers.RawData" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Data</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Container for a Raw data</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.RawData.key_value_pairs">
@@ -387,7 +388,7 @@ ex: {“name”: “o”, “label”: “Processed image”}</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.Run">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.data_containers.</span></span><span class="sig-name descname"><span class="pre">Run</span></span><a class="headerlink" href="#bioimageit_core.containers.data_containers.Run" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Container for a run (processing or job execution)</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.data_containers.Run.process_name">
@@ -494,7 +495,7 @@ ex: {“name”: “o”, “label”: “Processed image”}</p>
 </section>
 </section>
 <section id="module-bioimageit_core.containers.runners_containers">
-<span id="bioimageit-core-containers-runners-containers-module"></span><h2>bioimageit_core.containers.runners_containers module<a class="headerlink" href="#module-bioimageit_core.containers.runners_containers" title="Permalink to this headline"></a></h2>
+<span id="bioimageit-core-containers-runners-containers-module"></span><h2>bioimageit_core.containers.runners_containers module<a class="headerlink" href="#module-bioimageit_core.containers.runners_containers" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.runners_containers.Job">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.runners_containers.</span></span><span class="sig-name descname"><span class="pre">Job</span></span><a class="headerlink" href="#bioimageit_core.containers.runners_containers.Job" title="Permalink to this definition"></a></dt>
@@ -689,7 +690,7 @@ experiment</p>
 
 </section>
 <section id="module-bioimageit_core.containers.tools_containers">
-<span id="bioimageit-core-containers-tools-containers-module"></span><h2>bioimageit_core.containers.tools_containers module<a class="headerlink" href="#module-bioimageit_core.containers.tools_containers" title="Permalink to this headline"></a></h2>
+<span id="bioimageit-core-containers-tools-containers-module"></span><h2>bioimageit_core.containers.tools_containers module<a class="headerlink" href="#module-bioimageit_core.containers.tools_containers" title="Permalink to this heading"></a></h2>
 <p>BioIMageIT tool containers.</p>
 <p>This module contains containers for Tool info
 and tool database</p>
@@ -1311,7 +1312,7 @@ top level category</p>
 
 </section>
 <section id="module-bioimageit_core.containers">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-bioimageit_core.containers" title="Permalink to this headline"></a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-bioimageit_core.containers" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.CmdSelectContainer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.</span></span><span class="sig-name descname"><span class="pre">CmdSelectContainer</span></span><a class="headerlink" href="#bioimageit_core.containers.CmdSelectContainer" title="Permalink to this definition"></a></dt>
@@ -1420,7 +1421,7 @@ types of metadata</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.Data">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.</span></span><span class="sig-name descname"><span class="pre">Data</span></span><a class="headerlink" href="#bioimageit_core.containers.Data" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Interface for data container</p>
 <p>Data container aims at manipulating the metadata of a single data</p>
 <dl class="py attribute">
@@ -1458,7 +1459,7 @@ types of metadata</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.Dataset">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><a class="headerlink" href="#bioimageit_core.containers.Dataset" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Container for a dataset metadata</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.Dataset.name">
@@ -1522,7 +1523,7 @@ types of metadata</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.Experiment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.</span></span><span class="sig-name descname"><span class="pre">Experiment</span></span><a class="headerlink" href="#bioimageit_core.containers.Experiment" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Container for an experiment
 .. attribute:: name</p>
 <blockquote>
@@ -1709,7 +1710,7 @@ experiment</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.ProcessedData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.</span></span><span class="sig-name descname"><span class="pre">ProcessedData</span></span><a class="headerlink" href="#bioimageit_core.containers.ProcessedData" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Data</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Container for processed data</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.ProcessedData.run">
@@ -1734,7 +1735,7 @@ ex: {“name”: “o”, “label”: “Processed image”}</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.containers.ProcessedData.add_input">
-<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><span class="pre">bioimageit_core.containers.data_containers.Data</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.containers.ProcessedData.add_input" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><span class="pre">Data</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.containers.ProcessedData.add_input" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1776,7 +1777,7 @@ ex: {“name”: “o”, “label”: “Processed image”}</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.RawData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.</span></span><span class="sig-name descname"><span class="pre">RawData</span></span><a class="headerlink" href="#bioimageit_core.containers.RawData" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Data</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Data" title="bioimageit_core.containers.data_containers.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Container for a Raw data</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.RawData.key_value_pairs">
@@ -1810,7 +1811,7 @@ ex: {“name”: “o”, “label”: “Processed image”}</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.containers.Run">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.containers.</span></span><span class="sig-name descname"><span class="pre">Run</span></span><a class="headerlink" href="#bioimageit_core.containers.Run" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.containers.data_containers.Container</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bioimageit_core.containers.data_containers.Container" title="bioimageit_core.containers.data_containers.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Container for a run (processing or job execution)</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bioimageit_core.containers.Run.process_name">

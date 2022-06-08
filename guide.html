@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -78,7 +79,7 @@
            <div itemprop="articleBody">
              
   <section id="guide">
-<span id="id1"></span><h1>Guide<a class="headerlink" href="#guide" title="Permalink to this headline"></a></h1>
+<span id="id1"></span><h1>Guide<a class="headerlink" href="#guide" title="Permalink to this heading"></a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> is a python3 library. It implements the main API for BioImageIT middleware.
 In the scheme below we can see the position of <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> in the BioImageIT ecosystem. In fact, <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> is the
 API that connects low level image processing and data management to high level end users applications.</p>
@@ -96,7 +97,7 @@ tool with a job scheduler for example, we can write a tool runner plugin that li
 <p>The advantage of this <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> architecture is to enable writing high level python code to manage and annotate data and deploy it
 in different hardware or network architecture without the need to update the high level code. Only plugins have to be added.</p>
 <section id="data-management">
-<h2>Data Management<a class="headerlink" href="#data-management" title="Permalink to this headline"></a></h2>
+<h2>Data Management<a class="headerlink" href="#data-management" title="Permalink to this heading"></a></h2>
 <p>In the BioImageIT project, we propose to manage data using a 3 layers representation:</p>
 <ul class="simple">
 <li><p><strong>Experiment</strong>: an experiment is a project that contains one dataset of raw data named “data” and a list of processed datasets. Each processed dataset contains the outputs of a processing tool.</p></li>
@@ -168,7 +169,7 @@ We can also manually annotate one data by extracting it and manually adding a ke
 </div>
 </section>
 <section id="process-running">
-<h2>Process Running<a class="headerlink" href="#process-running" title="Permalink to this headline"></a></h2>
+<h2>Process Running<a class="headerlink" href="#process-running" title="Permalink to this heading"></a></h2>
 <p>In the BioImageIT project processing tools are external packages (like Conda packages or Docker containers) and represented with XML wrappers similarly to the Galaxy Project.
 The <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> library, implements functionalities to manipulate and run packaged tools.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">Tool</span></code> is a python class in <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> that allows to identify a processing tool. It load the tool XML file and allows to print and access the process information.</p>
@@ -211,7 +212,7 @@ using the run method which runs a <code class="docutils literal notranslate"><sp
 example above the new dataset is called <em>deconv</em></p>
 </section>
 <section id="further-reading">
-<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline"></a></h2>
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading"></a></h2>
 <p>In this short introduction guide we show the basic information we need to use <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> library.
 For a more advanced use, we recommend reading the following tutorials.</p>
 </section>

@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -79,7 +80,7 @@
            <div itemprop="articleBody">
              
   <section id="tutorial-wrap-a-tool">
-<h1>Tutorial: wrap a tool<a class="headerlink" href="#tutorial-wrap-a-tool" title="Permalink to this headline"></a></h1>
+<h1>Tutorial: wrap a tool<a class="headerlink" href="#tutorial-wrap-a-tool" title="Permalink to this heading"></a></h1>
 <p>In this tutorial, we details the standardized architecture for a tool package. This architecture facilitate
 tools access and sharing.</p>
 <p>A package can contain one or several wrappers. The package architecture is as follows:</p>
@@ -90,7 +91,7 @@ tools access and sharing.</p>
 </ul>
 <p>This organisation is the same as the one used in the Galaxy Project for BioImageIT to be fully compatible with Galaxy Project</p>
 <section id="shed-file">
-<h2>Shed file<a class="headerlink" href="#shed-file" title="Permalink to this headline"></a></h2>
+<h2>Shed file<a class="headerlink" href="#shed-file" title="Permalink to this heading"></a></h2>
 <p>The shed file descibe the tool origin and how BioImageIT will classify it in the toolboxes tree. Bellow an example file
 gives the <code class="docutils literal notranslate"><span class="pre">.shed.yml</span></code> file content:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">categories</span><span class="p">:</span><span class="w"></span>
@@ -110,7 +111,7 @@ The <cite>homepage_url</cite> is a web URL of the original tool. Idealy this sho
 Finally <cite>name</cite> and <cite>owner</cite> are the names of the tool and the author(s) to identify them.</p>
 </section>
 <section id="wrapper">
-<h2>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this headline"></a></h2>
+<h2>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this heading"></a></h2>
 <p>The tool wrapper is an <cite>XML</cite> file describing how to run the tool. An example is shown bellow for a 2D image Wiener deconvolution. It is a classical Galaxy Project wrapper.
 The command is <code class="docutils literal notranslate"><span class="pre">simgwiener2d</span></code> and take 5 arguments, the input image <code class="docutils literal notranslate"><span class="pre">-i</span></code>, the output image <code class="docutils literal notranslate"><span class="pre">-o</span></code>, and 3 parameters <code class="docutils literal notranslate"><span class="pre">-sigma</span></code>, <code class="docutils literal notranslate"><span class="pre">-lambda</span></code>
 and <code class="docutils literal notranslate"><span class="pre">-padding</span></code>.
@@ -161,7 +162,7 @@ wrapper directory in a <em>doc</em> folder. This section can be completed with t
 </div>
 </section>
 <section id="packaging-and-dependencies">
-<h2>Packaging and dependencies<a class="headerlink" href="#packaging-and-dependencies" title="Permalink to this headline"></a></h2>
+<h2>Packaging and dependencies<a class="headerlink" href="#packaging-and-dependencies" title="Permalink to this heading"></a></h2>
 <p>BioImageIT is able to run tool that are packaged either using <strong>Conda</strong> or <strong>Docker</strong>.</p>
 <p>When using conda, the authors need to create a conda package and store it in anaconda.org. Then, the <cite>&lt;requirements&gt;</cite> section looks like the folowing:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;requirements&gt;</span>
@@ -189,7 +190,7 @@ recommended to add is in the tool documentation.</p>
 </div>
 </section>
 <section id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
 <p>In this tutorial, we show with an example how to create a tool package compatible with <em>BioImageIT</em> and Galaxy Project. This has
 the advantages of using the original source code without changing it, but just packaging it with <em>Docker</em> or <em>Conda</em> and discribing it with a <em>wrapper</em> XML file.
 To make a tool available, please send a push request <a class="reference external" href="https://github.com/bioimageit/bioimageit-tools">here</a>.</p>

@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -86,40 +87,40 @@
            <div itemprop="articleBody">
              
   <section id="bioimageit-core-plugins-package">
-<h1>bioimageit_core.plugins package<a class="headerlink" href="#bioimageit-core-plugins-package" title="Permalink to this headline"></a></h1>
+<h1>bioimageit_core.plugins package<a class="headerlink" href="#bioimageit-core-plugins-package" title="Permalink to this heading"></a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
 <section id="bioimageit-core-plugins-data-factory-module">
-<h2>bioimageit_core.plugins.data_factory module<a class="headerlink" href="#bioimageit-core-plugins-data-factory-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.data_factory module<a class="headerlink" href="#bioimageit-core-plugins-data-factory-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="bioimageit-core-plugins-data-local-module">
-<h2>bioimageit_core.plugins.data_local module<a class="headerlink" href="#bioimageit-core-plugins-data-local-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.data_local module<a class="headerlink" href="#bioimageit-core-plugins-data-local-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="bioimageit-core-plugins-data-omero-module">
-<h2>bioimageit_core.plugins.data_omero module<a class="headerlink" href="#bioimageit-core-plugins-data-omero-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.data_omero module<a class="headerlink" href="#bioimageit-core-plugins-data-omero-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="bioimageit-core-plugins-runner-allgo-module">
-<h2>bioimageit_core.plugins.runner_allgo module<a class="headerlink" href="#bioimageit-core-plugins-runner-allgo-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.runner_allgo module<a class="headerlink" href="#bioimageit-core-plugins-runner-allgo-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-bioimageit_core.plugins.runner_conda">
-<span id="bioimageit-core-plugins-runner-conda-module"></span><h2>bioimageit_core.plugins.runner_conda module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_conda" title="Permalink to this headline"></a></h2>
+<span id="bioimageit-core-plugins-runner-conda-module"></span><h2>bioimageit_core.plugins.runner_conda module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_conda" title="Permalink to this heading"></a></h2>
 <p>bioimageit_core local process service.</p>
 <p>This module implements the local service for process
 (Process class) execution.</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
 <p>ProcessServiceProvider</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_conda.CondaRunnerService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.plugins.runner_conda.</span></span><span class="sig-name descname"><span class="pre">CondaRunnerService</span></span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.observer.Observable</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Observable</span></code></a></p>
 <p>Service for local runner exec</p>
 <p>To initialize the database, you need to set the xml_dirs from
 the configuration and then call initialize</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_conda.CondaRunnerService.exec">
-<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService.exec" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -134,7 +135,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_conda.CondaRunnerService.set_up">
-<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService.set_up" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService.set_up" title="Permalink to this definition"></a></dt>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
@@ -149,7 +150,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_conda.CondaRunnerService.tear_down">
-<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService.tear_down" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService.tear_down" title="Permalink to this definition"></a></dt>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
@@ -174,23 +175,23 @@ the configuration and then call initialize</p>
 </section>
 </section>
 <section id="module-bioimageit_core.plugins.runner_condadocker">
-<span id="bioimageit-core-plugins-runner-condadocker-module"></span><h2>bioimageit_core.plugins.runner_condadocker module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_condadocker" title="Permalink to this headline"></a></h2>
+<span id="bioimageit-core-plugins-runner-condadocker-module"></span><h2>bioimageit_core.plugins.runner_condadocker module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_condadocker" title="Permalink to this heading"></a></h2>
 <p>bioimageit_core local process service.</p>
 <p>This module implements the local service for process
 (Process class) execution.</p>
 <section id="id1">
-<h3>Classes<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h3>Classes<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <p>ProcessServiceProvider</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.plugins.runner_condadocker.</span></span><span class="sig-name descname"><span class="pre">CondaDockerRunnerService</span></span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.observer.Observable</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Observable</span></code></a></p>
 <p>Service for runner that switch between conda and docker wrt the wrapper</p>
 <p>To initialize the database, you need to set the xml_dirs from
 the configuration and then call initialize</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.exec">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.exec" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -204,7 +205,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.set_up">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.set_up" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.set_up" title="Permalink to this definition"></a></dt>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
@@ -216,7 +217,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.tear_down">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.tear_down" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.tear_down" title="Permalink to this definition"></a></dt>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
@@ -238,23 +239,23 @@ the configuration and then call initialize</p>
 </section>
 </section>
 <section id="module-bioimageit_core.plugins.runner_docker">
-<span id="bioimageit-core-plugins-runner-docker-module"></span><h2>bioimageit_core.plugins.runner_docker module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_docker" title="Permalink to this headline"></a></h2>
+<span id="bioimageit-core-plugins-runner-docker-module"></span><h2>bioimageit_core.plugins.runner_docker module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_docker" title="Permalink to this heading"></a></h2>
 <p>bioimageit_core docker process service.</p>
 <p>This module implements a service to run process in
 using Docker.</p>
 <section id="id2">
-<h3>Classes<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<h3>Classes<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <p>ProcessServiceProvider</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_docker.DockerRunnerService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.plugins.runner_docker.</span></span><span class="sig-name descname"><span class="pre">DockerRunnerService</span></span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.observer.Observable</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Observable</span></code></a></p>
 <p>Service for docker runner exec</p>
 <p>To initialize the database, you need to set the xml_dirs from
 the configuration and then call initialize</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_docker.DockerRunnerService.exec">
-<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.exec" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -290,7 +291,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_docker.DockerRunnerService.set_up">
-<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.set_up" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.set_up" title="Permalink to this definition"></a></dt>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
@@ -302,7 +303,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_docker.DockerRunnerService.tear_down">
-<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.tear_down" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.tear_down" title="Permalink to this definition"></a></dt>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
@@ -323,7 +324,7 @@ the configuration and then call initialize</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_docker.extract_image_name">
-<span class="sig-prename descclassname"><span class="pre">bioimageit_core.plugins.runner_docker.</span></span><span class="sig-name descname"><span class="pre">extract_image_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.extract_image_name" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">bioimageit_core.plugins.runner_docker.</span></span><span class="sig-name descname"><span class="pre">extract_image_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.extract_image_name" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -334,23 +335,23 @@ the configuration and then call initialize</p>
 </section>
 </section>
 <section id="module-bioimageit_core.plugins.runner_local">
-<span id="bioimageit-core-plugins-runner-local-module"></span><h2>bioimageit_core.plugins.runner_local module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_local" title="Permalink to this headline"></a></h2>
+<span id="bioimageit-core-plugins-runner-local-module"></span><h2>bioimageit_core.plugins.runner_local module<a class="headerlink" href="#module-bioimageit_core.plugins.runner_local" title="Permalink to this heading"></a></h2>
 <p>bioimageit_core local process service.</p>
 <p>This module implements the local service for process
 (Process class) execution.</p>
 <section id="id3">
-<h3>Classes<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<h3>Classes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <p>ProcessServiceProvider</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_local.LocalRunnerService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageit_core.plugins.runner_local.</span></span><span class="sig-name descname"><span class="pre">LocalRunnerService</span></span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageit_core.core.observer.Observable</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable" title="bioimageit_core.core.observer.Observable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Observable</span></code></a></p>
 <p>Service for local runner exec</p>
 <p>To initialize the database, you need to set the xml_dirs from
 the configuration and then call initialize</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_local.LocalRunnerService.exec">
-<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService.exec" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -364,7 +365,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_local.LocalRunnerService.set_up">
-<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService.set_up" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService.set_up" title="Permalink to this definition"></a></dt>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
@@ -376,7 +377,7 @@ the configuration and then call initialize</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageit_core.plugins.runner_local.LocalRunnerService.tear_down">
-<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">bioimageit_core.containers.tools_containers.Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService.tear_down" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">tear_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService.tear_down" title="Permalink to this definition"></a></dt>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
@@ -398,19 +399,19 @@ the configuration and then call initialize</p>
 </section>
 </section>
 <section id="bioimageit-core-plugins-runner-singularity-module">
-<h2>bioimageit_core.plugins.runner_singularity module<a class="headerlink" href="#bioimageit-core-plugins-runner-singularity-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.runner_singularity module<a class="headerlink" href="#bioimageit-core-plugins-runner-singularity-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="bioimageit-core-plugins-runner-factory-module">
-<h2>bioimageit_core.plugins.runner_factory module<a class="headerlink" href="#bioimageit-core-plugins-runner-factory-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.runner_factory module<a class="headerlink" href="#bioimageit-core-plugins-runner-factory-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="bioimageit-core-plugins-tools-factory-module">
-<h2>bioimageit_core.plugins.tools_factory module<a class="headerlink" href="#bioimageit-core-plugins-tools-factory-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.tools_factory module<a class="headerlink" href="#bioimageit-core-plugins-tools-factory-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="bioimageit-core-plugins-tools-local-module">
-<h2>bioimageit_core.plugins.tools_local module<a class="headerlink" href="#bioimageit-core-plugins-tools-local-module" title="Permalink to this headline"></a></h2>
+<h2>bioimageit_core.plugins.tools_local module<a class="headerlink" href="#bioimageit-core-plugins-tools-local-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-bioimageit_core.plugins">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-bioimageit_core.plugins" title="Permalink to this headline"></a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-bioimageit_core.plugins" title="Permalink to this heading"></a></h2>
 </section>
 </section>
 
