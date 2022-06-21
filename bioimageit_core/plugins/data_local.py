@@ -505,7 +505,19 @@ class LocalMetadataService:
                 lines = file.readlines()
                 for line in lines:
                     line = line.rstrip('\n')
-                    raw_dataset.uris.append(os.path.join(data_dir_path, line))
+
+                    data_md_uri = os.path.join(data_dir_path, line)
+
+                    # add a uuid to the data file
+                    data = self.get_raw_data(data_md_uri)
+                    data.uuid = generate_uuid()
+                    self.update_raw_data(data)
+
+                    data_uri = Container(
+                        data_md_uri,
+                        generate_uuid())
+
+                    raw_dataset.uris.append(data_uri)
                 self.update_dataset(raw_dataset)
             os.remove(tmp_file)
 
@@ -575,7 +587,8 @@ class LocalMetadataService:
         if os.path.isfile(md_uri) and md_uri.endswith('.md.json'):
             metadata = LocalMetadataService._read_json(md_uri)
             container = RawData()
-            container.uuid = metadata['uuid']
+            if 'uuid' in metadata:
+                container.uuid = metadata['uuid']
             container.md_uri = md_uri
             container.type = metadata['origin']['type']
             container.name = metadata['common']['name']
@@ -784,6 +797,7 @@ class LocalMetadataService:
         metadata['name'] = dataset.name
         metadata['urls'] = list()
         for uri in dataset.uris:
+            print('uri=', uri)
             tmp_url = LocalMetadataService.to_unix_path(
                 LocalMetadataService.relative_path(uri.md_uri, md_uri))
             metadata['urls'].append({"uuid": uri.uuid, 'url': tmp_url})
