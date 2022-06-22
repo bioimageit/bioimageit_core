@@ -13,6 +13,8 @@ import pkgutil
 
 from bioimageit_core.core.factory import ObjectFactory
 from bioimageit_core.plugins.data_local import LocalMetadataServiceBuilder
+from bioimageit_core.plugins.data_fsspec import FsspecMetadataServiceBuilder
+
 
 class MetadataServiceProvider(ObjectFactory):
     def get(self, service_id, **kwargs):
@@ -30,6 +32,7 @@ discovered_plugins = {
 
 metadataServices = MetadataServiceProvider()
 metadataServices.register_builder('LOCAL', LocalMetadataServiceBuilder())
+metadataServices.register_builder('FSSPEC', FsspecMetadataServiceBuilder())
 
 for name, module in discovered_plugins.items():
     mod = __import__(name)
