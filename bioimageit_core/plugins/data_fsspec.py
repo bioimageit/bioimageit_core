@@ -1080,3 +1080,10 @@ class FsspecMetadataService:
             raw_data = self.get_raw_data(md_uri)
             return raw_data.uri
         return destination_file_uri        
+
+    def view_data(self, md_uri):
+        # TODO: implement ssh open file
+        raw_data = self.get_raw_data(md_uri)
+        if raw_data.format_ == 'imagetiff':
+            return None
+        return None       

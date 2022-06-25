@@ -280,7 +280,7 @@ class Request(Observable):
             self.notify_error(str(err))
 
     def import_data(self, experiment, data_path, name, author, format_,
-                    date='now', key_value_pairs=dict):
+                    date='now', key_value_pairs=dict()):
         """import one data to the experiment
 
         The data is imported to the raw dataset
@@ -1133,6 +1133,13 @@ class Request(Observable):
             return self.data_service.download_data(md_uri, '')
         except DataServiceError as err:
             self.notify_error(str(err))    
+
+    def view_data(self, md_uri):
+        try:
+            return self.data_service.view_data(md_uri)
+        except DataServiceError as err:
+            self.notify_error(str(err)) 
+
 
     def run(self, job):
         """Run a BioImageIT job
