@@ -280,7 +280,7 @@ class Request(Observable):
             self.notify_error(str(err))
 
     def import_data(self, experiment, data_path, name, author, format_,
-                    date='now', key_value_pairs=dict()):
+                    date='now', key_value_pairs=dict):
         """import one data to the experiment
 
         The data is imported to the raw dataset
@@ -879,7 +879,7 @@ class Request(Observable):
         """
         return self.data_service.create_data(dataset, run, processed_data)
 
-    def search_tool(self, keyword: str = ''):
+    def search_tool(self, keyword: str = '', print_=True):
         """Search a tool using a keyword in the database
 
         This method print the list of funded processed
@@ -888,19 +888,26 @@ class Request(Observable):
         ----------
         keyword
             Keyword to search in the database
+        print_: bool
+            True to print tools in a PrettyTable, False otherwise
+
+        Returns
+        -------
+        The list of tools        
 
         """
         try:
             plist = self.tools_service.search(keyword)
-
-            x = PrettyTable()
-            x.field_names = ["UUID", "Name", "Version", "Type"]
-            for tool in plist:
-                type_ = 'sequential'
-                if tool.type != '':
-                    type_ = tool.type
-                x.add_row([tool.id, tool.name, tool.version, type_])
-            print(x)
+            if print_:
+                x = PrettyTable()
+                x.field_names = ["UUID", "Name", "Version", "Type"]
+                for tool in plist:
+                    type_ = 'sequential'
+                    if tool.type != '':
+                        type_ = tool.type
+                    x.add_row([tool.id, tool.name, tool.version, type_])
+                print(x)
+            return plist
         except ToolsServiceError as err:
             self.notify_error(str(err))
         except ToolNotFoundError as err:
