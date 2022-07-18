@@ -500,14 +500,14 @@ class LocalMetadataService:
         
         if platform.system() == 'Windows':
             condaexe = os.path.join(conda_dir, 'condabin', 'conda.bat')
-            args_str = '"' + condaexe + '"' + ' activate ' + "bioformats2raw" + ' &&'
+            args_str = '"' + condaexe + '"' + ' activate ' + "bioimageit" + ' &&'
             cmd = f"{args_str} bioformats2raw {file_path} {destination_dir}"
             subprocess.run(cmd, check=True)
             print("import zarr image cmd:", cmd)
 
         else:
             condash = os.path.join(conda_dir, 'etc', 'profile.d', 'conda.sh')
-            args_str = '"' + condaexe + '"' + ' activate ' + "bioformats2raw" + ' &&'
+            args_str = '"' + condaexe + '"' + ' activate ' + "bioimageit" + ' &&'
             cmd = f"{args_str} bioformats2raw {file_path} {destination_dir}"
             subprocess.run(cmd, shell=True, executable='/bin/bash', check=True)
             print("import zarr image cmd:", cmd)
