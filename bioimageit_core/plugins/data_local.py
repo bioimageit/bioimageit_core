@@ -20,6 +20,7 @@ import json
 import re
 from shutil import copyfile
 import subprocess
+import zarr
 
 from bioimageit_formats import FormatsAccess, formatsServices
 
@@ -443,9 +444,21 @@ class LocalMetadataService:
 
         # import data
         # print('import data with format:', metadata.format)
+        print('IMAGE ZARR ?')
+
         if metadata.format == 'bioformat':
             self._import_file_bioformat(raw_dataset_uri, data_path, data_dir_path, metadata.name,
                                         metadata.author, metadata.date)
+        elif metadata.format == 'imagezarr':
+            destination_path = os.path.join(data_dir_path, filtered_name + '.zarr')
+            raw_dataset_container = self.get_dataset(raw_dataset_uri)
+            raw_dataset_container.uris.append(Container(md_uri=metadata.md_uri, uuid=metadata.uuid))
+            metadata.uri = destination_path
+            self.update_dataset(raw_dataset_container)
+            self.update_raw_data(metadata)
+
+            self._import_file_zarr(data_path, destination_path)
+            print("IMAGE ZARR !")
         else:
             format_service = formatsServices.get(metadata.format)
             files_to_copy = format_service.files(data_path)
@@ -481,6 +494,23 @@ class LocalMetadataService:
 
             # add data to raw dataset
         self._add_to_raw_dataset_bioformat(destination_dir, raw_dataset_uri)
+
+    def _import_file_zarr(self, file_path, destination_dir):
+        conda_dir = ConfigAccess.instance().get('runner')['conda_dir']
+        
+        if platform.system() == 'Windows':
+            condaexe = os.path.join(conda_dir, 'condabin', 'conda.bat')
+            args_str = '"' + condaexe + '"' + ' activate ' + "bioformats2raw" + ' &&'
+            cmd = f"{args_str} bioformats2raw {file_path} {destination_dir}"
+            subprocess.run(cmd, check=True)
+            print("import zarr image cmd:", cmd)
+
+        else:
+            condash = os.path.join(conda_dir, 'etc', 'profile.d', 'conda.sh')
+            args_str = '"' + condaexe + '"' + ' activate ' + "bioformats2raw" + ' &&'
+            cmd = f"{args_str} bioformats2raw {file_path} {destination_dir}"
+            subprocess.run(cmd, shell=True, executable='/bin/bash', check=True)
+            print("import zarr image cmd:", cmd)
 
     def _import_dir_bioformat(self, raw_dataset_uri, dir_uri, filter_, author, format_, date, directory_tag_key):
         fiji_exe = ConfigAccess.instance().get('fiji')
@@ -1051,6 +1081,9 @@ class LocalMetadataService:
 
     def view_data(self, md_uri):
         raw_data = self.get_raw_data(md_uri)
-        if raw_data.format_ == 'imagetiff':
-            return imread(raw_data.url)
+        dir(raw_data)
+        if raw_data.format == 'imagetiff':
+            return imread(raw_data.uri)
+        if raw_data.format == 'imagezarr':
+            return zarr.open(os.path.join(raw_data.uri, "0", "0"), mode = 'r')
         return None        
