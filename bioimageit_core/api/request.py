@@ -1239,7 +1239,7 @@ class Request(Observable):
                 inputs_metadata[input_.name] = data_info
             # get the params arguments
             for key, value in job.parameters.items():
-                cmd = cmd.replace("${" + key + "}", value)
+                cmd = cmd.replace("${" + key + "}", str(value))
             # setup outputs
             processed_data_list = []
             for output in job.tool.outputs:
