@@ -879,7 +879,7 @@ class Request(Observable):
         """
         return self.data_service.create_data(dataset, run, processed_data)
 
-    def search_tool(self, keyword: str = '', print_=True):
+    def search_tool(self, keyword: str = ''):
         """Search a tool using a keyword in the database
 
         This method print the list of funded processed
@@ -888,26 +888,19 @@ class Request(Observable):
         ----------
         keyword
             Keyword to search in the database
-        print_: bool
-            True to print tools in a PrettyTable, False otherwise
-
-        Returns
-        -------
-        The list of tools        
 
         """
         try:
             plist = self.tools_service.search(keyword)
-            if print_:
-                x = PrettyTable()
-                x.field_names = ["UUID", "Name", "Version", "Type"]
-                for tool in plist:
-                    type_ = 'sequential'
-                    if tool.type != '':
-                        type_ = tool.type
-                    x.add_row([tool.id, tool.name, tool.version, type_])
-                print(x)
-            return plist
+
+            x = PrettyTable()
+            x.field_names = ["UUID", "Name", "Version", "Type"]
+            for tool in plist:
+                type_ = 'sequential'
+                if tool.type != '':
+                    type_ = tool.type
+                x.add_row([tool.id, tool.name, tool.version, type_])
+            print(x)
         except ToolsServiceError as err:
             self.notify_error(str(err))
         except ToolNotFoundError as err:
@@ -1134,13 +1127,6 @@ class Request(Observable):
         except DataServiceError as err:
             self.notify_error(str(err))    
 
-    def view_data(self, md_uri):
-        try:
-            return self.data_service.view_data(md_uri)
-        except DataServiceError as err:
-            self.notify_error(str(err)) 
-
-
     def run(self, job):
         """Run a BioImageIT job
 
@@ -1239,7 +1225,7 @@ class Request(Observable):
                 inputs_metadata[input_.name] = data_info
             # get the params arguments
             for key, value in job.parameters.items():
-                cmd = cmd.replace("${" + key + "}", value)
+                cmd = cmd.replace("${" + key + "}", str(value))
             # setup outputs
             processed_data_list = []
             for output in job.tool.outputs:
