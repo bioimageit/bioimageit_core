@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -74,9 +75,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">bioimageit_core</a> &raquo;</li>
-      <li>bioimageit_core package</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">bioimageit_core</a></li>
+      <li class="breadcrumb-item active">bioimageit_core package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/bioimageit_core.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -102,31 +103,465 @@
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#module-bioimageit_core.containers.data_containers">bioimageit_core.containers.data_containers module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Container"><code class="docutils literal notranslate"><span class="pre">Container</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Container.md_uri"><code class="docutils literal notranslate"><span class="pre">Container.md_uri</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Container.uuid"><code class="docutils literal notranslate"><span class="pre">Container.uuid</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#module-bioimageit_core.containers.runners_containers">bioimageit_core.containers.runners_containers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#module-bioimageit_core.containers.tools_containers">bioimageit_core.containers.tools_containers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#module-bioimageit_core.containers">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Data"><code class="docutils literal notranslate"><span class="pre">Data</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Data.name"><code class="docutils literal notranslate"><span class="pre">Data.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Data.author"><code class="docutils literal notranslate"><span class="pre">Data.author</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Data.date"><code class="docutils literal notranslate"><span class="pre">Data.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Data.format"><code class="docutils literal notranslate"><span class="pre">Data.format</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Data.uri"><code class="docutils literal notranslate"><span class="pre">Data.uri</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Dataset.name"><code class="docutils literal notranslate"><span class="pre">Dataset.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Dataset.uris"><code class="docutils literal notranslate"><span class="pre">Dataset.uris</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Dataset.size"><code class="docutils literal notranslate"><span class="pre">Dataset.size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.DatasetInfo"><code class="docutils literal notranslate"><span class="pre">DatasetInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.DatasetInfo.name"><code class="docutils literal notranslate"><span class="pre">DatasetInfo.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.DatasetInfo.url"><code class="docutils literal notranslate"><span class="pre">DatasetInfo.url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.DatasetInfo.uuid"><code class="docutils literal notranslate"><span class="pre">DatasetInfo.uuid</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Experiment"><code class="docutils literal notranslate"><span class="pre">Experiment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Experiment.author"><code class="docutils literal notranslate"><span class="pre">Experiment.author</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Experiment.date"><code class="docutils literal notranslate"><span class="pre">Experiment.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Experiment.raw_dataset"><code class="docutils literal notranslate"><span class="pre">Experiment.raw_dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Experiment.processed_datasets"><code class="docutils literal notranslate"><span class="pre">Experiment.processed_datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Experiment.keys"><code class="docutils literal notranslate"><span class="pre">Experiment.keys</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Experiment.set_key"><code class="docutils literal notranslate"><span class="pre">Experiment.set_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData"><code class="docutils literal notranslate"><span class="pre">ProcessedData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData.run"><code class="docutils literal notranslate"><span class="pre">ProcessedData.run</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData.inputs"><code class="docutils literal notranslate"><span class="pre">ProcessedData.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData.output"><code class="docutils literal notranslate"><span class="pre">ProcessedData.output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData.add_input"><code class="docutils literal notranslate"><span class="pre">ProcessedData.add_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData.add_input_"><code class="docutils literal notranslate"><span class="pre">ProcessedData.add_input_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData.set_info"><code class="docutils literal notranslate"><span class="pre">ProcessedData.set_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData.set_output"><code class="docutils literal notranslate"><span class="pre">ProcessedData.set_output()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedDataInputContainer"><code class="docutils literal notranslate"><span class="pre">ProcessedDataInputContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedDataInputContainer.name"><code class="docutils literal notranslate"><span class="pre">ProcessedDataInputContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedDataInputContainer.uri"><code class="docutils literal notranslate"><span class="pre">ProcessedDataInputContainer.uri</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RawData"><code class="docutils literal notranslate"><span class="pre">RawData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RawData.key_value_pairs"><code class="docutils literal notranslate"><span class="pre">RawData.key_value_pairs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RawData.metadata"><code class="docutils literal notranslate"><span class="pre">RawData.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RawData.set_key_value_pair"><code class="docutils literal notranslate"><span class="pre">RawData.set_key_value_pair()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run"><code class="docutils literal notranslate"><span class="pre">Run</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.process_name"><code class="docutils literal notranslate"><span class="pre">Run.process_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.process_uri"><code class="docutils literal notranslate"><span class="pre">Run.process_uri</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.processed_dataset"><code class="docutils literal notranslate"><span class="pre">Run.processed_dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.parameters"><code class="docutils literal notranslate"><span class="pre">Run.parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.inputs"><code class="docutils literal notranslate"><span class="pre">Run.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.add_input"><code class="docutils literal notranslate"><span class="pre">Run.add_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.add_parameter"><code class="docutils literal notranslate"><span class="pre">Run.add_parameter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.set_dataset"><code class="docutils literal notranslate"><span class="pre">Run.set_dataset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.Run.set_process"><code class="docutils literal notranslate"><span class="pre">Run.set_process()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunInputContainer"><code class="docutils literal notranslate"><span class="pre">RunInputContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunInputContainer.name"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunInputContainer.dataset"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunInputContainer.query"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunInputContainer.origin_output_name"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.origin_output_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunParameterContainer"><code class="docutils literal notranslate"><span class="pre">RunParameterContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunParameterContainer.name"><code class="docutils literal notranslate"><span class="pre">RunParameterContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.RunParameterContainer.value"><code class="docutils literal notranslate"><span class="pre">RunParameterContainer.value</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#module-bioimageit_core.containers.runners_containers">bioimageit_core.containers.runners_containers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.experiment"><code class="docutils literal notranslate"><span class="pre">Job.experiment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.tool"><code class="docutils literal notranslate"><span class="pre">Job.tool</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.parameters"><code class="docutils literal notranslate"><span class="pre">Job.parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.inputs"><code class="docutils literal notranslate"><span class="pre">Job.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.output_dataset_name"><code class="docutils literal notranslate"><span class="pre">Job.output_dataset_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.set_experiment"><code class="docutils literal notranslate"><span class="pre">Job.set_experiment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.set_input"><code class="docutils literal notranslate"><span class="pre">Job.set_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.set_output_dataset_name"><code class="docutils literal notranslate"><span class="pre">Job.set_output_dataset_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.set_param"><code class="docutils literal notranslate"><span class="pre">Job.set_param()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.Job.set_tool"><code class="docutils literal notranslate"><span class="pre">Job.set_tool()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInput"><code class="docutils literal notranslate"><span class="pre">JobInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInput.name"><code class="docutils literal notranslate"><span class="pre">JobInput.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInput.dataset"><code class="docutils literal notranslate"><span class="pre">JobInput.dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInput.query"><code class="docutils literal notranslate"><span class="pre">JobInput.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInput.origin_output_name"><code class="docutils literal notranslate"><span class="pre">JobInput.origin_output_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInputs"><code class="docutils literal notranslate"><span class="pre">JobInputs</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInputs.inputs"><code class="docutils literal notranslate"><span class="pre">JobInputs.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInputs.add_input"><code class="docutils literal notranslate"><span class="pre">JobInputs.add_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInputs.add_job_input"><code class="docutils literal notranslate"><span class="pre">JobInputs.add_job_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.runners_containers.JobInputs.count"><code class="docutils literal notranslate"><span class="pre">JobInputs.count()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#module-bioimageit_core.containers.tools_containers">bioimageit_core.containers.tools_containers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.PARAM_NUMBER"><code class="docutils literal notranslate"><span class="pre">PARAM_NUMBER()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.PARAM_STRING"><code class="docutils literal notranslate"><span class="pre">PARAM_STRING()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.PARAM_SELECT"><code class="docutils literal notranslate"><span class="pre">PARAM_SELECT()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.PARAM_BOOLEAN"><code class="docutils literal notranslate"><span class="pre">PARAM_BOOLEAN()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.PARAM_FILE"><code class="docutils literal notranslate"><span class="pre">PARAM_FILE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.IO_PARAM"><code class="docutils literal notranslate"><span class="pre">IO_PARAM()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.IO_INPUT"><code class="docutils literal notranslate"><span class="pre">IO_INPUT()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.IO_OUTPUT"><code class="docutils literal notranslate"><span class="pre">IO_OUTPUT()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Classes"><code class="docutils literal notranslate"><span class="pre">Classes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolsCategoryContainer"><code class="docutils literal notranslate"><span class="pre">ToolsCategoryContainer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolIndexContainer"><code class="docutils literal notranslate"><span class="pre">ToolIndexContainer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolContainer"><code class="docutils literal notranslate"><span class="pre">ToolContainer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolDatabaseContainer"><code class="docutils literal notranslate"><span class="pre">ToolDatabaseContainer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.CmdSelectContainer"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#id0"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.CmdSelectContainer.names"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.CmdSelectContainer.values"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.CmdSelectContainer.size"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.CmdSelectContainer.add"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id1"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.CmdSelectContainer.content_str"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.content_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id2"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool"><code class="docutils literal notranslate"><span class="pre">Tool</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.id"><code class="docutils literal notranslate"><span class="pre">Tool.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.name"><code class="docutils literal notranslate"><span class="pre">Tool.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.version"><code class="docutils literal notranslate"><span class="pre">Tool.version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.description"><code class="docutils literal notranslate"><span class="pre">Tool.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.command"><code class="docutils literal notranslate"><span class="pre">Tool.command</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.inputs"><code class="docutils literal notranslate"><span class="pre">Tool.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.outputs"><code class="docutils literal notranslate"><span class="pre">Tool.outputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.tests"><code class="docutils literal notranslate"><span class="pre">Tool.tests</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.help"><code class="docutils literal notranslate"><span class="pre">Tool.help</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.is_param"><code class="docutils literal notranslate"><span class="pre">Tool.is_param()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.inputs_size"><code class="docutils literal notranslate"><span class="pre">Tool.inputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.outputs_size"><code class="docutils literal notranslate"><span class="pre">Tool.outputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.display"><code class="docutils literal notranslate"><span class="pre">Tool.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.container"><code class="docutils literal notranslate"><span class="pre">Tool.container()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id3"><code class="docutils literal notranslate"><span class="pre">Tool.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.fullname"><code class="docutils literal notranslate"><span class="pre">Tool.fullname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id4"><code class="docutils literal notranslate"><span class="pre">Tool.inputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id5"><code class="docutils literal notranslate"><span class="pre">Tool.is_param()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.man"><code class="docutils literal notranslate"><span class="pre">Tool.man()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id6"><code class="docutils literal notranslate"><span class="pre">Tool.outputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool.param_size"><code class="docutils literal notranslate"><span class="pre">Tool.param_size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#id7"><code class="docutils literal notranslate"><span class="pre">ToolIndexContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolIndexContainer.serialize"><code class="docutils literal notranslate"><span class="pre">ToolIndexContainer.serialize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolIndexContainer.to_dict"><code class="docutils literal notranslate"><span class="pre">ToolIndexContainer.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#id8"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.name"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.description"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.value"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.type"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.is_data"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.is_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.io"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.io</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.default_value"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.default_value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.select_info"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.select_info</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.is_advanced"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.is_advanced</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolParameterContainer.display"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolTestParameterContainer"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolTestParameterContainer.type"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolTestParameterContainer.name"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolTestParameterContainer.value"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolTestParameterContainer.file"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.file</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolTestParameterContainer.compare"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.compare</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.ToolTestParameterContainer.display"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#id9"><code class="docutils literal notranslate"><span class="pre">ToolsCategoryContainer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.containers.html#module-bioimageit_core.containers">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.CmdSelectContainer"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.CmdSelectContainer.names"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.CmdSelectContainer.values"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.CmdSelectContainer.size"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.CmdSelectContainer.add"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id10"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.CmdSelectContainer.content_str"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.content_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id11"><code class="docutils literal notranslate"><span class="pre">CmdSelectContainer.size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Container"><code class="docutils literal notranslate"><span class="pre">Container</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Container.md_uri"><code class="docutils literal notranslate"><span class="pre">Container.md_uri</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Container.uuid"><code class="docutils literal notranslate"><span class="pre">Container.uuid</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Data"><code class="docutils literal notranslate"><span class="pre">Data</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Data.name"><code class="docutils literal notranslate"><span class="pre">Data.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Data.author"><code class="docutils literal notranslate"><span class="pre">Data.author</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Data.date"><code class="docutils literal notranslate"><span class="pre">Data.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Data.format"><code class="docutils literal notranslate"><span class="pre">Data.format</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Data.uri"><code class="docutils literal notranslate"><span class="pre">Data.uri</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Dataset.name"><code class="docutils literal notranslate"><span class="pre">Dataset.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Dataset.uris"><code class="docutils literal notranslate"><span class="pre">Dataset.uris</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Dataset.size"><code class="docutils literal notranslate"><span class="pre">Dataset.size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.DatasetInfo"><code class="docutils literal notranslate"><span class="pre">DatasetInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.DatasetInfo.name"><code class="docutils literal notranslate"><span class="pre">DatasetInfo.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.DatasetInfo.url"><code class="docutils literal notranslate"><span class="pre">DatasetInfo.url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.DatasetInfo.uuid"><code class="docutils literal notranslate"><span class="pre">DatasetInfo.uuid</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Experiment"><code class="docutils literal notranslate"><span class="pre">Experiment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Experiment.author"><code class="docutils literal notranslate"><span class="pre">Experiment.author</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Experiment.date"><code class="docutils literal notranslate"><span class="pre">Experiment.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Experiment.raw_dataset"><code class="docutils literal notranslate"><span class="pre">Experiment.raw_dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Experiment.processed_datasets"><code class="docutils literal notranslate"><span class="pre">Experiment.processed_datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Experiment.keys"><code class="docutils literal notranslate"><span class="pre">Experiment.keys</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Experiment.set_key"><code class="docutils literal notranslate"><span class="pre">Experiment.set_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.experiment"><code class="docutils literal notranslate"><span class="pre">Job.experiment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.tool"><code class="docutils literal notranslate"><span class="pre">Job.tool</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.parameters"><code class="docutils literal notranslate"><span class="pre">Job.parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.inputs"><code class="docutils literal notranslate"><span class="pre">Job.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.output_dataset_name"><code class="docutils literal notranslate"><span class="pre">Job.output_dataset_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.set_experiment"><code class="docutils literal notranslate"><span class="pre">Job.set_experiment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.set_input"><code class="docutils literal notranslate"><span class="pre">Job.set_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.set_output_dataset_name"><code class="docutils literal notranslate"><span class="pre">Job.set_output_dataset_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.set_param"><code class="docutils literal notranslate"><span class="pre">Job.set_param()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Job.set_tool"><code class="docutils literal notranslate"><span class="pre">Job.set_tool()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.JobInput"><code class="docutils literal notranslate"><span class="pre">JobInput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.JobInput.name"><code class="docutils literal notranslate"><span class="pre">JobInput.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.JobInput.dataset"><code class="docutils literal notranslate"><span class="pre">JobInput.dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.JobInput.query"><code class="docutils literal notranslate"><span class="pre">JobInput.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.JobInput.origin_output_name"><code class="docutils literal notranslate"><span class="pre">JobInput.origin_output_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData"><code class="docutils literal notranslate"><span class="pre">ProcessedData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData.run"><code class="docutils literal notranslate"><span class="pre">ProcessedData.run</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData.inputs"><code class="docutils literal notranslate"><span class="pre">ProcessedData.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData.output"><code class="docutils literal notranslate"><span class="pre">ProcessedData.output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData.add_input"><code class="docutils literal notranslate"><span class="pre">ProcessedData.add_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData.add_input_"><code class="docutils literal notranslate"><span class="pre">ProcessedData.add_input_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData.set_info"><code class="docutils literal notranslate"><span class="pre">ProcessedData.set_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedData.set_output"><code class="docutils literal notranslate"><span class="pre">ProcessedData.set_output()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedDataInputContainer"><code class="docutils literal notranslate"><span class="pre">ProcessedDataInputContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedDataInputContainer.name"><code class="docutils literal notranslate"><span class="pre">ProcessedDataInputContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ProcessedDataInputContainer.uri"><code class="docutils literal notranslate"><span class="pre">ProcessedDataInputContainer.uri</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RawData"><code class="docutils literal notranslate"><span class="pre">RawData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RawData.key_value_pairs"><code class="docutils literal notranslate"><span class="pre">RawData.key_value_pairs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RawData.metadata"><code class="docutils literal notranslate"><span class="pre">RawData.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RawData.set_key_value_pair"><code class="docutils literal notranslate"><span class="pre">RawData.set_key_value_pair()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run"><code class="docutils literal notranslate"><span class="pre">Run</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.process_name"><code class="docutils literal notranslate"><span class="pre">Run.process_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.process_uri"><code class="docutils literal notranslate"><span class="pre">Run.process_uri</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.processed_dataset"><code class="docutils literal notranslate"><span class="pre">Run.processed_dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.parameters"><code class="docutils literal notranslate"><span class="pre">Run.parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.inputs"><code class="docutils literal notranslate"><span class="pre">Run.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.add_input"><code class="docutils literal notranslate"><span class="pre">Run.add_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.add_parameter"><code class="docutils literal notranslate"><span class="pre">Run.add_parameter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.set_dataset"><code class="docutils literal notranslate"><span class="pre">Run.set_dataset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Run.set_process"><code class="docutils literal notranslate"><span class="pre">Run.set_process()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunInputContainer"><code class="docutils literal notranslate"><span class="pre">RunInputContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunInputContainer.name"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunInputContainer.dataset"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunInputContainer.query"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunInputContainer.origin_output_name"><code class="docutils literal notranslate"><span class="pre">RunInputContainer.origin_output_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunParameterContainer"><code class="docutils literal notranslate"><span class="pre">RunParameterContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunParameterContainer.name"><code class="docutils literal notranslate"><span class="pre">RunParameterContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.RunParameterContainer.value"><code class="docutils literal notranslate"><span class="pre">RunParameterContainer.value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool"><code class="docutils literal notranslate"><span class="pre">Tool</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.id"><code class="docutils literal notranslate"><span class="pre">Tool.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.name"><code class="docutils literal notranslate"><span class="pre">Tool.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.version"><code class="docutils literal notranslate"><span class="pre">Tool.version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.description"><code class="docutils literal notranslate"><span class="pre">Tool.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.command"><code class="docutils literal notranslate"><span class="pre">Tool.command</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.inputs"><code class="docutils literal notranslate"><span class="pre">Tool.inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.outputs"><code class="docutils literal notranslate"><span class="pre">Tool.outputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.tests"><code class="docutils literal notranslate"><span class="pre">Tool.tests</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.help"><code class="docutils literal notranslate"><span class="pre">Tool.help</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.is_param"><code class="docutils literal notranslate"><span class="pre">Tool.is_param()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.inputs_size"><code class="docutils literal notranslate"><span class="pre">Tool.inputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.outputs_size"><code class="docutils literal notranslate"><span class="pre">Tool.outputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.display"><code class="docutils literal notranslate"><span class="pre">Tool.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.container"><code class="docutils literal notranslate"><span class="pre">Tool.container()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id12"><code class="docutils literal notranslate"><span class="pre">Tool.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.fullname"><code class="docutils literal notranslate"><span class="pre">Tool.fullname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id13"><code class="docutils literal notranslate"><span class="pre">Tool.inputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id14"><code class="docutils literal notranslate"><span class="pre">Tool.is_param()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.man"><code class="docutils literal notranslate"><span class="pre">Tool.man()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#id15"><code class="docutils literal notranslate"><span class="pre">Tool.outputs_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.Tool.param_size"><code class="docutils literal notranslate"><span class="pre">Tool.param_size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolIndexContainer"><code class="docutils literal notranslate"><span class="pre">ToolIndexContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolIndexContainer.serialize"><code class="docutils literal notranslate"><span class="pre">ToolIndexContainer.serialize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolIndexContainer.to_dict"><code class="docutils literal notranslate"><span class="pre">ToolIndexContainer.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.name"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.description"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.value"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.type"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.is_data"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.is_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.io"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.io</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.default_value"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.default_value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.select_info"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.select_info</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.is_advanced"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.is_advanced</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolParameterContainer.display"><code class="docutils literal notranslate"><span class="pre">ToolParameterContainer.display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolTestParameterContainer"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolTestParameterContainer.type"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolTestParameterContainer.name"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolTestParameterContainer.value"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolTestParameterContainer.file"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.file</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolTestParameterContainer.compare"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.compare</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolTestParameterContainer.display"><code class="docutils literal notranslate"><span class="pre">ToolTestParameterContainer.display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.ToolsCategoryContainer"><code class="docutils literal notranslate"><span class="pre">ToolsCategoryContainer</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="bioimageit_core.core.html">bioimageit_core.core package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.config">bioimageit_core.core.config module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.Config.config"><code class="docutils literal notranslate"><span class="pre">Config.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.Config.get"><code class="docutils literal notranslate"><span class="pre">Config.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.Config.is_key"><code class="docutils literal notranslate"><span class="pre">Config.is_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.Config.load"><code class="docutils literal notranslate"><span class="pre">Config.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.Config.save"><code class="docutils literal notranslate"><span class="pre">Config.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.Config.set"><code class="docutils literal notranslate"><span class="pre">Config.set()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.exceptions">bioimageit_core.core.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.ConfigAccess"><code class="docutils literal notranslate"><span class="pre">ConfigAccess</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.ConfigAccess.file"><code class="docutils literal notranslate"><span class="pre">ConfigAccess.file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.ConfigAccess.instance"><code class="docutils literal notranslate"><span class="pre">ConfigAccess.instance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.config.ConfigKeyNotFoundError"><code class="docutils literal notranslate"><span class="pre">ConfigKeyNotFoundError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.exceptions">bioimageit_core.core.exceptions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.exceptions.ConfigError"><code class="docutils literal notranslate"><span class="pre">ConfigError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.exceptions.DataQueryError"><code class="docutils literal notranslate"><span class="pre">DataQueryError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.exceptions.DataServiceError"><code class="docutils literal notranslate"><span class="pre">DataServiceError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.exceptions.RunnerExecError"><code class="docutils literal notranslate"><span class="pre">RunnerExecError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.exceptions.ToolNotFoundError"><code class="docutils literal notranslate"><span class="pre">ToolNotFoundError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.exceptions.ToolsServiceError"><code class="docutils literal notranslate"><span class="pre">ToolsServiceError</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.factory">bioimageit_core.core.factory module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#id1">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.factory.ObjectFactory"><code class="docutils literal notranslate"><span class="pre">ObjectFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.factory.ObjectFactory.create"><code class="docutils literal notranslate"><span class="pre">ObjectFactory.create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.factory.ObjectFactory.register_builder"><code class="docutils literal notranslate"><span class="pre">ObjectFactory.register_builder()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.observer">bioimageit_core.core.observer module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.log_observer">bioimageit_core.core.log_observer module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.observer">bioimageit_core.core.observer module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable"><code class="docutils literal notranslate"><span class="pre">Observable</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.add_observer"><code class="docutils literal notranslate"><span class="pre">Observable.add_observer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.new_job"><code class="docutils literal notranslate"><span class="pre">Observable.new_job()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.notify"><code class="docutils literal notranslate"><span class="pre">Observable.notify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.notify_error"><code class="docutils literal notranslate"><span class="pre">Observable.notify_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.notify_progress"><code class="docutils literal notranslate"><span class="pre">Observable.notify_progress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.notify_warning"><code class="docutils literal notranslate"><span class="pre">Observable.notify_warning()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.observers_count"><code class="docutils literal notranslate"><span class="pre">Observable.observers_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observable.remove_observers"><code class="docutils literal notranslate"><span class="pre">Observable.remove_observers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer"><code class="docutils literal notranslate"><span class="pre">Observer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.COL_B"><code class="docutils literal notranslate"><span class="pre">Observer.COL_B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.COL_G"><code class="docutils literal notranslate"><span class="pre">Observer.COL_G</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.COL_O"><code class="docutils literal notranslate"><span class="pre">Observer.COL_O</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.COL_P"><code class="docutils literal notranslate"><span class="pre">Observer.COL_P</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.COL_R"><code class="docutils literal notranslate"><span class="pre">Observer.COL_R</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.COL_W"><code class="docutils literal notranslate"><span class="pre">Observer.COL_W</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.new_job"><code class="docutils literal notranslate"><span class="pre">Observer.new_job()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.notify"><code class="docutils literal notranslate"><span class="pre">Observer.notify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.notify_error"><code class="docutils literal notranslate"><span class="pre">Observer.notify_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.notify_progress"><code class="docutils literal notranslate"><span class="pre">Observer.notify_progress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.observer.Observer.notify_warning"><code class="docutils literal notranslate"><span class="pre">Observer.notify_warning()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.log_observer">bioimageit_core.core.log_observer module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.log_observer.LogObserver"><code class="docutils literal notranslate"><span class="pre">LogObserver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.log_observer.LogObserver.new_job"><code class="docutils literal notranslate"><span class="pre">LogObserver.new_job()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.log_observer.LogObserver.notify"><code class="docutils literal notranslate"><span class="pre">LogObserver.notify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.log_observer.LogObserver.notify_error"><code class="docutils literal notranslate"><span class="pre">LogObserver.notify_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.log_observer.LogObserver.notify_progress"><code class="docutils literal notranslate"><span class="pre">LogObserver.notify_progress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.log_observer.LogObserver.notify_warning"><code class="docutils literal notranslate"><span class="pre">LogObserver.notify_warning()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#bioimageit-core-core-query-module">bioimageit_core.core.query module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#bioimageit-core-core-run-module">bioimageit_core.core.run module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.serialize">bioimageit_core.core.serialize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.serialize">bioimageit_core.core.serialize module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.serialize.serialize_data"><code class="docutils literal notranslate"><span class="pre">serialize_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.serialize.serialize_raw_data"><code class="docutils literal notranslate"><span class="pre">serialize_raw_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.serialize.serialize_processed_data"><code class="docutils literal notranslate"><span class="pre">serialize_processed_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.serialize.serialize_dataset"><code class="docutils literal notranslate"><span class="pre">serialize_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.serialize.serialize_experiment"><code class="docutils literal notranslate"><span class="pre">serialize_experiment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.serialize.serialize_run"><code class="docutils literal notranslate"><span class="pre">serialize_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#id0"><code class="docutils literal notranslate"><span class="pre">serialize_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#id2"><code class="docutils literal notranslate"><span class="pre">serialize_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#id3"><code class="docutils literal notranslate"><span class="pre">serialize_experiment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#id4"><code class="docutils literal notranslate"><span class="pre">serialize_processed_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#id5"><code class="docutils literal notranslate"><span class="pre">serialize_raw_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#id6"><code class="docutils literal notranslate"><span class="pre">serialize_run()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#bioimageit-core-core-toolboxes-module">bioimageit_core.core.toolboxes module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.utils">bioimageit_core.core.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core.utils">bioimageit_core.core.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.extract_filename"><code class="docutils literal notranslate"><span class="pre">extract_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.format_date"><code class="docutils literal notranslate"><span class="pre">format_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.core.html#bioimageit_core.core.utils.generate_uuid"><code class="docutils literal notranslate"><span class="pre">generate_uuid()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.core.html#module-bioimageit_core.core">Module contents</a></li>
 </ul>
 </li>
@@ -138,18 +573,50 @@
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit-core-plugins-runner-allgo-module">bioimageit_core.plugins.runner_allgo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.plugins.html#module-bioimageit_core.plugins.runner_conda">bioimageit_core.plugins.runner_conda module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_conda.CondaRunnerService"><code class="docutils literal notranslate"><span class="pre">CondaRunnerService</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_conda.CondaRunnerService.exec"><code class="docutils literal notranslate"><span class="pre">CondaRunnerService.exec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_conda.CondaRunnerService.set_up"><code class="docutils literal notranslate"><span class="pre">CondaRunnerService.set_up()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_conda.CondaRunnerService.tear_down"><code class="docutils literal notranslate"><span class="pre">CondaRunnerService.tear_down()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_conda.CondaRunnerServiceBuilder"><code class="docutils literal notranslate"><span class="pre">CondaRunnerServiceBuilder</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.plugins.html#module-bioimageit_core.plugins.runner_condadocker">bioimageit_core.plugins.runner_condadocker module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#id1">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService"><code class="docutils literal notranslate"><span class="pre">CondaDockerRunnerService</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.exec"><code class="docutils literal notranslate"><span class="pre">CondaDockerRunnerService.exec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.set_up"><code class="docutils literal notranslate"><span class="pre">CondaDockerRunnerService.set_up()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.tear_down"><code class="docutils literal notranslate"><span class="pre">CondaDockerRunnerService.tear_down()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerServiceBuilder"><code class="docutils literal notranslate"><span class="pre">CondaDockerRunnerServiceBuilder</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.plugins.html#module-bioimageit_core.plugins.runner_docker">bioimageit_core.plugins.runner_docker module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#id2">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.DockerRunnerService"><code class="docutils literal notranslate"><span class="pre">DockerRunnerService</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.DockerRunnerService.exec"><code class="docutils literal notranslate"><span class="pre">DockerRunnerService.exec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.DockerRunnerService.modify_io_path"><code class="docutils literal notranslate"><span class="pre">DockerRunnerService.modify_io_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.DockerRunnerService.relative_path"><code class="docutils literal notranslate"><span class="pre">DockerRunnerService.relative_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.DockerRunnerService.set_up"><code class="docutils literal notranslate"><span class="pre">DockerRunnerService.set_up()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.DockerRunnerService.tear_down"><code class="docutils literal notranslate"><span class="pre">DockerRunnerService.tear_down()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.DockerRunnerServiceBuilder"><code class="docutils literal notranslate"><span class="pre">DockerRunnerServiceBuilder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.extract_image_name"><code class="docutils literal notranslate"><span class="pre">extract_image_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_docker.get_docker_working_dir"><code class="docutils literal notranslate"><span class="pre">get_docker_working_dir()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.plugins.html#module-bioimageit_core.plugins.runner_local">bioimageit_core.plugins.runner_local module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#id3">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_local.LocalRunnerService"><code class="docutils literal notranslate"><span class="pre">LocalRunnerService</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_local.LocalRunnerService.exec"><code class="docutils literal notranslate"><span class="pre">LocalRunnerService.exec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_local.LocalRunnerService.set_up"><code class="docutils literal notranslate"><span class="pre">LocalRunnerService.set_up()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_local.LocalRunnerService.tear_down"><code class="docutils literal notranslate"><span class="pre">LocalRunnerService.tear_down()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit_core.plugins.runner_local.LocalRunnerServiceBuilder"><code class="docutils literal notranslate"><span class="pre">LocalRunnerServiceBuilder</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bioimageit_core.plugins.html#bioimageit-core-plugins-runner-singularity-module">bioimageit_core.plugins.runner_singularity module</a></li>
