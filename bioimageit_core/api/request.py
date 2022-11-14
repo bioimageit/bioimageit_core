@@ -879,7 +879,7 @@ class Request(Observable):
         """
         return self.data_service.create_data(dataset, run, processed_data)
 
-    def search_tool(self, keyword: str = '', print_=True):
+    def search_tool(self, keyword: str = '', print_=False):
         """Search a tool using a keyword in the database
 
         This method print the list of funded processed
@@ -1239,7 +1239,7 @@ class Request(Observable):
                 inputs_metadata[input_.name] = data_info
             # get the params arguments
             for key, value in job.parameters.items():
-                cmd = cmd.replace("${" + key + "}", str(value))
+                cmd = cmd.replace("${" + key + "}", value)
             # setup outputs
             processed_data_list = []
             for output in job.tool.outputs:
