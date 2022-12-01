@@ -19,3 +19,14 @@ def sim_content(image1: str, image2: str):
     if mse < 0.001:
         return True
     return False
+
+
+def same_size(image1:str, image2:str):
+    """Compare if image1 and image2 have the same size
+
+    Returns
+    -------
+    true if the images have the same size, false otherwise
+
+    """
+    return os.path.getsize(image1) == os.path.getsize(image2)
