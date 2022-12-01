@@ -57,8 +57,11 @@ class WrapperUnit(Observable):
                         )
                         args[param.name] = param.value
                     else:
-                        param.value = self.format_output_tmp_value(process,
-                                                                param.name)
+                        if hasattr(param, "value"):
+                            param.value = self.format_output_tmp_value(process, param.name, param.value)
+                        else:
+                            param.value = self.format_output_tmp_value(process, param.name)
+
                         args[param.name] = param.value
 
                 # exec the process in tmp dir
@@ -97,12 +100,15 @@ class WrapperUnit(Observable):
         print('-- BioImageIT wrappers testing sumary --')
         print(f"Run {len(list(self.summary.keys()))} test, {num_errors} errors")                    
 
-    def format_output_tmp_value(self, process: Tool, name: str):
+    def format_output_tmp_value(self, process: Tool, name: str, value: str = ""):
         """create the path of the output files"""
         tmp_dir = ConfigAccess.instance().config['workspace']
         for output in process.outputs:
             # output.display()
             if output.name == name and output.io == 'output':
+                if bool(os.path.splitext(value)[1]): 
+                    return os.path.join(tmp_dir, value)
+
                 extension = '.' + FormatsAccess.instance().get(output.type).extension
                 return os.path.join(tmp_dir, name + extension)
         return name
