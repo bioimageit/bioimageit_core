@@ -106,7 +106,7 @@ class WrapperUnit(Observable):
         for output in process.outputs:
             # output.display()
             if output.name == name and output.io == 'output':
-                if bool(os.path.splitext(value)[1]): 
+                if output.type == "bioformat" and bool(os.path.splitext(value)[1]):
                     return os.path.join(tmp_dir, value)
 
                 extension = '.' + FormatsAccess.instance().get(output.type).extension

@@ -1031,7 +1031,12 @@ class LocalMetadataService:
         dataset_dir = LocalMetadataService.md_file_path(md_uri)
 
         extension = FormatsAccess.instance().get(processed_data.format).extension
-        processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}").replace('\\', '\\\\')
+        if processed_data.format == "bioformat" and bool(os.path.splitext(processed_data.name)[1]):
+            processed_data.uri = os.path.join(dataset_dir, processed_data.name)
+        else:
+            processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
+
+        processed_data.uri = processed_data.uri.replace('\\', '\\\\')
         return processed_data
 
 
@@ -1061,7 +1066,10 @@ class LocalMetadataService:
         processed_data.uuid = generate_uuid()
         processed_data.md_uri = data_md_file
         extension = FormatsAccess.instance().get(processed_data.format).extension
-        processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
+        if processed_data.format == "bioformat" and bool(os.path.splitext(processed_data.name)[1]):
+            processed_data.uri = os.path.join(dataset_dir, processed_data.name)
+        else:
+            processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
 
         processed_data.run = run
 
