@@ -42,12 +42,12 @@ class WrapperUnit(Observable):
         try:
             process = local_tool_service.read_tool(xml_path)
         except ToolsServiceError as e:
-            self.notify_error(f"Cannot parse the wrapper {xml_path}")  
-            self.summary[xml_path].append({'parsing': f'error: {e}'})  
-            return  
-        self.summary[xml_path].append({'parsing': 'success'})    
+            self.notify_error(f"Cannot parse the wrapper {xml_path}")
+            self.summary[xml_path].append({'parsing': f'error: {e}'})
+            return
+        self.summary[xml_path].append({'parsing': 'success'})
         # build the command line
-        if not parse_only: 
+        if not parse_only:
             args = {}
             for test_id, test in enumerate(process.tests):
                 for param in test:
@@ -98,7 +98,7 @@ class WrapperUnit(Observable):
                     print(f"\t\033[32m{out_key}: {out_value}\033[0m")
 
         print('-- BioImageIT wrappers testing sumary --')
-        print(f"Run {len(list(self.summary.keys()))} test, {num_errors} errors")                    
+        print(f"Run {len(list(self.summary.keys()))} test, {num_errors} errors")
 
     def format_output_tmp_value(self, process: Tool, name: str, value: str = ""):
         """create the path of the output files"""
@@ -106,8 +106,11 @@ class WrapperUnit(Observable):
         for output in process.outputs:
             # output.display()
             if output.name == name and output.io == 'output':
-                if output.type == "bioformat" and bool(os.path.splitext(value)[1]):
-                    return os.path.join(tmp_dir, value)
+                if output.type == "raw":
+                    if bool(os.path.splitext(value)[1]):
+                        return os.path.join(tmp_dir, value)
+                    else:
+                        return os.path.join(tmp_dir, name)
 
                 extension = '.' + FormatsAccess.instance().get(output.type).extension
                 return os.path.join(tmp_dir, name + extension)

@@ -444,7 +444,6 @@ class LocalMetadataService:
 
         # import data
         # print('import data with format:', metadata.format)
-        print('IMAGE ZARR ?')
 
         if metadata.format == 'bioformat':
             self._import_file_bioformat(raw_dataset_uri, data_path, data_dir_path, metadata.name,
@@ -497,7 +496,7 @@ class LocalMetadataService:
 
     def _import_file_zarr(self, file_path, destination_dir):
         conda_dir = ConfigAccess.instance().get('runner')['conda_dir']
-        
+
         if platform.system() == 'Windows':
             condaexe = os.path.join(conda_dir, 'condabin', 'conda.bat')
             args_str = '"' + condaexe + '"' + ' activate ' + "bioimageit" + ' &&'
@@ -640,8 +639,8 @@ class LocalMetadataService:
                 for key in metadata['key_value_pairs']:
                     container.key_value_pairs[key] = metadata['key_value_pairs'][key]
             # read keys from the experiment
-            experiment_uri = os.path.join(Path(Path(md_uri).parent).parent, 'experiment.md.json') 
-            experiment = self.get_experiment(experiment_uri) 
+            experiment_uri = os.path.join(Path(Path(md_uri).parent).parent, 'experiment.md.json')
+            experiment = self.get_experiment(experiment_uri)
             for key in experiment.keys:
                 if 'key_value_pairs' in metadata:
                     if key not in metadata['key_value_pairs']:
@@ -1031,7 +1030,7 @@ class LocalMetadataService:
         dataset_dir = LocalMetadataService.md_file_path(md_uri)
 
         extension = FormatsAccess.instance().get(processed_data.format).extension
-        if processed_data.format == "bioformat" and bool(os.path.splitext(processed_data.name)[1]):
+        if processed_data.format == "raw":
             processed_data.uri = os.path.join(dataset_dir, processed_data.name)
         else:
             processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
@@ -1066,7 +1065,7 @@ class LocalMetadataService:
         processed_data.uuid = generate_uuid()
         processed_data.md_uri = data_md_file
         extension = FormatsAccess.instance().get(processed_data.format).extension
-        if processed_data.format == "bioformat" and bool(os.path.splitext(processed_data.name)[1]):
+        if processed_data.format == "raw":
             processed_data.uri = os.path.join(dataset_dir, processed_data.name)
         else:
             processed_data.uri = os.path.join(dataset_dir, f"{processed_data.name}.{extension}")
