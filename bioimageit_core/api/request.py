@@ -1245,7 +1245,13 @@ class Request(Observable):
             for output in job.tool.outputs:
                 # output metadata
                 processed_data = ProcessedData()
-                processed_data.set_info(name=output.name + "_" + os.path.splitext(data_info_zero.name)[0],
+
+                if output.type == 'raw':
+                    out_name = output.name + "_" + data_info_zero.name
+                else:
+                    out_name = output.name + "_" + os.path.splitext(data_info_zero.name)[0]
+
+                processed_data.set_info(name=out_name,
                                         author=ConfigAccess.instance().get('user')['name'],
                                         date='now', format_=output.type, url="")
                 for id_, data_ in inputs_metadata.items():
