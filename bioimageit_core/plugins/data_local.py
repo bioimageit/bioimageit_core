@@ -21,6 +21,7 @@ import re
 from shutil import copyfile
 import subprocess
 import zarr
+import pandas as pd
 
 from bioimageit_formats import FormatsAccess, formatsServices
 
@@ -1086,4 +1087,6 @@ class LocalMetadataService:
             return imread(raw_data.uri)
         if raw_data.format == 'imagezarr':
             return zarr.open(os.path.join(raw_data.uri, "0", "0"), mode = 'r')
+        if raw_data.format == 'tablecsv':
+            return pd.read_csv(raw_data.uri)
         return None        
