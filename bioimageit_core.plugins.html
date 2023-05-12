@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>bioimageit_core.plugins package &mdash; bioimageit_core developers documentation 0.1.0 documentation</title>
@@ -28,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> bioimageit_core developers documentation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            bioimageit_core developers documentation
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -74,7 +78,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">bioimageit_core</a></li>
           <li class="breadcrumb-item"><a href="bioimageit_core.html">bioimageit_core package</a></li>
       <li class="breadcrumb-item active">bioimageit_core.plugins package</li>
@@ -125,7 +129,7 @@ the configuration and then call initialize</p>
 <span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_conda.CondaRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process</strong> – Metadata of the process</p></li>
 <li><p><strong>args</strong> – list of arguments</p></li>
@@ -141,7 +145,7 @@ the configuration and then call initialize</p>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process</strong> – Metadata of the process</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -156,7 +160,7 @@ the configuration and then call initialize</p>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process</strong> – Metadata of the process</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -196,7 +200,7 @@ the configuration and then call initialize</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_condadocker.CondaDockerRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process</strong> – Metadata of the process</p></li>
 <li><p><strong>args</strong> – list of arguments</p></li>
@@ -211,7 +215,7 @@ the configuration and then call initialize</p>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>process</strong> – Metadata of the process</p>
 </dd>
 </dl>
@@ -223,7 +227,7 @@ the configuration and then call initialize</p>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>process</strong> – Metadata of the process</p>
 </dd>
 </dl>
@@ -260,7 +264,7 @@ the configuration and then call initialize</p>
 <span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process</strong> – Metadata of the process</p></li>
 <li><p><strong>args</strong> – list of arguments</p></li>
@@ -279,13 +283,13 @@ the configuration and then call initialize</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">relative_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_docker.DockerRunnerService.relative_path" title="Permalink to this definition"></a></dt>
 <dd><p>convert file absolute path to a relative path wrt reference_file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>reference_file</strong> – Reference file</p></li>
 <li><p><strong>file</strong> – File to get absolute path</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>relative path of uri wrt md_uri</p>
 </dd>
 </dl>
@@ -297,7 +301,7 @@ the configuration and then call initialize</p>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>process</strong> – Metadata of the process</p>
 </dd>
 </dl>
@@ -309,7 +313,7 @@ the configuration and then call initialize</p>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>process</strong> – Metadata of the process</p>
 </dd>
 </dl>
@@ -356,7 +360,7 @@ the configuration and then call initialize</p>
 <span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.tools_containers.Tool" title="bioimageit_core.containers.tools_containers.Tool"><span class="pre">Tool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.plugins.runner_local.LocalRunnerService.exec" title="Permalink to this definition"></a></dt>
 <dd><p>Execute a process</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process</strong> – Metadata of the process</p></li>
 <li><p><strong>args</strong> – list of arguments</p></li>
@@ -371,7 +375,7 @@ the configuration and then call initialize</p>
 <dd><p>setup the runner</p>
 <p>Add here the code to initialize the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tool</strong> – Metadata of the tool</p>
 </dd>
 </dl>
@@ -383,7 +387,7 @@ the configuration and then call initialize</p>
 <dd><p>tear down the runner</p>
 <p>Add here the code to down/clean the runner</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>process</strong> – Metadata of the process</p>
 </dd>
 </dl>

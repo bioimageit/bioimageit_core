@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Install &mdash; bioimageit_core developers documentation 0.1.0 documentation</title>
@@ -29,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> bioimageit_core developers documentation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            bioimageit_core developers documentation
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -74,7 +78,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Install</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/install.rst.txt" rel="nofollow"> View page source</a>
@@ -98,14 +102,14 @@ use BioImageIT we recommand using the installer from <a class="reference externa
 <h2>Install bioimageit_core<a class="headerlink" href="#install-bioimageit-core" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> depends on <code class="docutils literal notranslate"><span class="pre">bioimageit_formats</span></code> the library that manage the data formats.
 Thus, you first need to install <code class="docutils literal notranslate"><span class="pre">bioimageit_formats</span></code> and then <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code>:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir bioimageit
-python -m venv .env
-<span class="nb">source</span> .env/bin/activate
-git clone https://github.com/bioimageit/bioimageit_formats.git
-pip install -e ./bioimageit_formats
-git clone https://github.com/bioimageit/bioimageit_core.git
-pip install -e ./bioimageit_core
-python bioimageit_core/config.py <span class="s2">&quot;</span><span class="nv">$USER</span><span class="s2">&quot;</span> <span class="s2">&quot;CONDA&quot;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>bioimageit
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.env
+<span class="nb">source</span><span class="w"> </span>.env/bin/activate
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/bioimageit/bioimageit_formats.git
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>./bioimageit_formats
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/bioimageit/bioimageit_core.git
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>./bioimageit_core
+python<span class="w"> </span>bioimageit_core/config.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$USER</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;CONDA&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -113,16 +117,16 @@ python bioimageit_core/config.py <span class="s2">&quot;</span><span class="nv">
 <h2>Install toolboxes<a class="headerlink" href="#install-toolboxes" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> uses a toolboxes index of remotely packaged tools. The toolboxes index is not installed by default. To install the
 toolboxes run the following commands:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> bioimageit
-git clone https://github.com/bioimageit/bioimageiit-toolboxes.git
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>bioimageit
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/bioimageit/bioimageiit-toolboxes.git
 
 <span class="c1"># create toolboxes database</span>
-mkdir toolboxes
-mkdir toolboxes/thumbs/
-cp -r bioimageit-toolboxes/thumbs toolboxes/
-cp bioimageit-toolboxes/toolboxes.json toolboxes/toolboxes.json
-cp bioimageit-toolboxes/tools.json toolboxes/tools.json
-cp bioimageit-toolboxes/formats.json ./formats.json
+mkdir<span class="w"> </span>toolboxes
+mkdir<span class="w"> </span>toolboxes/thumbs/
+cp<span class="w"> </span>-r<span class="w"> </span>bioimageit-toolboxes/thumbs<span class="w"> </span>toolboxes/
+cp<span class="w"> </span>bioimageit-toolboxes/toolboxes.json<span class="w"> </span>toolboxes/toolboxes.json
+cp<span class="w"> </span>bioimageit-toolboxes/tools.json<span class="w"> </span>toolboxes/tools.json
+cp<span class="w"> </span>bioimageit-toolboxes/formats.json<span class="w"> </span>./formats.json
 </pre></div>
 </div>
 </section>
@@ -131,33 +135,33 @@ cp bioimageit-toolboxes/formats.json ./formats.json
 <p>If you need to manually configure <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> you need to edit the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file. You can copy &amp; paste
 the <code class="docutils literal notranslate"><span class="pre">config.sample.json</span></code> available in the <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> root directory, or you can use the <code class="docutils literal notranslate"><span class="pre">config.json</span></code>
 file generated by the install script. The configuration file looks like this:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;user&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;sprigent&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;workspace&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/workspace/&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;install_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;log_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/workspace/logs/&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;formats&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;file&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/formats.json&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;process&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;xml_dirs&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/toolboxes/tools/&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="p">],</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;categories&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/toolboxes/toolboxes.json&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;tools&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/toolboxes/tools.json&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;fiji&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/BioImageIT/Fiji.app/Contents/MacOS/ImageJ-macosx&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;CONDA&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;conda_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/BioimageIT/miniconda3&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;user&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;sprigent&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;workspace&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/workspace/&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;install_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;log_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/workspace/logs/&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;formats&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;file&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/formats.json&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;process&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;xml_dirs&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/toolboxes/tools/&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="s2">&quot;categories&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/toolboxes/toolboxes.json&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;tools&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/Documents/bioimageit/toolboxes/tools.json&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;fiji&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/BioImageIT/Fiji.app/Contents/MacOS/ImageJ-macosx&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;CONDA&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;conda_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/Users/sprigent/BioimageIT/miniconda3&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <section id="metadata">
@@ -167,21 +171,21 @@ have no settings.</p>
 <ul class="simple">
 <li><p>LOCAL: Store the experiment data and metadata in the local file system</p></li>
 </ul>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>OMERO: Store the experiment data and metadata in an Omero database</p></li>
 </ul>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;OMERO&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;host&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;demo.openmicroscopy.org&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;port&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">4064</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;username&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YourUserName&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;password&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YourPassword&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;OMERO&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;host&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;demo.openmicroscopy.org&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;port&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">4064</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;username&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YourUserName&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;password&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YourPassword&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -199,43 +203,43 @@ The possible runners are:</p>
 <ul class="simple">
 <li><p>LOCAL: runs the tools installed locally on the workstation. In this case the tool must be added to the system <cite>PATH</cite>:</p></li>
 </ul>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>CONDA: runs the tools installed locally on the workstation with conda:</p></li>
 </ul>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;CONDA&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;CONDA&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>SINGULARITY: runs the tools using <em>Singularity</em>. In this case you need to install <a class="reference external" href="https://sylabs.io/guides/3.5/user-guide/">Singularity</a>:</p></li>
 </ul>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;SINGULARITY&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;SINGULARITY&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>DOCKER: runs the tools using <em>Docker</em>. In this case you need to install <a class="reference external" href="https://docs.docker.com">Docker</a>. Docker needs to mount your data directory into the container. To do this, please specify the <cite>working_dir</cite> path in your config file:</p></li>
 </ul>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;DOCKER&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;working_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/home/full/path/to/workspace/&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;DOCKER&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;working_dir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/home/full/path/to/workspace/&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>ALLGO: runs the tools using the <a class="reference external" href="https://allgo18.inria.fr/">AllGo</a> platform. In this case you do not need to install anything localy. Nevertheless, all the tools in BioImageIT tools index may not be available in AllGo. When using AllGo, you need to add your AllGo token (account authentication) in the config file or in a <cite>.allgo_token</cite> file in your home directory.</p></li>
 </ul>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ALLGO&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;token&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;PasteYourAllgoTokenHere&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;runner&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ALLGO&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;token&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;PasteYourAllgoTokenHere&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>

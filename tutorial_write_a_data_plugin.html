@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorial: write a data plugin &mdash; bioimageit_core developers documentation 0.1.0 documentation</title>
@@ -29,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> bioimageit_core developers documentation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            bioimageit_core developers documentation
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -70,7 +74,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Tutorial: write a data plugin</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/tutorial_write_a_data_plugin.rst.txt" rel="nofollow"> View page source</a>
@@ -113,7 +117,7 @@ to the repository of the <a class="reference external" href="https://github.com/
 <p>The service builder is a class that allows to instantiate and initialize a single instance of the data plugin. The code bellow shows an
 example of data service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalMetadataServiceBuilder</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Service builder for the metadata service&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Service builder for the metadata service&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
@@ -135,7 +139,7 @@ class is dedicated to a single data manipulation. The code below shows the list 
 comments indicate the inputs and outputs of the method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">destination</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a new experiment</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new experiment</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -159,7 +163,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_workspace_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace_uri</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read the experiments in the user workspace</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read the experiments in the user workspace</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -174,7 +178,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read an experiment from the database</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read an experiment from the database</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -191,7 +195,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Write an experiment to the database</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write an experiment to the database</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -203,7 +207,7 @@ comments indicate the inputs and outputs of the method.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">format_</span><span class="p">,</span>
                 <span class="n">date</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">key_value_pairs</span><span class="o">=</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;import one data to the experiment</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;import one data to the experiment</span>
 
 <span class="sd">    The data is imported to the raw dataset</span>
 
@@ -233,7 +237,7 @@ comments indicate the inputs and outputs of the method.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">import_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">dir_uri</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">format_</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span>
                <span class="n">directory_tag_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">observers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Import data from a directory to the experiment</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Import data from a directory to the experiment</span>
 
 <span class="sd">    This method import with or without copy data contained</span>
 <span class="sd">    in a local folder into an experiment. Imported data are</span>
@@ -264,7 +268,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read a raw data from the database</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a raw data from the database</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -278,7 +282,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read a raw data from the database</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a raw data from the database</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -289,7 +293,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_processed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -304,7 +308,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_processed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -315,7 +319,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read a dataset from the database using it URI</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a dataset from the database using it URI</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -330,7 +334,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a processed data from the database</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -341,7 +345,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a processed dataset in an experiment</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a processed dataset in an experiment</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -358,7 +362,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">run_info</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a new run metadata</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new run metadata</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -376,7 +380,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md_uri</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Read a run metadata from the data base</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a run metadata from the data base</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -391,7 +395,7 @@ comments indicate the inputs and outputs of the method.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a new processed data for a given dataset</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new processed data for a given dataset</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -420,10 +424,10 @@ comments indicate the inputs and outputs of the method.</p>
 </div>
 <p>In the example above, the string <code class="docutils literal notranslate"><span class="pre">'LOCAL'</span></code> is the name of the metadata service. Then, if we want to use this service, we need to specify it
 in the config file:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">...</span><span class="w"></span>
-<span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="p">...</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span>
+<span class="p">...</span>
 </pre></div>
 </div>
 </section>

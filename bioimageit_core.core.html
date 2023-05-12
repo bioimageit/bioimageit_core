@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>bioimageit_core.core package &mdash; bioimageit_core developers documentation 0.1.0 documentation</title>
@@ -29,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> bioimageit_core developers documentation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            bioimageit_core developers documentation
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -75,7 +79,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">bioimageit_core</a></li>
           <li class="breadcrumb-item"><a href="bioimageit_core.html">bioimageit_core package</a></li>
       <li class="breadcrumb-item active">bioimageit_core.core package</li>
@@ -124,7 +128,7 @@ ConfigManager</p>
 <p>The configuration can be instantiate manually but the
 usage is to instantiate it with the singleton ConfigManager</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config_file</strong> – File where the configuration is stored in JSON format</p>
 </dd>
 </dl>
@@ -139,13 +143,13 @@ usage is to instantiate it with the singleton ConfigManager</p>
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bioimageit_core.core.config.Config.get" title="Permalink to this definition"></a></dt>
 <dd><p>Read a variable from the config dictionary</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>key</strong> – Key of the variable to read</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Value of the config variable</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#bioimageit_core.core.config.ConfigKeyNotFoundError" title="bioimageit_core.core.config.ConfigKeyNotFoundError"><strong>ConfigKeyNotFoundError</strong></a> – if the configuration key does not exists:</p>
 </dd>
 </dl>
@@ -156,13 +160,13 @@ usage is to instantiate it with the singleton ConfigManager</p>
 <span class="sig-name descname"><span class="pre">is_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#bioimageit_core.core.config.Config.is_key" title="Permalink to this definition"></a></dt>
 <dd><p>Check if a key exists in the config dictionary</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>key</strong> – Key to check</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if the key exists, False otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -185,7 +189,7 @@ usage is to instantiate it with the singleton ConfigManager</p>
 <dd><p>Add a variable to the config</p>
 <p>If the variable exists it is changed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> – Key of the variable</p></li>
 <li><p><strong>value</strong> – Value to set (can be str, dict, list)</p></li>
@@ -202,10 +206,10 @@ usage is to instantiate it with the singleton ConfigManager</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Singleton to access the Config</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config_file</strong> – JSON file where the config is stored</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Exception</strong> – if multiple instantiation of the Config is tried:</p>
 </dd>
 </dl>
@@ -314,7 +318,7 @@ by an Observer</p>
 <span class="sig-name descname"><span class="pre">add_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#bioimageit_core.core.observer.Observer" title="bioimageit_core.core.observer.Observer"><span class="pre">Observer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observable.add_observer" title="Permalink to this definition"></a></dt>
 <dd><p>Add an observer</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>observer</strong> – ProgressObserver to add</p>
 </dd>
 </dl>
@@ -332,7 +336,7 @@ by an Observer</p>
 <span class="sig-name descname"><span class="pre">notify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observable.notify" title="Permalink to this definition"></a></dt>
 <dd><p>Notify observers any information</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – Information message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -346,7 +350,7 @@ by an Observer</p>
 <span class="sig-name descname"><span class="pre">notify_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observable.notify_error" title="Permalink to this definition"></a></dt>
 <dd><p>Notify observers any error</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – Error message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -360,7 +364,7 @@ by an Observer</p>
 <span class="sig-name descname"><span class="pre">notify_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observable.notify_progress" title="Permalink to this definition"></a></dt>
 <dd><p>Notify observers computing progress</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>progress</strong> – Percentage of progress</p></li>
 <li><p><strong>message</strong> – Message to describe the progress step</p></li>
@@ -375,7 +379,7 @@ by an Observer</p>
 <span class="sig-name descname"><span class="pre">notify_warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observable.notify_warning" title="Permalink to this definition"></a></dt>
 <dd><p>Notify observers any warning</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – Warning message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -440,7 +444,7 @@ progress in log files or notify a GUI for example</p>
 <span class="sig-name descname"><span class="pre">new_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observer.new_job" title="Permalink to this definition"></a></dt>
 <dd><p>Add a new job id</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>job_id</strong> (<em>int</em>) – unique ID of the new job</p>
 </dd>
 </dl>
@@ -451,7 +455,7 @@ progress in log files or notify a GUI for example</p>
 <span class="sig-name descname"><span class="pre">notify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observer.notify" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to notify or log any information</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> (<em>str</em>) – Information message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -465,7 +469,7 @@ progress in log files or notify a GUI for example</p>
 <span class="sig-name descname"><span class="pre">notify_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observer.notify_error" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to warn</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – Warning message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -479,7 +483,7 @@ progress in log files or notify a GUI for example</p>
 <span class="sig-name descname"><span class="pre">notify_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observer.notify_progress" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to notify progress</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>progress</strong> – Data describing the progress</p></li>
 <li><p><strong>message</strong> – Message to describe the progress step</p></li>
@@ -494,7 +498,7 @@ progress in log files or notify a GUI for example</p>
 <span class="sig-name descname"><span class="pre">notify_warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.observer.Observer.notify_warning" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to warn</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – Warning message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -516,7 +520,7 @@ progress in log files or notify a GUI for example</p>
 <p>The log observer implements the BioImageIT logs in txt file. For each session there is one new
 log file with the date time, and one extra file per job</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>log_dir</strong> (<em>str</em>) – Path of the directory where the log are saved</p>
 </dd>
 </dl>
@@ -525,7 +529,7 @@ log file with the date time, and one extra file per job</p>
 <span class="sig-name descname"><span class="pre">new_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.log_observer.LogObserver.new_job" title="Permalink to this definition"></a></dt>
 <dd><p>Add a new job id</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>job_id</strong> (<em>int</em>) – unique ID of the new job</p>
 </dd>
 </dl>
@@ -536,7 +540,7 @@ log file with the date time, and one extra file per job</p>
 <span class="sig-name descname"><span class="pre">notify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.log_observer.LogObserver.notify" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to notify or log any information</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> (<em>str</em>) – Information message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -550,7 +554,7 @@ log file with the date time, and one extra file per job</p>
 <span class="sig-name descname"><span class="pre">notify_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.log_observer.LogObserver.notify_error" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to warn</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – Warning message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -564,7 +568,7 @@ log file with the date time, and one extra file per job</p>
 <span class="sig-name descname"><span class="pre">notify_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.log_observer.LogObserver.notify_progress" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to notify progress</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>progress</strong> – Data describing the progress</p></li>
 <li><p><strong>message</strong> – Message to describe the progress step</p></li>
@@ -579,7 +583,7 @@ log file with the date time, and one extra file per job</p>
 <span class="sig-name descname"><span class="pre">notify_warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bioimageit_core.core.log_observer.LogObserver.notify_warning" title="Permalink to this definition"></a></dt>
 <dd><p>Function called by the observable to warn</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – Warning message</p></li>
 <li><p><strong>job_id</strong> (<em>int</em>) – unique ID of the job. 0 is main app, and positive is a subprocess</p></li>
@@ -637,7 +641,7 @@ log file with the date time, and one extra file per job</p>
 :param data: Container of data metadata
 :type data: Data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str containing the serialized container</p>
 </dd>
 </dl>
@@ -650,7 +654,7 @@ log file with the date time, and one extra file per job</p>
 :param dataset: Container of dataset metadata
 :type dataset: Dataset</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str containing the serialized container</p>
 </dd>
 </dl>
@@ -663,7 +667,7 @@ log file with the date time, and one extra file per job</p>
 :param experiment: Container of experiment metadata
 :type experiment: Experiment</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str containing the serialized container</p>
 </dd>
 </dl>
@@ -674,10 +678,10 @@ log file with the date time, and one extra file per job</p>
 <span class="sig-prename descclassname"><span class="pre">bioimageit_core.core.serialize.</span></span><span class="sig-name descname"><span class="pre">serialize_processed_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processed_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Permalink to this definition"></a></dt>
 <dd><p>Serialize a processed_data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>processed_data</strong> (<a class="reference internal" href="bioimageit_core.containers.html#bioimageit_core.containers.data_containers.ProcessedData" title="bioimageit_core.containers.data_containers.ProcessedData"><em>ProcessedData</em></a>) – Container of processed data metadata</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str containing the serialized container</p>
 </dd>
 </dl>
@@ -690,7 +694,7 @@ log file with the date time, and one extra file per job</p>
 :param raw_data: Container of raw data metadata
 :type raw_data: RawData</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str containing the serialized container</p>
 </dd>
 </dl>
@@ -703,7 +707,7 @@ log file with the date time, and one extra file per job</p>
 :param run: Container of run metadata
 :type run: Run</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str containing the serialized container</p>
 </dd>
 </dl>

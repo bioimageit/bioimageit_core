@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorial: write a runner plugin &mdash; bioimageit_core developers documentation 0.1.0 documentation</title>
@@ -29,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> bioimageit_core developers documentation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            bioimageit_core developers documentation
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,7 +73,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Tutorial: write a runner plugin</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/tutorial_write_a_runner_plugin.rst.txt" rel="nofollow"> View page source</a>
@@ -100,7 +104,7 @@ the <code class="docutils literal notranslate"><span class="pre">RunnerService</
 <p>The service builder is a class that allows to instantiate and initialize a single runner service. The code bellow shows
 an example of runner service for the <code class="docutils literal notranslate"><span class="pre">LocalServiceBuilder</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalRunnerServiceBuilder</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Service builder for the runner service&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Service builder for the runner service&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -126,7 +130,7 @@ complex example of runner service implementation can be found at <code class="do
 Docker case, the <code class="docutils literal notranslate"><span class="pre">set_up</span></code> method pull and run the Docker image, the <code class="docutils literal notranslate"><span class="pre">exec</span></code> method execute the command line in the
 Docker container, and the <code class="docutils literal notranslate"><span class="pre">tear_down</span></code> method stops and removes the container.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LocalRunnerService</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Service for local runner exec</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Service for local runner exec</span>
 
 <span class="sd">    To initialize the database, you need to set the xml_dirs from</span>
 <span class="sd">    the configuration and then call initialize</span>
@@ -137,7 +141,7 @@ Docker container, and the <code class="docutils literal notranslate"><span class
         <span class="bp">self</span><span class="o">.</span><span class="n">service_name</span> <span class="o">=</span> <span class="s1">&#39;LocalRunnerService&#39;</span>
 
     <span class="k">def</span> <span class="nf">set_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span> <span class="n">Tool</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;setup the runner</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;setup the runner</span>
 
 <span class="sd">        Add here the code to initialize the runner</span>
 
@@ -150,7 +154,7 @@ Docker container, and the <code class="docutils literal notranslate"><span class
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">exec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span><span class="n">Tool</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Execute a process</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute a process</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -163,7 +167,7 @@ Docker container, and the <code class="docutils literal notranslate"><span class
         <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">tear_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process</span><span class="p">:</span> <span class="n">Tool</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;tear down the runner</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;tear down the runner</span>
 
 <span class="sd">        Add here the code to down/clean the runner</span>
 
@@ -186,10 +190,10 @@ Docker container, and the <code class="docutils literal notranslate"><span class
 </div>
 <p>In the example above, the string <code class="docutils literal notranslate"><span class="pre">'LOCAL'</span></code> is the name of the runner. Then, if we want to use this runner, we need to
 specify it in the config file:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">...</span><span class="w"></span>
-<span class="s2">&quot;process&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="p">...</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="s2">&quot;process&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;service&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LOCAL&quot;</span><span class="p">,</span>
+<span class="p">...</span>
 </pre></div>
 </div>
 </section>

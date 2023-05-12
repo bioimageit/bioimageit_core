@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorial: wrap a tool &mdash; bioimageit_core developers documentation 0.1.0 documentation</title>
@@ -29,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> bioimageit_core developers documentation
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            bioimageit_core developers documentation
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,7 +73,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Tutorial: wrap a tool</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/tutorial_wrap_a_tool.rst.txt" rel="nofollow"> View page source</a>
@@ -95,14 +99,14 @@ tools access and sharing.</p>
 <h2>Shed file<a class="headerlink" href="#shed-file" title="Permalink to this heading"></a></h2>
 <p>The shed file descibe the tool origin and how BioImageIT will classify it in the toolboxes tree. Bellow an example file
 gives the <code class="docutils literal notranslate"><span class="pre">.shed.yml</span></code> file content:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">categories</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Denoising</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Filtering</span><span class="w"></span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span><span class="w"></span>
-<span class="nt">homepage_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://gitlab.inria.fr/bioimage-it/sampletool/</span><span class="w"></span>
-<span class="nt">long_description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span><span class="w"></span>
-<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SampleTool</span><span class="w"></span>
-<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sylvainprigent</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">categories</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Denoising</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Filtering</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span>
+<span class="nt">homepage_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://gitlab.inria.fr/bioimage-it/sampletool/</span>
+<span class="nt">long_description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2D image smooth with mean filtering</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SampleTool</span>
+<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sylvainprigent</span>
 </pre></div>
 </div>
 <p>The <cite>categories</cite> entry is a list of the toolboxes where the tool(s) will appear.
@@ -125,39 +129,39 @@ Each input of the tool must be descibed in a <cite>&lt;param&gt;</cite> subsecti
 can contains several tests and each test is the list of the input and output parameters and data values.</p>
 <p>The <cite>&lt;help&gt;</cite> section should contains the link to a html or web documentation. The documentation can be stored locally in the
 wrapper directory in a <em>doc</em> folder. This section can be completed with the <cite>&lt;citations&gt;</cite> one with references.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;tool</span> <span class="na">id=</span><span class="s">&quot;wienerdeconv2d&quot;</span> <span class="na">name=</span><span class="s">&quot;Wiener 2D&quot;</span> <span class="na">version=</span><span class="s">&quot;0.1.2&quot;</span> <span class="na">python_template_version=</span><span class="s">&quot;3.5&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;requirements&gt;</span>
-        <span class="nt">&lt;package</span> <span class="na">type=</span><span class="s">&quot;conda&quot;</span> <span class="na">env=</span><span class="s">&quot;simglib&quot;</span><span class="nt">&gt;</span>-c sylvainprigent simglib=0.1.2 python=3.9<span class="nt">&lt;/package&gt;</span>
-    <span class="nt">&lt;/requirements&gt;</span>
-    <span class="nt">&lt;command</span> <span class="na">detect_errors=</span><span class="s">&quot;exit_code&quot;</span><span class="nt">&gt;</span><span class="cp">&lt;![CDATA[</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;tool</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;wienerdeconv2d&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Wiener 2D&quot;</span><span class="w"> </span><span class="na">version=</span><span class="s">&quot;0.1.2&quot;</span><span class="w"> </span><span class="na">python_template_version=</span><span class="s">&quot;3.5&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;requirements&gt;</span>
+<span class="w">        </span><span class="nt">&lt;package</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;conda&quot;</span><span class="w"> </span><span class="na">env=</span><span class="s">&quot;simglib&quot;</span><span class="nt">&gt;</span>-c<span class="w"> </span>sylvainprigent<span class="w"> </span>simglib=0.1.2<span class="w"> </span>python=3.9<span class="nt">&lt;/package&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/requirements&gt;</span>
+<span class="w">    </span><span class="nt">&lt;command</span><span class="w"> </span><span class="na">detect_errors=</span><span class="s">&quot;exit_code&quot;</span><span class="nt">&gt;</span><span class="cp">&lt;![CDATA[</span>
 <span class="cp">        simgwiener2d -i ${i} -o ${o} -sigma ${sigma} -lambda ${lambda} -padding ${padding}</span>
 <span class="cp">    ]]&gt;</span><span class="nt">&lt;/command&gt;</span>
-    <span class="nt">&lt;inputs&gt;</span>
-        <span class="nt">&lt;param</span> <span class="na">type=</span><span class="s">&quot;data&quot;</span> <span class="na">name=</span><span class="s">&quot;i&quot;</span> <span class="na">format=</span><span class="s">&quot;imagetiff&quot;</span> <span class="na">label=</span><span class="s">&quot;Input Image&quot;</span> <span class="na">help=</span><span class="s">&quot;2D image&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;param</span> <span class="na">argument=</span><span class="s">&quot;-sigma&quot;</span> <span class="na">type=</span><span class="s">&quot;float&quot;</span> <span class="na">value=</span><span class="s">&quot;1.5&quot;</span> <span class="na">label=</span><span class="s">&quot;Sigma&quot;</span> <span class="na">help=</span><span class="s">&quot;Gaussian PSF width&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;param</span> <span class="na">argument=</span><span class="s">&quot;-lambda&quot;</span> <span class="na">type=</span><span class="s">&quot;float&quot;</span> <span class="na">value=</span><span class="s">&quot;0.01&quot;</span> <span class="na">label=</span><span class="s">&quot;Lambda&quot;</span> <span class="na">help=</span><span class="s">&quot;Regularization parameter&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;param</span> <span class="na">argument=</span><span class="s">&quot;-padding&quot;</span> <span class="na">type=</span><span class="s">&quot;select&quot;</span> <span class="na">label=</span><span class="s">&quot;Padding&quot;</span> <span class="na">help=</span><span class="s">&quot;Add a padding to process pixels in borders&quot;</span> <span class="na">optional=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>False<span class="nt">&lt;/option&gt;</span>
-            <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>True<span class="nt">&lt;/option&gt;</span>
-        <span class="nt">&lt;/param&gt;</span>
-    <span class="nt">&lt;/inputs&gt;</span>
-    <span class="nt">&lt;outputs&gt;</span>
-        <span class="nt">&lt;data</span> <span class="na">name=</span><span class="s">&quot;o&quot;</span> <span class="na">format=</span><span class="s">&quot;imagetiff&quot;</span> <span class="na">label=</span><span class="s">&quot;Denoised image&quot;</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;/outputs&gt;</span>
-    <span class="nt">&lt;tests&gt;</span>
-        <span class="nt">&lt;test&gt;</span>
-            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;i&quot;</span> <span class="na">value=</span><span class="s">&quot;image.tif&quot;</span> <span class="nt">/&gt;</span>
-            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;sigma&quot;</span> <span class="na">value=</span><span class="s">&quot;1.5&quot;</span> <span class="nt">/&gt;</span>
-            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;lambda&quot;</span> <span class="na">value=</span><span class="s">&quot;0.001&quot;</span> <span class="nt">/&gt;</span>
-            <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;padding&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span> <span class="nt">/&gt;</span>
-            <span class="nt">&lt;output</span> <span class="na">name=</span><span class="s">&quot;o&quot;</span> <span class="na">file=</span><span class="s">&quot;image_o.tif&quot;</span> <span class="na">compare=</span><span class="s">&quot;sim_size&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;/test&gt;</span>
-    <span class="nt">&lt;/tests&gt;</span>
-    <span class="nt">&lt;help&gt;</span><span class="cp">&lt;![CDATA[</span>
+<span class="w">    </span><span class="nt">&lt;inputs&gt;</span>
+<span class="w">        </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;data&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;i&quot;</span><span class="w"> </span><span class="na">format=</span><span class="s">&quot;imagetiff&quot;</span><span class="w"> </span><span class="na">label=</span><span class="s">&quot;Input Image&quot;</span><span class="w"> </span><span class="na">help=</span><span class="s">&quot;2D image&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">argument=</span><span class="s">&quot;-sigma&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;float&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;1.5&quot;</span><span class="w"> </span><span class="na">label=</span><span class="s">&quot;Sigma&quot;</span><span class="w"> </span><span class="na">help=</span><span class="s">&quot;Gaussian PSF width&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">argument=</span><span class="s">&quot;-lambda&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;float&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;0.01&quot;</span><span class="w"> </span><span class="na">label=</span><span class="s">&quot;Lambda&quot;</span><span class="w"> </span><span class="na">help=</span><span class="s">&quot;Regularization parameter&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">argument=</span><span class="s">&quot;-padding&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;select&quot;</span><span class="w"> </span><span class="na">label=</span><span class="s">&quot;Padding&quot;</span><span class="w"> </span><span class="na">help=</span><span class="s">&quot;Add a padding to process pixels in borders&quot;</span><span class="w"> </span><span class="na">optional=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;option</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>False<span class="nt">&lt;/option&gt;</span>
+<span class="w">            </span><span class="nt">&lt;option</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>True<span class="nt">&lt;/option&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/param&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/inputs&gt;</span>
+<span class="w">    </span><span class="nt">&lt;outputs&gt;</span>
+<span class="w">        </span><span class="nt">&lt;data</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;o&quot;</span><span class="w"> </span><span class="na">format=</span><span class="s">&quot;imagetiff&quot;</span><span class="w"> </span><span class="na">label=</span><span class="s">&quot;Denoised image&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/outputs&gt;</span>
+<span class="w">    </span><span class="nt">&lt;tests&gt;</span>
+<span class="w">        </span><span class="nt">&lt;test&gt;</span>
+<span class="w">            </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;i&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;image.tif&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;sigma&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;1.5&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;lambda&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;0.001&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;padding&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;output</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;o&quot;</span><span class="w"> </span><span class="na">file=</span><span class="s">&quot;image_o.tif&quot;</span><span class="w"> </span><span class="na">compare=</span><span class="s">&quot;sim_size&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/test&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/tests&gt;</span>
+<span class="w">    </span><span class="nt">&lt;help&gt;</span><span class="cp">&lt;![CDATA[</span>
 <span class="cp">        https://github.com/sylvainprigent/simglib</span>
 <span class="cp">    ]]&gt;</span><span class="nt">&lt;/help&gt;</span>
-    <span class="nt">&lt;citations&gt;</span>
-    <span class="nt">&lt;/citations&gt;</span>
+<span class="w">    </span><span class="nt">&lt;citations&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/citations&gt;</span>
 <span class="nt">&lt;/tool&gt;</span>
 </pre></div>
 </div>
@@ -167,7 +171,7 @@ wrapper directory in a <em>doc</em> folder. This section can be completed with t
 <p>BioImageIT is able to run tool that are packaged either using <strong>Conda</strong> or <strong>Docker</strong>.</p>
 <p>When using conda, the authors need to create a conda package and store it in anaconda.org. Then, the <cite>&lt;requirements&gt;</cite> section looks like the folowing:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;requirements&gt;</span>
-    <span class="nt">&lt;package</span> <span class="na">type=</span><span class="s">&quot;conda&quot;</span> <span class="na">env=</span><span class="s">&quot;simglib&quot;</span><span class="nt">&gt;</span>-c sylvainprigent simglib=0.1.2 python=3.9<span class="nt">&lt;/package&gt;</span>
+<span class="w">    </span><span class="nt">&lt;package</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;conda&quot;</span><span class="w"> </span><span class="na">env=</span><span class="s">&quot;simglib&quot;</span><span class="nt">&gt;</span>-c<span class="w"> </span>sylvainprigent<span class="w"> </span>simglib=0.1.2<span class="w"> </span>python=3.9<span class="nt">&lt;/package&gt;</span>
 <span class="nt">&lt;/requirements&gt;</span>
 </pre></div>
 </div>
@@ -179,7 +183,7 @@ the version 0.1.2 of simglib from the <em>sylvainprigent</em> conda channel.</p>
 <p>When using Docker, the author needs to build a docker image and store it in Docker hub or a Gitlab register. Then,
 the requirement <cite>&lt;requirements&gt;</cite> section is:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;requirements&gt;</span>
-    <span class="nt">&lt;container</span> <span class="na">type=</span><span class="s">&quot;docker&quot;</span><span class="nt">&gt;</span>registry.gitlab.inria.fr/bioimage-it/sampletool:766efe8b8397fef0115e20f8e7cd2853a0e0e0d5<span class="nt">&lt;/container&gt;</span>
+<span class="w">    </span><span class="nt">&lt;container</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;docker&quot;</span><span class="nt">&gt;</span>registry.gitlab.inria.fr/bioimage-it/sampletool:766efe8b8397fef0115e20f8e7cd2853a0e0e0d5<span class="nt">&lt;/container&gt;</span>
 <span class="nt">&lt;/requirements&gt;</span>
 </pre></div>
 </div>
