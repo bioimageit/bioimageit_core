@@ -108,7 +108,7 @@ The ``bioimageit_core`` library also allows to access directly a ``DataSet``:
 
 .. code-block:: python3
 
-    raw_dataset = req.get_dataset(experiment, name: 'data')
+    raw_dataset = req.get_dataset(experiment, name='data')
 
 and interact with the data in the ``DataSet``:
 
