@@ -99,10 +99,10 @@ We can also manually annotate one data by extracting it and manually adding a ke
 
 .. code-block:: python3
 
-    data = req.query(experiment, dataset_name: 'data', query: 'name=population1_001.tif')
-    data.set_key_value_pair("population", "Population1")
-    data.set_key_value_pair("ID", "001")
-    req.update_raw_data(self, raw_data)
+    data = req.query(experiment, dataset_name='data', query='name=population1_001.tif')
+    data[0].set_key_value_pair("population", "Population1")
+    data[0].set_key_value_pair("ID", "001")
+    req.update_raw_data(data[0])
 
 The ``bioimageit_core`` library also allows to access directly a ``DataSet``:
 
