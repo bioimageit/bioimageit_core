@@ -166,7 +166,7 @@ using the run method which runs a ``Job`` on an Experiment and keep track of all
     experiment = req.run(job)
 
 Then, all the output data and the run metadata are stored in a new dataset of the Experiment. In the
-example above the new dataset is called *deconv*
+example above the new dataset is called *deconv*.
 
 
 Further reading
