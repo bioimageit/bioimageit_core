@@ -99,16 +99,16 @@ We can also manually annotate one data by extracting it and manually adding a ke
 
 .. code-block:: python3
 
-    data = req.query(experiment, dataset_name: 'data', query: 'name=population1_001.tif')
-    data.set_key_value_pair("population", "Population1")
-    data.set_key_value_pair("ID", "001")
-    req.update_raw_data(self, raw_data)
+    data = req.query(experiment, dataset_name='data', query='name=population1_001.tif')
+    data[0].set_key_value_pair("population", "Population1")
+    data[0].set_key_value_pair("ID", "001")
+    req.update_raw_data(data[0])
 
 The ``bioimageit_core`` library also allows to access directly a ``DataSet``:
 
 .. code-block:: python3
 
-    raw_dataset = req.get_dataset(experiment, name: 'data')
+    raw_dataset = req.get_dataset(experiment, name='data')
 
 and interact with the data in the ``DataSet``:
 
@@ -146,7 +146,7 @@ A tool can be ran in data file directly with the ``exec`` command:
              padding=True)
 
 Nevertheless, it is not the recommended methods since ``exec`` does not generate any metadata. We prefer
-using the run method which runs a ``Job`` on an Experiment and keep track of all the job history (inputs data, outputs data, parameters)
+using the run method which runs a ``Job`` on an Experiment and keep track of all the job history (inputs data, outputs data, parameters).
 
 .. code-block:: python3 
 

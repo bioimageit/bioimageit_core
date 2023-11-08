@@ -158,14 +158,14 @@ The second case shows how to extract information from the data file name using s
 extract the sub-string in the file name that is located between two <em>_</em> and after the first <em>_</em>,
 and associate the extracted value to the key <em>ID</em>.
 We can also manually annotate one data by extracting it and manually adding a key-value pair:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="s1">&#39;name=population1_001.tif&#39;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">set_key_value_pair</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="s2">&quot;Population1&quot;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">set_key_value_pair</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;001&quot;</span><span class="p">)</span>
-<span class="n">req</span><span class="o">.</span><span class="n">update_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">dataset_name</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s1">&#39;name=population1_001.tif&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_key_value_pair</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="s2">&quot;Population1&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_key_value_pair</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;001&quot;</span><span class="p">)</span>
+<span class="n">req</span><span class="o">.</span><span class="n">update_raw_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">bioimageit_core</span></code> library also allows to access directly a <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_dataset</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_dataset</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>and interact with the data in the <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>:</p>
@@ -196,7 +196,7 @@ process database. We can then access a <code class="docutils literal notranslate
 </pre></div>
 </div>
 <p>Nevertheless, it is not the recommended methods since <code class="docutils literal notranslate"><span class="pre">exec</span></code> does not generate any metadata. We prefer
-using the run method which runs a <code class="docutils literal notranslate"><span class="pre">Job</span></code> on an Experiment and keep track of all the job history (inputs data, outputs data, parameters)</p>
+using the run method which runs a <code class="docutils literal notranslate"><span class="pre">Job</span></code> on an Experiment and keep track of all the job history (inputs data, outputs data, parameters).</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bioimageit_core.containers.runners_containers</span> <span class="kn">import</span> <span class="n">Job</span>
 
 <span class="n">job</span> <span class="o">=</span> <span class="n">Job</span><span class="p">()</span>
