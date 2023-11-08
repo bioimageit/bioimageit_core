@@ -572,6 +572,8 @@ class ToolParser:
                             param_info.name = sub_child.attrib['name']
                         if 'file' in sub_child.attrib:
                             param_info.file = sub_child.attrib['file']
+                        if 'value' in sub_child.attrib:
+                            param_info.value = sub_child.attrib['value']    
                         if 'compare' in sub_child.attrib:
                             param_info.compare = sub_child.attrib['compare']
                     info_test.append(param_info)
