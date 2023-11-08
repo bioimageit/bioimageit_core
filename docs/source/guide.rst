@@ -146,7 +146,7 @@ A tool can be ran in data file directly with the ``exec`` command:
              padding=True)
 
 Nevertheless, it is not the recommended methods since ``exec`` does not generate any metadata. We prefer
-using the run method which runs a ``Job`` on an Experiment and keep track of all the job history (inputs data, outputs data, parameters)
+using the run method which runs a ``Job`` on an Experiment and keep track of all the job history (inputs data, outputs data, parameters).
 
 .. code-block:: python3 
 
