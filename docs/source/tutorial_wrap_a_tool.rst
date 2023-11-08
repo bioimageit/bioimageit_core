@@ -133,4 +133,4 @@ Summary
 
 In this tutorial, we show with an example how to create a tool package compatible with *BioImageIT* and Galaxy Project. This has 
 the advantages of using the original source code without changing it, but just packaging it with *Docker* or *Conda* and discribing it with a *wrapper* XML file. 
-To make a tool available, please send a push request `here <https://github.com/bioimageit/bioimageit-tools>`_.
+To make a tool available, please send a push request `here <https://github.com/bioimageit/bioimageit-tools>`.
