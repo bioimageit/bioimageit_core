@@ -99,16 +99,16 @@ We can also manually annotate one data by extracting it and manually adding a ke
 
 .. code-block:: python3
 
-    data = req.query(experiment, dataset_name: 'data', query: 'name=population1_001.tif')
-    data.set_key_value_pair("population", "Population1")
-    data.set_key_value_pair("ID", "001")
-    req.update_raw_data(self, raw_data)
+    data = req.query(experiment, dataset_name='data', query='name=population1_001.tif')
+    data[0].set_key_value_pair("population", "Population1")
+    data[0].set_key_value_pair("ID", "001")
+    req.update_raw_data(data[0])
 
 The ``bioimageit_core`` library also allows to access directly a ``DataSet``:
 
 .. code-block:: python3
 
-    raw_dataset = req.get_dataset(experiment, name: 'data')
+    raw_dataset = req.get_dataset(experiment, name='data')
 
 and interact with the data in the ``DataSet``:
 
@@ -166,7 +166,7 @@ using the run method which runs a ``Job`` on an Experiment and keep track of all
     experiment = req.run(job)
 
 Then, all the output data and the run metadata are stored in a new dataset of the Experiment. In the
-example above the new dataset is called *deconv*
+example above the new dataset is called *deconv*.
 
 
 Further reading
