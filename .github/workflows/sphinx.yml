@@ -11,8 +11,7 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: write-all
+permissions: write-all
 
 jobs:
   release_sphinx:
